@@ -1,41 +1,41 @@
 # CLAUDE.md — elcharcu
 
-Guía obligatoria para cualquier instancia de Claude / Cursor que trabaje en este repositorio.
-Léela completa antes de escribir o modificar código. Estas reglas son **hard constraints**.
+Mandatory guide for any Claude / Cursor instance working in this repository.
+Read it fully before writing or modifying code. These rules are **hard constraints**.
 
 ---
 
 ## 1. Stack
 
-| Área            | Tecnología                                        |
+| Area            | Technology                                        |
 | --------------- | ------------------------------------------------- |
-| Framework       | Next.js (App Router, última versión)              |
-| Lenguaje        | TypeScript **strict** (`strict`, `noImplicitAny`) |
+| Framework       | Next.js (App Router, latest version)              |
+| Language        | TypeScript **strict** (`strict`, `noImplicitAny`) |
 | Styling         | Tailwind CSS (+ `prettier-plugin-tailwindcss`)    |
-| Arquitectura    | Feature-Sliced Design (FSD) v2                    |
-| Calidad         | ESLint + Prettier + Husky (pre-commit)            |
+| Architecture    | Feature-Sliced Design (FSD) v2                    |
+| Quality         | ESLint + Prettier + Husky (pre-commit)            |
 | Package manager | **pnpm**                                          |
 
 ---
 
-## 2. Comandos comunes
+## 2. Common commands
 
 ```bash
-pnpm dev          # servidor de desarrollo
-pnpm build        # build de producción
-pnpm start        # servir build
-pnpm lint         # ESLint (0 warnings permitidos)
-pnpm lint:fix     # ESLint con autofix
+pnpm dev          # development server
+pnpm build        # production build
+pnpm start        # serve build
+pnpm lint         # ESLint (0 warnings allowed)
+pnpm lint:fix     # ESLint with autofix
 pnpm format       # Prettier --write
-pnpm type-check   # tsc --noEmit (gate de tipos)
+pnpm type-check   # tsc --noEmit (type gate)
 ```
 
-El hook `pre-commit` corre `type-check` (proyecto completo) + `lint-staged`
-(ESLint + Prettier sobre archivos staged). No hacer `--no-verify`.
+The `pre-commit` hook runs `type-check` (whole project) + `lint-staged`
+(ESLint + Prettier on staged files). Do not use `--no-verify`.
 
 ---
 
-## 3. Arquitectura FSD
+## 3. FSD Architecture
 
 ### 3.1 FSD ↔ Next.js naming collisions (READ THIS)
 
@@ -77,7 +77,7 @@ src/
    ├─ ui/  lib/  api/  config/  types/
 ```
 
-### 3.3 Reglas de imports (INNEGOCIABLE)
+### 3.3 Import rules (NON-NEGOTIABLE)
 
 - **Downward only.** A layer imports exclusively from **lower** layers.
 - **No sideways** (feature → feature) and **no upward** imports.
@@ -85,14 +85,14 @@ src/
   another slice's internals (`@/features/x/ui/Internal` ❌).
 - Allowed flow: `app → views → widgets → features → entities → shared`.
 
-Estas reglas están **forzadas por ESLint** (`import/no-restricted-paths` +
-`import/no-cycle`). Si el lint falla por límites de capa, **la solución es rediseñar
-el import, nunca silenciar la regla**.
+These rules are **enforced by ESLint** (`import/no-restricted-paths` +
+`import/no-cycle`). If lint fails on a layer boundary, **the fix is to redesign the
+import, never to silence the rule**.
 
 ### 3.4 DRY vs FSD
 
-Ante conflicto: **prefiere duplicación local razonable antes que romper un límite
-de capa**. No crear "utils compartidos" que acoplen features entre sí.
+On conflict: **prefer reasonable local duplication over breaking a layer boundary**.
+Do not create "shared utils" that couple features to each other.
 
 ---
 
@@ -111,46 +111,46 @@ Always use aliases; `../../../` across slices is forbidden.
 
 ---
 
-## 5. Nomenclatura
+## 5. Naming
 
-| Elemento             | Convención             | Ejemplo                                    |
+| Element              | Convention             | Example                                    |
 | -------------------- | ---------------------- | ------------------------------------------ |
-| Componente / archivo | `PascalCase.tsx`       | `UserCard.tsx`                             |
+| Component / file     | `PascalCase.tsx`       | `UserCard.tsx`                             |
 | Hook                 | `useCamelCase.ts`      | `useAuthByEmail.ts`                        |
-| Tipo / interface     | `PascalCase`           | `interface UserProfile {}`                 |
+| Type / interface     | `PascalCase`           | `interface UserProfile {}`                 |
 | Slice (feature/ent.) | `kebab-case/`          | `features/auth-by-email/`                  |
-| Segmento interno     | `ui/ model/ lib/ api/` | `entities/user/model/user.types.ts`        |
-| Constante global     | `SCREAMING_SNAKE`      | `const MAX_RETRIES = 3`                    |
-| API pública          | `index.ts` por slice   | `export { UserCard } from './ui/UserCard'` |
+| Internal segment     | `ui/ model/ lib/ api/` | `entities/user/model/user.types.ts`        |
+| Global constant      | `SCREAMING_SNAKE`      | `const MAX_RETRIES = 3`                    |
+| Public API           | `index.ts` per slice   | `export { UserCard } from './ui/UserCard'` |
 
-Estructura interna estándar de un slice:
+Standard internal structure of a slice:
 
 ```
 features/auth-by-email/
-├─ index.ts        # API pública
-├─ ui/             # componentes
-├─ model/          # estado, tipos, lógica
-├─ lib/            # helpers locales
-└─ api/            # llamadas de red
+├─ index.ts        # public API
+├─ ui/             # components
+├─ model/          # state, types, logic
+├─ lib/            # local helpers
+└─ api/            # network calls
 ```
 
 ---
 
-## 6. Reglas de código (SOLID / Clean Code)
+## 6. Code rules (SOLID / Clean Code)
 
-- **Single Responsibility:** componentes y módulos **< 150 líneas**. Si crece, dividir.
-- **Interface Segregation:** props pequeñas y específicas. No pasar objetos gigantes
-  si solo se usa un atributo — pasar el atributo.
-- Props marcadas `readonly`; preferir `type`/`interface` explícitas.
-- Sin lógica de negocio en la capa `views`/`app`: solo composición.
+- **Single Responsibility:** components and modules **< 150 lines**. If it grows, split it.
+- **Interface Segregation:** small, specific props. Don't pass giant objects when only
+  one attribute is used — pass the attribute.
+- Mark props `readonly`; prefer explicit `type`/`interface` declarations.
+- No business logic in the `views`/`app` layer: composition only.
 
 ---
 
-## 7. ⚠️ Zero `any` Policy (regla número uno)
+## 7. ⚠️ Zero `any` Policy (rule number one)
 
-- **Prohibido `any`** en todo el repo (`@typescript-eslint/no-explicit-any: "error"`).
-- Si la inferencia falla: usar **`unknown` + type guards** o **generics explícitos**.
-- Prohibido `@ts-ignore`, `@ts-expect-error` sin justificación escrita, y casts `as any`.
-- Tipar retornos de funciones exportadas y límites de módulo.
+- **`any` is forbidden** across the entire repo (`@typescript-eslint/no-explicit-any: "error"`).
+- If inference fails: use **`unknown` + type guards** or **explicit generics**.
+- Forbidden: `@ts-ignore`, `@ts-expect-error` without a written justification, and `as any` casts.
+- Type the return values of exported functions and module boundaries.
 
-Si no logras tipar algo sin `any`, **detente y replantea el diseño** — no lo fuerces.
+If you can't type something without `any`, **stop and rethink the design** — don't force it.
