@@ -26,8 +26,8 @@ export const site = {
   since: 2026,
   whatsappUrl: `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`,
   whatsappPhone: '+57 300 352 6578',
-  instagramUrl: 'https://instagram.com/elcharcu.artesanal',
-  instagramHandle: '@elcharcu.artesanal',
+  instagramUrl: 'https://instagram.com/elcharcu_artesanal',
+  instagramHandle: '@elcharcu_artesanal',
 } as const;
 
 export const navItems: readonly NavItem[] = [
