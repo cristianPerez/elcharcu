@@ -1,0 +1,119 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "node_modules",
+    ".next",
+    "out",
+    "build",
+    "next-env.d.ts",
+    "*.config.js",
+    "*.config.cjs",
+    "*.config.mjs"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "import"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "prettier"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": "./tsconfig.json"
+      }
+    }
+  },
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unsafe-assignment": "error",
+    "@typescript-eslint/no-unsafe-member-access": "error",
+    "@typescript-eslint/no-unsafe-call": "error",
+    "@typescript-eslint/no-unsafe-return": "error",
+    "@typescript-eslint/no-unsafe-argument": "error",
+    "@typescript-eslint/explicit-module-boundary-types": "warn",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      { "prefer": "type-imports", "fixStyle": "inline-type-imports" }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }
+    ],
+
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+        "pathGroups": [
+          { "pattern": "@/app/**", "group": "internal", "position": "before" },
+          { "pattern": "@/views/**", "group": "internal", "position": "before" },
+          { "pattern": "@/widgets/**", "group": "internal", "position": "before" },
+          { "pattern": "@/features/**", "group": "internal", "position": "before" },
+          { "pattern": "@/entities/**", "group": "internal", "position": "before" },
+          { "pattern": "@/shared/**", "group": "internal", "position": "before" }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "newlines-between": "always",
+        "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ],
+    "import/no-cycle": ["error", { "maxDepth": 1 }],
+    "import/no-self-import": "error",
+    "import/no-useless-path-segments": "error",
+
+    "import/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          {
+            "target": "./src/shared",
+            "from": [
+              "./src/entities",
+              "./src/features",
+              "./src/widgets",
+              "./src/views",
+              "./src/app"
+            ],
+            "message": "FSD: shared cannot import from upper layers."
+          },
+          {
+            "target": "./src/entities",
+            "from": ["./src/features", "./src/widgets", "./src/views", "./src/app"],
+            "message": "FSD: entities may only import from shared."
+          },
+          {
+            "target": "./src/features",
+            "from": ["./src/widgets", "./src/views", "./src/app"],
+            "message": "FSD: features may only import from entities and shared."
+          },
+          {
+            "target": "./src/widgets",
+            "from": ["./src/views", "./src/app"],
+            "message": "FSD: widgets may only import from features, entities and shared."
+          },
+          {
+            "target": "./src/views",
+            "from": ["./src/app"],
+            "message": "FSD: views may only import from widgets, features, entities and shared."
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/app/**/*.{ts,tsx}", "*.config.{js,ts,mjs,cjs}"],
+      "rules": {
+        "import/no-default-export": "off"
+      }
+    }
+  ]
+}

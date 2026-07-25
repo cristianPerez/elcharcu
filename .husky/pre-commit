@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+# 1) Type-check de todo el proyecto (tsc no soporta bien archivos sueltos con project config)
+echo "🔎  Running TypeScript type-check..."
+pnpm type-check || {
+  echo "❌  Type-check failed. Commit abortado."
+  exit 1
+}
+
+# 2) ESLint + Prettier SOLO sobre archivos staged
+echo "🧹  Running lint-staged (ESLint + Prettier)..."
+pnpm exec lint-staged || {
+  echo "❌  Lint-staged failed. Commit abortado."
+  exit 1
+}
+
+echo "✅  Pre-commit checks passed."
