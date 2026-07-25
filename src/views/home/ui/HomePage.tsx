@@ -1,17 +1,33 @@
 import { type ReactNode } from 'react';
 
+import { BrandQuote } from '@/widgets/brand-quote';
+import { BrandStory } from '@/widgets/brand-story';
+import { ContactCta } from '@/widgets/contact-cta';
+import { Hero } from '@/widgets/hero';
+import { MasterCourses } from '@/widgets/master-courses';
+import { ProcessSteps } from '@/widgets/process-steps';
+import { ProductShowcase } from '@/widgets/product-showcase';
+import { SiteFooter } from '@/widgets/site-footer';
+import { SiteHeader } from '@/widgets/site-header';
+
 /**
- * FSD `views` layer (renamed from `pages` to avoid the Next.js Pages Router
- * collision): composes widgets/features into a full view. Orchestration only,
- * no business logic here.
+ * FSD `views` layer: composes the full landing page from widgets.
+ * Orchestration only — no business logic here.
  */
 export function HomePage(): ReactNode {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8">
-      <h1 className="text-3xl font-bold">elcharcu</h1>
-      <p className="text-sm opacity-70">
-        Next.js + TypeScript strict + Feature-Sliced Design.
-      </p>
-    </main>
+    <>
+      <SiteHeader />
+      <main>
+        <Hero />
+        <BrandStory />
+        <ProductShowcase />
+        <ProcessSteps />
+        <MasterCourses />
+        <BrandQuote />
+        <ContactCta />
+      </main>
+      <SiteFooter />
+    </>
   );
 }
