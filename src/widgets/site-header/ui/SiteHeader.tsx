@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { type ReactNode, useState } from 'react';
 
 import { navItems, site } from '@/shared/config';
@@ -17,9 +18,9 @@ export function SiteHeader(): ReactNode {
   return (
     <header className="sticky top-0 z-50 border-b border-cream/10 bg-forest/95 text-cream backdrop-blur">
       <Container className="flex items-center justify-between py-4">
-        <a href={site.homeUrl} aria-label="El Charcu — inicio">
+        <Link href="/" aria-label="El Charcu — inicio">
           <Logo tone="light" />
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Principal">
           {navItems.map((item) => (
