@@ -1,0 +1,111 @@
+{
+  "slug": "kielbasa-de-pollo",
+  "name": "Kielbasa de Pollo Ahumada",
+  "description": "Salchicha ahumada de pollo estilo alemán — pechuga y cerdo curados, ahumado lento en barril, jugosa y delicada.",
+  "image": "/recipes/kielbasa-de-pollo.svg",
+  "tags": ["Alemania", "Ahumado", "Pollo"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Pollo curado y ahumado, estilo salchicha blanca.",
+  "intro": "La kielbasa de pollo es una salchicha ahumada, ligera y jugosa, inspirada en la salchicha blanca alemana. La pechuga de pollo, con un apoyo de cerdo para la jugosidad, se cura tres días antes de especiarse y ahumarse lento en barril. El resultado es un embutido de sabor delicado, textura tersa y un ahumado suave que no tapa la carne. Una alternativa magra a los embutidos de cerdo, sin renunciar al oficio.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "2 kg" },
+    { "label": "Tipo", "value": "Ahumado cocido" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Curado", "value": "3 días" },
+    { "label": "Ahumado", "value": "Lento, en barril" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–36 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Pechuga de pollo con un 15% de cerdo, que aporta la grasa y la jugosidad."
+    },
+    {
+      "title": "Textura",
+      "description": "Tersa y jugosa; la leche en polvo y el curado dan una emulsión fina."
+    },
+    {
+      "title": "Sabor",
+      "description": "Delicado — pimienta blanca, coriandro y nuez moscada — con ahumado suave."
+    }
+  ],
+  "quote": "El pollo pide respeto: poca grasa y mucho cuidado. El curado y el frío hacen que quede jugoso, no seco.",
+  "ingredientsNote": "Este embutido se cura 3 días antes de especiar. La sal de cura Prague Powder #1 es obligatoria para un ahumado cocido a baja temperatura.",
+  "ingredients": [
+    { "name": "Pechuga de pollo", "amount": "1700 g", "pct": "85%" },
+    { "name": "Carne de cerdo", "amount": "300 g", "pct": "15%" },
+    { "name": "Sal", "amount": "33 g", "pct": "1.65%" },
+    { "name": "Sal de cura #1 (Prague Powder #1)", "amount": "5 g", "pct": "0.25%" },
+    { "name": "Leche en polvo", "amount": "40 g", "pct": "2%" },
+    { "name": "Ajo en polvo", "amount": "3.6 g", "pct": "0.18%" },
+    { "name": "Pimienta blanca", "amount": "3.6 g", "pct": "0.18%" },
+    { "name": "Coriandro molido", "amount": "2.4 g", "pct": "0.12%" },
+    { "name": "Azúcar", "amount": "3.6 g", "pct": "0.18%" },
+    { "name": "Nuez moscada", "amount": "0.6 g", "pct": "0.03%" }
+  ],
+  "proportionNote": "85% pechuga de pollo y 15% cerdo: el cerdo aporta la grasa que al pollo le falta, clave para que no quede seco. La leche en polvo ayuda a retener humedad y ligar la emulsión.",
+  "charcuteroNote": "El porcentaje es el peso sobre el total de carne. Valores por kilo: sal 16,5 g, sal de cura 2,5 g, ajo 1,8 g, pimienta blanca 1,8 g, coriandro 1,2 g, nuez moscada 0,3 g, leche en polvo 20 g, azúcar 1,8 g.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Cura la pechuga y el cerdo 3 días en frío (0–4 °C) con la sal y la sal de cura #1."
+    },
+    {
+      "n": "02",
+      "text": "Procesa la carne curada: muele con disco de 4–6 mm, bien fría."
+    },
+    {
+      "n": "03",
+      "text": "Agrega las especias, la leche en polvo y el azúcar; amasa hasta una emulsión fina y pegajosa."
+    },
+    {
+      "n": "04",
+      "text": "Mantén la masa entre 0 y 4 °C durante todo el amasado."
+    },
+    {
+      "n": "05",
+      "text": "Embute en tripa natural de cerdo (32–36 mm) y forma las clásicas herraduras."
+    },
+    {
+      "n": "06",
+      "text": "Deja reposar toda la noche en frío para asentar el sabor."
+    },
+    {
+      "n": "07",
+      "text": "Ahúma lento en barril a baja temperatura hasta cocer (73–75 °C internos)."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Todo muy frío",
+      "description": "El pollo es magro; si la masa se calienta, pierde emulsión y queda seca. Trabaja casi congelada."
+    },
+    {
+      "title": "Sal de cura #1",
+      "description": "Obligatoria en ahumados cocidos a baja temperatura: previene el riesgo de botulismo."
+    },
+    {
+      "title": "Ahumado suave",
+      "description": "El pollo no necesita mucho humo; un ahumado lento y ligero realza sin tapar la carne."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Ahumado en barril",
+      "description": "A baja temperatura hasta alcanzar 73–75 °C en el centro; queda cocida y lista para comer."
+    },
+    {
+      "title": "A la parrilla",
+      "description": "Ya ahumada, solo dorar unos minutos para reforzar el sabor antes de servir."
+    }
+  ],
+  "recommendations": [
+    "Cura 3 días antes de especiar.",
+    "No omitas la sal de cura #1 en un ahumado cocido.",
+    "Mantén la carne fría para conservar la emulsión.",
+    "Cocina hasta 73–75 °C internos para un consumo seguro."
+  ],
+  "resultNote": "El resultado: una kielbasa tersa, jugosa y de ahumado delicado, más ligera que las de cerdo. Al corte, una emulsión fina y pareja — la señal de un buen curado y un trabajo en frío.",
+  "finalQuote": "La kielbasa de pollo demuestra que la charcutería no es solo de cerdo: con curado, frío y técnica, hasta la pechuga magra queda jugosa.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

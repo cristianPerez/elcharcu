@@ -9,6 +9,7 @@ import chorizoVenezolano from '../recipes/chorizo-venezolano.json';
 import chorizoVerdeMexicano from '../recipes/chorizo-verde-mexicano.json';
 import chouricoPortugues from '../recipes/chourico-portugues.json';
 import fuet from '../recipes/fuet.json';
+import kielbasaDePollo from '../recipes/kielbasa-de-pollo.json';
 import linguicaCalabresa from '../recipes/linguica-calabresa.json';
 import linguicaPortuguesa from '../recipes/linguica-portuguesa.json';
 import longanizaColombiana from '../recipes/longaniza-colombiana.json';
@@ -52,6 +53,7 @@ const recipes: readonly Recipe[] = [
   loukaniko,
   merguez,
   sujuk,
+  kielbasaDePollo,
 ];
 
 export function getRecipes(): readonly Recipe[] {
