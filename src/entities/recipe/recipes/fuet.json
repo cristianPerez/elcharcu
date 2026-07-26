@@ -2,18 +2,36 @@
   "slug": "fuet",
   "name": "Fuet Catalán",
   "description": "Curado fino con flor blanca — cerdo, pimienta y ajo suave, madurado hasta su moho noble exterior.",
-  "image": "",
+  "image": "/recipes/fuet.svg",
   "tags": ["España", "Curado"],
   "eyebrow": "Receta · Chorizos del mundo",
   "subtitle": "Delgado, con flor blanca y sabor delicado.",
   "intro": "El fuet es el embutido curado catalán por excelencia: delgado, sin pimentón, con un sabor delicado de cerdo, pimienta y ajo suave. Su seña visual es la flor blanca — el moho noble (penicillium) que lo recubre y protege durante el curado, aportando aroma. Se cura relativamente rápido por su calibre fino, y se come en rodajas finas como aperitivo.",
   "stats": [
-    { "label": "Rendimiento base", "value": "1 kg" },
-    { "label": "Tipo", "value": "Curado en seco" },
-    { "label": "Nivel", "value": "Avanzado" },
-    { "label": "Tiempo de preparación", "value": "50 min" },
-    { "label": "Curado", "value": "3–5 semanas" },
-    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 34–38 mm" }
+    {
+      "label": "Rendimiento base",
+      "value": "1 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Curado en seco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Avanzado"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "50 min"
+    },
+    {
+      "label": "Curado",
+      "value": "3–5 semanas"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural de cerdo, cal. 34–38 mm"
+    }
   ],
   "details": [
     {
@@ -32,23 +50,69 @@
   "quote": "La flor blanca del fuet no es un defecto: es el moho noble que protege el curado y le da su aroma inconfundible.",
   "ingredientsNote": "El fuet es delicado, así que el condimento es discreto. La sal de cura es obligatoria; la flor blanca se favorece con humedad y aireación.",
   "ingredients": [
-    { "name": "Carne de cerdo (magro)", "amount": "800 g", "pct": "80%" },
-    { "name": "Tocino de cerdo", "amount": "200 g", "pct": "20%" },
-    { "name": "Sal", "amount": "26 g", "pct": "2.6%" },
-    { "name": "Pimienta negra molida", "amount": "4 g", "pct": "0.4%" },
-    { "name": "Ajo fresco triturado", "amount": "5 g", "pct": "0.5%" },
-    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
-    { "name": "Vino blanco seco", "amount": "20 ml", "pct": "2%" }
+    {
+      "name": "Carne de cerdo (magro)",
+      "amount": "800 g",
+      "pct": "80%"
+    },
+    {
+      "name": "Tocino de cerdo",
+      "amount": "200 g",
+      "pct": "20%"
+    },
+    {
+      "name": "Sal",
+      "amount": "26 g",
+      "pct": "2.6%"
+    },
+    {
+      "name": "Pimienta negra molida",
+      "amount": "4 g",
+      "pct": "0.4%"
+    },
+    {
+      "name": "Ajo fresco triturado",
+      "amount": "5 g",
+      "pct": "0.5%"
+    },
+    {
+      "name": "Sal de cura (nitrificante, #2)",
+      "amount": "2.5 g",
+      "pct": "0.25%"
+    },
+    {
+      "name": "Vino blanco seco",
+      "amount": "20 ml",
+      "pct": "2%"
+    }
   ],
   "proportionNote": "80% magro y 20% tocino da un fuet firme pero tierno. El condimento es mínimo a propósito: el fuet es sutileza, no potencia.",
   "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura al 0.25% es el estándar seguro.",
   "steps": [
-    { "n": "01", "text": "Mezcla los secos: sal, sal de cura, pimienta y ajo." },
-    { "n": "02", "text": "Corta magro y tocino en cubos, muy fríos (0–2 °C)." },
-    { "n": "03", "text": "Muele con disco de 6–8 mm." },
-    { "n": "04", "text": "Integra los secos y el vino; amasa hasta ligar." },
-    { "n": "05", "text": "Embute firme en tripa de 34–38 mm sin bolsas de aire." },
-    { "n": "06", "text": "Opcional: aplica cultivo de moho noble en la superficie." },
+    {
+      "n": "01",
+      "text": "Mezcla los secos: sal, sal de cura, pimienta y ajo."
+    },
+    {
+      "n": "02",
+      "text": "Corta magro y tocino en cubos, muy fríos (0–2 °C)."
+    },
+    {
+      "n": "03",
+      "text": "Muele con disco de 6–8 mm."
+    },
+    {
+      "n": "04",
+      "text": "Integra los secos y el vino; amasa hasta ligar."
+    },
+    {
+      "n": "05",
+      "text": "Embute firme en tripa de 34–38 mm sin bolsas de aire."
+    },
+    {
+      "n": "06",
+      "text": "Opcional: aplica cultivo de moho noble en la superficie."
+    },
     {
       "n": "07",
       "text": "Cura a 12–15 °C y 80–85% de humedad, 3–5 semanas, hasta que aparezca la flor blanca."

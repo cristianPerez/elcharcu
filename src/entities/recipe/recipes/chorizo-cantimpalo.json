@@ -2,18 +2,36 @@
   "slug": "chorizo-cantimpalo",
   "name": "Chorizo de Cantimpalos",
   "description": "El segoviano suave y ligeramente dulce — magro, pimentón de la Vera y curado, sin tocino añadido.",
-  "image": "",
+  "image": "/recipes/chorizo-cantimpalo.svg",
   "tags": ["España", "Curado"],
   "eyebrow": "Receta · Chorizos del mundo",
   "subtitle": "Suave, magro y con Denominación de Origen.",
   "intro": "El chorizo de Cantimpalos, del pueblo segoviano del mismo nombre, es famoso por su sabor suave y ligeramente dulce. Su seña de identidad es que no lleva tocino añadido: se elabora con carne magra de cerdo — de animales alimentados con cereal — pimentón de la Vera y sal, sin conservantes que enmascaren. Un curado sobrio que deja hablar a la buena materia prima.",
   "stats": [
-    { "label": "Rendimiento base", "value": "1 kg" },
-    { "label": "Tipo", "value": "Curado en seco" },
-    { "label": "Nivel", "value": "Avanzado" },
-    { "label": "Tiempo de preparación", "value": "50 min" },
-    { "label": "Curado", "value": "5–8 semanas" },
-    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 38–40 mm" }
+    {
+      "label": "Rendimiento base",
+      "value": "1 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Curado en seco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Avanzado"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "50 min"
+    },
+    {
+      "label": "Curado",
+      "value": "5–8 semanas"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural de cerdo, cal. 38–40 mm"
+    }
   ],
   "details": [
     {
@@ -32,28 +50,78 @@
   "quote": "Cantimpalos enseña una lección: sin tocino que lo esconda, un chorizo solo es tan bueno como su carne.",
   "ingredientsNote": "Al usar magro casi puro, elige carne con buena grasa infiltrada. La sal de cura es obligatoria para el curado.",
   "ingredients": [
-    { "name": "Carne magra de cerdo", "amount": "900 g", "pct": "90%" },
-    { "name": "Grasa de cerdo (propia de la pieza)", "amount": "100 g", "pct": "10%" },
-    { "name": "Pimentón de la Vera dulce", "amount": "25 g", "pct": "2.5%" },
-    { "name": "Sal", "amount": "26 g", "pct": "2.6%" },
-    { "name": "Ajo fresco triturado", "amount": "8 g", "pct": "0.8%" },
-    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
-    { "name": "Orégano seco", "amount": "1 g", "pct": "0.1%" },
-    { "name": "Agua helada", "amount": "20 ml", "pct": "2%" }
+    {
+      "name": "Carne magra de cerdo",
+      "amount": "900 g",
+      "pct": "90%"
+    },
+    {
+      "name": "Grasa de cerdo (propia de la pieza)",
+      "amount": "100 g",
+      "pct": "10%"
+    },
+    {
+      "name": "Pimentón de la Vera dulce",
+      "amount": "25 g",
+      "pct": "2.5%"
+    },
+    {
+      "name": "Sal",
+      "amount": "26 g",
+      "pct": "2.6%"
+    },
+    {
+      "name": "Ajo fresco triturado",
+      "amount": "8 g",
+      "pct": "0.8%"
+    },
+    {
+      "name": "Sal de cura (nitrificante, #2)",
+      "amount": "2.5 g",
+      "pct": "0.25%"
+    },
+    {
+      "name": "Orégano seco",
+      "amount": "1 g",
+      "pct": "0.1%"
+    },
+    {
+      "name": "Agua helada",
+      "amount": "20 ml",
+      "pct": "2%"
+    }
   ],
   "proportionNote": "90% magro y 10% grasa es lo que hace único al Cantimpalos: sin tocino añadido. Por eso la calidad de la carne — y su grasa infiltrada — lo es todo.",
   "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. La sal de cura al 0.25% mantiene el curado seguro.",
   "steps": [
-    { "n": "01", "text": "Mezcla los secos: pimentón, sal, sal de cura, ajo y orégano." },
-    { "n": "02", "text": "Corta la carne en cubos, muy fría (0–2 °C)." },
-    { "n": "03", "text": "Muele con disco de 8 mm." },
-    { "n": "04", "text": "Integra los secos con el agua helada; amasa hasta ligar." },
+    {
+      "n": "01",
+      "text": "Mezcla los secos: pimentón, sal, sal de cura, ajo y orégano."
+    },
+    {
+      "n": "02",
+      "text": "Corta la carne en cubos, muy fría (0–2 °C)."
+    },
+    {
+      "n": "03",
+      "text": "Muele con disco de 8 mm."
+    },
+    {
+      "n": "04",
+      "text": "Integra los secos con el agua helada; amasa hasta ligar."
+    },
     {
       "n": "05",
       "text": "Macera en frío 24 h para que el pimentón desarrolle su dulzor."
     },
-    { "n": "06", "text": "Embute firme en tripa de 38–40 mm y pincha." },
-    { "n": "07", "text": "Cura a 12–15 °C y 75–80% de humedad, 5–8 semanas." }
+    {
+      "n": "06",
+      "text": "Embute firme en tripa de 38–40 mm y pincha."
+    },
+    {
+      "n": "07",
+      "text": "Cura a 12–15 °C y 75–80% de humedad, 5–8 semanas."
+    }
   ],
   "tips": [
     {

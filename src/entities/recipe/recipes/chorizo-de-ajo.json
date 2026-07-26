@@ -2,18 +2,36 @@
   "slug": "chorizo-de-ajo",
   "name": "Chorizo de Ajo Parrillero",
   "description": "El chorizo parrillero por excelencia — ajo protagonista, vino tinto y un “nutri” que integra todos los secos.",
-  "image": "",
+  "image": "/recipes/chorizo-de-ajo.svg",
   "tags": ["Colombia", "Fresco", "Parrillero"],
   "eyebrow": "Receta · El camino del charcutero",
   "subtitle": "El más popular de la parrilla, con ajo y vino.",
   "intro": "El chorizo de ajo es el rey de la parrilla: jugoso, aromático y con el ajo como protagonista. El secreto está en el “nutri” — la mezcla previa de todos los ingredientes secos — que integra los sabores de forma uniforme antes de moler, y en un chorro de vino tinto que aporta profundidad. Una receta fresca, sin curado largo, pensada para asar el mismo día o al día siguiente.",
   "stats": [
-    { "label": "Rendimiento base", "value": "2 kg" },
-    { "label": "Tipo", "value": "Embutido fresco" },
-    { "label": "Nivel", "value": "Fácil–Intermedio" },
-    { "label": "Tiempo de preparación", "value": "45 min" },
-    { "label": "Tiempo de reposo", "value": "12–24 h" },
-    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–35 mm" }
+    {
+      "label": "Rendimiento base",
+      "value": "2 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Embutido fresco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Fácil–Intermedio"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "45 min"
+    },
+    {
+      "label": "Tiempo de reposo",
+      "value": "12–24 h"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural de cerdo, cal. 32–35 mm"
+    }
   ],
   "details": [
     {
@@ -37,15 +55,51 @@
       "amount": "1500 g",
       "pct": "75%"
     },
-    { "name": "Grasa de cerdo (papada o tocino)", "amount": "500 g", "pct": "25%" },
-    { "name": "Ajo fresco triturado", "amount": "30 g", "pct": "1.5%" },
-    { "name": "Sal", "amount": "40 g", "pct": "2%" },
-    { "name": "Pimentón dulce", "amount": "20 g", "pct": "1%" },
-    { "name": "Pimienta negra", "amount": "5 g", "pct": "0.25%" },
-    { "name": "Comino", "amount": "4 g", "pct": "0.2%" },
-    { "name": "Orégano seco", "amount": "2 g", "pct": "0.1%" },
-    { "name": "Azúcar", "amount": "6 g", "pct": "0.3%" },
-    { "name": "Vino tinto seco", "amount": "200 ml", "pct": "10%" }
+    {
+      "name": "Grasa de cerdo (papada o tocino)",
+      "amount": "500 g",
+      "pct": "25%"
+    },
+    {
+      "name": "Ajo fresco triturado",
+      "amount": "30 g",
+      "pct": "1.5%"
+    },
+    {
+      "name": "Sal",
+      "amount": "40 g",
+      "pct": "2%"
+    },
+    {
+      "name": "Pimentón dulce",
+      "amount": "20 g",
+      "pct": "1%"
+    },
+    {
+      "name": "Pimienta negra",
+      "amount": "5 g",
+      "pct": "0.25%"
+    },
+    {
+      "name": "Comino",
+      "amount": "4 g",
+      "pct": "0.2%"
+    },
+    {
+      "name": "Orégano seco",
+      "amount": "2 g",
+      "pct": "0.1%"
+    },
+    {
+      "name": "Azúcar",
+      "amount": "6 g",
+      "pct": "0.3%"
+    },
+    {
+      "name": "Vino tinto seco",
+      "amount": "200 ml",
+      "pct": "10%"
+    }
   ],
   "proportionNote": "75% carne y 25% grasa (1,5 kg y 500 g) es el balance parrillero: suficiente grasa para que quede jugoso sobre las brasas sin volverse graso. El vino se calcula al 10% del total de carne y grasa.",
   "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Domínalo y podrás hacer 2 kg o 20 con el mismo sabor: solo multiplica.",
@@ -62,7 +116,10 @@
       "n": "03",
       "text": "Mezcla los cubos con el “nutri” y deja reposar en frío de 30 a 60 minutos."
     },
-    { "n": "04", "text": "Muele la carne y la grasa con un disco de 8 mm." },
+    {
+      "n": "04",
+      "text": "Muele la carne y la grasa con un disco de 8 mm."
+    },
     {
       "n": "05",
       "text": "Incorpora el vino tinto frío poco a poco, amasando hasta una masa homogénea y pegajosa."

@@ -2,18 +2,36 @@
   "slug": "merguez",
   "name": "Merguez",
   "description": "El fino y picante del Magreb — cordero, harissa y comino, rojo intenso y a la brasa.",
-  "image": "",
+  "image": "/recipes/merguez.svg",
   "tags": ["Magreb", "Fresco", "Picante"],
   "eyebrow": "Receta · Chorizos del mundo",
   "subtitle": "Cordero especiado, delgado y picante.",
   "intro": "El merguez es el embutido fresco del norte de África: de cordero (a veces con res), delgado, rojo y picante. Su color y su fuego vienen de la harissa y el pimentón, sobre una base de comino, cilantro y ajo. Se asa a la brasa hasta chisporrotear y se sirve con pan, cuscús o en bocadillo. Un chorizo especiado, intenso y de calibre fino.",
   "stats": [
-    { "label": "Rendimiento base", "value": "1 kg" },
-    { "label": "Tipo", "value": "Embutido fresco" },
-    { "label": "Nivel", "value": "Intermedio" },
-    { "label": "Tiempo de preparación", "value": "45 min" },
-    { "label": "Tiempo de reposo", "value": "12–24 h" },
-    { "label": "Tipo de tripa", "value": "Natural de cordero, cal. 20–24 mm" }
+    {
+      "label": "Rendimiento base",
+      "value": "1 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Embutido fresco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Intermedio"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "45 min"
+    },
+    {
+      "label": "Tiempo de reposo",
+      "value": "12–24 h"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural de cordero, cal. 20–24 mm"
+    }
   ],
   "details": [
     {
@@ -32,16 +50,56 @@
   "quote": "El merguez es el chorizo del cordero: cambia la carne, cambia el mundo de especias, pero la técnica es la misma.",
   "ingredientsNote": "La harissa aporta color y picor; ajústala a tu gusto. El comino y el cilantro molido son la base aromática.",
   "ingredients": [
-    { "name": "Carne de cordero", "amount": "700 g", "pct": "70%" },
-    { "name": "Grasa de cordero o res", "amount": "300 g", "pct": "30%" },
-    { "name": "Harissa", "amount": "40 g", "pct": "4%" },
-    { "name": "Pimentón picante", "amount": "20 g", "pct": "2%" },
-    { "name": "Ajo fresco triturado", "amount": "15 g", "pct": "1.5%" },
-    { "name": "Comino molido", "amount": "10 g", "pct": "1%" },
-    { "name": "Cilantro molido", "amount": "8 g", "pct": "0.8%" },
-    { "name": "Sal", "amount": "20 g", "pct": "2%" },
-    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" },
-    { "name": "Agua helada", "amount": "20 ml", "pct": "2%" }
+    {
+      "name": "Carne de cordero",
+      "amount": "700 g",
+      "pct": "70%"
+    },
+    {
+      "name": "Grasa de cordero o res",
+      "amount": "300 g",
+      "pct": "30%"
+    },
+    {
+      "name": "Harissa",
+      "amount": "40 g",
+      "pct": "4%"
+    },
+    {
+      "name": "Pimentón picante",
+      "amount": "20 g",
+      "pct": "2%"
+    },
+    {
+      "name": "Ajo fresco triturado",
+      "amount": "15 g",
+      "pct": "1.5%"
+    },
+    {
+      "name": "Comino molido",
+      "amount": "10 g",
+      "pct": "1%"
+    },
+    {
+      "name": "Cilantro molido",
+      "amount": "8 g",
+      "pct": "0.8%"
+    },
+    {
+      "name": "Sal",
+      "amount": "20 g",
+      "pct": "2%"
+    },
+    {
+      "name": "Pimienta negra",
+      "amount": "3 g",
+      "pct": "0.3%"
+    },
+    {
+      "name": "Agua helada",
+      "amount": "20 ml",
+      "pct": "2%"
+    }
   ],
   "proportionNote": "70% carne y 30% grasa de cordero da jugosidad y el sabor característico. La harissa y el pimentón definen color y picor; ajústalos según tu tolerancia.",
   "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Al ser fresco, se cocina y se consume pronto, sin sal de cura.",
@@ -50,8 +108,14 @@
       "n": "01",
       "text": "Mezcla los secos: pimentón, comino, cilantro, sal y pimienta."
     },
-    { "n": "02", "text": "Corta la carne y la grasa en cubos, muy fríos (0–4 °C)." },
-    { "n": "03", "text": "Muele con disco de 6–8 mm." },
+    {
+      "n": "02",
+      "text": "Corta la carne y la grasa en cubos, muy fríos (0–4 °C)."
+    },
+    {
+      "n": "03",
+      "text": "Muele con disco de 6–8 mm."
+    },
     {
       "n": "04",
       "text": "Integra la harissa, el ajo, los secos y el agua; amasa hasta una masa roja y homogénea."
@@ -60,8 +124,14 @@
       "n": "05",
       "text": "Deja reposar en frío 12–24 h para que las especias se integren."
     },
-    { "n": "06", "text": "Embute en tripa fina de cordero (20–24 mm)." },
-    { "n": "07", "text": "Refrigera; consúmelo fresco a la brasa en pocos días." }
+    {
+      "n": "06",
+      "text": "Embute en tripa fina de cordero (20–24 mm)."
+    },
+    {
+      "n": "07",
+      "text": "Refrigera; consúmelo fresco a la brasa en pocos días."
+    }
   ],
   "tips": [
     {

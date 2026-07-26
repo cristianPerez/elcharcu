@@ -2,18 +2,36 @@
   "slug": "loukaniko",
   "name": "Loukániko Griego",
   "description": "Cerdo con naranja e hinojo — el embutido griego perfumado con cítrico y semillas, macerado en vino.",
-  "image": "",
+  "image": "/recipes/loukaniko.svg",
   "tags": ["Grecia", "Fresco", "Ahumado"],
   "eyebrow": "Receta · Chorizos del mundo",
   "subtitle": "Naranja, hinojo y vino: el aroma del Egeo.",
   "intro": "El loukániko es el embutido griego más reconocible: cerdo perfumado con ralladura de naranja y semillas de hinojo, macerado en vino tinto. Ese perfume cítrico y anisado lo hace inconfundible. Puede consumirse fresco a la parrilla o secarse y ahumarse ligeramente. Un chorizo mediterráneo, herbal y aromático, muy presente en la mesa griega.",
   "stats": [
-    { "label": "Rendimiento base", "value": "1 kg" },
-    { "label": "Tipo", "value": "Fresco / semiseco" },
-    { "label": "Nivel", "value": "Intermedio" },
-    { "label": "Tiempo de preparación", "value": "45 min" },
-    { "label": "Maceración", "value": "12–24 h" },
-    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–36 mm" }
+    {
+      "label": "Rendimiento base",
+      "value": "1 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Fresco / semiseco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Intermedio"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "45 min"
+    },
+    {
+      "label": "Maceración",
+      "value": "12–24 h"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural de cerdo, cal. 32–36 mm"
+    }
   ],
   "details": [
     {
@@ -32,15 +50,51 @@
   "quote": "La ralladura de naranja y el hinojo son la firma del loukániko: un chorizo que huele a Mediterráneo antes de tocarlo.",
   "ingredientsNote": "Ralla solo la parte naranja de la cáscara (sin lo blanco, que amarga). Macera en vino para que el perfume penetre.",
   "ingredients": [
-    { "name": "Carne de cerdo (paleta)", "amount": "800 g", "pct": "80%" },
-    { "name": "Grasa de cerdo", "amount": "200 g", "pct": "20%" },
-    { "name": "Ralladura de naranja", "amount": "15 g", "pct": "1.5%" },
-    { "name": "Semillas de hinojo", "amount": "8 g", "pct": "0.8%" },
-    { "name": "Ajo fresco triturado", "amount": "10 g", "pct": "1%" },
-    { "name": "Sal", "amount": "20 g", "pct": "2%" },
-    { "name": "Orégano seco", "amount": "3 g", "pct": "0.3%" },
-    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" },
-    { "name": "Vino tinto", "amount": "50 ml", "pct": "5%" }
+    {
+      "name": "Carne de cerdo (paleta)",
+      "amount": "800 g",
+      "pct": "80%"
+    },
+    {
+      "name": "Grasa de cerdo",
+      "amount": "200 g",
+      "pct": "20%"
+    },
+    {
+      "name": "Ralladura de naranja",
+      "amount": "15 g",
+      "pct": "1.5%"
+    },
+    {
+      "name": "Semillas de hinojo",
+      "amount": "8 g",
+      "pct": "0.8%"
+    },
+    {
+      "name": "Ajo fresco triturado",
+      "amount": "10 g",
+      "pct": "1%"
+    },
+    {
+      "name": "Sal",
+      "amount": "20 g",
+      "pct": "2%"
+    },
+    {
+      "name": "Orégano seco",
+      "amount": "3 g",
+      "pct": "0.3%"
+    },
+    {
+      "name": "Pimienta negra",
+      "amount": "3 g",
+      "pct": "0.3%"
+    },
+    {
+      "name": "Vino tinto",
+      "amount": "50 ml",
+      "pct": "5%"
+    }
   ],
   "proportionNote": "80% carne y 20% grasa da una base jugosa que sostiene el perfume cítrico. Ajusta naranja e hinojo según cuánto aroma busques.",
   "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Si lo consumes fresco, no necesita sal de cura; si lo secas varios días, añádela.",
@@ -49,14 +103,26 @@
       "n": "01",
       "text": "Machaca ligeramente las semillas de hinojo para liberar su aroma."
     },
-    { "n": "02", "text": "Corta la carne y la grasa en cubos, muy fríos (0–4 °C)." },
-    { "n": "03", "text": "Muele con disco de 8 mm." },
+    {
+      "n": "02",
+      "text": "Corta la carne y la grasa en cubos, muy fríos (0–4 °C)."
+    },
+    {
+      "n": "03",
+      "text": "Muele con disco de 8 mm."
+    },
     {
       "n": "04",
       "text": "Integra ralladura, hinojo, ajo, orégano, sal, pimienta y vino; amasa hasta ligar."
     },
-    { "n": "05", "text": "Macera en frío 12–24 h para que el cítrico penetre." },
-    { "n": "06", "text": "Embute en tripa natural (32–36 mm) y forma aros." },
+    {
+      "n": "05",
+      "text": "Macera en frío 12–24 h para que el cítrico penetre."
+    },
+    {
+      "n": "06",
+      "text": "Embute en tripa natural (32–36 mm) y forma aros."
+    },
     {
       "n": "07",
       "text": "Consúmelo fresco a la parrilla, u orea 2–3 días para un perfil más seco."

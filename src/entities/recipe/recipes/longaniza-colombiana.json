@@ -2,18 +2,36 @@
   "slug": "longaniza-colombiana",
   "name": "Longaniza Colombiana Artesanal",
   "description": "Embutido fresco tradicional — carne y grasa en equilibrio, comino, paprika y orégano medidos.",
-  "image": "",
+  "image": "/recipes/longaniza-colombiana.svg",
   "tags": ["Colombia", "Fresco", "Parrillero"],
   "eyebrow": "Receta · El camino del charcutero",
   "subtitle": "Receta base para elaboración artesanal.",
   "intro": "La longaniza colombiana es uno de los embutidos frescos más tradicionales del país. Su equilibrio entre carne, grasa y especias da como resultado un producto jugoso, con excelente textura y un sabor intenso que la convierte en una de las recetas esenciales de la charcutería artesanal. Cada lote cuenta la misma historia: técnica, paciencia y respeto por la materia prima.",
   "stats": [
-    { "label": "Rendimiento base", "value": "1 kg" },
-    { "label": "Tipo", "value": "Embutido fresco" },
-    { "label": "Nivel", "value": "Intermedio" },
-    { "label": "Tiempo de preparación", "value": "45 min" },
-    { "label": "Tiempo de reposo", "value": "12–24 h" },
-    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–35 mm" }
+    {
+      "label": "Rendimiento base",
+      "value": "1 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Embutido fresco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Intermedio"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "45 min"
+    },
+    {
+      "label": "Tiempo de reposo",
+      "value": "12–24 h"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural de cerdo, cal. 32–35 mm"
+    }
   ],
   "details": [
     {
@@ -32,16 +50,56 @@
   "quote": "El Charcu no improvisa. Cada receta es una fórmula probada, pensada para repetirse con el mismo resultado — lote tras lote.",
   "ingredientsNote": "Toda buena longaniza empieza en la báscula, no en la sartén: pesar cada ingrediente con precisión es lo que separa un embutido consistente de uno improvisado.",
   "ingredients": [
-    { "name": "Carne de cerdo (pierna o paleta)", "amount": "800 g", "pct": "80%" },
-    { "name": "Grasa de cerdo (papada o tocino)", "amount": "200 g", "pct": "20%" },
-    { "name": "Sal", "amount": "18 g", "pct": "1.8%" },
-    { "name": "Ajo fresco triturado", "amount": "4 g", "pct": "0.4%" },
-    { "name": "Pimienta negra", "amount": "2.4 g", "pct": "0.24%" },
-    { "name": "Comino", "amount": "3 g", "pct": "0.3%" },
-    { "name": "Paprika dulce o achiote", "amount": "3 g", "pct": "0.3%" },
-    { "name": "Orégano seco", "amount": "1 g", "pct": "0.1%" },
-    { "name": "Azúcar", "amount": "1 g", "pct": "0.1%" },
-    { "name": "Agua helada", "amount": "20 ml", "pct": "2%" }
+    {
+      "name": "Carne de cerdo (pierna o paleta)",
+      "amount": "800 g",
+      "pct": "80%"
+    },
+    {
+      "name": "Grasa de cerdo (papada o tocino)",
+      "amount": "200 g",
+      "pct": "20%"
+    },
+    {
+      "name": "Sal",
+      "amount": "18 g",
+      "pct": "1.8%"
+    },
+    {
+      "name": "Ajo fresco triturado",
+      "amount": "4 g",
+      "pct": "0.4%"
+    },
+    {
+      "name": "Pimienta negra",
+      "amount": "2.4 g",
+      "pct": "0.24%"
+    },
+    {
+      "name": "Comino",
+      "amount": "3 g",
+      "pct": "0.3%"
+    },
+    {
+      "name": "Paprika dulce o achiote",
+      "amount": "3 g",
+      "pct": "0.3%"
+    },
+    {
+      "name": "Orégano seco",
+      "amount": "1 g",
+      "pct": "0.1%"
+    },
+    {
+      "name": "Azúcar",
+      "amount": "1 g",
+      "pct": "0.1%"
+    },
+    {
+      "name": "Agua helada",
+      "amount": "20 ml",
+      "pct": "2%"
+    }
   ],
   "proportionNote": "80% carne y 20% grasa (800 g y 200 g por cada kilo) es el punto de partida clásico de la longaniza. Puedes mover ese balance uno o dos puntos porcentuales según la jugosidad que busques, sin salirte del rango artesanal.",
   "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Es la misma proporción sin importar si haces 1 kilo o 20: domínala y podrás escalar esta longaniza a cualquier cantidad sin perder el equilibrio.",
@@ -50,7 +108,10 @@
       "n": "01",
       "text": "Cortar la carne y la grasa en cubos y mantenerlas frías entre 0 y 4 °C."
     },
-    { "n": "02", "text": "Moler la carne y la grasa con un disco de 8 mm." },
+    {
+      "n": "02",
+      "text": "Moler la carne y la grasa con un disco de 8 mm."
+    },
     {
       "n": "03",
       "text": "Agregar todos los condimentos y mezclar hasta obtener una masa homogénea y pegajosa."
@@ -63,7 +124,10 @@
       "n": "05",
       "text": "Embutir la mezcla en tripa natural de cerdo, calibre 32–35 mm."
     },
-    { "n": "06", "text": "Formar las longanizas del tamaño deseado." },
+    {
+      "n": "06",
+      "text": "Formar las longanizas del tamaño deseado."
+    },
     {
       "n": "07",
       "text": "Refrigerar entre 12 y 24 horas antes de cocinar, para mejorar la textura y desarrollar el sabor."

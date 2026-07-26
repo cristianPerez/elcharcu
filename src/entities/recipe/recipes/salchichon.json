@@ -2,18 +2,36 @@
   "slug": "salchichon",
   "name": "Salchichón",
   "description": "El curado de pimienta, no de pimentón — cerdo, granos de pimienta y vino, madurado al aire.",
-  "image": "",
+  "image": "/recipes/salchichon.svg",
   "tags": ["España", "Curado"],
   "eyebrow": "Receta · Chorizos del mundo",
   "subtitle": "Pimienta en grano, sin pimentón.",
   "intro": "El salchichón es el hermano del chorizo que renuncia al pimentón: aquí el protagonista es la pimienta negra, en grano y molida, sobre una base de cerdo y tocino curada al aire. Su sabor es más sobrio y elegante, con el punto aromático del vino blanco y un toque de nuez moscada. Un curado clásico que se sirve en lonchas finas.",
   "stats": [
-    { "label": "Rendimiento base", "value": "1 kg" },
-    { "label": "Tipo", "value": "Curado en seco" },
-    { "label": "Nivel", "value": "Avanzado" },
-    { "label": "Tiempo de preparación", "value": "50 min" },
-    { "label": "Curado", "value": "5–8 semanas" },
-    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 40–45 mm" }
+    {
+      "label": "Rendimiento base",
+      "value": "1 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Curado en seco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Avanzado"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "50 min"
+    },
+    {
+      "label": "Curado",
+      "value": "5–8 semanas"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural de cerdo, cal. 40–45 mm"
+    }
   ],
   "details": [
     {
@@ -32,15 +50,51 @@
   "quote": "Quita el pimentón y todo cambia: el salchichón demuestra que un buen curado no necesita color para tener carácter.",
   "ingredientsNote": "La pimienta en grano es la seña del salchichón. La sal de cura es obligatoria para un curado seguro.",
   "ingredients": [
-    { "name": "Carne de cerdo (magro)", "amount": "800 g", "pct": "80%" },
-    { "name": "Tocino de cerdo", "amount": "200 g", "pct": "20%" },
-    { "name": "Sal", "amount": "26 g", "pct": "2.6%" },
-    { "name": "Pimienta negra en grano", "amount": "5 g", "pct": "0.5%" },
-    { "name": "Pimienta negra molida", "amount": "3 g", "pct": "0.3%" },
-    { "name": "Ajo fresco triturado", "amount": "8 g", "pct": "0.8%" },
-    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
-    { "name": "Nuez moscada", "amount": "1 g", "pct": "0.1%" },
-    { "name": "Vino blanco seco", "amount": "30 ml", "pct": "3%" }
+    {
+      "name": "Carne de cerdo (magro)",
+      "amount": "800 g",
+      "pct": "80%"
+    },
+    {
+      "name": "Tocino de cerdo",
+      "amount": "200 g",
+      "pct": "20%"
+    },
+    {
+      "name": "Sal",
+      "amount": "26 g",
+      "pct": "2.6%"
+    },
+    {
+      "name": "Pimienta negra en grano",
+      "amount": "5 g",
+      "pct": "0.5%"
+    },
+    {
+      "name": "Pimienta negra molida",
+      "amount": "3 g",
+      "pct": "0.3%"
+    },
+    {
+      "name": "Ajo fresco triturado",
+      "amount": "8 g",
+      "pct": "0.8%"
+    },
+    {
+      "name": "Sal de cura (nitrificante, #2)",
+      "amount": "2.5 g",
+      "pct": "0.25%"
+    },
+    {
+      "name": "Nuez moscada",
+      "amount": "1 g",
+      "pct": "0.1%"
+    },
+    {
+      "name": "Vino blanco seco",
+      "amount": "30 ml",
+      "pct": "3%"
+    }
   ],
   "proportionNote": "80% magro y 20% tocino da un curado firme y elegante. La pimienta, entre grano y molida, define su perfil; ajústala al gusto.",
   "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura al 0.25% es el estándar seguro.",
@@ -49,18 +103,30 @@
       "n": "01",
       "text": "Mezcla los secos: sal, sal de cura, pimienta molida, ajo y nuez moscada."
     },
-    { "n": "02", "text": "Corta magro y tocino en cubos, muy fríos (0–2 °C)." },
-    { "n": "03", "text": "Muele con disco de 8 mm." },
+    {
+      "n": "02",
+      "text": "Corta magro y tocino en cubos, muy fríos (0–2 °C)."
+    },
+    {
+      "n": "03",
+      "text": "Muele con disco de 8 mm."
+    },
     {
       "n": "04",
       "text": "Integra los secos, los granos de pimienta enteros y el vino; amasa hasta ligar."
     },
-    { "n": "05", "text": "Macera en frío 24 h." },
+    {
+      "n": "05",
+      "text": "Macera en frío 24 h."
+    },
     {
       "n": "06",
       "text": "Embute firme en tripa de 40–45 mm y pincha para sacar el aire."
     },
-    { "n": "07", "text": "Cura a 12–15 °C y 75–80% de humedad, 5–8 semanas." }
+    {
+      "n": "07",
+      "text": "Cura a 12–15 °C y 75–80% de humedad, 5–8 semanas."
+    }
   ],
   "tips": [
     {

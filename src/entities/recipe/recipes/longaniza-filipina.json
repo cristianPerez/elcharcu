@@ -2,18 +2,36 @@
   "slug": "longaniza-filipina",
   "name": "Longaniza Filipina (Hamonado)",
   "description": "Dulce y ajada — la longganisa filipina estilo hamonado, con azúcar, ajo y un toque de soya.",
-  "image": "",
+  "image": "/recipes/longaniza-filipina.svg",
   "tags": ["Filipinas", "Fresco", "Dulce"],
   "eyebrow": "Receta · Chorizos del mundo",
   "subtitle": "Dulce, brillante y muy ajada.",
   "intro": "La longganisa filipina, en su estilo hamonado, es dulce y pegajosa: el azúcar caramelizado al freírla es su sello. Muy ajada, con un toque de soya y vinagre de caña, se sirve al desayuno con arroz y huevo (el clásico “longsilog”). Es un embutido fresco, de color intenso, que equilibra dulce, salado y ácido en cada bocado.",
   "stats": [
-    { "label": "Rendimiento base", "value": "1 kg" },
-    { "label": "Tipo", "value": "Embutido fresco" },
-    { "label": "Nivel", "value": "Fácil–Intermedio" },
-    { "label": "Tiempo de preparación", "value": "45 min" },
-    { "label": "Tiempo de reposo", "value": "24–48 h" },
-    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 28–32 mm" }
+    {
+      "label": "Rendimiento base",
+      "value": "1 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Embutido fresco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Fácil–Intermedio"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "45 min"
+    },
+    {
+      "label": "Tiempo de reposo",
+      "value": "24–48 h"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural de cerdo, cal. 28–32 mm"
+    }
   ],
   "details": [
     {
@@ -32,15 +50,51 @@
   "quote": "La longganisa hamonado juega con el contraste: dulce que caramela, ajo que abunda y un ácido que lo despierta todo.",
   "ingredientsNote": "El azúcar es un ingrediente protagonista, no un detalle. Deja reposar 24–48 h para que el ajo y el dulce se integren.",
   "ingredients": [
-    { "name": "Carne de cerdo (paleta)", "amount": "750 g", "pct": "75%" },
-    { "name": "Grasa de cerdo", "amount": "250 g", "pct": "25%" },
-    { "name": "Azúcar morena", "amount": "80 g", "pct": "8%" },
-    { "name": "Ajo fresco triturado", "amount": "30 g", "pct": "3%" },
-    { "name": "Sal", "amount": "18 g", "pct": "1.8%" },
-    { "name": "Salsa de soya", "amount": "30 ml", "pct": "3%" },
-    { "name": "Vinagre de caña", "amount": "30 ml", "pct": "3%" },
-    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" },
-    { "name": "Pimentón dulce", "amount": "5 g", "pct": "0.5%" }
+    {
+      "name": "Carne de cerdo (paleta)",
+      "amount": "750 g",
+      "pct": "75%"
+    },
+    {
+      "name": "Grasa de cerdo",
+      "amount": "250 g",
+      "pct": "25%"
+    },
+    {
+      "name": "Azúcar morena",
+      "amount": "80 g",
+      "pct": "8%"
+    },
+    {
+      "name": "Ajo fresco triturado",
+      "amount": "30 g",
+      "pct": "3%"
+    },
+    {
+      "name": "Sal",
+      "amount": "18 g",
+      "pct": "1.8%"
+    },
+    {
+      "name": "Salsa de soya",
+      "amount": "30 ml",
+      "pct": "3%"
+    },
+    {
+      "name": "Vinagre de caña",
+      "amount": "30 ml",
+      "pct": "3%"
+    },
+    {
+      "name": "Pimienta negra",
+      "amount": "3 g",
+      "pct": "0.3%"
+    },
+    {
+      "name": "Pimentón dulce",
+      "amount": "5 g",
+      "pct": "0.5%"
+    }
   ],
   "proportionNote": "75% carne y 25% grasa da jugosidad; el azúcar al 8% es lo que define el estilo hamonado (dulce). Baja el azúcar si prefieres el estilo “de recado”, más ajado y salado.",
   "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Al ser fresca, se cocina y se consume pronto, sin sal de cura.",
@@ -49,18 +103,30 @@
       "n": "01",
       "text": "Mezcla los líquidos y el azúcar hasta disolver: soya, vinagre y azúcar."
     },
-    { "n": "02", "text": "Corta la carne y la grasa en cubos, muy fríos (0–4 °C)." },
-    { "n": "03", "text": "Muele con disco de 8 mm." },
+    {
+      "n": "02",
+      "text": "Corta la carne y la grasa en cubos, muy fríos (0–4 °C)."
+    },
+    {
+      "n": "03",
+      "text": "Muele con disco de 8 mm."
+    },
     {
       "n": "04",
       "text": "Integra el ajo, la sal, las especias y la mezcla dulce; amasa hasta ligar."
     },
-    { "n": "05", "text": "Deja reposar en frío 24–48 h para que el sabor penetre." },
+    {
+      "n": "05",
+      "text": "Deja reposar en frío 24–48 h para que el sabor penetre."
+    },
     {
       "n": "06",
       "text": "Embute en tripa fina (28–32 mm) o forma sin tripa (skinless)."
     },
-    { "n": "07", "text": "Refrigera; consúmela fresca en pocos días o congélala." }
+    {
+      "n": "07",
+      "text": "Refrigera; consúmela fresca en pocos días o congélala."
+    }
   ],
   "tips": [
     {

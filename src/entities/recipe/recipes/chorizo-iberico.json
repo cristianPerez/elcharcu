@@ -2,18 +2,36 @@
   "slug": "chorizo-iberico",
   "name": "Chorizo Ibérico Curado",
   "description": "El clásico español curado en seco — cerdo ibérico y pimentón de la Vera, ahumado y con carácter.",
-  "image": "",
+  "image": "/recipes/chorizo-iberico.svg",
   "tags": ["España", "Curado"],
   "eyebrow": "Receta · Chorizos del mundo",
   "subtitle": "Cerdo ibérico y pimentón de la Vera.",
   "intro": "El chorizo ibérico es el emblema de la charcutería española: carne de cerdo ibérico, pimentón de la Vera — dulce y ahumado — y un curado paciente que concentra el sabor. No se cocina: se cura al aire durante semanas hasta lograr su textura firme y su aroma inconfundible. Una receta que exige respeto por la temperatura, la humedad y la sal de cura.",
   "stats": [
-    { "label": "Rendimiento base", "value": "1 kg" },
-    { "label": "Tipo", "value": "Curado en seco" },
-    { "label": "Nivel", "value": "Avanzado" },
-    { "label": "Tiempo de preparación", "value": "50 min" },
-    { "label": "Curado", "value": "4–8 semanas" },
-    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 38–40 mm" }
+    {
+      "label": "Rendimiento base",
+      "value": "1 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Curado en seco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Avanzado"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "50 min"
+    },
+    {
+      "label": "Curado",
+      "value": "4–8 semanas"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural de cerdo, cal. 38–40 mm"
+    }
   ],
   "details": [
     {
@@ -32,15 +50,51 @@
   "quote": "El pimentón de la Vera es el alma del chorizo ibérico: ahumado sobre leña de encina, no admite sustitutos.",
   "ingredientsNote": "En un curado, la sal de cura no es opcional: inhibe las bacterias peligrosas durante las semanas al aire. Pésala con precisión — ni más, ni menos.",
   "ingredients": [
-    { "name": "Carne de cerdo ibérico (magro)", "amount": "800 g", "pct": "80%" },
-    { "name": "Tocino ibérico", "amount": "200 g", "pct": "20%" },
-    { "name": "Pimentón de la Vera dulce", "amount": "30 g", "pct": "3%" },
-    { "name": "Pimentón de la Vera picante", "amount": "10 g", "pct": "1%" },
-    { "name": "Sal", "amount": "26 g", "pct": "2.6%" },
-    { "name": "Ajo fresco triturado", "amount": "10 g", "pct": "1%" },
-    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
-    { "name": "Orégano seco", "amount": "1 g", "pct": "0.1%" },
-    { "name": "Vino blanco seco", "amount": "30 ml", "pct": "3%" }
+    {
+      "name": "Carne de cerdo ibérico (magro)",
+      "amount": "800 g",
+      "pct": "80%"
+    },
+    {
+      "name": "Tocino ibérico",
+      "amount": "200 g",
+      "pct": "20%"
+    },
+    {
+      "name": "Pimentón de la Vera dulce",
+      "amount": "30 g",
+      "pct": "3%"
+    },
+    {
+      "name": "Pimentón de la Vera picante",
+      "amount": "10 g",
+      "pct": "1%"
+    },
+    {
+      "name": "Sal",
+      "amount": "26 g",
+      "pct": "2.6%"
+    },
+    {
+      "name": "Ajo fresco triturado",
+      "amount": "10 g",
+      "pct": "1%"
+    },
+    {
+      "name": "Sal de cura (nitrificante, #2)",
+      "amount": "2.5 g",
+      "pct": "0.25%"
+    },
+    {
+      "name": "Orégano seco",
+      "amount": "1 g",
+      "pct": "0.1%"
+    },
+    {
+      "name": "Vino blanco seco",
+      "amount": "30 ml",
+      "pct": "3%"
+    }
   ],
   "proportionNote": "80% magro y 20% tocino es el equilibrio ibérico: suficiente grasa infiltrada para untuosidad sin que el curado quede blando. El pimentón ronda el 4% del total.",
   "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. La sal de cura al 0.25% (2.5 g/kg) es el estándar seguro; respétalo siempre.",
@@ -49,13 +103,22 @@
       "n": "01",
       "text": "Mezcla los secos: pimentones, sal, sal de cura, ajo y orégano."
     },
-    { "n": "02", "text": "Corta magro y tocino en cubos, muy fríos (0–2 °C)." },
-    { "n": "03", "text": "Muele con disco de 8 mm." },
+    {
+      "n": "02",
+      "text": "Corta magro y tocino en cubos, muy fríos (0–2 °C)."
+    },
+    {
+      "n": "03",
+      "text": "Muele con disco de 8 mm."
+    },
     {
       "n": "04",
       "text": "Integra los secos y el vino; amasa hasta una masa homogénea y roja."
     },
-    { "n": "05", "text": "Deja macerar en frío 12–24 h para que el pimentón tome." },
+    {
+      "n": "05",
+      "text": "Deja macerar en frío 12–24 h para que el pimentón tome."
+    },
     {
       "n": "06",
       "text": "Embute firme en tripa de 38–40 mm, evitando bolsas de aire, y pincha."
