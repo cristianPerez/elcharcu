@@ -1,0 +1,104 @@
+{
+  "slug": "longaniza-colombiana",
+  "name": "Longaniza Colombiana Artesanal",
+  "description": "Embutido fresco tradicional — carne y grasa en equilibrio, comino, paprika y orégano medidos.",
+  "image": "",
+  "eyebrow": "Receta · El camino del charcutero",
+  "subtitle": "Receta base para elaboración artesanal.",
+  "intro": "La longaniza colombiana es uno de los embutidos frescos más tradicionales del país. Su equilibrio entre carne, grasa y especias da como resultado un producto jugoso, con excelente textura y un sabor intenso que la convierte en una de las recetas esenciales de la charcutería artesanal. Cada lote cuenta la misma historia: técnica, paciencia y respeto por la materia prima.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Embutido fresco" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Tiempo de preparación", "value": "45 min" },
+    { "label": "Tiempo de reposo", "value": "12–24 h" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–35 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Pierna o paleta de cerdo, molida gruesa para conservar mordida."
+    },
+    {
+      "title": "Textura",
+      "description": "200 g de grasa firme por cada kilo aportan jugosidad sin perder firmeza al corte."
+    },
+    {
+      "title": "Sabor",
+      "description": "Comino, paprika y orégano, en dosis medidas, sin dominar la carne."
+    }
+  ],
+  "quote": "El Charcu no improvisa. Cada receta es una fórmula probada, pensada para repetirse con el mismo resultado — lote tras lote.",
+  "ingredientsNote": "Toda buena longaniza empieza en la báscula, no en la sartén: pesar cada ingrediente con precisión es lo que separa un embutido consistente de uno improvisado.",
+  "ingredients": [
+    { "name": "Carne de cerdo (pierna o paleta)", "amount": "800 g", "pct": "80%" },
+    { "name": "Grasa de cerdo (papada o tocino)", "amount": "200 g", "pct": "20%" },
+    { "name": "Sal", "amount": "18 g", "pct": "1.8%" },
+    { "name": "Ajo fresco triturado", "amount": "4 g", "pct": "0.4%" },
+    { "name": "Pimienta negra", "amount": "2.4 g", "pct": "0.24%" },
+    { "name": "Comino", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Paprika dulce o achiote", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Orégano seco", "amount": "1 g", "pct": "0.1%" },
+    { "name": "Azúcar", "amount": "1 g", "pct": "0.1%" },
+    { "name": "Agua helada", "amount": "20 ml", "pct": "2%" }
+  ],
+  "proportionNote": "80% carne y 20% grasa (800 g y 200 g por cada kilo) es el punto de partida clásico de la longaniza. Puedes mover ese balance uno o dos puntos porcentuales según la jugosidad que busques, sin salirte del rango artesanal.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Es la misma proporción sin importar si haces 1 kilo o 20: domínala y podrás escalar esta longaniza a cualquier cantidad sin perder el equilibrio.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Cortar la carne y la grasa en cubos y mantenerlas frías entre 0 y 4 °C."
+    },
+    { "n": "02", "text": "Moler la carne y la grasa con un disco de 8 mm." },
+    {
+      "n": "03",
+      "text": "Agregar todos los condimentos y mezclar hasta obtener una masa homogénea y pegajosa."
+    },
+    {
+      "n": "04",
+      "text": "Incorporar el agua helada poco a poco mientras se continúa mezclando."
+    },
+    {
+      "n": "05",
+      "text": "Embutir la mezcla en tripa natural de cerdo, calibre 32–35 mm."
+    },
+    { "n": "06", "text": "Formar las longanizas del tamaño deseado." },
+    {
+      "n": "07",
+      "text": "Refrigerar entre 12 y 24 horas antes de cocinar, para mejorar la textura y desarrollar el sabor."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Consejo técnico",
+      "description": "El frío es tu mejor aliado. Si la mezcla se calienta durante el embutido, la grasa se derrite prematuramente y la textura final pierde firmeza. Trabaja rápido y con la carne casi congelada."
+    },
+    {
+      "title": "Temperatura de mezcla",
+      "description": "Trabaja siempre entre 0 y 4 °C. Por encima de 7 °C la grasa empieza a untar la carne y la textura final se pierde."
+    },
+    {
+      "title": "Ritmo de embutido",
+      "description": "Alimenta la máquina despacio y sin forzar, dejando que la tripa se llene de forma pareja para evitar bolsas de aire."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Parrilla",
+      "description": "20–25 minutos a fuego medio, girando constantemente para lograr una cocción uniforme."
+    },
+    {
+      "title": "Sartén",
+      "description": "Cocinar a fuego medio-bajo hasta obtener un dorado uniforme por todos los lados."
+    }
+  ],
+  "recommendations": [
+    "Mantener siempre la carne fría durante todo el proceso.",
+    "Evitar sobremezclar para conservar una buena textura.",
+    "Utilizar carne fresca y grasa firme.",
+    "No pinchar las longanizas durante la cocción, para evitar la pérdida de jugos."
+  ],
+  "resultNote": "El resultado: un corte parejo, con la grasa bien distribuida y sin bolsas de aire, es la señal de un buen mezclado y un embutido sin prisas. Así se ve una longaniza hecha con respeto por el oficio.",
+  "finalQuote": "Una buena longaniza no depende de agregar más especias, sino de respetar el equilibrio entre carne, grasa, temperatura y técnica. La calidad de la materia prima y un buen mezclado marcarán la diferencia en el resultado final.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
