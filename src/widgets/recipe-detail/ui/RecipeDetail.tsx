@@ -10,6 +10,7 @@ import { RecipeIngredients } from './RecipeIngredients';
 import { RecipeOverview } from './RecipeOverview';
 import { RecipePreparation } from './RecipePreparation';
 import { RecipeQuote } from './RecipeQuote';
+import { RecipeViewTracker } from './RecipeViewTracker';
 
 interface RecipeDetailProps {
   readonly recipe: Recipe;
@@ -19,6 +20,7 @@ interface RecipeDetailProps {
 export function RecipeDetail({ recipe }: RecipeDetailProps): ReactNode {
   return (
     <article>
+      <RecipeViewTracker slug={recipe.slug} name={recipe.name} tags={recipe.tags} />
       <RecipeHero
         eyebrow={recipe.eyebrow}
         name={recipe.name}

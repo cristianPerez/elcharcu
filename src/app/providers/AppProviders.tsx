@@ -1,4 +1,8 @@
-import { type ReactNode } from 'react';
+'use client';
+
+import { type ReactNode, useEffect } from 'react';
+
+import { attachButtonClickTracking, initHotjar, initMixpanel } from '@/shared/lib';
 
 interface AppProvidersProps {
   readonly children: ReactNode;
@@ -6,8 +10,14 @@ interface AppProvidersProps {
 
 /**
  * Punto único para componer todos los providers globales de la app
- * (theme, query-client, i18n, store, etc.). Mantener este árbol plano.
+ * (analítica, theme, query-client, i18n, store, etc.). Mantener este árbol plano.
  */
 export function AppProviders({ children }: AppProvidersProps): ReactNode {
+  useEffect(() => {
+    initMixpanel();
+    initHotjar();
+    return attachButtonClickTracking();
+  }, []);
+
   return children;
 }

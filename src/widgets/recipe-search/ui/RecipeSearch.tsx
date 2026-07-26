@@ -1,11 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { RecipeCard, type RecipeSummary } from '@/entities/recipe';
 
-import { cn } from '@/shared/lib';
+import { cn, track } from '@/shared/lib';
 import { Container, Eyebrow, SearchBar } from '@/shared/ui';
 
 interface RecipeSearchProps {
@@ -42,6 +42,17 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
     });
   }, [query, activeTags, recipes]);
 
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (!trimmed) {
+      return undefined;
+    }
+    const timeout = setTimeout(() => {
+      track('recipe_search', { query: trimmed, results_count: filtered.length });
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [query, filtered]);
+
   return (
     <div>
       <section className="bg-grain bg-forest py-12 text-cream md:py-16">
@@ -69,6 +80,7 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
                   aria-pressed={isActive}
                   onClick={() => {
                     toggleTag(tag);
+                    track('recipe_tag_filter_toggle', { tag, active: !isActive });
                   }}
                   className={cn(
                     'rounded-full border px-3 py-1 text-[13px] transition-colors',
@@ -98,6 +110,13 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
                   key={recipe.slug}
                   href={`/recetas/${recipe.slug}`}
                   className="text-inherit no-underline"
+                  onClick={() => {
+                    track('recipe_card_click', {
+                      recipe_slug: recipe.slug,
+                      recipe_name: recipe.name,
+                      tags: recipe.tags.join(','),
+                    });
+                  }}
                 >
                   <RecipeCard recipe={recipe} />
                 </Link>

@@ -1,6 +1,8 @@
+'use client';
+
 import { type ReactNode } from 'react';
 
-import { cn } from '@/shared/lib';
+import { cn, track } from '@/shared/lib';
 
 type ButtonVariant = 'primary' | 'cream' | 'outline';
 
@@ -28,9 +30,14 @@ export function ButtonLink({
 }: ButtonLinkProps): ReactNode {
   const externalProps = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 
+  const handleClick = (): void => {
+    track('cta_click', { href, variant, external });
+  };
+
   return (
     <a
       href={href}
+      onClick={handleClick}
       {...externalProps}
       className={cn(
         'inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium tracking-wide transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2',
