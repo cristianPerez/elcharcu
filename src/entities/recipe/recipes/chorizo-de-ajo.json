@@ -1,0 +1,112 @@
+{
+  "slug": "chorizo-de-ajo",
+  "name": "Chorizo de Ajo Parrillero",
+  "description": "El chorizo parrillero por excelencia — ajo protagonista, vino tinto y un “nutri” que integra todos los secos.",
+  "image": "",
+  "tags": ["Colombia", "Fresco", "Parrillero"],
+  "eyebrow": "Receta · El camino del charcutero",
+  "subtitle": "El más popular de la parrilla, con ajo y vino.",
+  "intro": "El chorizo de ajo es el rey de la parrilla: jugoso, aromático y con el ajo como protagonista. El secreto está en el “nutri” — la mezcla previa de todos los ingredientes secos — que integra los sabores de forma uniforme antes de moler, y en un chorro de vino tinto que aporta profundidad. Una receta fresca, sin curado largo, pensada para asar el mismo día o al día siguiente.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "2 kg" },
+    { "label": "Tipo", "value": "Embutido fresco" },
+    { "label": "Nivel", "value": "Fácil–Intermedio" },
+    { "label": "Tiempo de preparación", "value": "45 min" },
+    { "label": "Tiempo de reposo", "value": "12–24 h" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–35 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Carne magra de cerdo (pierna o paleta), molida media para una buena mordida."
+    },
+    {
+      "title": "Textura",
+      "description": "500 g de grasa por cada 2 kg dan jugosidad sin que el chorizo se reseque en la parrilla."
+    },
+    {
+      "title": "Sabor",
+      "description": "Ajo al frente, redondeado con vino tinto, pimentón y un toque de comino."
+    }
+  ],
+  "quote": "El “nutri” no es un truco: es la forma de que cada bocado sepa igual, del primer chorizo al último de la tanda.",
+  "ingredientsNote": "Prepara primero el “nutri”: pesa y mezcla todos los ingredientes secos antes de tocar la carne. Así los sabores se reparten parejos y no quedan bolsas de sal o de ajo.",
+  "ingredients": [
+    {
+      "name": "Carne magra de cerdo (pierna o paleta)",
+      "amount": "1500 g",
+      "pct": "75%"
+    },
+    { "name": "Grasa de cerdo (papada o tocino)", "amount": "500 g", "pct": "25%" },
+    { "name": "Ajo fresco triturado", "amount": "30 g", "pct": "1.5%" },
+    { "name": "Sal", "amount": "40 g", "pct": "2%" },
+    { "name": "Pimentón dulce", "amount": "20 g", "pct": "1%" },
+    { "name": "Pimienta negra", "amount": "5 g", "pct": "0.25%" },
+    { "name": "Comino", "amount": "4 g", "pct": "0.2%" },
+    { "name": "Orégano seco", "amount": "2 g", "pct": "0.1%" },
+    { "name": "Azúcar", "amount": "6 g", "pct": "0.3%" },
+    { "name": "Vino tinto seco", "amount": "200 ml", "pct": "10%" }
+  ],
+  "proportionNote": "75% carne y 25% grasa (1,5 kg y 500 g) es el balance parrillero: suficiente grasa para que quede jugoso sobre las brasas sin volverse graso. El vino se calcula al 10% del total de carne y grasa.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Domínalo y podrás hacer 2 kg o 20 con el mismo sabor: solo multiplica.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Prepara el “nutri”: pesa y mezcla todos los secos (sal, ajo, pimentón, pimienta, comino, orégano y azúcar) hasta integrarlos."
+    },
+    {
+      "n": "02",
+      "text": "Corta la carne y la grasa en cubos y mantenlas muy frías, entre 0 y 4 °C."
+    },
+    {
+      "n": "03",
+      "text": "Mezcla los cubos con el “nutri” y deja reposar en frío de 30 a 60 minutos."
+    },
+    { "n": "04", "text": "Muele la carne y la grasa con un disco de 8 mm." },
+    {
+      "n": "05",
+      "text": "Incorpora el vino tinto frío poco a poco, amasando hasta una masa homogénea y pegajosa."
+    },
+    {
+      "n": "06",
+      "text": "Embute en tripa natural de cerdo, calibre 32–35 mm, y forma los chorizos."
+    },
+    {
+      "n": "07",
+      "text": "Refrigera entre 12 y 24 horas antes de asar, para asentar el sabor y la textura."
+    }
+  ],
+  "tips": [
+    {
+      "title": "El nutri primero",
+      "description": "Mezclar los secos antes de moler reparte la sal y el ajo de forma pareja; evita puntos salados o zonas sin sabor."
+    },
+    {
+      "title": "Todo en frío",
+      "description": "Trabaja siempre entre 0 y 4 °C. Si la grasa se calienta, se unta y el chorizo pierde jugosidad en la parrilla."
+    },
+    {
+      "title": "Vino al final",
+      "description": "Añade el vino poco a poco después de moler: liga la masa y aporta aroma sin ablandarla de más."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Parrilla",
+      "description": "20–25 minutos a fuego medio, girando con frecuencia para un dorado parejo sin reventar la tripa."
+    },
+    {
+      "title": "Sartén",
+      "description": "Fuego medio-bajo hasta dorar por todos los lados; deja reposar un par de minutos antes de cortar."
+    }
+  ],
+  "recommendations": [
+    "Mantén la carne fría durante todo el proceso.",
+    "No sobremezcles: para en cuanto la masa quede pegajosa.",
+    "Usa carne fresca y grasa firme, no grasa blanda.",
+    "No pinches los chorizos al asar, para no perder los jugos."
+  ],
+  "resultNote": "El resultado: un chorizo jugoso, con aroma de ajo y vino, que dora sin resecarse. Al corte, la grasa bien repartida y sin bolsas de aire delata el buen mezclado.",
+  "finalQuote": "Un buen chorizo de ajo no se mide por cuánto ajo lleva, sino por qué tan bien se integra con la carne, la grasa y el vino. El equilibrio manda.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

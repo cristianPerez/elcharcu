@@ -1,0 +1,89 @@
+{
+  "slug": "longaniza-dominicana",
+  "name": "Longaniza Dominicana",
+  "description": "Ajo, orégano y naranja agria — el embutido fresco dominicano, ácido y muy aromático.",
+  "image": "",
+  "tags": ["R. Dominicana", "Fresco", "Picante"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Ácida, ajada y con mucho orégano.",
+  "intro": "La longaniza dominicana es intensa: mucho ajo, orégano abundante y el toque ácido de la naranja agria (agrio) que la define. Es un embutido fresco, jugoso, que se fríe hasta dorar y se sirve con tostones, yuca o en el desayuno. Su perfil herbal y cítrico la separa de sus primos españoles; aquí el orégano y el agrio mandan.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Embutido fresco" },
+    { "label": "Nivel", "value": "Fácil–Intermedio" },
+    { "label": "Tiempo de preparación", "value": "45 min" },
+    { "label": "Tiempo de reposo", "value": "24 h" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 30–34 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cerdo con grasa; el agrio y el ajo maceran la carne antes de embutir."
+    },
+    {
+      "title": "Textura",
+      "description": "Jugosa; el ácido ayuda a integrar el sabor y a conservarla fresca."
+    },
+    {
+      "title": "Sabor",
+      "description": "Ajo y orégano intensos, con la acidez de la naranja agria de fondo."
+    }
+  ],
+  "quote": "El agrio de naranja es a la longaniza dominicana lo que el pimentón al chorizo español: sin él, no es ella.",
+  "ingredientsNote": "El orégano y el ajo van en cantidad generosa. Deja macerar 24 h para que el agrio penetre la carne.",
+  "ingredients": [
+    { "name": "Carne de cerdo (paleta)", "amount": "750 g", "pct": "75%" },
+    { "name": "Grasa de cerdo", "amount": "250 g", "pct": "25%" },
+    { "name": "Ajo fresco triturado", "amount": "30 g", "pct": "3%" },
+    { "name": "Jugo de naranja agria (agrio)", "amount": "50 ml", "pct": "5%" },
+    { "name": "Orégano seco", "amount": "5 g", "pct": "0.5%" },
+    { "name": "Sal", "amount": "20 g", "pct": "2%" },
+    { "name": "Pimentón dulce o achiote", "amount": "5 g", "pct": "0.5%" },
+    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Ají picante (opcional)", "amount": "3 g", "pct": "0.3%" }
+  ],
+  "proportionNote": "75% carne y 25% grasa da jugosidad para freír. El agrio al 5% aporta la acidez característica; el orégano, en cantidad generosa, define el aroma.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Al ser fresca, se cocina y se consume pronto, sin sal de cura.",
+  "steps": [
+    { "n": "01", "text": "Mezcla el ajo, el orégano, el agrio, la sal y las especias." },
+    { "n": "02", "text": "Corta la carne y la grasa en cubos, muy fríos (0–4 °C)." },
+    { "n": "03", "text": "Muele con disco de 8 mm." },
+    { "n": "04", "text": "Integra el adobo con la carne y amasa hasta ligar." },
+    { "n": "05", "text": "Deja macerar en frío 24 h." },
+    { "n": "06", "text": "Embute en tripa natural (30–34 mm) y forma la longaniza." },
+    { "n": "07", "text": "Refrigera; consúmela fresca en pocos días o congélala." }
+  ],
+  "tips": [
+    {
+      "title": "Naranja agria",
+      "description": "Si no consigues agrio, mezcla jugo de naranja dulce con lima para imitar la acidez."
+    },
+    {
+      "title": "Orégano generoso",
+      "description": "El orégano dominicano es protagonista; úsalo en cantidad, sin miedo."
+    },
+    {
+      "title": "Maceración",
+      "description": "Las 24 h con el agrio integran el sabor y realzan el aroma."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Frita",
+      "description": "A fuego medio con un poco de agua; al evaporarse, se dora en su grasa."
+    },
+    {
+      "title": "Con tostones",
+      "description": "Clásica con tostones, yuca o casabe; también al desayuno."
+    }
+  ],
+  "recommendations": [
+    "Usa naranja agria o imítala con naranja y lima.",
+    "Sé generoso con el orégano y el ajo.",
+    "Macera 24 h antes de embutir.",
+    "Consúmela fresca o congélala."
+  ],
+  "resultNote": "El resultado: una longaniza jugosa, ácida y muy aromática, que dora en su grasa. El orégano y el agrio, inconfundibles en cada bocado.",
+  "finalQuote": "La longaniza dominicana enseña que el ácido también condimenta: el agrio de naranja transforma la misma carne en algo único.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

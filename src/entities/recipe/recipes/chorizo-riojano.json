@@ -1,0 +1,94 @@
+{
+  "slug": "chorizo-riojano",
+  "name": "Chorizo Riojano",
+  "description": "Curado firme y especiado — solo cerdo, tocino, pimentón extra, ajo y sal. Pureza con carácter.",
+  "image": "",
+  "tags": ["España", "Curado", "Picante"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Pimentón extra, forma de herradura, sabor intenso.",
+  "intro": "El chorizo riojano se distingue por su pureza: carne y tocino de calidad, pimentón extra, ajo y sal — nada más. Sin aditivos que enmascaren. Su consistencia es firme y compacta, con el pimentón dominando el aroma y un punto picante que lo hace inconfundible. Se cura en forma de herradura durante semanas hasta lograr su textura característica.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Curado en seco" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Tiempo de preparación", "value": "50 min" },
+    { "label": "Curado", "value": "4–8 semanas" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 34–40 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Carne y tocino de cerdo de buena calidad, molido medio-grueso."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme y compacta: se distingue bien la carne de la grasa al corte."
+    },
+    {
+      "title": "Sabor",
+      "description": "Pimentón extra al frente, ajo de fondo y un punto picante persistente."
+    }
+  ],
+  "quote": "El riojano no esconde nada: cuatro ingredientes y tiempo. Cuando la receta es corta, cada gramo cuenta.",
+  "ingredientsNote": "La receta es mínima, así que la precisión lo es todo. La sal de cura es obligatoria para un curado seguro.",
+  "ingredients": [
+    { "name": "Carne de cerdo (magro)", "amount": "750 g", "pct": "75%" },
+    { "name": "Tocino de cerdo", "amount": "250 g", "pct": "25%" },
+    { "name": "Pimentón extra dulce", "amount": "30 g", "pct": "3%" },
+    { "name": "Pimentón picante", "amount": "10 g", "pct": "1%" },
+    { "name": "Sal", "amount": "26 g", "pct": "2.6%" },
+    { "name": "Ajo fresco triturado", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Agua helada", "amount": "20 ml", "pct": "2%" }
+  ],
+  "proportionNote": "75% carne y 25% tocino da la firmeza compacta del riojano. El pimentón al 4% es lo que define su color y aroma; ajústalo entre dulce y picante a tu gusto.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura al 0.25% es el estándar seguro para curados.",
+  "steps": [
+    { "n": "01", "text": "Mezcla los secos: pimentones, sal, sal de cura y ajo." },
+    { "n": "02", "text": "Corta carne y tocino en cubos, muy fríos (0–2 °C)." },
+    { "n": "03", "text": "Muele con disco de 8–10 mm." },
+    {
+      "n": "04",
+      "text": "Integra los secos con el agua helada; amasa hasta masa homogénea."
+    },
+    { "n": "05", "text": "Macera en frío 12–24 h para asentar el pimentón." },
+    {
+      "n": "06",
+      "text": "Embute firme, forma la herradura y pincha para sacar el aire."
+    },
+    { "n": "07", "text": "Cura a 12–15 °C y 75–80% de humedad, 4–8 semanas." }
+  ],
+  "tips": [
+    {
+      "title": "Pimentón de calidad",
+      "description": "Al ser casi el único condimento, un buen pimentón extra define el resultado. No escatimes aquí."
+    },
+    {
+      "title": "Curado controlado",
+      "description": "Mantén 12–15 °C y 75–80% de humedad. Un curado sin control es un riesgo sanitario."
+    },
+    {
+      "title": "Embutido firme",
+      "description": "Compacta bien la masa y pincha la tripa: las bolsas de aire arruinan el curado."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En lonchas",
+      "description": "Curado, en lonchas sobre pan; su punto picante brilla a temperatura ambiente."
+    },
+    {
+      "title": "Para guisar",
+      "description": "En rodajas, da color y fuerza a lentejas, patatas y arroces."
+    }
+  ],
+  "recommendations": [
+    "Usa un pimentón extra de buena calidad.",
+    "Nunca omitas la sal de cura.",
+    "Controla temperatura y humedad durante el curado.",
+    "Pincha la tripa para evitar bolsas de aire."
+  ],
+  "resultNote": "El resultado: un chorizo firme, rojo intenso y de aroma dominado por el pimentón, con un picante que persiste. La prueba de que menos ingredientes exigen más técnica.",
+  "finalQuote": "En el riojano no hay dónde esconderse: cuatro ingredientes y el tiempo. Por eso separa a los charcuteros de verdad.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

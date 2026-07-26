@@ -5,25 +5,42 @@ import { type ReactNode, useMemo, useState } from 'react';
 
 import { RecipeCard, type RecipeSummary } from '@/entities/recipe';
 
+import { cn } from '@/shared/lib';
 import { Container, Eyebrow, SearchBar } from '@/shared/ui';
 
 interface RecipeSearchProps {
   readonly recipes: readonly RecipeSummary[];
 }
 
-/** Buscador de recetas: SearchBar + grid de RecipeCard filtrado en cliente. */
+/** Buscador de recetas: SearchBar + filtro por etiquetas + grid de RecipeCard. */
 export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
   const [query, setQuery] = useState('');
+  const [activeTags, setActiveTags] = useState<readonly string[]>([]);
+
+  const allTags = useMemo(
+    () =>
+      [...new Set(recipes.flatMap((recipe) => recipe.tags))].sort((a, b) =>
+        a.localeCompare(b, 'es'),
+      ),
+    [recipes],
+  );
+
+  const toggleTag = (tag: string): void => {
+    setActiveTags((current) =>
+      current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag],
+    );
+  };
 
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    if (!needle) {
-      return recipes;
-    }
-    return recipes.filter((recipe) =>
-      `${recipe.name} ${recipe.description}`.toLowerCase().includes(needle),
-    );
-  }, [query, recipes]);
+    return recipes.filter((recipe) => {
+      const matchesText =
+        !needle || `${recipe.name} ${recipe.description}`.toLowerCase().includes(needle);
+      const matchesTags =
+        activeTags.length === 0 || activeTags.some((tag) => recipe.tags.includes(tag));
+      return matchesText && matchesTags;
+    });
+  }, [query, activeTags, recipes]);
 
   return (
     <div>
@@ -42,6 +59,29 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
       <section className="bg-cream pt-8 md:pt-10">
         <Container>
           <SearchBar value={query} onChange={setQuery} className="max-w-md" />
+          <div className="mt-4 flex flex-wrap gap-2">
+            {allTags.map((tag) => {
+              const isActive = activeTags.includes(tag);
+              return (
+                <button
+                  key={tag}
+                  type="button"
+                  aria-pressed={isActive}
+                  onClick={() => {
+                    toggleTag(tag);
+                  }}
+                  className={cn(
+                    'rounded-full border px-3 py-1 text-[13px] transition-colors',
+                    isActive
+                      ? 'border-transparent bg-terracota text-cream'
+                      : 'border-cocoa/15 text-cocoa/70 hover:border-cocoa/30',
+                  )}
+                >
+                  {tag}
+                </button>
+              );
+            })}
+          </div>
         </Container>
       </section>
 
@@ -49,7 +89,7 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
         <Container>
           {filtered.length === 0 ? (
             <p className="text-sm text-cocoa/50">
-              No encontramos recetas para “{query}”.
+              No encontramos recetas con esos filtros.
             </p>
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3">

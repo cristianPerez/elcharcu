@@ -39,6 +39,18 @@ export function RecipeCard({ recipe, className }: RecipeCardProps): ReactNode {
         <p className="mt-2 flex-1 text-sm leading-relaxed text-cocoa/70">
           {recipe.description}
         </p>
+        {recipe.tags.length > 0 ? (
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {recipe.tags.slice(0, 3).map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-cocoa/10 bg-cream px-2.5 py-0.5 text-[11px] text-cocoa/60"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        ) : null}
       </div>
     </article>
   );

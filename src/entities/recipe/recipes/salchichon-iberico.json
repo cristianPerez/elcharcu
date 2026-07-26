@@ -1,0 +1,91 @@
+{
+  "slug": "salchichon-iberico",
+  "name": "Salchichón Ibérico",
+  "description": "Salchichón de cerdo ibérico — más veteado y untuoso, con pimienta en grano y curado largo.",
+  "image": "",
+  "tags": ["España", "Curado"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "La versión ibérica: más grasa infiltrada, más sabor.",
+  "intro": "El salchichón ibérico eleva el clásico con carne de cerdo ibérico: su grasa infiltrada aporta untuosidad y un aroma más profundo. Como todo salchichón, prescinde del pimentón y confía en la pimienta negra. El curado es más largo para que la grasa desarrolle sus matices. Un producto de tabla, para lonchear fino y disfrutar sin prisa.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Curado en seco" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Tiempo de preparación", "value": "50 min" },
+    { "label": "Curado", "value": "8–12 semanas" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 45–50 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cerdo ibérico, con grasa infiltrada que da untuosidad al curado."
+    },
+    {
+      "title": "Textura",
+      "description": "Untuosa y firme; la grasa veteada se funde en boca."
+    },
+    {
+      "title": "Sabor",
+      "description": "Pimienta al frente sobre un fondo profundo de cerdo ibérico curado."
+    }
+  ],
+  "quote": "La grasa del ibérico no es un defecto que ocultar: es el ingrediente que define el sabor. Por eso el salchichón ibérico se curó más tiempo.",
+  "ingredientsNote": "El curado más largo exige aún más rigor con la sal de cura y las condiciones. Pésalo todo con precisión.",
+  "ingredients": [
+    { "name": "Carne de cerdo ibérico (magro)", "amount": "800 g", "pct": "80%" },
+    { "name": "Tocino ibérico", "amount": "200 g", "pct": "20%" },
+    { "name": "Sal", "amount": "26 g", "pct": "2.6%" },
+    { "name": "Pimienta negra en grano", "amount": "6 g", "pct": "0.6%" },
+    { "name": "Pimienta negra molida", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Ajo fresco triturado", "amount": "8 g", "pct": "0.8%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Vino blanco seco", "amount": "30 ml", "pct": "3%" }
+  ],
+  "proportionNote": "80% magro ibérico y 20% tocino; la grasa infiltrada del propio magro añade untuosidad extra. El curado largo concentra ese sabor.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura al 0.25% es innegociable en curados largos.",
+  "steps": [
+    { "n": "01", "text": "Mezcla los secos: sal, sal de cura, pimienta molida y ajo." },
+    { "n": "02", "text": "Corta magro y tocino ibérico en cubos, muy fríos (0–2 °C)." },
+    { "n": "03", "text": "Muele con disco de 8 mm." },
+    {
+      "n": "04",
+      "text": "Integra los secos, los granos de pimienta y el vino; amasa hasta ligar."
+    },
+    { "n": "05", "text": "Macera en frío 24 h." },
+    { "n": "06", "text": "Embute firme en tripa de 45–50 mm y pincha." },
+    { "n": "07", "text": "Cura a 12–15 °C y 75–80% de humedad, 8–12 semanas." }
+  ],
+  "tips": [
+    {
+      "title": "Grasa infiltrada",
+      "description": "El ibérico da untuosidad natural. No compenses con más tocino: deja que la carne hable."
+    },
+    {
+      "title": "Curado paciente",
+      "description": "El calibre mayor y la grasa piden más semanas. Apúrate y quedará ácido o blando."
+    },
+    {
+      "title": "Sal de cura",
+      "description": "En curados largos es imprescindible para un producto seguro."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En lonchas",
+      "description": "Curado, en lonchas muy finas a temperatura ambiente para apreciar la untuosidad."
+    },
+    {
+      "title": "En tabla",
+      "description": "Protagonista de tabla ibérica, con pan y un tinto con cuerpo."
+    }
+  ],
+  "recommendations": [
+    "Usa cerdo ibérico de buena grasa infiltrada.",
+    "Cura más tiempo por el calibre mayor.",
+    "No omitas la sal de cura.",
+    "Controla temperatura y humedad durante el curado."
+  ],
+  "resultNote": "El resultado: un salchichón untuoso y aromático, con veteado de grasa que se funde en boca. La versión más golosa del clásico de pimienta.",
+  "finalQuote": "El salchichón ibérico premia la paciencia: más semanas, más grasa infiltrada, más sabor. El tiempo, como siempre, hace el trabajo.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

@@ -1,0 +1,90 @@
+{
+  "slug": "sobrasada",
+  "name": "Sobrasada de Mallorca",
+  "description": "El curado untable — carne y grasa molidas muy fino, mucho pimentón, madurado hasta poder untarse.",
+  "image": "",
+  "tags": ["España", "Curado", "Untable"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "El único chorizo que se unta.",
+  "intro": "La sobrasada rompe las reglas: en lugar de cortarse, se unta. Carne y grasa de cerdo se muelen muy fino, se sazonan con abundante pimentón y se embuten para curarse lento hasta lograr una pasta blanda y anaranjada. Originaria de Mallorca, es única entre los embutidos curados por su textura cremosa. El pimentón — dulce, con un punto picante — es su alma.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Curado untable" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Tiempo de preparación", "value": "50 min" },
+    { "label": "Curado", "value": "4–8 semanas" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 40–45 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cerdo y bastante grasa, molidos muy fino para una textura de pasta."
+    },
+    {
+      "title": "Textura",
+      "description": "Blanda y untable; la alta grasa y el molido fino la hacen cremosa."
+    },
+    {
+      "title": "Sabor",
+      "description": "Pimentón dominante — dulce y algo picante — con fondo de cerdo curado."
+    }
+  ],
+  "quote": "La sobrasada demuestra que el curado no siempre busca firmeza: aquí el objetivo es una pasta cremosa que se unta.",
+  "ingredientsNote": "Muele muy fino y usa bastante grasa: sin ella, la sobrasada no queda untable. La sal de cura es obligatoria.",
+  "ingredients": [
+    { "name": "Carne de cerdo (magro)", "amount": "700 g", "pct": "70%" },
+    { "name": "Tocino de cerdo", "amount": "300 g", "pct": "30%" },
+    { "name": "Pimentón dulce", "amount": "40 g", "pct": "4%" },
+    { "name": "Pimentón picante", "amount": "10 g", "pct": "1%" },
+    { "name": "Sal", "amount": "24 g", "pct": "2.4%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" }
+  ],
+  "proportionNote": "70% magro y 30% tocino: la alta proporción de grasa es lo que hace posible la textura untable. Bajarla mucho arruina el resultado.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura al 0.25% mantiene seguro el curado lento.",
+  "steps": [
+    { "n": "01", "text": "Mezcla los secos: pimentones, sal, sal de cura y pimienta." },
+    { "n": "02", "text": "Corta magro y tocino en cubos, muy fríos (0–2 °C)." },
+    { "n": "03", "text": "Muele fino con disco de 4–6 mm; repite si es necesario." },
+    { "n": "04", "text": "Integra los secos y amasa hasta una pasta homogénea y roja." },
+    { "n": "05", "text": "Embute en tripa de 40–45 mm sin bolsas de aire." },
+    { "n": "06", "text": "Cura a 12–15 °C y 75–80% de humedad, sin secar en exceso." },
+    {
+      "n": "07",
+      "text": "Retira cuando esté firme por fuera y untable por dentro, 4–8 semanas."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Molido muy fino",
+      "description": "El disco de 4–6 mm (o doble molido) da la textura cremosa característica."
+    },
+    {
+      "title": "No secar de más",
+      "description": "A diferencia de un chorizo, la sobrasada no debe endurecer: cuida la humedad."
+    },
+    {
+      "title": "Pimentón protagonista",
+      "description": "Es el ingrediente estrella, en cantidad generosa. Usa uno de calidad."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Para untar",
+      "description": "En pan tostado, sola o con miel; también sobre pizza o en salsas."
+    },
+    {
+      "title": "En cocina",
+      "description": "Se deshace en guisos y sofritos, aportando color y grasa aromática."
+    }
+  ],
+  "recommendations": [
+    "Usa suficiente grasa: es la clave de lo untable.",
+    "Muele muy fino, incluso dos veces.",
+    "No dejes que seque en exceso durante el curado.",
+    "No omitas la sal de cura."
+  ],
+  "resultNote": "El resultado: una pasta anaranjada, cremosa y aromática que se unta con el cuchillo. Curado, sí, pero con un objetivo opuesto a la firmeza.",
+  "finalQuote": "La sobrasada le enseña al charcutero que las reglas se doblan con criterio: aquí la grasa no se controla, se celebra.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

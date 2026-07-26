@@ -1,0 +1,99 @@
+{
+  "slug": "sujuk",
+  "name": "Sujuk (Sucuk)",
+  "description": "El curado seco de res — comino, ajo y pimentón, prensado plano y madurado. Especiado e intenso.",
+  "image": "",
+  "tags": ["Turquía", "Curado", "Picante"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Res especiada, prensada y curada.",
+  "intro": "El sujuk (o sucuk) es el embutido curado seco de Turquía y Oriente Medio: de res, muy especiado, con comino, ajo y pimentón, prensado en forma plana durante el curado. Su perfil es intenso y aromático, con un punto picante. Se cura al aire hasta secar, y se corta en rodajas finas para freír al desayuno o comer en tabla. Un chorizo de res, denso y contundente.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Curado en seco" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Tiempo de preparación", "value": "50 min" },
+    { "label": "Curado", "value": "3–5 semanas" },
+    { "label": "Tipo de tripa", "value": "Natural de res, cal. 38–42 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Res con algo de grasa; el prensado plano es parte de su identidad."
+    },
+    {
+      "title": "Textura",
+      "description": "Densa y firme; se aplana con el curado y se corta en rodajas finas."
+    },
+    {
+      "title": "Sabor",
+      "description": "Comino y ajo dominantes, con pimentón, sumac y un fondo picante."
+    }
+  ],
+  "quote": "El sujuk se cura prensado y plano: la forma no es capricho, es parte de cómo seca y concentra su sabor.",
+  "ingredientsNote": "La mezcla de especias es abundante y define el sujuk. La sal de cura es obligatoria para un curado seguro de res.",
+  "ingredients": [
+    { "name": "Carne de res (magra)", "amount": "750 g", "pct": "75%" },
+    { "name": "Grasa de res o cordero", "amount": "250 g", "pct": "25%" },
+    { "name": "Ajo fresco triturado", "amount": "20 g", "pct": "2%" },
+    { "name": "Comino molido", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Pimentón picante", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Sal", "amount": "26 g", "pct": "2.6%" },
+    { "name": "Sumac", "amount": "5 g", "pct": "0.5%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Pimienta negra", "amount": "5 g", "pct": "0.5%" },
+    { "name": "Fenogreco molido (opcional)", "amount": "3 g", "pct": "0.3%" }
+  ],
+  "proportionNote": "75% carne y 25% grasa da un sujuk firme pero no seco. Las especias van en cantidad generosa: son la esencia de este embutido.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. La sal de cura al 0.25% es imprescindible en el curado de res.",
+  "steps": [
+    { "n": "01", "text": "Mezcla todas las especias con la sal y la sal de cura." },
+    { "n": "02", "text": "Corta la carne y la grasa en cubos, muy fríos (0–2 °C)." },
+    { "n": "03", "text": "Muele con disco de 6 mm." },
+    {
+      "n": "04",
+      "text": "Integra las especias y el ajo; amasa bien hasta una masa densa."
+    },
+    { "n": "05", "text": "Macera en frío 24 h para que las especias tomen." },
+    {
+      "n": "06",
+      "text": "Embute firme en tripa de res (38–42 mm) y ata en aros; prensa ligeramente."
+    },
+    {
+      "n": "07",
+      "text": "Cura a 12–15 °C y 75–80% de humedad, 3–5 semanas, prensando para aplanar."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Especias generosas",
+      "description": "El sujuk vive de sus especias. Comino, ajo y pimentón van en cantidad, sin timidez."
+    },
+    {
+      "title": "Prensado plano",
+      "description": "Prensa ligeramente durante el curado para lograr su forma aplanada característica."
+    },
+    {
+      "title": "Curado controlado",
+      "description": "12–15 °C y 75–80% de humedad; la sal de cura es obligatoria en el curado de res."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Frito",
+      "description": "En rodajas a la sartén, hasta dorar; clásico con huevos al desayuno (sucuklu yumurta)."
+    },
+    {
+      "title": "En tabla",
+      "description": "Curado, en rodajas finas, como parte de un meze."
+    }
+  ],
+  "recommendations": [
+    "Sé generoso con las especias.",
+    "Prensa ligeramente durante el curado para aplanarlo.",
+    "No omitas la sal de cura en el curado de res.",
+    "Controla temperatura y humedad."
+  ],
+  "resultNote": "El resultado: un sujuk plano, denso y muy especiado, que al freírse suelta su grasa aromática. Res curada con el recetario de Oriente Medio.",
+  "finalQuote": "El sujuk demuestra que el chorizo es una idea universal: cambia la carne por res, las especias por comino y sumac, y el oficio sigue siendo el mismo.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

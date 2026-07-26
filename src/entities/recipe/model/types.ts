@@ -24,6 +24,7 @@ export interface Recipe {
   readonly name: string;
   readonly description: string;
   readonly image: string;
+  readonly tags: readonly string[];
   readonly eyebrow: string;
   readonly subtitle: string;
   readonly intro: string;
@@ -44,4 +45,7 @@ export interface Recipe {
 }
 
 /** Subconjunto que necesita la tarjeta de listado (Interface Segregation). */
-export type RecipeSummary = Pick<Recipe, 'slug' | 'name' | 'description' | 'image'>;
+export type RecipeSummary = Pick<
+  Recipe,
+  'slug' | 'name' | 'description' | 'image' | 'tags'
+>;

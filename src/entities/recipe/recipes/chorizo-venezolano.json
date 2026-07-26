@@ -1,0 +1,96 @@
+{
+  "slug": "chorizo-venezolano",
+  "name": "Chorizo Venezolano",
+  "description": "Fresco y aromático — ajo, ají dulce, cilantro y un toque de comino. El chorizo de la parrilla llanera.",
+  "image": "",
+  "tags": ["Venezuela", "Fresco", "Parrillero"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Ají dulce, cilantro y parrilla.",
+  "intro": "El chorizo venezolano es fresco, jugoso y muy aromático. Su firma es el ají dulce — sin picante — junto al cilantro y el ajo, que le dan un perfil herbal inconfundible. Es un chorizo de parrilla y de sartén, presente en toda parrilla llanera y en el desayuno criollo. Un toque de comino y pimentón redondean el sabor.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Embutido fresco" },
+    { "label": "Nivel", "value": "Fácil–Intermedio" },
+    { "label": "Tiempo de preparación", "value": "45 min" },
+    { "label": "Tiempo de reposo", "value": "12–24 h" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–35 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Carne de cerdo, molida media, con verduras aromáticas picadas fino."
+    },
+    {
+      "title": "Textura",
+      "description": "Jugosa; el ají dulce y el cilantro aportan frescura sin exceso de humedad."
+    },
+    {
+      "title": "Sabor",
+      "description": "Ajo y ají dulce al frente, cilantro herbal y un fondo de comino."
+    }
+  ],
+  "quote": "El ají dulce es el corazón del sabor venezolano: aroma sin picor, imposible de sustituir por pimentón.",
+  "ingredientsNote": "Pica el ají dulce y el cilantro muy fino, o licúalos con poca agua. Escurre para no aguar la masa.",
+  "ingredients": [
+    { "name": "Carne de cerdo (pierna o paleta)", "amount": "750 g", "pct": "75%" },
+    { "name": "Grasa de cerdo", "amount": "250 g", "pct": "25%" },
+    { "name": "Ají dulce", "amount": "60 g", "pct": "6%" },
+    { "name": "Ajo fresco triturado", "amount": "12 g", "pct": "1.2%" },
+    { "name": "Cilantro fresco picado", "amount": "20 g", "pct": "2%" },
+    { "name": "Sal", "amount": "20 g", "pct": "2%" },
+    { "name": "Pimentón dulce", "amount": "10 g", "pct": "1%" },
+    { "name": "Comino", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Vinagre o vino", "amount": "30 ml", "pct": "3%" }
+  ],
+  "proportionNote": "75% carne y 25% grasa da la jugosidad parrillera. El ají dulce y el cilantro suman aroma; ajústalos según cuánto verde busques.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Al ser fresco, no lleva sal de cura: se cocina y se consume pronto.",
+  "steps": [
+    { "n": "01", "text": "Pica fino el ají dulce y el cilantro; escúrrelos." },
+    { "n": "02", "text": "Mezcla los secos: sal, pimentón, comino y pimienta." },
+    { "n": "03", "text": "Corta la carne y la grasa en cubos, muy fríos (0–4 °C)." },
+    { "n": "04", "text": "Muele con disco de 8 mm." },
+    {
+      "n": "05",
+      "text": "Integra ají, cilantro, ajo, secos y vinagre; amasa hasta ligar."
+    },
+    {
+      "n": "06",
+      "text": "Embute en tripa natural de cerdo (32–35 mm) y forma los chorizos."
+    },
+    { "n": "07", "text": "Refrigera 12–24 h antes de asar." }
+  ],
+  "tips": [
+    {
+      "title": "Ají dulce, no picante",
+      "description": "El perfil venezolano es aromático, no picante. El ají dulce da olor y sabor sin calor."
+    },
+    {
+      "title": "Verduras escurridas",
+      "description": "Escurre bien el ají y el cilantro; el exceso de agua impide que la masa ligue."
+    },
+    {
+      "title": "Todo frío",
+      "description": "Mantén 0–4 °C durante el proceso para conservar la textura de la grasa."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Parrilla",
+      "description": "20–25 minutos a fuego medio, girando; jugoso y aromático para la parrilla."
+    },
+    {
+      "title": "Sartén",
+      "description": "Fuego medio hasta dorar; clásico del desayuno con arepa y huevos."
+    }
+  ],
+  "recommendations": [
+    "Usa ají dulce, no picante, para el perfil correcto.",
+    "Escurre las verduras antes de mezclar.",
+    "Mantén la carne fría durante todo el proceso.",
+    "Consúmelo fresco o congélalo pronto."
+  ],
+  "resultNote": "El resultado: un chorizo jugoso y muy aromático, con el verde del cilantro y el ají a la vista. Fresco, para la parrilla o el sartén del desayuno.",
+  "finalQuote": "El chorizo venezolano se reconoce por el aroma antes que por el sabor: ají dulce y cilantro, la frescura del llano en cada bocado.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

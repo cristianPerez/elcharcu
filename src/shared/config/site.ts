@@ -24,6 +24,7 @@ export const site = {
   slogan: 'Sin aditivos · Sin atajos',
   location: 'Manizales, Colombia',
   since: 2026,
+  homeUrl: 'https://elcharcu.co',
   whatsappUrl: `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`,
   whatsappPhone: '+57 300 352 6578',
   instagramUrl: 'https://instagram.com/elcharcu_artesanal',

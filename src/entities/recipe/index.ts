@@ -1,4 +1,9 @@
-export { getRecipes, getRecipeBySlug, getRecipeSummaries } from './model/recipes';
+export {
+  getRecipes,
+  getRecipeBySlug,
+  getRecipeSummaries,
+  getAllTags,
+} from './model/recipes';
 export { RecipeCard } from './ui/RecipeCard';
 export type {
   Recipe,

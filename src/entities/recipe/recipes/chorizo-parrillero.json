@@ -1,0 +1,99 @@
+{
+  "slug": "chorizo-parrillero",
+  "name": "Chorizo Parrillero Clásico",
+  "description": "El comodín de la parrilla — cerdo jugoso, ajo, comino y cebolla, equilibrado para agradar a todos.",
+  "image": "",
+  "tags": ["Colombia", "Fresco", "Parrillero"],
+  "eyebrow": "Receta · El camino del charcutero",
+  "subtitle": "El chorizo de todos los días, bien hecho.",
+  "intro": "El parrillero clásico es la receta base que todo charcutero debería dominar: un chorizo fresco, jugoso y equilibrado, sin un sabor que domine sobre los demás. Ajo, comino y un toque de cebolla lo hacen redondo y familiar. Es el punto de partida para entender cómo la grasa, la sal y la temperatura definen un buen embutido.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Embutido fresco" },
+    { "label": "Nivel", "value": "Fácil" },
+    { "label": "Tiempo de preparación", "value": "40 min" },
+    { "label": "Tiempo de reposo", "value": "12–24 h" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–35 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Pierna o paleta de cerdo, molida media para una mordida jugosa."
+    },
+    {
+      "title": "Textura",
+      "description": "20% de grasa asegura jugosidad sobre las brasas sin volverse graso."
+    },
+    {
+      "title": "Sabor",
+      "description": "Equilibrio de ajo, comino y cebolla; ninguno domina sobre la carne."
+    }
+  ],
+  "quote": "El parrillero clásico enseña lo esencial: si dominas el balance de sal, grasa y frío, dominas cualquier chorizo.",
+  "ingredientsNote": "Mezcla los secos antes de moler para repartir sal y especias de forma pareja. La cebolla en polvo evita el exceso de humedad de la fresca.",
+  "ingredients": [
+    { "name": "Carne de cerdo (pierna o paleta)", "amount": "800 g", "pct": "80%" },
+    { "name": "Grasa de cerdo (papada o tocino)", "amount": "200 g", "pct": "20%" },
+    { "name": "Sal", "amount": "20 g", "pct": "2%" },
+    { "name": "Ajo fresco triturado", "amount": "10 g", "pct": "1%" },
+    { "name": "Pimentón dulce", "amount": "10 g", "pct": "1%" },
+    { "name": "Comino", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Cebolla en polvo", "amount": "5 g", "pct": "0.5%" },
+    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Azúcar", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Agua helada", "amount": "30 ml", "pct": "3%" }
+  ],
+  "proportionNote": "80% carne y 20% grasa es el balance parrillero universal. Sube la grasa un par de puntos si buscas más jugosidad, sin pasar del rango artesanal.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Domínalo y escalas la receta a cualquier cantidad.",
+  "steps": [
+    { "n": "01", "text": "Mezcla todos los secos hasta integrarlos (el “nutri”)." },
+    {
+      "n": "02",
+      "text": "Corta la carne y la grasa en cubos y mantenlas entre 0 y 4 °C."
+    },
+    { "n": "03", "text": "Muele con disco de 8 mm." },
+    {
+      "n": "04",
+      "text": "Agrega los secos y mezcla hasta una masa homogénea y pegajosa."
+    },
+    { "n": "05", "text": "Incorpora el agua helada poco a poco mientras amasas." },
+    {
+      "n": "06",
+      "text": "Embute en tripa natural de cerdo, calibre 32–35 mm, y forma los chorizos."
+    },
+    { "n": "07", "text": "Refrigera entre 12 y 24 horas antes de asar." }
+  ],
+  "tips": [
+    {
+      "title": "El frío manda",
+      "description": "Trabaja entre 0 y 4 °C. Si la grasa se calienta, se unta y el chorizo pierde textura."
+    },
+    {
+      "title": "No sobremezclar",
+      "description": "Para en cuanto la masa quede pegajosa; amasar de más endurece el resultado."
+    },
+    {
+      "title": "Reposo con sentido",
+      "description": "Las 12–24 h en frío asientan la sal y desarrollan el sabor antes de cocinar."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Parrilla",
+      "description": "20–25 minutos a fuego medio, girando con frecuencia para un dorado parejo."
+    },
+    {
+      "title": "Sartén",
+      "description": "Fuego medio-bajo hasta dorar por todos los lados; reposar antes de cortar."
+    }
+  ],
+  "recommendations": [
+    "Mantén la carne fría durante todo el proceso.",
+    "Evita sobremezclar para conservar buena textura.",
+    "Usa carne fresca y grasa firme.",
+    "No pinches los chorizos durante la cocción."
+  ],
+  "resultNote": "El resultado: un chorizo jugoso, parejo y de sabor redondo, sin picos de sal ni de especia. La base sobre la que se construyen todas las variantes.",
+  "finalQuote": "El mejor chorizo parrillero no es el más condimentado, sino el mejor balanceado. Domina el equilibrio y todo lo demás es variación.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

@@ -1,0 +1,92 @@
+{
+  "slug": "linguica-portuguesa",
+  "name": "Linguiça Portuguesa",
+  "description": "Más fina que el chouriço — ajo, pimentón y vino, ahumada lento. Fundamental en la parrilla lusa.",
+  "image": "",
+  "tags": ["Portugal", "Ahumado", "Parrillero"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "La hermana fina del chouriço.",
+  "intro": "La linguiça es la versión más fina y menos grasa del embutido portugués: se macera en vino y ajo, se sazona con pimentón (colorau) y se ahúma lento, pero en un calibre delgado que la hace ideal para la parrilla y el pan. Menos rústica que el chouriço, comparte su alma ahumada. Un toque de piri-piri le da el punto justo de calor.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Ahumado" },
+    { "label": "Nivel", "value": "Intermedio–Avanzado" },
+    { "label": "Tiempo de preparación", "value": "50 min" },
+    { "label": "Maceración + ahumado", "value": "24 h + 2–3 días" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 30–32 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cerdo magro con algo de tocino, macerado en vino y ajo."
+    },
+    {
+      "title": "Textura",
+      "description": "Más firme y magra que el chouriço; el ahumado la seca ligeramente."
+    },
+    {
+      "title": "Sabor",
+      "description": "Ajo y pimentón sobre fondo ahumado, con un punto de piri-piri."
+    }
+  ],
+  "quote": "La linguiça demuestra que el mismo adobo, en tripa fina y con menos grasa, cuenta otra historia.",
+  "ingredientsNote": "Macera la carne en vino y ajo antes de embutir. La sal de cura protege durante el ahumado.",
+  "ingredients": [
+    { "name": "Carne de cerdo (paleta)", "amount": "850 g", "pct": "85%" },
+    { "name": "Tocino de cerdo", "amount": "150 g", "pct": "15%" },
+    { "name": "Vino blanco", "amount": "40 ml", "pct": "4%" },
+    { "name": "Pimentón dulce (colorau)", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Ajo fresco triturado", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Sal", "amount": "22 g", "pct": "2.2%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Piri-piri (guindilla)", "amount": "4 g", "pct": "0.4%" },
+    { "name": "Hoja de laurel molida", "amount": "1 g", "pct": "0.1%" }
+  ],
+  "proportionNote": "85% carne y 15% tocino: más magra que el chouriço. Esa es la diferencia de textura entre ambos, con el mismo perfil de adobo.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura al 0.25% acompaña el ahumado con seguridad.",
+  "steps": [
+    { "n": "01", "text": "Pica grueso la carne y el tocino, muy fríos." },
+    {
+      "n": "02",
+      "text": "Macera 24 h en frío con vino, ajo, pimentón, sal, sal de cura, piri-piri y laurel."
+    },
+    { "n": "03", "text": "Embute firme en tripa fina de cerdo (30–32 mm)." },
+    { "n": "04", "text": "Ata en tramos y forma aros o tiras." },
+    { "n": "05", "text": "Orea 1 día a 12–15 °C para formar piel." },
+    { "n": "06", "text": "Ahúma en frío con leña, 2–3 días de forma intermitente." },
+    { "n": "07", "text": "Orea hasta la firmeza deseada; consúmela cocinada." }
+  ],
+  "tips": [
+    {
+      "title": "Calibre fino",
+      "description": "El diámetro delgado (30–32 mm) es lo que la separa del chouriço; respeta la tripa fina."
+    },
+    {
+      "title": "Ahumado en frío",
+      "description": "Por debajo de 30 °C, para no cocer la grasa y conservar la textura."
+    },
+    {
+      "title": "Piri-piri al gusto",
+      "description": "Ajusta la guindilla según cuánto calor busques; la linguiça admite desde suave a picante."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Parrilla",
+      "description": "A la brasa hasta dorar, girando; clásica en el churrasco portugués y brasileño."
+    },
+    {
+      "title": "Para guisar",
+      "description": "En rodajas, aporta ahumado a arroces, feijoadas y caldos."
+    }
+  ],
+  "recommendations": [
+    "Respeta la maceración de 24 h.",
+    "Usa tripa fina para el calibre correcto.",
+    "Ahúma en frío para no fundir la grasa.",
+    "No omitas la sal de cura durante el ahumado."
+  ],
+  "resultNote": "El resultado: una linguiça firme y ahumada, más esbelta que el chouriço, perfecta para la brasa. El ajo y el humo, en formato fino.",
+  "finalQuote": "La linguiça y el chouriço comparten adobo pero no destino: el calibre y la grasa definen a cuál llega tu parrilla.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

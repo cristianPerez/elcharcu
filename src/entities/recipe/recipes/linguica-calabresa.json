@@ -1,0 +1,95 @@
+{
+  "slug": "linguica-calabresa",
+  "name": "Linguiça Calabresa",
+  "description": "El ahumado picante de Brasil — pimienta calabresa y páprica, ahumado lento. Reina de la pizza y la feijoada.",
+  "image": "",
+  "tags": ["Brasil", "Ahumado", "Picante"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Ahumada y picante, de la pizza a la feijoada.",
+  "intro": "La calabresa es el embutido más popular de Brasil: de cerdo, ahumada y con el picor característico de la pimienta calabresa (guindilla en hojuelas). Aunque su nombre remite a Calabria, es una creación brasileña, presente en la pizza, la feijoada y el churrasco. Firme, roja y con fuego, se cura y ahúma lento hasta concentrar su sabor.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Ahumado" },
+    { "label": "Nivel", "value": "Intermedio–Avanzado" },
+    { "label": "Tiempo de preparación", "value": "50 min" },
+    { "label": "Ahumado + oreo", "value": "3–5 días" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 34–38 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cerdo con tocino, molido medio; se ahúma para su sabor característico."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme tras el ahumado; se corta en rodajas sin desarmarse."
+    },
+    {
+      "title": "Sabor",
+      "description": "Picante de pimienta calabresa y páprica, con fondo ahumado."
+    }
+  ],
+  "quote": "La calabresa no es italiana pese a su nombre: es puro Brasil, y el humo con el picante son su firma.",
+  "ingredientsNote": "El picante viene de la pimienta calabresa (guindilla en hojuelas). La sal de cura es obligatoria para el ahumado.",
+  "ingredients": [
+    { "name": "Carne de cerdo (paleta)", "amount": "800 g", "pct": "80%" },
+    { "name": "Grasa de cerdo", "amount": "200 g", "pct": "20%" },
+    { "name": "Pimienta calabresa (hojuelas)", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Páprica picante", "amount": "10 g", "pct": "1%" },
+    { "name": "Ajo fresco triturado", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Sal", "amount": "22 g", "pct": "2.2%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Agua helada", "amount": "20 ml", "pct": "2%" }
+  ],
+  "proportionNote": "80% carne y 20% grasa da firmeza para rodajas y jugosidad al fundirse en la pizza. Ajusta el picante con la cantidad de pimienta calabresa.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. La sal de cura al 0.25% protege durante el ahumado.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Mezcla los secos: pimienta calabresa, páprica, sal, sal de cura y pimienta negra."
+    },
+    { "n": "02", "text": "Corta la carne y la grasa en cubos, muy fríos (0–2 °C)." },
+    { "n": "03", "text": "Muele con disco de 8 mm." },
+    {
+      "n": "04",
+      "text": "Integra los secos, el ajo y el agua helada; amasa hasta ligar."
+    },
+    { "n": "05", "text": "Embute firme en tripa de 34–38 mm y forma aros." },
+    { "n": "06", "text": "Orea 1 día y ahúma en frío 2–4 días." },
+    { "n": "07", "text": "Termina de orear; consúmela cocinada." }
+  ],
+  "tips": [
+    {
+      "title": "Pimienta calabresa",
+      "description": "Las hojuelas de guindilla dan el picor y el aspecto moteado típico. Son insustituibles."
+    },
+    {
+      "title": "Ahumado en frío",
+      "description": "Por debajo de 30 °C para no fundir la grasa; da el sabor que la define."
+    },
+    {
+      "title": "Firmeza para rodajas",
+      "description": "El oreo tras el ahumado la deja firme para cortar fino sobre la pizza."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En rodajas",
+      "description": "Sobre pizza o en la feijoada, se rehidrata y suelta su sabor ahumado."
+    },
+    {
+      "title": "Parrilla",
+      "description": "A la brasa en el churrasco, dorada y jugosa."
+    }
+  ],
+  "recommendations": [
+    "Usa pimienta calabresa en hojuelas para el picor correcto.",
+    "Ahúma en frío para no fundir la grasa.",
+    "No omitas la sal de cura.",
+    "Orea hasta lograr firmeza para cortar en rodajas."
+  ],
+  "resultNote": "El resultado: una calabresa firme, roja y ahumada, con el picor moteado a la vista. Lista para la pizza, la feijoada o la brasa.",
+  "finalQuote": "La calabresa enseña que el humo y el picante, bien medidos, hacen un embutido que trasciende fronteras — de Calabria de nombre, brasileño de alma.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

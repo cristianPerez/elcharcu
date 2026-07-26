@@ -1,0 +1,96 @@
+{
+  "slug": "chorizo-criollo-argentino",
+  "name": "Chorizo Criollo Argentino",
+  "description": "El alma del asado y el choripán — mezcla de cerdo y res, molido grueso, poco condimento y mucho fuego.",
+  "image": "",
+  "tags": ["Argentina", "Fresco", "Parrillero"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "El chorizo del asado y el choripán.",
+  "intro": "El chorizo criollo es el protagonista silencioso de todo asado argentino. A diferencia del español, no busca el pimentón ni el curado: es fresco, de molido grueso, con un condimento discreto que deja hablar a la carne. Mezcla clásica de cerdo y vacuno, un toque de vino y a la parrilla. Simple, honesto, imbatible en un buen choripán.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Embutido fresco" },
+    { "label": "Nivel", "value": "Fácil" },
+    { "label": "Tiempo de preparación", "value": "40 min" },
+    { "label": "Tiempo de reposo", "value": "12 h" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–34 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cerdo y vacuno en mezcla, molido grueso para conservar mordida y jugo."
+    },
+    {
+      "title": "Textura",
+      "description": "20% de grasa mantiene el chorizo jugoso sobre las brasas sin gotear de más."
+    },
+    {
+      "title": "Sabor",
+      "description": "Condimento sobrio: ajo, pimienta y un poco de vino. Nada tapa la carne."
+    }
+  ],
+  "quote": "El criollo no compite con la carne del asado: la acompaña. Por eso el condimento es discreto y la mano, corta.",
+  "ingredientsNote": "Pesa los secos y mézclalos antes de moler. Un criollo no lleva muchas especias: lo que importa es que las pocas que lleva estén parejas.",
+  "ingredients": [
+    { "name": "Carne de cerdo (paleta)", "amount": "600 g", "pct": "60%" },
+    { "name": "Carne de res (roast/aguja)", "amount": "200 g", "pct": "20%" },
+    { "name": "Grasa de cerdo", "amount": "200 g", "pct": "20%" },
+    { "name": "Sal", "amount": "20 g", "pct": "2%" },
+    { "name": "Ajo fresco triturado", "amount": "10 g", "pct": "1%" },
+    { "name": "Pimentón dulce", "amount": "6 g", "pct": "0.6%" },
+    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Ají molido (opcional)", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Nuez moscada", "amount": "1 g", "pct": "0.1%" },
+    { "name": "Vino blanco seco", "amount": "50 ml", "pct": "5%" }
+  ],
+  "proportionNote": "60% cerdo, 20% res y 20% grasa es la base del criollo tradicional. Puedes subir el cerdo si buscas un chorizo más suave, o el vacuno para más carácter.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Es la misma proporción para 1 kg o para 10.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Mezcla todos los secos (sal, ajo, pimentón, pimienta, ají y nuez moscada)."
+    },
+    {
+      "n": "02",
+      "text": "Corta las carnes y la grasa en cubos y mantenlas entre 0 y 4 °C."
+    },
+    { "n": "03", "text": "Muele con disco grueso de 8–10 mm para conservar la mordida." },
+    { "n": "04", "text": "Integra los secos y luego el vino frío, amasando lo justo." },
+    { "n": "05", "text": "Embute en tripa natural de cerdo, calibre 32–34 mm." },
+    { "n": "06", "text": "Forma los chorizos y ata en el largo deseado." },
+    { "n": "07", "text": "Refrigera al menos 12 horas antes de llevar a la parrilla." }
+  ],
+  "tips": [
+    {
+      "title": "Molido grueso",
+      "description": "El criollo se distingue por su textura: disco grueso y no sobremezclar. Debe verse la carne, no una pasta."
+    },
+    {
+      "title": "Poco condimento",
+      "description": "Menos es más. El pimentón aquí es color y fondo, no protagonista como en el español."
+    },
+    {
+      "title": "A fuego medio",
+      "description": "Ásalo lento y entero; si lo abres “mariposa”, hazlo recién sobre las brasas para que no se seque."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Parrilla",
+      "description": "25–30 minutos a fuego medio, girando; la clave es cocción pareja sin apurar el fuego."
+    },
+    {
+      "title": "Choripán",
+      "description": "Abierto a la mitad los últimos minutos, en pan crujiente y con chimichurri."
+    }
+  ],
+  "recommendations": [
+    "Mantén las carnes frías durante todo el proceso.",
+    "Usa disco grueso y amasa lo mínimo.",
+    "No pinches el chorizo en la parrilla.",
+    "Deja reposar 12 h para que el sabor se asiente."
+  ],
+  "resultNote": "El resultado: un chorizo jugoso y de mordida firme, que dora parejo y no se deshace. Al corte se ve el grano grueso de la carne — la firma del criollo.",
+  "finalQuote": "Un buen criollo se reconoce en la parrilla: jugoso, entero y con la carne al frente. El secreto no está en el condimento, sino en la mano corta.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

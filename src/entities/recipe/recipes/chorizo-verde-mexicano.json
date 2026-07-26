@@ -1,0 +1,103 @@
+{
+  "slug": "chorizo-verde-mexicano",
+  "name": "Chorizo Verde de Toluca",
+  "description": "El fresco verde de Toluca — tomatillo, chiles verdes, cilantro y perejil molidos con la carne.",
+  "image": "",
+  "tags": ["México", "Fresco", "Picante"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "El chorizo verde que conquistó a Toluca.",
+  "intro": "El chorizo verde es la joya de Toluca: un embutido fresco de color intenso, hecho con una pasta de tomatillo, chiles verdes, cilantro y perejil. Cada familia guarda su receta, pero todas coinciden en el chile serrano, el cilantro y el tomatillo como base. La espinaca o acelga refuerzan el verde, y las especias — comino, clavo, orégano — le dan profundidad. Se cocina fresco, nunca se cura.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Embutido fresco" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Tiempo de preparación", "value": "50 min" },
+    { "label": "Tiempo de reposo", "value": "12–24 h" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 28–32 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Carne de cerdo con la pasta verde molida en conjunto para teñir la masa."
+    },
+    {
+      "title": "Textura",
+      "description": "Fresca y húmeda; la pasta verde aporta jugosidad y color."
+    },
+    {
+      "title": "Sabor",
+      "description": "Ácido y herbal — tomatillo y cilantro — con el picor del chile serrano."
+    }
+  ],
+  "quote": "El verde de Toluca no es un chorizo teñido: la carne y la pasta verde se muelen juntas, y ahí nace su color y su acidez.",
+  "ingredientsNote": "Licúa primero la pasta verde y escúrrela un poco: demasiada humedad dificulta el embutido. Ajusta el picante con la cantidad de serrano.",
+  "ingredients": [
+    { "name": "Carne de cerdo (pierna o paleta)", "amount": "800 g", "pct": "80%" },
+    { "name": "Grasa de cerdo", "amount": "200 g", "pct": "20%" },
+    {
+      "name": "Pasta verde (tomatillo, chile serrano, cilantro, perejil, espinaca)",
+      "amount": "150 g",
+      "pct": "15%"
+    },
+    { "name": "Ajo fresco triturado", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Sal", "amount": "20 g", "pct": "2%" },
+    { "name": "Vinagre blanco", "amount": "30 ml", "pct": "3%" },
+    { "name": "Comino", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Orégano seco", "amount": "2 g", "pct": "0.2%" },
+    { "name": "Pimienta negra", "amount": "2 g", "pct": "0.2%" },
+    { "name": "Clavo molido", "amount": "1 g", "pct": "0.1%" }
+  ],
+  "proportionNote": "80% carne y 20% grasa, con la pasta verde al 15% del total. Más pasta intensifica el color y la acidez, pero también la humedad: escúrrela para poder embutir.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Al ser fresco, no lleva sal de cura, pero sí se consume cocinado y pronto.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Licúa la pasta verde (tomatillo, chiles, cilantro, perejil, espinaca) y escúrrela."
+    },
+    { "n": "02", "text": "Mezcla los secos: sal, comino, orégano, pimienta y clavo." },
+    { "n": "03", "text": "Corta la carne y la grasa en cubos, muy fríos (0–4 °C)." },
+    { "n": "04", "text": "Muele la carne y la grasa con disco de 8 mm." },
+    {
+      "n": "05",
+      "text": "Integra la pasta verde, el ajo, los secos y el vinagre; amasa hasta teñir la masa."
+    },
+    {
+      "n": "06",
+      "text": "Embute en tripa fina de cerdo (28–32 mm) y forma los chorizos."
+    },
+    { "n": "07", "text": "Refrigera 12–24 h; consúmelo fresco en pocos días." }
+  ],
+  "tips": [
+    {
+      "title": "Escurre la pasta",
+      "description": "La humedad es el enemigo del embutido. Escurre bien la pasta verde para que la masa ligue."
+    },
+    {
+      "title": "Frío constante",
+      "description": "Trabaja entre 0 y 4 °C; la pasta fría ayuda a mantener la grasa firme."
+    },
+    {
+      "title": "Fresco, no curado",
+      "description": "El verde es un chorizo fresco: refrigéralo y cocínalo en pocos días, o congélalo."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Sartén",
+      "description": "Desmenuzado a fuego medio hasta secar la humedad; ideal para tacos y huevos."
+    },
+    {
+      "title": "Comal",
+      "description": "En trozos sobre comal caliente, girando hasta dorar por fuera."
+    }
+  ],
+  "recommendations": [
+    "Escurre bien la pasta verde antes de mezclar.",
+    "Mantén la carne y la grasa frías.",
+    "Consúmelo fresco en pocos días o congélalo.",
+    "Ajusta el picante con la cantidad de chile serrano."
+  ],
+  "resultNote": "El resultado: un chorizo de verde vivo, fresco y ácido, con el picor justo. Al cocinarlo suelta su humedad y concentra el sabor herbal de Toluca.",
+  "finalQuote": "El chorizo verde no busca curarse ni durar: busca frescura. Su secreto está en la pasta de hierbas y chiles, molida con la carne.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

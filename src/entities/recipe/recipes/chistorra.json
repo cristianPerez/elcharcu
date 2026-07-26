@@ -1,0 +1,97 @@
+{
+  "slug": "chistorra",
+  "name": "Chistorra",
+  "description": "Navarra en formato fino — muy jugosa, pimentón y ajo, oreada pocos días y hecha a la sartén o brasa.",
+  "image": "",
+  "tags": ["España", "Semicurado", "Parrillero"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Fina, roja y jugosa; lista en pocos días.",
+  "intro": "La chistorra es el chorizo fresco-oreado de Navarra y el País Vasco: fina, muy jugosa y roja por el pimentón. No es un curado largo — se orea apenas unos días y se cocina. Su calibre delgado la hace ideal para la sartén, la brasa o el pincho. Rica en grasa, con ajo y pimentón al frente, es pura contundencia en poco diámetro.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Fresco-oreado" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Tiempo de preparación", "value": "45 min" },
+    { "label": "Oreo", "value": "1–3 días" },
+    { "label": "Tipo de tripa", "value": "Natural de cordero, cal. 20–22 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cerdo con alta proporción de tocino, molido fino para un calibre delgado."
+    },
+    {
+      "title": "Textura",
+      "description": "Muy jugosa; el 30% de grasa se funde al cocinar y la hace melosa."
+    },
+    {
+      "title": "Sabor",
+      "description": "Pimentón y ajo dominan; perfil directo y contundente."
+    }
+  ],
+  "quote": "La chistorra no busca curar: busca jugosidad. Por eso lleva más grasa y menos tiempo que un chorizo de bodega.",
+  "ingredientsNote": "Al orearse pocos días, incluye sal de cura para ese periodo. Muele fino: la chistorra es de textura homogénea, no de grano grueso.",
+  "ingredients": [
+    { "name": "Carne de cerdo (magro)", "amount": "700 g", "pct": "70%" },
+    { "name": "Tocino de cerdo", "amount": "300 g", "pct": "30%" },
+    { "name": "Pimentón dulce", "amount": "25 g", "pct": "2.5%" },
+    { "name": "Ajo fresco triturado", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Sal", "amount": "22 g", "pct": "2.2%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Agua helada", "amount": "20 ml", "pct": "2%" }
+  ],
+  "proportionNote": "70% magro y 30% tocino: la chistorra es deliberadamente grasa, y eso es lo que la hace jugosa al cocinarla. No bajes mucho la grasa o pierde su carácter.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura protege durante el oreo corto.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Mezcla los secos: pimentón, sal, sal de cura, ajo y pimienta."
+    },
+    { "n": "02", "text": "Corta magro y tocino en cubos, muy fríos (0–2 °C)." },
+    { "n": "03", "text": "Muele fino con disco de 6 mm." },
+    {
+      "n": "04",
+      "text": "Integra los secos con el agua helada; amasa hasta ligar bien."
+    },
+    {
+      "n": "05",
+      "text": "Embute en tripa fina de cordero (20–22 mm) sin bolsas de aire."
+    },
+    { "n": "06", "text": "Forma rollos o tiras largas." },
+    { "n": "07", "text": "Orea 1–3 días a 12–15 °C antes de cocinar." }
+  ],
+  "tips": [
+    {
+      "title": "Muele fino",
+      "description": "La chistorra es de textura homogénea; el disco de 6 mm da su mordida característica."
+    },
+    {
+      "title": "Calibre delgado",
+      "description": "La tripa de cordero (20–22 mm) es clave: define su formato fino y su cocción rápida."
+    },
+    {
+      "title": "Oreo corto",
+      "description": "Unos días a 12–15 °C bastan; no es un curado largo. Luego, siempre cocinada."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Sartén",
+      "description": "Fuego medio 5–7 minutos; suelta su grasa y queda dorada y melosa."
+    },
+    {
+      "title": "Brasa o pincho",
+      "description": "En pincho sobre brasa, rápido; ideal en pan como bocado."
+    }
+  ],
+  "recommendations": [
+    "Usa buena proporción de tocino: la jugosidad es su firma.",
+    "Muele fino con disco de 6 mm.",
+    "Orea solo unos días; siempre se consume cocinada.",
+    "Emplea tripa fina de cordero para el calibre correcto."
+  ],
+  "resultNote": "El resultado: una chistorra fina, roja y jugosa, que al calor suelta su grasa y se vuelve melosa. Poco diámetro, mucho sabor.",
+  "finalQuote": "La chistorra demuestra que el formato importa: la misma masa en tripa fina y con poco oreo es otro producto entero. Técnica, no solo receta.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

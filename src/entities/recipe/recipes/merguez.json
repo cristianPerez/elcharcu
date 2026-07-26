@@ -1,0 +1,99 @@
+{
+  "slug": "merguez",
+  "name": "Merguez",
+  "description": "El fino y picante del Magreb — cordero, harissa y comino, rojo intenso y a la brasa.",
+  "image": "",
+  "tags": ["Magreb", "Fresco", "Picante"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Cordero especiado, delgado y picante.",
+  "intro": "El merguez es el embutido fresco del norte de África: de cordero (a veces con res), delgado, rojo y picante. Su color y su fuego vienen de la harissa y el pimentón, sobre una base de comino, cilantro y ajo. Se asa a la brasa hasta chisporrotear y se sirve con pan, cuscús o en bocadillo. Un chorizo especiado, intenso y de calibre fino.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Embutido fresco" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Tiempo de preparación", "value": "45 min" },
+    { "label": "Tiempo de reposo", "value": "12–24 h" },
+    { "label": "Tipo de tripa", "value": "Natural de cordero, cal. 20–24 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cordero, a veces con res, con grasa de cordero para su sabor característico."
+    },
+    {
+      "title": "Textura",
+      "description": "Jugosa y fina; el calibre delgado la cocina rápido a la brasa."
+    },
+    {
+      "title": "Sabor",
+      "description": "Picante de harissa y pimentón, con comino y cilantro muy presentes."
+    }
+  ],
+  "quote": "El merguez es el chorizo del cordero: cambia la carne, cambia el mundo de especias, pero la técnica es la misma.",
+  "ingredientsNote": "La harissa aporta color y picor; ajústala a tu gusto. El comino y el cilantro molido son la base aromática.",
+  "ingredients": [
+    { "name": "Carne de cordero", "amount": "700 g", "pct": "70%" },
+    { "name": "Grasa de cordero o res", "amount": "300 g", "pct": "30%" },
+    { "name": "Harissa", "amount": "40 g", "pct": "4%" },
+    { "name": "Pimentón picante", "amount": "20 g", "pct": "2%" },
+    { "name": "Ajo fresco triturado", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Comino molido", "amount": "10 g", "pct": "1%" },
+    { "name": "Cilantro molido", "amount": "8 g", "pct": "0.8%" },
+    { "name": "Sal", "amount": "20 g", "pct": "2%" },
+    { "name": "Pimienta negra", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Agua helada", "amount": "20 ml", "pct": "2%" }
+  ],
+  "proportionNote": "70% carne y 30% grasa de cordero da jugosidad y el sabor característico. La harissa y el pimentón definen color y picor; ajústalos según tu tolerancia.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Al ser fresco, se cocina y se consume pronto, sin sal de cura.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Mezcla los secos: pimentón, comino, cilantro, sal y pimienta."
+    },
+    { "n": "02", "text": "Corta la carne y la grasa en cubos, muy fríos (0–4 °C)." },
+    { "n": "03", "text": "Muele con disco de 6–8 mm." },
+    {
+      "n": "04",
+      "text": "Integra la harissa, el ajo, los secos y el agua; amasa hasta una masa roja y homogénea."
+    },
+    {
+      "n": "05",
+      "text": "Deja reposar en frío 12–24 h para que las especias se integren."
+    },
+    { "n": "06", "text": "Embute en tripa fina de cordero (20–24 mm)." },
+    { "n": "07", "text": "Refrigera; consúmelo fresco a la brasa en pocos días." }
+  ],
+  "tips": [
+    {
+      "title": "Grasa de cordero",
+      "description": "Es la que da el sabor auténtico. Si te resulta fuerte, mézclala con grasa de res."
+    },
+    {
+      "title": "Harissa al gusto",
+      "description": "Regula el picor con la cantidad de harissa; también aporta color y profundidad."
+    },
+    {
+      "title": "Calibre fino",
+      "description": "La tripa de cordero (20–24 mm) es esencial para su formato delgado y cocción rápida."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Brasa",
+      "description": "A fuego vivo, girando, hasta chisporrotear; su calibre fino se hace en minutos."
+    },
+    {
+      "title": "Con cuscús",
+      "description": "Clásico junto a cuscús y verduras, o en bocadillo con harissa."
+    }
+  ],
+  "recommendations": [
+    "Usa grasa de cordero para el sabor auténtico.",
+    "Ajusta el picor con la harissa.",
+    "Emplea tripa fina de cordero.",
+    "Consúmelo fresco a la brasa."
+  ],
+  "resultNote": "El resultado: un merguez delgado, rojo y picante, jugoso al morder y con el aroma del comino y el cilantro. El Magreb en la parrilla.",
+  "finalQuote": "El merguez recuerda que el chorizo no es solo de cerdo: con cordero y especias del Magreb, la técnica charcutera viaja lejos.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

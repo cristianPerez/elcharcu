@@ -1,0 +1,95 @@
+{
+  "slug": "chourico-portugues",
+  "name": "Chouriço Português",
+  "description": "El curado ahumado luso — carne macerada en vino y ajo, pimentón y humo lento de encina.",
+  "image": "",
+  "tags": ["Portugal", "Curado", "Ahumado"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Vinho, alho, colorau e fumo.",
+  "intro": "El chouriço portugués nace de una maceración: la carne descansa en vino tinto, ajo y pimentón (colorau) antes de embutirse, y luego se ahúma lentamente sobre leña. Ese doble proceso — vino y humo — le da su color oscuro y su aroma profundo. Es más rústico y ahumado que el chorizo español, y base de platos como la feijoada y el cozido.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Curado y ahumado" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Tiempo de preparación", "value": "50 min" },
+    { "label": "Maceración + ahumado", "value": "24 h + 3–5 días" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 38–40 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cerdo troceado (no siempre molido fino), macerado en vino y ajo."
+    },
+    {
+      "title": "Textura",
+      "description": "Rústica, de trozos visibles; el ahumado la seca y compacta."
+    },
+    {
+      "title": "Sabor",
+      "description": "Vino, ajo y pimentón, con el humo de encina como firma inconfundible."
+    }
+  ],
+  "quote": "El chouriço no se entiende sin humo: la maceración en vino pone la base, pero es la leña la que lo define.",
+  "ingredientsNote": "Macera la carne en vino y ajo antes de embutir. La sal de cura protege durante el ahumado y el oreo.",
+  "ingredients": [
+    { "name": "Carne de cerdo (paleta)", "amount": "800 g", "pct": "80%" },
+    { "name": "Tocino de cerdo", "amount": "200 g", "pct": "20%" },
+    { "name": "Vino tinto", "amount": "50 ml", "pct": "5%" },
+    { "name": "Pimentón dulce (colorau)", "amount": "20 g", "pct": "2%" },
+    { "name": "Ajo fresco triturado", "amount": "20 g", "pct": "2%" },
+    { "name": "Sal", "amount": "24 g", "pct": "2.4%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Pimentón picante (piri-piri)", "amount": "5 g", "pct": "0.5%" },
+    { "name": "Hoja de laurel molida", "amount": "1 g", "pct": "0.1%" }
+  ],
+  "proportionNote": "80% carne y 20% tocino, con el vino al 5%. La maceración previa hace que el vino y el ajo penetren la carne antes de moler o picar.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura al 0.25% acompaña el ahumado y el oreo con seguridad.",
+  "steps": [
+    { "n": "01", "text": "Trocea o pica grueso la carne y el tocino, muy fríos." },
+    {
+      "n": "02",
+      "text": "Macera 24 h en frío con vino, ajo, pimentones, sal, sal de cura y laurel."
+    },
+    { "n": "03", "text": "Escurre ligeramente conservando el adobo pegado a la carne." },
+    { "n": "04", "text": "Embute firme en tripa de 38–40 mm y ata en herradura." },
+    { "n": "05", "text": "Orea 1 día a 12–15 °C para formar piel." },
+    {
+      "n": "06",
+      "text": "Ahúma en frío con leña de encina, 3–5 días de forma intermitente."
+    },
+    { "n": "07", "text": "Termina de orear hasta la firmeza deseada." }
+  ],
+  "tips": [
+    {
+      "title": "La maceración",
+      "description": "Las 24 h en vino y ajo son el corazón del chouriço; no las saltes."
+    },
+    {
+      "title": "Humo frío",
+      "description": "Ahúma en frío (por debajo de 30 °C) para no cocer la grasa; encina o roble dan el aroma clásico."
+    },
+    {
+      "title": "Sal de cura",
+      "description": "Durante ahumado y oreo, protege contra bacterias. No la omitas."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Para guisar",
+      "description": "En rodajas, base de feijoada, cozido y caldo verde."
+    },
+    {
+      "title": "Assado / à bombeiro",
+      "description": "Flameado con aguardiente en el clásico chouriço à bombeiro."
+    }
+  ],
+  "recommendations": [
+    "Respeta las 24 h de maceración en vino y ajo.",
+    "Ahúma en frío para no fundir la grasa.",
+    "No omitas la sal de cura durante el ahumado.",
+    "Usa leña de encina o roble para el aroma correcto."
+  ],
+  "resultNote": "El resultado: un chouriço oscuro, rústico y profundamente ahumado, con el vino y el ajo integrados en la carne. Puro carácter luso.",
+  "finalQuote": "El chouriço enseña que el humo es un ingrediente más — y de los que más mandan. Sin buena leña, no hay buen chouriço.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

@@ -1,0 +1,90 @@
+{
+  "slug": "fuet",
+  "name": "Fuet Catalán",
+  "description": "Curado fino con flor blanca — cerdo, pimienta y ajo suave, madurado hasta su moho noble exterior.",
+  "image": "",
+  "tags": ["España", "Curado"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Delgado, con flor blanca y sabor delicado.",
+  "intro": "El fuet es el embutido curado catalán por excelencia: delgado, sin pimentón, con un sabor delicado de cerdo, pimienta y ajo suave. Su seña visual es la flor blanca — el moho noble (penicillium) que lo recubre y protege durante el curado, aportando aroma. Se cura relativamente rápido por su calibre fino, y se come en rodajas finas como aperitivo.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Curado en seco" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Tiempo de preparación", "value": "50 min" },
+    { "label": "Curado", "value": "3–5 semanas" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 34–38 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cerdo magro con tocino, molido medio, en tripa fina."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme pero tierna; el calibre fino cura sin resecar en exceso."
+    },
+    {
+      "title": "Sabor",
+      "description": "Delicado: pimienta y ajo suave, sin pimentón, con el aroma del moho noble."
+    }
+  ],
+  "quote": "La flor blanca del fuet no es un defecto: es el moho noble que protege el curado y le da su aroma inconfundible.",
+  "ingredientsNote": "El fuet es delicado, así que el condimento es discreto. La sal de cura es obligatoria; la flor blanca se favorece con humedad y aireación.",
+  "ingredients": [
+    { "name": "Carne de cerdo (magro)", "amount": "800 g", "pct": "80%" },
+    { "name": "Tocino de cerdo", "amount": "200 g", "pct": "20%" },
+    { "name": "Sal", "amount": "26 g", "pct": "2.6%" },
+    { "name": "Pimienta negra molida", "amount": "4 g", "pct": "0.4%" },
+    { "name": "Ajo fresco triturado", "amount": "5 g", "pct": "0.5%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Vino blanco seco", "amount": "20 ml", "pct": "2%" }
+  ],
+  "proportionNote": "80% magro y 20% tocino da un fuet firme pero tierno. El condimento es mínimo a propósito: el fuet es sutileza, no potencia.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura al 0.25% es el estándar seguro.",
+  "steps": [
+    { "n": "01", "text": "Mezcla los secos: sal, sal de cura, pimienta y ajo." },
+    { "n": "02", "text": "Corta magro y tocino en cubos, muy fríos (0–2 °C)." },
+    { "n": "03", "text": "Muele con disco de 6–8 mm." },
+    { "n": "04", "text": "Integra los secos y el vino; amasa hasta ligar." },
+    { "n": "05", "text": "Embute firme en tripa de 34–38 mm sin bolsas de aire." },
+    { "n": "06", "text": "Opcional: aplica cultivo de moho noble en la superficie." },
+    {
+      "n": "07",
+      "text": "Cura a 12–15 °C y 80–85% de humedad, 3–5 semanas, hasta que aparezca la flor blanca."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Flor blanca",
+      "description": "El penicillium noble protege y aromatiza. Favorécelo con buena humedad y algo de aireación."
+    },
+    {
+      "title": "Condimento sutil",
+      "description": "El fuet no lleva pimentón; su gracia es la delicadeza. No lo sobrecondimentes."
+    },
+    {
+      "title": "Curado controlado",
+      "description": "12–15 °C y humedad alta. Sin control, aparecen mohos indeseados en vez de la flor noble."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En rodajas finas",
+      "description": "Curado, como aperitivo o en bocadillo; su sabor delicado pide cortes finos."
+    },
+    {
+      "title": "En tabla",
+      "description": "Junto a queso y pan; marida con vinos blancos y cavas."
+    }
+  ],
+  "recommendations": [
+    "Favorece la flor blanca con humedad y aireación.",
+    "Mantén el condimento sutil, sin pimentón.",
+    "No omitas la sal de cura.",
+    "Controla temperatura y humedad para evitar mohos indeseados."
+  ],
+  "resultNote": "El resultado: un fuet delgado, cubierto de flor blanca, de sabor delicado y textura tierna. La elegancia discreta de la charcutería catalana.",
+  "finalQuote": "El fuet es sutileza: poco condimento, calibre fino y un moho noble que trabaja a tu favor. Curar bien también es saber restar.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
