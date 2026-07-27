@@ -2,7 +2,7 @@
 
 import { type ReactNode, useEffect } from 'react';
 
-import { attachButtonClickTracking, initHotjar, initMixpanel } from '@/shared/lib';
+import { attachButtonClickTracking, initMixpanel } from '@/shared/lib';
 
 interface AppProvidersProps {
   readonly children: ReactNode;
@@ -15,7 +15,6 @@ interface AppProvidersProps {
 export function AppProviders({ children }: AppProvidersProps): ReactNode {
   useEffect(() => {
     initMixpanel();
-    initHotjar();
     return attachButtonClickTracking();
   }, []);
 
