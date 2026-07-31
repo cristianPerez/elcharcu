@@ -17,7 +17,7 @@ export function RecipePreparation({ steps, tips }: RecipePreparationProps): Reac
   return (
     <section className="bg-cream py-16 text-cocoa md:py-24">
       <Container>
-        <Eyebrow className="text-terracota">De la mezcla a la tripa</Eyebrow>
+        <Eyebrow className="text-terracota">Manos a la obra</Eyebrow>
         <h2 className="mt-4 font-serif text-2xl font-semibold text-cocoa md:text-4xl">
           Preparación
         </h2>

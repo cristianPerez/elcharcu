@@ -1,0 +1,106 @@
+{
+  "slug": "jamon-selva-negra",
+  "name": "Jamón Curado y Ahumado (Estilo Selva Negra)",
+  "description": "El jamón que se ahúma — pierna de cerdo curada en seco con enebro, ahumada en frío sobre abeto y madurada semanas.",
+  "image": "/recipes/jamon-selva-negra.svg",
+  "tags": ["Alemania", "Curado", "Ahumado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Pierna de cerdo curada, ahumada en frío y madurada.",
+  "intro": "No todo jamón se cura solo con sal: el estilo Selva Negra (Schwarzwälder Schinken) necesita también el humo. Una pierna de cerdo deshuesada se cura en seco con pimienta, cilantro, ajo y bayas de enebro, se ahúma en frío sobre madera de abeto o pícea durante varios días y madura semanas más hasta redondear su sabor. El proceso completo ronda los tres meses, y el resultado es un jamón de color rojo intenso que se corta fino, como un curado tradicional, pero con un carácter ahumado que lo distingue del serrano o el ibérico.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "4 kg" },
+    { "label": "Tipo", "value": "Curado en seco y ahumado en frío" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Curado", "value": "Aprox. 4 semanas" },
+    { "label": "Ahumado", "value": "En frío, sobre abeto o pícea, varios días" },
+    {
+      "label": "Maduración",
+      "value": "Varias semanas más (proceso total: hasta 3 meses)"
+    }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Pierna de cerdo deshuesada, curada entera con especias de bosque."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme, de color rojo intenso con un borde de grasa blanca."
+    },
+    {
+      "title": "Sabor",
+      "description": "Salado y aromático — enebro, cilantro y ajo de fondo, con un ahumado marcado."
+    }
+  ],
+  "quote": "No todo jamón se cura solo con sal: el de la Selva Negra necesita también el humo.",
+  "ingredientsNote": "A diferencia del jamón serrano o ibérico (solo sal), este lleva especias de bosque y un ahumado en frío que lo define. La sal de cura es clave para un curado seguro de varias semanas.",
+  "ingredients": [
+    { "name": "Pierna de cerdo deshuesada", "amount": "4000 g", "pct": "100%" },
+    { "name": "Sal", "amount": "104 g", "pct": "2.6%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "10 g", "pct": "0.25%" },
+    { "name": "Pimienta negra molida", "amount": "12 g", "pct": "0.3%" },
+    { "name": "Bayas de enebro machacadas", "amount": "16 g", "pct": "0.4%" },
+    { "name": "Cilantro molido", "amount": "8 g", "pct": "0.2%" },
+    { "name": "Ajo en polvo", "amount": "8 g", "pct": "0.2%" },
+    { "name": "Laurel molido", "amount": "4 g", "pct": "0.1%" }
+  ],
+  "proportionNote": "El enebro es la especia que define este jamón frente a otros curados europeos — su aroma resinoso combina con el humo de abeto o pícea.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la pierna. Valores por kilo: sal 26 g, sal de cura 2.5 g, pimienta negra 3 g, enebro 4 g, cilantro 2 g, ajo 2 g, laurel 1 g.",
+  "steps": [
+    { "n": "01", "text": "Deshuesa la pierna y perfílala, dejando una pieza compacta." },
+    {
+      "n": "02",
+      "text": "Mezcla sal, sal de cura y especias; frota toda la pieza a conciencia."
+    },
+    {
+      "n": "03",
+      "text": "Cura en frío (0–4 °C) unas 2 semanas, volteando y redistribuyendo la sal."
+    },
+    {
+      "n": "04",
+      "text": "Retira el exceso de sal, lava y deja curar 2 semanas más para asentar."
+    },
+    {
+      "n": "05",
+      "text": "Ahúma en frío (alrededor de 20–25 °C) sobre madera de abeto o pícea durante varios días, volteando la pieza."
+    },
+    {
+      "n": "06",
+      "text": "Deja madurar colgada en un espacio fresco y ventilado varias semanas más."
+    },
+    { "n": "07", "text": "El proceso completo, de inicio a fin, ronda los 3 meses." }
+  ],
+  "tips": [
+    {
+      "title": "Enebro con moderación",
+      "description": "Es una especia potente; un exceso tapa el resto de aromas en lugar de realzarlos."
+    },
+    {
+      "title": "Humo frío, no caliente",
+      "description": "El ahumado debe mantenerse frío para curar, no cocinar, la pieza — vigila la temperatura de la cámara."
+    },
+    {
+      "title": "Voltea durante el ahumado",
+      "description": "Girar la pieza de arriba a abajo asegura un ahumado parejo en toda la superficie."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En lonchas finas",
+      "description": "Se come crudo, cortado muy fino, como un jamón serrano pero con un carácter ahumado marcado."
+    },
+    {
+      "title": "En tabla fría",
+      "description": "Acompaña bien con pan de centeno, pepinillos y mostaza, al estilo centroeuropeo."
+    }
+  ],
+  "recommendations": [
+    "Deshuesa con cuidado para mantener la pieza compacta.",
+    "Respeta las dos fases de curado antes de pasar al ahumado.",
+    "Ahúma siempre en frío, nunca en caliente.",
+    "Deja madurar sin prisas — el sabor se redondea con las semanas."
+  ],
+  "resultNote": "El resultado: un jamón de color rojo intenso, aromático a enebro y humo de bosque, que se corta fino y se come crudo como el mejor curado europeo.",
+  "finalQuote": "El jamón de la Selva Negra prueba que el humo también tiene lugar en la tradición del jamón curado.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

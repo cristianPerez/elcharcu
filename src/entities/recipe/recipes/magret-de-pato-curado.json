@@ -1,0 +1,110 @@
+{
+  "slug": "magret-de-pato-curado",
+  "name": "Magret de Pato Curado (Magret Séché)",
+  "description": "El jamón de pato francés — pechuga entera cubierta en sal, secada en frío hasta quedar firme y perfumada.",
+  "image": "/recipes/magret-de-pato-curado.svg",
+  "tags": ["Francia", "Curado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Pechuga de pato en sal, secada al frío sin ahumar.",
+  "intro": "El magret curado es la puerta de entrada a los curados enteros: rápido, sin ahumar, y con resultado en pocas semanas. Una pechuga de pato entera se cubre por completo en sal durante doce horas, se envuelve en un paño limpio y se seca en la nevera dos o tres semanas hasta quedar firme al tacto, como un jamón curado en miniatura. Es el proceso más corto y accesible de esta colección — ideal para quien quiere probar el curado de piezas enteras antes de animarse con procesos de meses.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "800 g" },
+    { "label": "Tipo", "value": "Curado en seco, sin ahumar" },
+    { "label": "Nivel", "value": "Principiante" },
+    { "label": "Salazón", "value": "12 h en sal" },
+    { "label": "Secado", "value": "2–3 semanas en frío, envuelto en tela" },
+    { "label": "Formato", "value": "Pieza entera, sin tripa ni malla" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Pechuga de pato entera, con su capa de grasa característica."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme al tacto, similar a un jamón curado en miniatura."
+    },
+    {
+      "title": "Sabor",
+      "description": "Intenso y ligeramente dulzón, con la grasa aportando jugosidad al corte."
+    }
+  ],
+  "quote": "El magret curado es la puerta de entrada a los curados enteros: rápido, sin ahumar, y con resultado en pocas semanas.",
+  "ingredientsNote": "Es el curado más rápido y accesible de esta colección — ideal para empezar en las piezas enteras antes de animarse con procesos de meses.",
+  "ingredients": [
+    { "name": "Pechuga de pato (magret), con grasa", "amount": "800 g", "pct": "100%" },
+    { "name": "Sal gruesa", "amount": "21 g", "pct": "2.6%" },
+    {
+      "name": "Sal de cura (nitrificante, #2), opcional",
+      "amount": "2 g",
+      "pct": "0.25%"
+    },
+    { "name": "Pimienta negra molida", "amount": "4 g", "pct": "0.5%" },
+    { "name": "Tomillo seco (opcional)", "amount": "2 g", "pct": "0.25%" }
+  ],
+  "proportionNote": "A diferencia de los curados largos de esta colección, el magret no necesita una mezcla compleja: sal, tiempo y frío bastan. La sal de cura es opcional dado lo corto del proceso, pero ayuda a fijar el color.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la pechuga. Valores por kilo: sal 26 g, sal de cura 2.5 g, pimienta 5 g, tomillo 2.5 g.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Seca bien las pechugas y retira el exceso de nervio, dejando la grasa intacta."
+    },
+    {
+      "n": "02",
+      "text": "Cubre por completo en sal (y sal de cura si se usa) en un recipiente; deja en frío 12 h."
+    },
+    {
+      "n": "03",
+      "text": "Retira de la sal, enjuaga el exceso y seca a conciencia con papel."
+    },
+    {
+      "n": "04",
+      "text": "Frota con pimienta (y tomillo si se usa) y envuelve en un paño limpio y seco."
+    },
+    {
+      "n": "05",
+      "text": "Deja secar en la parte alta de la nevera 2–3 semanas, revisando que el paño se mantenga seco."
+    },
+    {
+      "n": "06",
+      "text": "La pieza está lista cuando se siente firme al tacto en toda su superficie."
+    },
+    {
+      "n": "07",
+      "text": "Guarda envuelta en la nevera y consume en las semanas siguientes."
+    }
+  ],
+  "tips": [
+    {
+      "title": "No cures de más",
+      "description": "12 h de sal son suficientes para una pieza tan pequeña; pasarte de tiempo la deja demasiado salada."
+    },
+    {
+      "title": "Paño limpio y seco",
+      "description": "Cambia el paño si se humedece durante el secado — la humedad atrapada favorece el moho no deseado."
+    },
+    {
+      "title": "Empieza por aquí",
+      "description": "Si es tu primer curado de pieza entera, el magret es el más rápido y perdona más que un jamón o una bresaola."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En lonchas finas",
+      "description": "Se come crudo, en lonchas finas, solo o con higos y un buen pan."
+    },
+    {
+      "title": "En tabla",
+      "description": "Combina con quesos suaves y mermeladas dulces, al estilo francés."
+    }
+  ],
+  "recommendations": [
+    "No excedas las 12 h de salazón en una pieza tan pequeña.",
+    "Usa un paño limpio y transpirable durante el secado.",
+    "Revisa la pieza cada pocos días para detectar cualquier signo de humedad excesiva.",
+    "Consume en las semanas siguientes al curado — no es un curado de larga conservación."
+  ],
+  "resultNote": "El resultado: una pechuga firme y perfumada, con la grasa aportando jugosidad — el curado entero más rápido y accesible para empezar.",
+  "finalQuote": "El magret curado prueba que no hace falta esperar meses para disfrutar de una pieza entera bien curada.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

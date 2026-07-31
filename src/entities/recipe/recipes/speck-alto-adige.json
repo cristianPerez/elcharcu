@@ -1,0 +1,106 @@
+{
+  "slug": "speck-alto-adige",
+  "name": "Speck Alto Adige",
+  "description": "El punto medio entre jamón y ahumado — pierna de cerdo con especias alpinas, ahumada suave con haya y madurada meses.",
+  "image": "/recipes/speck-alto-adige.svg",
+  "tags": ["Italia", "Curado", "Ahumado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Cerdo curado, ahumado suave y madurado en la montaña.",
+  "intro": "El speck vive del equilibrio: poca sal, poco humo, mucho tiempo al aire libre. Una pierna de cerdo deshuesada se cura con especias alpinas —enebro, laurel, romero— sin superar el 5% de sal, se ahúma suave con madera de haya en sesiones breves y madura al menos 22 semanas en el aire fresco de la montaña, hasta perder cerca de un tercio de su peso. A medio camino entre el jamón crudo italiano y un jamón ahumado centroeuropeo, el speck no busca imponerse: busca equilibrarse.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "2.5 kg" },
+    { "label": "Tipo", "value": "Curado, ahumado suave y madurado al aire" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Curado", "value": "Aprox. 3 semanas" },
+    { "label": "Ahumado", "value": "Suave, con madera de haya, baja temperatura" },
+    { "label": "Maduración", "value": "Mínimo 22 semanas al aire de montaña" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Pierna de cerdo deshuesada, curada entera con especias alpinas."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme, con un borde de grasa blanca y color rojo oscuro al corte."
+    },
+    {
+      "title": "Sabor",
+      "description": "Equilibrado — poca sal, poco humo, mucho aire de montaña, según su tradición."
+    }
+  ],
+  "quote": "El speck vive del equilibrio: poca sal, poco humo, mucho tiempo al aire libre.",
+  "ingredientsNote": "El principio del speck es usar poca sal y poco humo — la maduración al aire de montaña hace el resto del trabajo. La sal no debe superar el 5%.",
+  "ingredients": [
+    { "name": "Pierna de cerdo deshuesada", "amount": "2500 g", "pct": "100%" },
+    { "name": "Sal", "amount": "65 g", "pct": "2.6%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "6.25 g", "pct": "0.25%" },
+    { "name": "Pimienta negra molida", "amount": "7.5 g", "pct": "0.3%" },
+    { "name": "Bayas de enebro machacadas", "amount": "10 g", "pct": "0.4%" },
+    { "name": "Laurel molido", "amount": "2.5 g", "pct": "0.1%" },
+    { "name": "Ajo en polvo", "amount": "5 g", "pct": "0.2%" },
+    { "name": "Romero seco", "amount": "2.5 g", "pct": "0.1%" }
+  ],
+  "proportionNote": "El enebro y el laurel son la firma alpina del speck; a diferencia del jamón de la Selva Negra, aquí el ahumado es mucho más suave y breve.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la pieza. Valores por kilo: sal 26 g, sal de cura 2.5 g, pimienta 3 g, enebro 4 g, laurel 1 g, ajo 2 g, romero 1 g.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Deshuesa la pierna y perfílala en una forma compacta y regular."
+    },
+    {
+      "n": "02",
+      "text": "Mezcla sal, sal de cura y especias; frota bien toda la pieza."
+    },
+    {
+      "n": "03",
+      "text": "Cura en frío (0–4 °C) unas 3 semanas, volteando periódicamente."
+    },
+    { "n": "04", "text": "Lava el exceso de curado y seca bien la superficie." },
+    {
+      "n": "05",
+      "text": "Ahúma suave con madera de haya a baja temperatura, en sesiones breves y espaciadas."
+    },
+    {
+      "n": "06",
+      "text": "Cuelga a madurar en un lugar fresco, seco y ventilado un mínimo de 22 semanas."
+    },
+    {
+      "n": "07",
+      "text": "La pieza está lista cuando ha perdido cerca de un tercio de su peso inicial."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Menos humo es más",
+      "description": "El speck no busca un ahumado intenso; unas pocas sesiones suaves con haya bastan para su carácter."
+    },
+    {
+      "title": "El aire de montaña hace el trabajo",
+      "description": "Una maduración lenta en un espacio fresco y bien ventilado es más importante que la cantidad de sal o humo."
+    },
+    {
+      "title": "No superes el 5% de sal",
+      "description": "Un exceso de sal tapa el equilibrio que define a este curado frente a otros jamones ahumados."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En lonchas finas",
+      "description": "Se come crudo, en lonchas muy finas, con pan y un vino blanco de montaña."
+    },
+    {
+      "title": "En dados para guisar",
+      "description": "Aporta un fondo ahumado suave a sopas, guisos y platos de pasta."
+    }
+  ],
+  "recommendations": [
+    "Deshuesa con cuidado para mantener una pieza compacta y regular.",
+    "No excedas el 5% de sal en el curado.",
+    "Ahúma en sesiones suaves y espaciadas, nunca de forma intensa.",
+    "Respeta las 22 semanas mínimas de maduración al aire."
+  ],
+  "resultNote": "El resultado: una pieza de rojo oscuro con un borde blanco de grasa, de sabor equilibrado entre el jamón crudo y el ahumado — ni uno ni otro, sino ambos a la vez.",
+  "finalQuote": "El speck demuestra que el ahumado, cuando es sutil, no compite con el curado — lo completa.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

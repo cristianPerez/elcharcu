@@ -1,0 +1,107 @@
+{
+  "slug": "pastrami",
+  "name": "Pastrami Ahumado",
+  "description": "El curado que se ahúma y se cuece al vapor — pecho de res en salmuera, especiado en pimienta y cilantro, ahumado hasta tierno.",
+  "image": "/recipes/pastrami.svg",
+  "tags": ["EE. UU.", "Ahumado", "Especiado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Pecho de res en salmuera, ahumado y cocido al vapor.",
+  "intro": "El pastrami es el único curado de esta colección que termina en la olla de vapor, no en el cuchillo directo. Un pecho de res se cura varios días sumergido en una salmuera con sal de cura, se cubre en una costra generosa de pimienta y cilantro en grano, se ahúma hasta los 74 °C internos y finalmente se cuece al vapor hasta quedar tierno. De tradición judía-rumana y símbolo del deli neoyorquino, se sirve siempre caliente, en lonchas gruesas sobre pan de centeno — el broche especiado de esta colección de curados.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "2.5 kg" },
+    { "label": "Tipo", "value": "Curado en salmuera, ahumado y al vapor" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Curado", "value": "5–10 días en salmuera" },
+    { "label": "Ahumado", "value": "Aprox. 135 °C, hasta 74 °C internos" },
+    { "label": "Cocción final", "value": "Al vapor, hasta tierno" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Pecho de res (brisket), la pieza fibrosa clásica del ahumado americano."
+    },
+    {
+      "title": "Textura",
+      "description": "Fibrosa y tierna tras el vapor, con una costra de pimienta y cilantro."
+    },
+    {
+      "title": "Sabor",
+      "description": "Salado, especiado y ahumado, con un anillo rosado característico al corte."
+    }
+  ],
+  "quote": "El pastrami es el único curado de esta colección que termina en la olla de vapor, no en el cuchillo directo.",
+  "ingredientsNote": "Este es un curado en salmuera, no en seco — la sal de cura #1 es indispensable, disuelta en agua junto con sal y azúcar antes de sumergir la pieza.",
+  "ingredients": [
+    { "name": "Pecho de res (brisket)", "amount": "2500 g", "pct": "100%" },
+    { "name": "Agua fría (para la salmuera)", "amount": "2500 ml", "pct": "100%" },
+    { "name": "Sal", "amount": "175 g", "pct": "7%" },
+    { "name": "Sal de cura #1 (Prague Powder #1)", "amount": "6.25 g", "pct": "0.25%" },
+    { "name": "Azúcar morena", "amount": "65 g", "pct": "2.6%" },
+    {
+      "name": "Pimienta negra en grano (para la costra)",
+      "amount": "30 g",
+      "pct": "1.2%"
+    },
+    { "name": "Cilantro en grano (para la costra)", "amount": "30 g", "pct": "1.2%" },
+    { "name": "Ajo en polvo", "amount": "10 g", "pct": "0.4%" }
+  ],
+  "proportionNote": "La salmuera lleva un 7% de sal sobre el peso de la carne, disuelta en igual peso de agua fría; la costra de pimienta y cilantro se aplica después, ya escurrida la pieza.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso del pecho de res. Valores por kilo: agua 1000 ml, sal 70 g, sal de cura #1 2.5 g, azúcar 26 g, pimienta 12 g, cilantro 12 g, ajo 4 g.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Disuelve la sal, la sal de cura #1 y el azúcar en el agua fría hasta obtener la salmuera."
+    },
+    {
+      "n": "02",
+      "text": "Sumerge el pecho de res por completo, con un peso encima para que no flote."
+    },
+    { "n": "03", "text": "Cura en frío 5–10 días, según el grosor de la pieza." },
+    { "n": "04", "text": "Retira de la salmuera, enjuaga bien y seca con papel." },
+    {
+      "n": "05",
+      "text": "Machaca pimienta y cilantro en grano y cubre toda la pieza formando la costra."
+    },
+    {
+      "n": "06",
+      "text": "Ahúma a unos 135 °C hasta que la pieza alcance 74 °C internos."
+    },
+    {
+      "n": "07",
+      "text": "Cuece al vapor hasta que esté tierna al pinchar, y sirve caliente en lonchas."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Un peso sobre la pieza",
+      "description": "Mantén el pecho siempre sumergido en la salmuera; una zona fuera del líquido no cura bien."
+    },
+    {
+      "title": "Costra generosa",
+      "description": "No escatimes en pimienta y cilantro — es la firma visual y de sabor del pastrami."
+    },
+    {
+      "title": "El vapor final no es opcional",
+      "description": "Sin la cocción al vapor, la pieza queda fibrosa y dura; es lo que la hace tierna."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En sándwich",
+      "description": "Caliente, en lonchas gruesas, sobre pan de centeno con mostaza — el clásico neoyorquino."
+    },
+    {
+      "title": "En tabla caliente",
+      "description": "Servido recién cortado, con encurtidos ácidos que equilibran lo especiado y ahumado."
+    }
+  ],
+  "recommendations": [
+    "Cura siempre en frío y con la pieza totalmente sumergida.",
+    "No omitas la sal de cura #1 en una salmuera de varios días.",
+    "Aplica la costra de especias generosa y justo antes de ahumar.",
+    "Termina siempre al vapor — es el paso que da la textura final."
+  ],
+  "resultNote": "El resultado: lonchas fibrosas y tiernas, con un anillo rosado y una costra especiada — el único curado de la colección que se sirve caliente.",
+  "finalQuote": "El pastrami cierra la colección recordando que curar es solo el primer paso — a veces, el fuego y el vapor terminan el trabajo.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

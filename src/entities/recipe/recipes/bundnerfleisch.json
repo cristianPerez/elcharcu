@@ -1,0 +1,109 @@
+{
+  "slug": "bundnerfleisch",
+  "name": "Bündnerfleisch (Viande des Grisons)",
+  "description": "El curado alpino suizo — res en sal, vino blanco y hierbas, secada y prensada hasta su forma rectangular.",
+  "image": "/recipes/bundnerfleisch.svg",
+  "tags": ["Suiza", "Curado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Vacuno curado y prensado, secado al aire alpino.",
+  "intro": "El prensado es lo que distingue al Bündnerfleisch: no solo se cura, se le da forma con el tiempo. Una pieza magra de res —cadera o paleta— se cura cerca del punto de congelación durante tres a cinco semanas con sal, vino blanco y hierbas alpinas, reacomodándose con frecuencia para que el curado penetre parejo. Después se seca al aire entre 9 y 14 °C, prensándose periódicamente hasta adquirir su característica silueta rectangular. Es la charcutería suiza que también acompaña al raclette.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1.5 kg" },
+    { "label": "Tipo", "value": "Curado en seco, prensado y secado al aire" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Curado", "value": "3–5 semanas, cerca de 0 °C" },
+    { "label": "Secado", "value": "Al aire, 9–14 °C, con prensados periódicos" },
+    { "label": "Formato", "value": "Pieza prensada, de forma rectangular" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Cadera o paleta de res, sin grasa ni nervios."
+    },
+    {
+      "title": "Textura",
+      "description": "Compacta y de forma rectangular por el prensado periódico."
+    },
+    {
+      "title": "Sabor",
+      "description": "Salado y herbal, con un toque del vino blanco del curado."
+    }
+  ],
+  "quote": "El prensado es lo que distingue al Bündnerfleisch: no solo se cura, se le da forma con el tiempo.",
+  "ingredientsNote": "El vino blanco no es un detalle menor: forma parte del curado, no solo del sabor. La sal de cura es necesaria para las 3–5 semanas de curado en frío.",
+  "ingredients": [
+    {
+      "name": "Cadera o paleta de res (pieza entera)",
+      "amount": "1500 g",
+      "pct": "100%"
+    },
+    { "name": "Sal gruesa", "amount": "39 g", "pct": "2.6%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "3.75 g", "pct": "0.25%" },
+    { "name": "Vino blanco seco", "amount": "60 ml", "pct": "4%" },
+    { "name": "Cebolla en polvo", "amount": "4.5 g", "pct": "0.3%" },
+    {
+      "name": "Hierbas alpinas secas (tomillo, romero, laurel)",
+      "amount": "4.5 g",
+      "pct": "0.3%"
+    }
+  ],
+  "proportionNote": "El vino blanco al 4% aporta acidez y aroma al curado inicial; las hierbas alpinas son intercambiables según la tradición familiar de cada valle.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la pieza. Valores por kilo: sal 26 g, sal de cura 2.5 g, vino blanco 40 ml, cebolla 3 g, hierbas 3 g.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Perfila la pieza retirando toda la grasa y los nervios visibles."
+    },
+    {
+      "n": "02",
+      "text": "Mezcla sal, sal de cura, cebolla y hierbas; frota la pieza y rocía con el vino blanco."
+    },
+    {
+      "n": "03",
+      "text": "Cura en un recipiente cerrado, cerca de 0 °C, durante 3–5 semanas, reacomodando la pieza cada varios días."
+    },
+    { "n": "04", "text": "Retira del curado, escurre y seca bien la superficie." },
+    { "n": "05", "text": "Cuelga a secar al aire a 9–14 °C." },
+    {
+      "n": "06",
+      "text": "Prensa la pieza periódicamente durante el secado para darle su forma rectangular característica."
+    },
+    {
+      "n": "07",
+      "text": "Continúa el secado hasta que la pieza esté firme y compacta en toda su superficie."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Cerca del punto de congelación",
+      "description": "El curado inicial debe hacerse casi a 0 °C; unos grados de más aceleran el proceso de forma descontrolada."
+    },
+    {
+      "title": "Reacomoda con frecuencia",
+      "description": "Mover la pieza durante el curado asegura que la sal y el vino se repartan parejo."
+    },
+    {
+      "title": "El prensado da la forma",
+      "description": "Sin los prensados periódicos, la pieza no adquiere su característica silueta rectangular."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En lonchas finísimas",
+      "description": "Se come crudo, cortado muy fino, tradicionalmente junto al raclette."
+    },
+    {
+      "title": "En tabla con raclette",
+      "description": "Acompaña el queso raclette fundido, junto a jamón y verduras encurtidas."
+    }
+  ],
+  "recommendations": [
+    "Cura siempre cerca de 0 °C, nunca a temperatura de nevera estándar.",
+    "Reacomoda la pieza cada varios días durante el curado.",
+    "Prensa con regularidad durante el secado para lograr la forma correcta.",
+    "Sécalo en un espacio bien ventilado a 9–14 °C."
+  ],
+  "resultNote": "El resultado: una pieza rectangular, compacta y de sabor herbal, lista para corte finísimo — el curado alpino que también acompaña al raclette.",
+  "finalQuote": "El Bündnerfleisch demuestra que el curado también puede ser escultura: el tiempo y la presión le dan su forma final.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

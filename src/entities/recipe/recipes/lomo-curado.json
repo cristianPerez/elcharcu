@@ -1,0 +1,107 @@
+{
+  "slug": "lomo-curado",
+  "name": "Lomo Curado (Lomo Embuchado)",
+  "description": "El curado de pimentón por excelencia — lomo de cerdo entero, adobado y embuchado, madurado semanas al aire.",
+  "image": "/recipes/lomo-curado.svg",
+  "tags": ["España", "Curado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Lomo de cerdo entero, adobado y madurado al aire.",
+  "intro": "El lomo embuchado es uno de los curados enteros más queridos de España: una pieza de lomo de cerdo, la más magra y noble, cubierta en un adobo de pimentón, ajo y orégano y curada entera durante semanas. A diferencia de un embutido picado, aquí no hay dónde esconder un mal adobo — la pieza entera exige precisión en la sal y control durante todo el curado. El resultado es una carne firme, de un rojo intenso veteado de pimentón, que se corta en lonchas finas y perfumadas.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1.2 kg" },
+    { "label": "Tipo", "value": "Curado en seco, pieza entera" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Curado", "value": "3–4 semanas (versión larga: hasta 90 días)" },
+    { "label": "Formato", "value": "Embuchado en tripa o malla" },
+    { "label": "Condiciones", "value": "12–15 °C, 75–80% humedad" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Lomo de cerdo entero, la pieza más magra y noble, adobada sin picar."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme y compacta, de un rosa intenso a rojo profundo tras el curado."
+    },
+    {
+      "title": "Sabor",
+      "description": "Pimentón dulce y picante al frente, con ajo y orégano de fondo."
+    }
+  ],
+  "quote": "El lomo no perdona: una pieza entera no tiene dónde esconder un mal adobo.",
+  "ingredientsNote": "El adobo se aplica sobre la pieza entera, no sobre carne picada. La sal de cura es obligatoria para una curación segura de varias semanas.",
+  "ingredients": [
+    { "name": "Lomo de cerdo (pieza entera)", "amount": "1200 g", "pct": "100%" },
+    { "name": "Sal", "amount": "31 g", "pct": "2.6%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "3 g", "pct": "0.25%" },
+    { "name": "Pimentón dulce", "amount": "36 g", "pct": "3%" },
+    { "name": "Pimentón picante", "amount": "12 g", "pct": "1%" },
+    { "name": "Ajo fresco triturado", "amount": "18 g", "pct": "1.5%" },
+    { "name": "Orégano seco", "amount": "4 g", "pct": "0.3%" },
+    { "name": "Azúcar", "amount": "6 g", "pct": "0.5%" },
+    { "name": "Aceite de oliva (para el adobo)", "amount": "20 ml", "pct": "1.7%" }
+  ],
+  "proportionNote": "El pimentón al 4% total (dulce y picante) es lo que define el color y el sabor característico; el aceite liga el adobo para que se adhiera bien a la pieza.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la pieza de lomo. Valores por kilo: sal 26 g, sal de cura 2.5 g, pimentón dulce 30 g, pimentón picante 10 g, ajo 15 g, orégano 3 g, azúcar 5 g.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Limpia el lomo de grasa y nervios sobrantes, dejando la pieza entera."
+    },
+    {
+      "n": "02",
+      "text": "Frota la pieza con sal y sal de cura; deja en frío (0–4 °C) 24–48 h para que penetre."
+    },
+    { "n": "03", "text": "Lava el exceso de sal y seca bien la pieza." },
+    {
+      "n": "04",
+      "text": "Prepara el adobo mezclando pimentones, ajo, orégano, azúcar y aceite hasta formar una pasta espesa."
+    },
+    {
+      "n": "05",
+      "text": "Cubre toda la pieza con el adobo, asegurando que penetre en cada rincón."
+    },
+    {
+      "n": "06",
+      "text": "Embucha en tripa natural o envuelve en malla, atando bien para compactar."
+    },
+    {
+      "n": "07",
+      "text": "Cura colgado a 12–15 °C y 75–80% de humedad durante 3–4 semanas (o hasta 90 días para un curado más intenso)."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Pieza entera, cuidado extra",
+      "description": "Al no estar picada, cualquier zona mal curada queda expuesta; controla bien la sal y el frío inicial."
+    },
+    {
+      "title": "Adobo generoso",
+      "description": "Cubre bien toda la superficie; el pimentón no solo da sabor, también protege durante el curado."
+    },
+    {
+      "title": "Cuelga sin que se toque",
+      "description": "Deja espacio entre piezas para que el aire circule parejo y el curado sea uniforme."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En lonchas finas",
+      "description": "Curado, se corta en lonchas muy finas y se sirve a temperatura ambiente, solo o con pan."
+    },
+    {
+      "title": "En tabla",
+      "description": "Combina bien con quesos curados y encurtidos en una tabla de embutidos."
+    }
+  ],
+  "recommendations": [
+    "Usa una pieza de lomo de buena calidad, sin exceso de grasa externa.",
+    "No omitas la sal de cura en un curado de varias semanas.",
+    "Controla temperatura y humedad durante todo el proceso.",
+    "Deja que repose sin prisas: el lomo mejora con el tiempo."
+  ],
+  "resultNote": "El resultado: una pieza firme, de un rojo intenso veteado de pimentón, que se corta en lonchas finas y perfumadas. Sencillez y paciencia, la fórmula de siempre.",
+  "finalQuote": "El lomo embuchado demuestra que a veces la mejor charcutería es la más simple: una buena pieza, un buen adobo y tiempo.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

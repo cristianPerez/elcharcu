@@ -1,0 +1,101 @@
+{
+  "slug": "biltong",
+  "name": "Biltong",
+  "description": "El curado exprés sudafricano — res en vinagre, sal y cilantro tostado, secada al aire en pocos días.",
+  "image": "/recipes/biltong.svg",
+  "tags": ["Sudáfrica", "Curado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Tiras de res curadas con vinagre y secadas al aire.",
+  "intro": "El biltong es el curado más rápido de la colección — y el único que no necesita ni sal de cura ni ahumado. Tiras de res cortadas a favor de la fibra se cubren en vinagre, sal y cilantro tostado, curan una noche en frío y se cuelgan en un espacio bien ventilado apenas cuatro días, hasta que no ceden al apretarlas con los dedos. La acidez del vinagre, el frío inicial y un secado corto —de días, no de meses— bastan para su conservación segura, muy distinto de los curados largos del resto de esta colección.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Curado con vinagre, secado al aire" },
+    { "label": "Nivel", "value": "Principiante" },
+    { "label": "Curado", "value": "Una noche en frío" },
+    { "label": "Secado", "value": "Aprox. 4 días, con ventilación constante" },
+    { "label": "Formato", "value": "Tiras cortadas a favor de la fibra" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Falda o cadera de res, cortada en tiras a favor de la fibra."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme por fuera, más tierna hacia el centro según el punto de secado."
+    },
+    {
+      "title": "Sabor",
+      "description": "Ácido por el vinagre, con el cilantro tostado como sello distintivo."
+    }
+  ],
+  "quote": "El biltong es el curado más rápido de la colección — y el único que no necesita ni sal de cura ni ahumado.",
+  "ingredientsNote": "A diferencia de los curados largos de esta colección, el biltong tradicional no lleva sal de cura: el vinagre, el frío y un secado corto de días —no meses— bastan para su conservación segura.",
+  "ingredients": [
+    { "name": "Falda o cadera de res (en tiras)", "amount": "1000 g", "pct": "100%" },
+    { "name": "Vinagre de vino tinto o balsámico", "amount": "100 ml", "pct": "10%" },
+    { "name": "Sal gruesa", "amount": "26 g", "pct": "2.6%" },
+    { "name": "Cilantro en grano tostado y machacado", "amount": "15 g", "pct": "1.5%" },
+    { "name": "Pimienta negra molida", "amount": "5 g", "pct": "0.5%" },
+    { "name": "Azúcar morena (opcional)", "amount": "10 g", "pct": "1%" }
+  ],
+  "proportionNote": "El cilantro tostado al 1.5% es la firma aromática del biltong — tuéstalo justo antes de machacarlo para un aroma más intenso.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la carne. Valores por kilo: vinagre 100 ml, sal 26 g, cilantro 15 g, pimienta 5 g, azúcar 10 g.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Tuesta los granos de cilantro en una sartén seca y machácalos grueso."
+    },
+    {
+      "n": "02",
+      "text": "Corta la carne en tiras de 2–3 cm de grosor, a favor de la fibra."
+    },
+    {
+      "n": "03",
+      "text": "Cubre las tiras con el vinagre, dejando que penetre unos minutos."
+    },
+    { "n": "04", "text": "Frota con sal, cilantro tostado, pimienta y azúcar." },
+    { "n": "05", "text": "Cura tapado en frío durante una noche." },
+    {
+      "n": "06",
+      "text": "Cuelga las tiras en un espacio bien ventilado, con un ventilador si es posible."
+    },
+    {
+      "n": "07",
+      "text": "Seca unos 4 días, hasta que no ceda al presionar con los dedos."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Corta a favor de la fibra",
+      "description": "Facilita colgar las tiras y da la textura característica al morder, deshebrada en el sentido correcto."
+    },
+    {
+      "title": "Ventilación, no calor",
+      "description": "El biltong seca con aire en movimiento, no con calor; un ventilador es más útil que una fuente de calor."
+    },
+    {
+      "title": "Ajusta el punto a tu gusto",
+      "description": "Menos días de secado dan un biltong más tierno y húmedo; más días, uno más firme y concentrado."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Como snack",
+      "description": "Se come tal cual, cortado en lonchas finas o desmenuzado con los dedos."
+    },
+    {
+      "title": "En ensaladas",
+      "description": "Rallado o en tiras finas, aporta un salado ácido intenso a ensaladas frescas."
+    }
+  ],
+  "recommendations": [
+    "Usa un vinagre de calidad — su acidez es parte de la conservación, no solo del sabor.",
+    "Cuelga las tiras sin que se toquen entre sí para un secado parejo.",
+    "Revisa a diario apretando la carne para encontrar tu punto ideal.",
+    "Consume en un plazo razonable y consérvalo en frío una vez seco."
+  ],
+  "resultNote": "El resultado: tiras oscuras y aromáticas, ácidas por el vinagre y perfumadas de cilantro tostado — listas en días, no en meses.",
+  "finalQuote": "El biltong recuerda que no todo curado necesita esperar meses: a veces, el vinagre y el viento hacen el trabajo en días.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

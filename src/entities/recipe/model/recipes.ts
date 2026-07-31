@@ -1,3 +1,7 @@
+import biltong from '../recipes/biltong.json';
+import bresaola from '../recipes/bresaola.json';
+import bundnerfleisch from '../recipes/bundnerfleisch.json';
+import cecinaDeLeon from '../recipes/cecina-de-leon.json';
 import chistorra from '../recipes/chistorra.json';
 import chorizoCantimpalo from '../recipes/chorizo-cantimpalo.json';
 import chorizoCriolloArgentino from '../recipes/chorizo-criollo-argentino.json';
@@ -9,17 +13,23 @@ import chorizoVenezolano from '../recipes/chorizo-venezolano.json';
 import chorizoVerdeMexicano from '../recipes/chorizo-verde-mexicano.json';
 import chouricoPortugues from '../recipes/chourico-portugues.json';
 import fuet from '../recipes/fuet.json';
+import jamonSelvaNegra from '../recipes/jamon-selva-negra.json';
 import kielbasaDePollo from '../recipes/kielbasa-de-pollo.json';
 import linguicaCalabresa from '../recipes/linguica-calabresa.json';
 import linguicaPortuguesa from '../recipes/linguica-portuguesa.json';
+import lomoCurado from '../recipes/lomo-curado.json';
 import longanizaColombiana from '../recipes/longaniza-colombiana.json';
 import longanizaDominicana from '../recipes/longaniza-dominicana.json';
 import longanizaFilipina from '../recipes/longaniza-filipina.json';
 import loukaniko from '../recipes/loukaniko.json';
+import magretDePatoCurado from '../recipes/magret-de-pato-curado.json';
 import merguez from '../recipes/merguez.json';
+import pancetaAhumada from '../recipes/panceta-ahumada.json';
+import pastrami from '../recipes/pastrami.json';
 import salchichonIberico from '../recipes/salchichon-iberico.json';
 import salchichon from '../recipes/salchichon.json';
 import sobrasada from '../recipes/sobrasada.json';
+import speckAltoAdige from '../recipes/speck-alto-adige.json';
 import sujuk from '../recipes/sujuk.json';
 
 import { type Recipe, type RecipeSummary } from './types';
@@ -54,6 +64,16 @@ const recipes: readonly Recipe[] = [
   merguez,
   sujuk,
   kielbasaDePollo,
+  lomoCurado,
+  cecinaDeLeon,
+  pancetaAhumada,
+  jamonSelvaNegra,
+  bresaola,
+  speckAltoAdige,
+  magretDePatoCurado,
+  bundnerfleisch,
+  biltong,
+  pastrami,
 ];
 
 export function getRecipes(): readonly Recipe[] {

@@ -1,0 +1,108 @@
+{
+  "slug": "bresaola",
+  "name": "Bresaola della Valtellina",
+  "description": "El curado magro de los Alpes — babilla de ternera en sal seca, especiada y madurada hasta el púrpura oscuro.",
+  "image": "/recipes/bresaola.svg",
+  "tags": ["Italia", "Curado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Ternera curada en seco, sin ahumar, madurada en los Alpes.",
+  "intro": "La bresaola no necesita humo ni grasa: solo sal, especias y el aire frío de la montaña. Una pieza magra de ternera —babilla o contra— se cura en seco diez días con pimienta, ajo, canela, laurel y clavo, y madura colgada entre dos y cuatro meses a 12–18 °C, en el clima alpino que le da nombre. Al no tener grasa que la proteja, es una de las piezas más exigentes de curar: cualquier descuido en la humedad o la temperatura se nota. El resultado es una carne de un púrpura oscuro intenso, magra y de sabor especiado.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1.5 kg" },
+    { "label": "Tipo", "value": "Curado en seco, sin ahumar" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Salazón", "value": "10 días" },
+    { "label": "Curado", "value": "2–4 meses a 12–18 °C" },
+    { "label": "Formato", "value": "Pieza entera, embuchada en tripa o malla" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Babilla o contra de ternera, una de las piezas más magras del animal."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme y compacta, de un color púrpura oscuro característico."
+    },
+    {
+      "title": "Sabor",
+      "description": "Suave y especiado — canela, clavo y laurel de fondo, sin rastro de humo."
+    }
+  ],
+  "quote": "La bresaola no necesita humo ni grasa: solo sal, especias y el aire frío de la montaña.",
+  "ingredientsNote": "Es de los curados más magros de esta colección — por eso el control de temperatura y humedad durante la maduración es aún más importante.",
+  "ingredients": [
+    {
+      "name": "Babilla o contra de ternera (pieza entera)",
+      "amount": "1500 g",
+      "pct": "100%"
+    },
+    { "name": "Sal gruesa", "amount": "39 g", "pct": "2.6%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "3.75 g", "pct": "0.25%" },
+    { "name": "Pimienta negra en grano machacada", "amount": "6 g", "pct": "0.4%" },
+    { "name": "Ajo en polvo", "amount": "4.5 g", "pct": "0.3%" },
+    { "name": "Canela molida", "amount": "1.5 g", "pct": "0.1%" },
+    { "name": "Laurel molido", "amount": "1.5 g", "pct": "0.1%" },
+    { "name": "Clavo molido", "amount": "0.75 g", "pct": "0.05%" },
+    { "name": "Vino tinto (opcional, para el frotado)", "amount": "30 ml", "pct": "2%" }
+  ],
+  "proportionNote": "Las especias dulces —canela, clavo, laurel— son la firma de la bresaola frente a otros curados de vacuno; se usan en pequeñas cantidades para no tapar la carne.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la pieza. Valores por kilo: sal 26 g, sal de cura 2.5 g, pimienta 4 g, ajo 3 g, canela 1 g, laurel 1 g, clavo 0.5 g.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Perfila la pieza retirando grasa y nervios hasta dejarla limpia y compacta."
+    },
+    {
+      "n": "02",
+      "text": "Mezcla sal, sal de cura y especias; frota bien toda la superficie."
+    },
+    {
+      "n": "03",
+      "text": "Cura en frío (0–4 °C) 10 días, volteando y redistribuyendo la mezcla a diario."
+    },
+    { "n": "04", "text": "Lava el exceso de sal y seca bien la pieza." },
+    { "n": "05", "text": "Embucha en tripa o envuelve en malla, atando para compactar." },
+    {
+      "n": "06",
+      "text": "Cuelga a curar a 12–18 °C con humedad alta (70–80%) durante 2 a 4 meses."
+    },
+    {
+      "n": "07",
+      "text": "La pieza está lista cuando pierde un 35–40% de su peso inicial y el color es púrpura oscuro."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Pieza magra, cuidado extra",
+      "description": "Al no tener grasa que la proteja, la bresaola es más sensible a un curado descontrolado; vigila humedad y temperatura de cerca."
+    },
+    {
+      "title": "Voltea a diario en la salazón",
+      "description": "Asegura que la sal penetre parejo en toda la pieza durante los primeros 10 días."
+    },
+    {
+      "title": "Pésala para saber cuándo está lista",
+      "description": "La pérdida de peso, no solo el tiempo, es el mejor indicador de que terminó el curado."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En carpaccio",
+      "description": "En lonchas finísimas, con aceite de oliva, limón y virutas de parmesano."
+    },
+    {
+      "title": "En ensalada",
+      "description": "Con rúcula y parmesano, aprovechando su perfil magro y especiado."
+    }
+  ],
+  "recommendations": [
+    "Elige una pieza magra y bien perfilada, sin grasa externa.",
+    "Controla la humedad durante toda la maduración — es clave en una pieza tan magra.",
+    "No aceleres los 10 días de salazón inicial.",
+    "Pesa la pieza antes y después para verificar la pérdida de peso correcta."
+  ],
+  "resultNote": "El resultado: una pieza de un púrpura oscuro intenso, magra y especiada, que se corta en lonchas casi transparentes — un curado alpino de una pureza única.",
+  "finalQuote": "La bresaola demuestra que un buen curado no necesita grasa ni humo: solo sal, especias precisas y el tiempo de la montaña.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

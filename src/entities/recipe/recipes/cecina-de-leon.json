@@ -1,0 +1,104 @@
+{
+  "slug": "cecina-de-leon",
+  "name": "Cecina de León",
+  "description": "El curado de vacuno por excelencia — salada, ahumada con leña de roble y curada más de 7 meses. Intensa y oscura.",
+  "image": "/recipes/cecina-de-leon.svg",
+  "tags": ["España", "Curado", "Ahumado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Vacuno salado, ahumado con roble y curado largo.",
+  "intro": "La cecina de León es el gran curado de vacuno español: una pieza de la extremidad trasera de la res, perfilada, salada en seco, ahumada con leña de roble o encina durante casi dos semanas y curada un mínimo de siete meses — doce en su versión reserva. El resultado recuerda al jamón en su aspecto tostado y en la paciencia que exige, pero con el carácter fibroso y ahumado propio del vacuno. Un curado que no se apresura: siete meses son el mínimo, no el máximo.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "3 kg" },
+    { "label": "Tipo", "value": "Curado, salado y ahumado" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Salazón", "value": "24–48 h según peso" },
+    { "label": "Ahumado", "value": "12–16 días, leña de roble o encina" },
+    { "label": "Curado", "value": "Mínimo 7 meses (Reserva: 12 meses)" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Pieza de la extremidad trasera de la res (contra o babilla), perfilada y desgrasada."
+    },
+    {
+      "title": "Textura",
+      "description": "Fibrosa y firme, con un aspecto exterior tostado similar al jamón."
+    },
+    {
+      "title": "Sabor",
+      "description": "Intenso y ahumado, con un fondo salado profundo que se suaviza con el corte fino."
+    }
+  ],
+  "quote": "La cecina no se apresura: siete meses son el mínimo, no el máximo.",
+  "ingredientsNote": "El salado es en seco, a diferencia de muchos embutidos en salmuera. La sal de cura es clave para un curado seguro de varios meses.",
+  "ingredients": [
+    {
+      "name": "Contra o babilla de ternera (pieza entera)",
+      "amount": "3000 g",
+      "pct": "100%"
+    },
+    { "name": "Sal gruesa", "amount": "78 g", "pct": "2.6%" },
+    { "name": "Sal de cura (nitrificante, #2)", "amount": "7.5 g", "pct": "0.25%" },
+    {
+      "name": "Pimienta negra molida (opcional, para frotar antes del ahumado)",
+      "amount": "9 g",
+      "pct": "0.3%"
+    }
+  ],
+  "proportionNote": "La cecina de León tradicional lleva solo sal — sin más condimento que el ahumado y el tiempo. La sal de cura es la única incorporación moderna para un curado seguro tan largo.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la pieza. Valores por kilo: sal 26 g, sal de cura 2.5 g, pimienta negra (opcional) 3 g. Nada más — la simplicidad es la clave del curado tradicional.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Perfila la pieza, retirando grasa y nervios hasta dejar una forma limpia."
+    },
+    {
+      "n": "02",
+      "text": "Cubre por completo en sal gruesa y sal de cura; deja en salazón 24–48 h en frío según el peso."
+    },
+    { "n": "03", "text": "Lava el exceso de sal bajo agua fría y seca bien la pieza." },
+    {
+      "n": "04",
+      "text": "Deja asentar colgada en frío varios días para que la sal se reparta de forma uniforme."
+    },
+    { "n": "05", "text": "Ahúma en frío con leña de roble o encina durante 12–16 días." },
+    {
+      "n": "06",
+      "text": "Cuelga a curar en un lugar fresco y ventilado (10–15 °C) un mínimo de 7 meses."
+    },
+    { "n": "07", "text": "Para la versión reserva, extiende el curado hasta 12 meses." }
+  ],
+  "tips": [
+    {
+      "title": "Sal justa, no de más",
+      "description": "Un exceso de sal en el salazón inicial arruina el equilibrio; calcula bien el tiempo según el peso de la pieza."
+    },
+    {
+      "title": "Ahumado con roble o encina",
+      "description": "La madera define el aroma característico; evita maderas resinosas que amarguen la carne."
+    },
+    {
+      "title": "Paciencia de meses",
+      "description": "Los siete meses mínimos no son un capricho — es el tiempo que necesita la pieza para curar en profundidad."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En lonchas finísimas",
+      "description": "Se corta lo más fino posible, a temperatura ambiente, para apreciar su textura y aroma ahumado."
+    },
+    {
+      "title": "Con aceite de oliva",
+      "description": "Un hilo de aceite de oliva virgen realza su sabor sin taparlo."
+    }
+  ],
+  "recommendations": [
+    "Elige una pieza de vacuno de buena calidad y bien perfilada.",
+    "Respeta el tiempo de salazón según el peso — ni más ni menos.",
+    "No aceleres el ahumado ni el curado: son procesos de meses.",
+    "Guarda la pieza curada en un lugar fresco y ventilado."
+  ],
+  "resultNote": "El resultado: una pieza de un rojo oscuro tostado, fibrosa y de aroma ahumado profundo — un curado de vacuno que rivaliza en carácter con el mejor jamón.",
+  "finalQuote": "La cecina de León recuerda que el buen curado no se mide en días, sino en meses — y a veces en años.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

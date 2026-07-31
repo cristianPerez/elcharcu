@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img" aria-label="Lomo Curado (Lomo Embuchado)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#322823"/>
+      <stop offset="1" stop-color="#1a100b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.6">
+      <stop offset="0" stop-color="#F4F1EB" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#F4F1EB" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  </defs>
+  <rect width="600" height="450" fill="url(#bg)"/>
+  <rect width="600" height="450" fill="url(#glow)"/>
+    <rect x="150" y="188" width="300" height="84" rx="42" fill="#5b230e"/>
+    <rect x="158" y="196" width="284" height="68" rx="34" fill="#9c4420"/>
+    <rect x="172" y="204" width="256" height="12" rx="6" fill="#F4F1EB" opacity="0.14"/>
+    <g stroke="#2c1c10" stroke-width="4" opacity="0.65">
+      <line x1="192" y1="182" x2="207" y2="278"/>
+      <line x1="207" y1="182" x2="192" y2="278"/>
+      <line x1="262" y1="182" x2="277" y2="278"/>
+      <line x1="277" y1="182" x2="262" y2="278"/>
+      <line x1="332" y1="182" x2="347" y2="278"/>
+      <line x1="347" y1="182" x2="332" y2="278"/>
+      <line x1="393" y1="184" x2="406" y2="276"/>
+      <line x1="406" y1="184" x2="393" y2="276"/>
+    </g>
+  <rect width="600" height="450" filter="url(#grain)" opacity="0.05"/>
+  <rect x="16" y="16" width="568" height="418" rx="18" fill="none" stroke="#F4F1EB" stroke-opacity="0.16"/>
+  <g transform="translate(40 388)">
+    <rect width="98" height="30" rx="15" fill="#F4F1EB" fill-opacity="0.10" stroke="#F4F1EB" stroke-opacity="0.22"/>
+    <text x="20" y="20" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="2" fill="#F4F1EB" fill-opacity="0.85">ESPAÑA</text>
+  </g>
+  <text x="560" y="404" text-anchor="end" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="1" fill="#F4F1EB" fill-opacity="0.6">EL CHARCU</text>
+</svg>

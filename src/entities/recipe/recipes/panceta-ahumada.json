@@ -1,0 +1,100 @@
+{
+  "slug": "panceta-ahumada",
+  "name": "Panceta Curada y Ahumada (Bacon)",
+  "description": "El curado que se cocina — panceta de cerdo curada en seco y ahumada en frío con manzano, lista para la sartén.",
+  "image": "/recipes/panceta-ahumada.svg",
+  "tags": ["EE. UU.", "Ahumado", "Curado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Panceta curada en seco, ahumada y lista para cocinar.",
+  "intro": "El bacon casero no es solo panceta con humo: es una pieza curada varios días antes de ver el ahumadero. La panceta de cerdo se frota con una cura seca de sal, azúcar y sal de cura, reposa en frío hasta absorber el sabor, se seca sin tapar hasta formar una película pegajosa y se ahúma a baja temperatura con manzano o nogal. A diferencia del resto de curados de esta colección, esta pieza no se come cruda: siempre se cocina antes de servir.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1.5 kg" },
+    { "label": "Tipo", "value": "Curado en seco y ahumado en frío" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Curado", "value": "5–7 días en frío" },
+    { "label": "Ahumado", "value": "71–93 °C hasta 65–68 °C internos" },
+    { "label": "Consumo", "value": "Se cocina antes de comer" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Panceta de cerdo (vientre), la pieza más grasa, curada entera."
+    },
+    {
+      "title": "Textura",
+      "description": "Vetas marcadas de carne y grasa, firme tras el ahumado."
+    },
+    {
+      "title": "Sabor",
+      "description": "Salado y ahumado, dulzón por el azúcar del curado."
+    }
+  ],
+  "quote": "El bacon no es solo panceta con humo: es una pieza curada días antes de ver el ahumadero.",
+  "ingredientsNote": "A diferencia de otros curados de esta colección, esta panceta se cocina siempre antes de comer — la sal de cura #1 es la indicada para curados que luego se cocinan o ahúman en caliente.",
+  "ingredients": [
+    { "name": "Panceta de cerdo (con o sin piel)", "amount": "1500 g", "pct": "100%" },
+    { "name": "Sal", "amount": "39 g", "pct": "2.6%" },
+    { "name": "Sal de cura #1 (Prague Powder #1)", "amount": "3.75 g", "pct": "0.25%" },
+    { "name": "Azúcar moreno", "amount": "45 g", "pct": "3%" },
+    { "name": "Pimienta negra molida", "amount": "4.5 g", "pct": "0.3%" }
+  ],
+  "proportionNote": "El azúcar moreno al 3% suaviza el salado y ayuda a dorar en la sartén. La sal de cura #1 (no #2) es la correcta aquí porque esta pieza se ahúma en caliente y se cocina — no cura meses al aire.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la panceta. Valores por kilo: sal 26 g, sal de cura #1 2.5 g, azúcar moreno 30 g, pimienta negra 3 g.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Mezcla sal, sal de cura #1, azúcar y pimienta; frota bien toda la pieza."
+    },
+    {
+      "n": "02",
+      "text": "Cura en una bolsa cerrada en frío (0–4 °C) 5–7 días, volteando cada día."
+    },
+    { "n": "03", "text": "Enjuaga el exceso de curado bajo agua fría y seca con papel." },
+    {
+      "n": "04",
+      "text": "Deja secar sin tapar en la nevera 12–24 h hasta que la superficie quede pegajosa (la película que fija el humo)."
+    },
+    {
+      "n": "05",
+      "text": "Ahúma en frío o a baja temperatura (71–93 °C) con manzano, nogal o cerezo, hasta 65–68 °C internos."
+    },
+    { "n": "06", "text": "Deja enfriar y reposar en frío antes de cortar en lonchas." },
+    {
+      "n": "07",
+      "text": "Cocina siempre antes de comer — a la sartén o al horno hasta dorar."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Voltea cada día",
+      "description": "Durante el curado, voltea la pieza a diario para que la sal y el curado penetren parejo."
+    },
+    {
+      "title": "Forma la película antes de ahumar",
+      "description": "El secado en frío sin tapar crea una superficie pegajosa que retiene mejor el humo."
+    },
+    {
+      "title": "No te pases de temperatura",
+      "description": "Un ahumado demasiado caliente cuece la grasa antes de tiempo; mantente en 71–93 °C."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "A la sartén",
+      "description": "En lonchas finas, a fuego medio hasta dorar y quedar crujiente en los bordes."
+    },
+    {
+      "title": "Al horno",
+      "description": "Sobre rejilla a 190 °C, 15–20 min, para un dorado parejo sin tanta grasa salpicada."
+    }
+  ],
+  "recommendations": [
+    "Cura siempre en frío, nunca a temperatura ambiente.",
+    "No omitas la sal de cura #1 en un ahumado en caliente.",
+    "Deja formar la película pegajosa antes de ahumar.",
+    "Cocina siempre esta pieza antes de comerla — a diferencia de un curado tradicional, no se come cruda."
+  ],
+  "resultNote": "El resultado: lonchas vetadas de carne y grasa, con un ahumado suave y un salado justo — el bacon casero no se parece al de bolsa.",
+  "finalQuote": "El bacon es la prueba de que curar no siempre significa comer crudo: a veces el curado es solo el primer paso.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

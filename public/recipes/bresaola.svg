@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img" aria-label="Bresaola della Valtellina">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#31493f"/>
+      <stop offset="1" stop-color="#193127"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.6">
+      <stop offset="0" stop-color="#F4F1EB" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#F4F1EB" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  </defs>
+  <rect width="600" height="450" fill="url(#bg)"/>
+  <rect width="600" height="450" fill="url(#glow)"/>
+    <g transform="translate(300 235)">
+      <circle cx="-75" cy="12" r="68" fill="#3f0f2b"/>
+      <circle cx="-22" cy="-14" r="73" fill="#521636"/>
+      <circle cx="35" cy="10" r="73" fill="#671a41"/>
+      <circle cx="90" cy="-10" r="68" fill="#3f0f2b"/>
+      <circle cx="-22" cy="-14" r="30" fill="#F4F1EB" opacity="0.06"/>
+      <circle cx="35" cy="10" r="32" fill="#F4F1EB" opacity="0.06"/>
+    </g>
+  <rect width="600" height="450" filter="url(#grain)" opacity="0.05"/>
+  <rect x="16" y="16" width="568" height="418" rx="18" fill="none" stroke="#F4F1EB" stroke-opacity="0.16"/>
+  <g transform="translate(40 388)">
+    <rect width="90" height="30" rx="15" fill="#F4F1EB" fill-opacity="0.10" stroke="#F4F1EB" stroke-opacity="0.22"/>
+    <text x="20" y="20" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="2" fill="#F4F1EB" fill-opacity="0.85">ITALIA</text>
+  </g>
+  <text x="560" y="404" text-anchor="end" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="1" fill="#F4F1EB" fill-opacity="0.6">EL CHARCU</text>
+</svg>

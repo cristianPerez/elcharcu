@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450" role="img" aria-label="Jamón Curado y Ahumado (Estilo Selva Negra)">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#322823"/>
+      <stop offset="1" stop-color="#1a100b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.42" r="0.6">
+      <stop offset="0" stop-color="#F4F1EB" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#F4F1EB" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  </defs>
+  <rect width="600" height="450" fill="url(#bg)"/>
+  <rect width="600" height="450" fill="url(#glow)"/>
+    <path d="M312 138 q66 12 74 88 q9 78 -27 136 q-24 40 -52 45 q-29 5 -41 -27 q-19 -48 -12 -116 q6 -58 25 -97 q13 -26 33 -29 z" fill="#3a130a"/>
+    <ellipse cx="298" cy="232" rx="52" ry="78" fill="#6b2314" opacity="0.55"/>
+    <path d="M272 168 q-12 88 8 186" fill="none" stroke="#F4F1EB" stroke-width="9" stroke-linecap="round" opacity="0.22"/>
+    <path d="M300 128 q0 -18 18 -18 q18 0 18 16" fill="none" stroke="#F4F1EB" stroke-width="5" opacity="0.4"/>
+  <rect width="600" height="450" filter="url(#grain)" opacity="0.05"/>
+  <rect x="16" y="16" width="568" height="418" rx="18" fill="none" stroke="#F4F1EB" stroke-opacity="0.16"/>
+  <g transform="translate(40 388)">
+    <rect width="116" height="30" rx="15" fill="#F4F1EB" fill-opacity="0.10" stroke="#F4F1EB" stroke-opacity="0.22"/>
+    <text x="20" y="20" font-family="Arial, Helvetica, sans-serif" font-size="13" letter-spacing="2" fill="#F4F1EB" fill-opacity="0.85">ALEMANIA</text>
+  </g>
+  <text x="560" y="404" text-anchor="end" font-family="Georgia, 'Times New Roman', serif" font-size="15" letter-spacing="1" fill="#F4F1EB" fill-opacity="0.6">EL CHARCU</text>
+</svg>
