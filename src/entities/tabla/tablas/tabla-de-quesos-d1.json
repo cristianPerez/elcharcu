@@ -1,0 +1,170 @@
+{
+  "slug": "tabla-de-quesos-d1",
+  "name": "Tabla de Quesos Espectacular con Productos del D1",
+  "description": "Una tabla de quesos elegante y abundante con productos del D1, por menos de $80.000 COP — ideal para reuniones, vino, cumpleaños o noches de película.",
+  "image": "/recipes/tabla-de-quesos-d1.jpg",
+  "tags": ["Colombia", "Tabla", "Económico"],
+  "eyebrow": "Tabla · Tablas y montajes",
+  "subtitle": "Elegante, abundante y por menos de $80.000 COP.",
+  "intro": "No hace falta gastar cientos de miles de pesos para tener una tabla de quesos que se vea de restaurante. Con ocho productos del D1 —ninguno exótico, ninguno de lujo— se arma una tabla abundante y elegante en menos de media hora. Es el plan perfecto para una reunión de última hora, una copa de vino entre semana, un cumpleaños íntimo, una cena romántica, un picnic o simplemente una noche de película en el sofá. El secreto no está en el presupuesto: está en el orden, el corte y la forma en que se acomoda cada pieza.",
+  "stats": [
+    { "label": "Presupuesto total", "value": "$70.240 COP" },
+    { "label": "Rinde para", "value": "4–6 personas" },
+    { "label": "Tiempo de armado", "value": "20–25 min" },
+    { "label": "Nivel", "value": "Fácil" },
+    { "label": "Ingredientes", "value": "8 productos del D1" },
+    { "label": "Tipo", "value": "Tabla fría, sin cocción" }
+  ],
+  "details": [
+    {
+      "title": "Presupuesto",
+      "description": "Ocho productos del D1, ninguno de lujo — el efecto elegante nace del corte y el montaje, no del precio."
+    },
+    {
+      "title": "Ocasión",
+      "description": "Perfecta para reuniones, una copa de vino, cumpleaños íntimos, cenas en casa o una noche de película."
+    },
+    {
+      "title": "Estilo",
+      "description": "Quesos en abanico, rosas de jamón y racimos de uva — el mismo lenguaje visual de una tabla de autor."
+    }
+  ],
+  "quote": "Una tabla elegante no se compra: se arma. El truco está en el corte, no en el presupuesto.",
+  "ingredientsNote": "Ocho productos del D1, sin ningún ingrediente difícil de conseguir. Lo que hace lucir esta tabla no es el precio de cada producto — es el orden y el corte de cada pieza.",
+  "ingredients": [
+    {
+      "name": "Queso Holandés",
+      "amount": "$8.300",
+      "pct": "11.8%",
+      "note": "Semi-duro y de sabor suave; cortado en bastones gruesos da altura a la tabla."
+    },
+    {
+      "name": "Queso Gouda",
+      "amount": "$8.300",
+      "pct": "11.8%",
+      "note": "Dulce y ligeramente tostado; en triángulos pequeños se acomoda fácil entre los demás quesos."
+    },
+    {
+      "name": "Queso Suizo",
+      "amount": "$8.300",
+      "pct": "11.8%",
+      "note": "Con sus agujeros característicos y sabor a nuez; luce en triángulos o rectángulos pequeños."
+    },
+    {
+      "name": "Chorizo Vela",
+      "amount": "$8.400",
+      "pct": "12.0%",
+      "note": "Curado y contundente; doblado en medias lunas o abanico aporta color y volumen."
+    },
+    {
+      "name": "Queso Brie",
+      "amount": "$12.800",
+      "pct": "18.2%",
+      "note": "El centro de la tabla: cremoso, de corteza aterciopelada; combina con uvas, miel o mermelada."
+    },
+    {
+      "name": "Jamón de Pavo Finas Hierbas",
+      "amount": "$11.950",
+      "pct": "17.0%",
+      "note": "Suave y aromático; enrollado en rosas le da a la tabla su toque más elegante."
+    },
+    {
+      "name": "Uvas Importadas",
+      "amount": "$9.990",
+      "pct": "14.2%",
+      "note": "Frescas y jugosas; en pequeños racimos rellenan los espacios vacíos y dan color."
+    },
+    {
+      "name": "Tostadas con Ajo",
+      "amount": "$2.200",
+      "pct": "3.1%",
+      "note": "El soporte crocante para todo lo demás; en abanico ocupan espacio visual sin competir."
+    }
+  ],
+  "proportionNote": "El brie y el jamón concentran más de un tercio del presupuesto porque son las piezas que más protagonismo dan a la vista y al paladar; el resto son quesos y acompañamientos de soporte.",
+  "expertNote": "El porcentaje es la participación de cada producto sobre el total de $70.240. Los precios son de referencia — pueden variar levemente según la ciudad y el punto D1.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Elige una tabla de madera de al menos 35 cm — entre más superficie, más abundante se ve todo."
+    },
+    {
+      "n": "02",
+      "text": "Coloca el queso Brie en el centro: es la pieza más grande y el punto focal de toda la composición."
+    },
+    {
+      "n": "03",
+      "text": "Distribuye alrededor el Gouda, el Holandés y el Suizo, dejando espacio entre cada uno — no los pegues."
+    },
+    {
+      "n": "04",
+      "text": "Ubica el jamón de pavo cerca del brie, en uno de los extremos de la tabla."
+    },
+    {
+      "n": "05",
+      "text": "Coloca el chorizo vela en el extremo opuesto, para equilibrar visualmente el peso de la tabla."
+    },
+    {
+      "n": "06",
+      "text": "Reparte las uvas en pequeños racimos por los espacios que van quedando libres."
+    },
+    {
+      "n": "07",
+      "text": "Termina de mapear con las tostadas ocupando un borde — así defines el terreno antes de empezar a cortar."
+    },
+    {
+      "n": "08",
+      "text": "Corta el Brie en gajos triangulares desde el centro hacia el borde, escalonando cada corte como un abanico — no retires toda la corteza, y deja la punta intacta para que conserve su forma. Sigue con el Gouda en triángulos pequeños de medio centímetro, el Holandés en bastones gruesos de un dedo de ancho, y el Suizo en rectángulos o triángulos que aprovechen sus agujeros naturales.",
+      "image": "/recipes/tabla-de-quesos-d1-corte.jpg"
+    },
+    {
+      "n": "09",
+      "text": "Para las rosas de jamón: dobla cada lonja por la mitad, enróllala sobre sí misma empezando por un extremo, y abre suavemente las capas exteriores como pétalos hasta que se sostenga sola sobre su propia base.",
+      "image": "/recipes/tabla-de-quesos-d1-rosas.jpg"
+    },
+    {
+      "n": "10",
+      "text": "Dobla el chorizo vela en medias lunas o en abanico, superponiendo las lonjas — entre más se solapen, más volumen gana la tabla."
+    },
+    {
+      "n": "11",
+      "text": "Acomoda las rosas de jamón y el chorizo en los espacios libres, y ajusta las tostadas en abanico junto a un borde para cerrar el último hueco visual. Así se ve la tabla terminada, lista para servir.",
+      "image": "/recipes/tabla-de-quesos-d1-montaje.jpg"
+    }
+  ],
+  "tips": [
+    {
+      "title": "Sin espacios vacíos",
+      "description": "Cada hueco que dejes se lee como algo que faltó. Rellena con uvas, tostadas sueltas o una ramita de romero."
+    },
+    {
+      "title": "Juega con las alturas",
+      "description": "Apila algunas tostadas, deja caer un racimo de uvas sobre el borde — la tabla se ve más generosa cuando no todo está al mismo nivel."
+    },
+    {
+      "title": "Contraste de colores",
+      "description": "El blanco del queso, el rojo del chorizo y el jamón, y el verde o morado de las uvas ya arman una paleta completa — no necesitas más adornos."
+    }
+  ],
+  "pairings": [
+    {
+      "title": "Con vino",
+      "description": "Un tinto liviano acompaña bien al chorizo y al jamón; un blanco frío realza el brie y los quesos más suaves."
+    },
+    {
+      "title": "Sin alcohol",
+      "description": "Una cerveza bien fría o un agua con gas con limón cumplen el mismo papel: limpian el paladar entre bocado y bocado."
+    }
+  ],
+  "recommendations": [
+    "No amontones todos los quesos del mismo lado — repártelos para que la vista recorra toda la tabla.",
+    "Corta el brie justo antes de servir; si lo dejas cortado mucho tiempo antes, pierde su textura cremosa.",
+    "No dejes las uvas todas juntas en un solo racimo — divídelas en grupos pequeños por distintos puntos de la tabla.",
+    "Evita que el jamón y el chorizo se toquen entre sí — cada proteína necesita su propio espacio para lucirse.",
+    "Saca los quesos de la nevera 15–20 minutos antes de servir, para que su sabor y textura se abran.",
+    "Pon al menos un cuchillo pequeño cerca del brie — sin herramienta, los invitados terminan desarmando la tabla."
+  ],
+  "resultNote": "El resultado: una tabla abundante, colorida y ordenada, donde cada corte cumple una función — nada se ve improvisado, aunque todo haya salido del mismo supermercado de siempre.",
+  "finalQuote": "No hace falta un presupuesto de restaurante para sorprender a tus invitados — hace falta una tabla, un buen cuchillo y quince minutos de paciencia.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

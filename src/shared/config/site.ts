@@ -35,6 +35,7 @@ export const navItems: readonly NavItem[] = [
   { label: 'Historia', href: '/#historia' },
   { label: 'Productos', href: '/#productos' },
   { label: 'Recetas', href: '/recetas' },
+  { label: 'Tablas', href: '/tablas' },
   { label: 'Cursos', href: '/#cursos' },
   { label: 'Proceso', href: '/#proceso' },
   { label: 'Contacto', href: '/#contacto' },
