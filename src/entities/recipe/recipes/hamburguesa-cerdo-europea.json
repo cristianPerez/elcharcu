@@ -1,0 +1,115 @@
+{
+  "slug": "hamburguesa-cerdo-europea",
+  "name": "Hamburguesa de Cerdo Estilo Europeo",
+  "description": "Carne de cerdo sazonada al estilo centroeuropeo —coriandro, nuez moscada y paprika— ligada con agua helada y formada en hamburguesas jugosas.",
+  "image": "/recipes/hamburguesa-cerdo-europea.jpg",
+  "tags": ["Europa", "Fresco", "Parrillero"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Carne ligada con agua helada, formada a mano y a la parrilla.",
+  "intro": "La hamburguesa europea no busca impactar con picante: busca equilibrio. Esta carne de cerdo se sazona con un perfil clásico centroeuropeo —coriandro, nuez moscada y paprika de fondo— y se liga con agua muy fría hasta lograr una mezcla pegajosa y jugosa, la misma técnica detrás de las bratwurst y salchichas frescas de Alemania y Europa central, aplicada aquí a la hamburguesa. Se forma a mano y termina siempre en la parrilla o la sartén, jugosa por dentro y bien dorada por fuera.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "5.6 kg" },
+    { "label": "Tipo", "value": "Fresco, formado a mano" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Tiempo de preparación", "value": "40 min" },
+    { "label": "Reposo", "value": "1–2 h en frío" },
+    { "label": "Formato", "value": "Hamburguesas de 150–200 g" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Carne de cerdo molida entera, sin mezcla de grasa por separado — la base de las salchichas frescas centroeuropeas, aquí formada en hamburguesa."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme y ligada tras el amasado con agua helada; jugosa por dentro, bien dorada por fuera."
+    },
+    {
+      "title": "Sabor",
+      "description": "Especiado suave —coriandro, nuez moscada y paprika de fondo— sin picante protagonista."
+    }
+  ],
+  "quote": "La hamburguesa europea no busca impactar con picante: busca equilibrio — un fondo especiado que acompaña, no que domina.",
+  "ingredientsNote": "El agua muy fría no es opcional: es la que liga la carne y le da la jugosidad característica de las salchichas y hamburguesas centroeuropeas.",
+  "ingredients": [
+    { "name": "Carne de cerdo (molida)", "amount": "5600 g", "pct": "100%" },
+    { "name": "Sal", "amount": "93 g", "pct": "1.66%" },
+    { "name": "Sal de cura (Prague Powder #1)", "amount": "14 g", "pct": "0.25%" },
+    { "name": "Ajo en polvo", "amount": "10 g", "pct": "0.18%" },
+    { "name": "Pimienta negra molida", "amount": "10 g", "pct": "0.18%" },
+    { "name": "Coriandro molido", "amount": "7 g", "pct": "0.13%" },
+    { "name": "Nuez moscada", "amount": "1.7 g", "pct": "0.03%" },
+    { "name": "Paprika dulce", "amount": "7 g", "pct": "0.13%" },
+    { "name": "Azúcar", "amount": "10 g", "pct": "0.18%" },
+    { "name": "Agua muy fría", "amount": "390–420 ml", "pct": "7–7.5%" }
+  ],
+  "proportionNote": "El agua helada representa un 7–7.5% del peso de la carne — la proporción justa para ligar la mezcla sin aguarla. Agrégala poco a poco, nunca de un solo golpe.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la carne. Valores por kilo: sal 16.6 g, sal de cura #1 2.5 g, ajo 1.8 g, pimienta negra 1.8 g, coriandro 1.25 g, nuez moscada 0.3 g, paprika 1.25 g, azúcar 1.8 g, agua 70–75 ml.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Muele la carne de cerdo bien fría (0–2 °C) con disco de 6–8 mm."
+    },
+    {
+      "n": "02",
+      "text": "Mezcla los secos: sal, sal de cura, ajo, pimienta, coriandro, nuez moscada, paprika y azúcar."
+    },
+    {
+      "n": "03",
+      "text": "Incorpora los secos a la carne molida y amasa brevemente para distribuirlos parejo."
+    },
+    {
+      "n": "04",
+      "text": "Añade el agua muy fría poco a poco, amasando hasta lograr una mezcla pegajosa y ligada — señal de que la proteína está bien extraída."
+    },
+    {
+      "n": "05",
+      "text": "Mantén la mezcla entre 0–4 °C durante todo el proceso; si se calienta, pierde ligazón."
+    },
+    {
+      "n": "06",
+      "text": "Forma hamburguesas de 150–200 g, compactando bien para que no se abran en la parrilla."
+    },
+    {
+      "n": "07",
+      "text": "Deja reposar en frío 1–2 horas para que los sabores asienten y la forma se fije."
+    },
+    {
+      "n": "08",
+      "text": "Cocina hasta 68–70 °C internos: a la parrilla o en sartén bien caliente, dorando parejo por ambos lados."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Todo muy frío",
+      "description": "Carne, tazón y agua helados — si la mezcla se calienta durante el amasado, pierde ligazón y queda seca."
+    },
+    {
+      "title": "Agua de a poco",
+      "description": "Incorpora el agua helada en tandas pequeñas; de golpe, la carne no la absorbe bien."
+    },
+    {
+      "title": "Compacta bien al formar",
+      "description": "Una hamburguesa bien compactada no se desarma en la parrilla; presiona los bordes al final para sellarlos."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "A la parrilla",
+      "description": "Directa sobre la brasa hasta dorar por fuera y llegar a 68–70 °C internos, sin aplastarla mientras cocina."
+    },
+    {
+      "title": "En sartén",
+      "description": "A fuego medio-alto con una gota de aceite, tapada los últimos minutos para que el centro termine de cocinarse."
+    }
+  ],
+  "recommendations": [
+    "Mantén la carne y el agua bien frías durante todo el proceso.",
+    "No omitas la sal de cura #1 — da el color y la seguridad del producto cocido.",
+    "Agrega el agua helada gradualmente, sin apurar el amasado.",
+    "Cocina siempre hasta 68–70 °C internos antes de servir."
+  ],
+  "resultNote": "El resultado: una hamburguesa jugosa y bien ligada, de sabor especiado suave — distinta a la clásica de res, con el carácter de la charcutería centroeuropea.",
+  "finalQuote": "A veces la mejor charcutería no es la más curada, sino la más bien ligada — sal, frío y agua helada, en las proporciones correctas.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
