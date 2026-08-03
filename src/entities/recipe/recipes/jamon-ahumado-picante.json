@@ -1,0 +1,112 @@
+{
+  "slug": "jamon-ahumado-picante",
+  "name": "Jamón Ahumado Picante (Bondiola)",
+  "description": "El curado picante que arrasa en redes — bondiola de cerdo curada 4 días, ahumada con leña de manzano y reposada hasta quedar jugosa.",
+  "image": "/recipes/jamon-ahumado-picante.jpg",
+  "tags": ["Argentina", "Ahumado", "Picante"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Bondiola curada, ahumada con manzano y bien especiada.",
+  "intro": "Hay recetas que se vuelven virales por una razón: funcionan. Esta bondiola ahumada y picante es una de esas — un curado corto de apenas cuatro días, un ahumado lento con leña de manzano y un reposo de un día que termina de asentar todo el sabor. El resultado es una pieza jugosa, con el picante justo del chile quebrado y la paprika, y ese toque ahumado que la hace desaparecer de la tabla en minutos.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "2 kg" },
+    { "label": "Tipo", "value": "Curado en seco y ahumado" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Curado", "value": "4 días en frío" },
+    { "label": "Ahumado", "value": "4 h, leña de manzano" },
+    { "label": "Reposo", "value": "24 horas" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Bondiola de cerdo (cabecero de lomo), la pieza jugosa por excelencia para curar entera."
+    },
+    {
+      "title": "Textura",
+      "description": "Jugosa y firme, con un interior tierno que se corta en lonchas gruesas."
+    },
+    {
+      "title": "Sabor",
+      "description": "Picante moderado —chile quebrado y paprika— sobre un fondo ahumado a manzano."
+    }
+  ],
+  "quote": "No es casualidad que se venda como pan caliente: cuatro días de curado y cuatro horas de humo son toda la ciencia que necesita.",
+  "ingredientsNote": "El curado es corto —apenas cuatro días— porque la pieza se ahúma y se cocina después; la sal de cura #1 es la indicada para este tipo de proceso.",
+  "ingredients": [
+    { "name": "Bondiola de cerdo (pieza entera)", "amount": "2000 g", "pct": "100%" },
+    { "name": "Sal", "amount": "36 g", "pct": "1.8%" },
+    { "name": "Sal de cura #1 (Prague Powder #1)", "amount": "5 g", "pct": "0.25%" },
+    { "name": "Pimienta negra", "amount": "2.4 g", "pct": "0.12%" },
+    { "name": "Ajo en polvo", "amount": "3 g", "pct": "0.15%" },
+    { "name": "Coriandro molido", "amount": "2 g", "pct": "0.1%" },
+    { "name": "Nuez moscada", "amount": "0.5 g", "pct": "0.025%" },
+    { "name": "Azúcar", "amount": "5 g", "pct": "0.25%" },
+    { "name": "Paprika dulce", "amount": "2.4 g", "pct": "0.12%" },
+    { "name": "Chile quebrado (pepper flakes)", "amount": "2 g", "pct": "0.1%" },
+    { "name": "Mostaza en polvo (opcional)", "amount": "1.8 g", "pct": "0.09%" }
+  ],
+  "proportionNote": "El chile quebrado y la paprika dulce son los que definen el picante y el color; la nuez moscada y el coriandro quedan de fondo, apenas perceptibles pero necesarios.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la bondiola. Valores por kilo: sal 18 g, sal de cura #1 2.5 g, pimienta negra 1.2 g, ajo 1.5 g, coriandro 1 g, nuez moscada 0.25 g, azúcar 2.5 g, paprika 1.2 g, chile quebrado 1 g, mostaza en polvo 0.9 g (opcional).",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Mezcla todas las especias con la sal y la sal de cura #1 hasta integrar bien."
+    },
+    {
+      "n": "02",
+      "text": "Frota la bondiola entera con la mezcla, cubriendo toda la superficie."
+    },
+    {
+      "n": "03",
+      "text": "Cura en frío (0–4 °C), en una bolsa o recipiente cerrado, durante 4 días, volteando la pieza cada día."
+    },
+    {
+      "n": "04",
+      "text": "Retira del curado, enjuaga el exceso y seca bien con papel."
+    },
+    {
+      "n": "05",
+      "text": "Deja secar sin tapar en la nevera unas horas, hasta que la superficie quede seca al tacto."
+    },
+    {
+      "n": "06",
+      "text": "Ahúma en frío o a baja temperatura con leña de manzano durante 4 horas, hasta alcanzar 68–70 °C internos."
+    },
+    {
+      "n": "07",
+      "text": "Retira del ahumador y deja reposar 24 horas en frío antes de cortar — este reposo termina de asentar el sabor y la textura."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Voltea la pieza a diario",
+      "description": "Durante los 4 días de curado, girar la bondiola asegura que la sal y las especias penetren parejo."
+    },
+    {
+      "title": "Manzano, no cualquier leña",
+      "description": "El manzano da un humo suave y dulce que no tapa el picante — evita maderas resinosas."
+    },
+    {
+      "title": "No te saltes el reposo",
+      "description": "Las 24 horas de reposo son las que hacen que el corte quede jugoso y no se sienta seco."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En sándwich",
+      "description": "Caliente o frío, en lonchas gruesas sobre pan — el uso más pedido en redes."
+    },
+    {
+      "title": "En tabla",
+      "description": "Frío, en lonchas finas, junto a encurtidos que corten lo picante."
+    }
+  ],
+  "recommendations": [
+    "No omitas la sal de cura #1 — es la que hace seguro un ahumado de solo 4 horas.",
+    "Cura siempre en frío y voltea la pieza a diario.",
+    "Deja secar la superficie antes de ahumar, para que el humo se adhiera mejor.",
+    "Respeta las 24 horas de reposo antes de cortar."
+  ],
+  "resultNote": "El resultado: una bondiola jugosa, picante y ahumada, de esas que se acaban antes de que termines de armar la tabla.",
+  "finalQuote": "No es magia: es sal, humo y tiempo bien medidos — la fórmula de siempre, con un poco más de picante.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
