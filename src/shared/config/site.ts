@@ -31,11 +31,23 @@ export const site = {
   instagramHandle: '@elcharcu_artesanal',
 } as const;
 
+/**
+ * Rutas de la app (asistente + cursos), separadas del sitio público.
+ * `start` es el único punto de entrada al producto: todos los CTA de la página
+ * de ventas apuntan aquí, así que el camino se cambia en un solo lugar.
+ */
+export const appRoutes = {
+  sales: '/asistente',
+  start: '/asistente/nuevo',
+  session: '/asistente/sesion',
+} as const;
+
 export const navItems: readonly NavItem[] = [
   { label: 'Historia', href: '/#historia' },
   { label: 'Productos', href: '/#productos' },
   { label: 'Recetas', href: '/recetas' },
   { label: 'Tablas', href: '/tablas' },
+  { label: 'Asistente', href: appRoutes.sales },
   { label: 'Cursos', href: '/#cursos' },
   { label: 'Proceso', href: '/#proceso' },
   { label: 'Contacto', href: '/#contacto' },
