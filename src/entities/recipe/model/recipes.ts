@@ -26,6 +26,7 @@ import longanizaFilipina from '../recipes/longaniza-filipina.json';
 import loukaniko from '../recipes/loukaniko.json';
 import magretDePatoCurado from '../recipes/magret-de-pato-curado.json';
 import merguez from '../recipes/merguez.json';
+import mortadelaDePolloCasera from '../recipes/mortadela-de-pollo-casera.json';
 import pancetaAhumada from '../recipes/panceta-ahumada.json';
 import pastrami from '../recipes/pastrami.json';
 import salchichonIberico from '../recipes/salchichon-iberico.json';
@@ -78,6 +79,7 @@ const recipes: readonly Recipe[] = [
   pastrami,
   jamonAhumadoPicante,
   hamburguesaCerdoEuropea,
+  mortadelaDePolloCasera,
 ];
 
 export function getRecipes(): readonly Recipe[] {

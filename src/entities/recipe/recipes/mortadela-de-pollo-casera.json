@@ -1,0 +1,130 @@
+{
+  "slug": "mortadela-de-pollo-casera",
+  "name": "Mortadela de Pollo Casera",
+  "description": "El fiambre casero que se hace sin ahumador ni tripa — pollo cocido, gelatina y un toque de remolacha, moldeado en una botella y listo para rebanar.",
+  "image": "/recipes/mortadela-de-pollo-casera.jpg",
+  "tags": ["Rusia", "Fresco"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Pollo cocido, ligado con gelatina y moldeado en frío.",
+  "intro": "Esta no es la mortadela italiana de emulsión fina con pistachos — es su prima casera, conocida en Europa del Este como jamón de pollo: pechuga cocida en un caldo reducido y aromático, ligada con gelatina sin sabor y teñida con un toque de jugo de remolacha, moldeada en una botella cortada y cuajada en frío. Sin ahumador, sin tripa y sin sal de cura — solo caldo concentrado, gelatina y paciencia en la nevera. El resultado es un fiambre casero, suave y saludable, listo para rebanar en minutos.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "800 g de pollo" },
+    { "label": "Tipo", "value": "Cocido y moldeado en frío" },
+    { "label": "Nivel", "value": "Fácil" },
+    { "label": "Cocción", "value": "1 h 30 min en caldo" },
+    { "label": "Refrigeración", "value": "Mínimo 4 horas" },
+    { "label": "Formato", "value": "Moldeado en botella cortada" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Pechuga de pollo sin huesos, cocida en un caldo aromático con verduras y especias."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme al cortar y jugosa por dentro, gracias a la gelatina que liga el caldo concentrado."
+    },
+    {
+      "title": "Sabor",
+      "description": "Suave y aromático —laurel, pimienta, coriandro y nuez moscada de fondo— con un toque de remolacha que da color, no sabor dominante."
+    }
+  ],
+  "quote": "No hace falta ahumador ni tripa para tener un fiambre casero — solo caldo, gelatina y un molde improvisado.",
+  "ingredientsNote": "El caldo reducido es la clave: concentra el sabor de las verduras y las especias antes de ligarse con la gelatina. Las verduras de la cocción se descartan — son solo para aromatizar.",
+  "ingredients": [
+    { "name": "Carne de pollo (sin huesos)", "amount": "800 g", "pct": "100%" },
+    { "name": "Caldo de pollo (reducido)", "amount": "400 ml", "pct": "50%" },
+    { "name": "Gelatina sin sabor", "amount": "30 g", "pct": "3.75%" },
+    { "name": "Sal", "amount": "1 cucharada (≈18 g)", "pct": "2.25%" },
+    { "name": "Pimienta molida", "amount": "½ cdta (≈1.2 g)", "pct": "0.15%" },
+    { "name": "Cilantro (semillas molidas)", "amount": "½ cdta (≈1 g)", "pct": "0.13%" },
+    { "name": "Nuez moscada", "amount": "½ cdta (≈1.1 g)", "pct": "0.14%" },
+    { "name": "Pimentón (paprika)", "amount": "1 cdta (≈2.3 g)", "pct": "0.29%" },
+    {
+      "name": "Jugo de remolacha (rallada)",
+      "amount": "3 cucharadas (≈45 ml)",
+      "pct": "5.6%"
+    }
+  ],
+  "proportionNote": "Para la cocción del caldo se usan además 1 zanahoria, 1 cebolla dorada, 2–3 hojas de laurel y 10 granos de pimienta negra — se descartan antes de licuar, solo aromatizan. Los 30 g de gelatina sobre 400 ml de caldo dan un cuajado firme pero fácil de rebanar.",
+  "charcuteroNote": "A diferencia del resto de la colección, esta receta no lleva sal de cura: al ser un fiambre cocido y refrigerado para consumo en pocos días, no necesita nitrificantes. Consérvala en frío y cómela en la semana.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Cubre el pollo (800 g, sin huesos) con agua fría en una olla."
+    },
+    {
+      "n": "02",
+      "text": "Cuando rompa el hervor, agrega la zanahoria, la cebolla previamente dorada a fuego muy alto, el laurel, los granos de pimienta y la sal."
+    },
+    {
+      "n": "03",
+      "text": "Cocina 1 hora 30 minutos a fuego bajo. Al mismo tiempo, hierve la remolacha aparte hasta que esté tierna."
+    },
+    {
+      "n": "04",
+      "text": "Retira todos los sólidos del caldo; déjalo al fuego y redúcelo hasta unos 400 ml, para concentrar el sabor."
+    },
+    {
+      "n": "05",
+      "text": "Descarta las verduras de la cocción y retira cualquier hueso o cartílago del pollo."
+    },
+    {
+      "n": "06",
+      "text": "Disuelve la gelatina sin sabor en el caldo caliente, revolviendo hasta integrarla por completo."
+    },
+    {
+      "n": "07",
+      "text": "Agrega el pollo cocido, la pimienta molida, el cilantro, la nuez moscada, la paprika y 3 cucharadas del jugo de la remolacha rallada."
+    },
+    {
+      "n": "08",
+      "text": "Tritura todo con licuadora o batidora de mano hasta obtener una mezcla homogénea."
+    },
+    {
+      "n": "09",
+      "text": "Vierte la mezcla en una botella plástica recta con el cuello cortado, que hará de molde."
+    },
+    {
+      "n": "10",
+      "text": "Cubre la parte superior con film plástico y refrigera un mínimo de 4 horas, hasta que cuaje por completo."
+    },
+    {
+      "n": "11",
+      "text": "Desmolda sacándola de la botella — tendrás un fiambre casero listo para cortar en rebanadas."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Dora bien la cebolla",
+      "description": "Un buen dorado a fuego muy alto le da color y profundidad al caldo antes de cocinar el pollo."
+    },
+    {
+      "title": "Reduce el caldo con paciencia",
+      "description": "Mientras más concentrado quede, más sabor y mejor cuajado tendrá el molde final."
+    },
+    {
+      "title": "El jugo de remolacha es solo color",
+      "description": "Agrégalo de a poco: 3 cucharadas dan un tono rosado natural sin alterar el sabor."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En sándwich",
+      "description": "Frío, en lonchas finas, sobre pan — el uso más clásico de este fiambre casero."
+    },
+    {
+      "title": "En tabla fría",
+      "description": "En rebanadas, junto a mostaza o encurtidos que le den un contrapunto ácido."
+    }
+  ],
+  "recommendations": [
+    "No te saltes la reducción del caldo — es lo que concentra el sabor de todo el fiambre.",
+    "Retira bien todos los huesos y cartílagos antes de triturar.",
+    "Refrigera un mínimo de 4 horas — cortarlo antes de que cuaje del todo lo deshace.",
+    "Consúmelo en los días siguientes: al no llevar sal de cura, su conservación es la de un fiambre fresco, no la de un curado."
+  ],
+  "resultNote": "El resultado: un fiambre casero de pollo, suave y ligeramente rosado, firme al corte pero jugoso — sin ahumador, sin tripa y sin aditivos, listo en una tarde.",
+  "finalQuote": "A veces la mejor charcutería no necesita ni tripa ni ahumador — solo un buen caldo, gelatina y una botella cortada de molde.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
