@@ -1,0 +1,174 @@
+{
+  "slug": "chorizos-picantes-jalapeno-queso-cheddar",
+  "name": "Chorizos Picantes de Jalapeño y Queso Cheddar",
+  "description": "Chorizos frescos de cerdo con jalapeño picado y cubos de cheddar, inspirados en el chorizo jalapeño-cheddar y el chorizo mexicano con queso.",
+  "image": "/recipes/chorizos-picantes-jalapeno-queso-cheddar.jpg",
+  "tags": ["México", "Picante", "Queso"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Cerdo, jalapeño y cheddar en una mezcla fresca y contundente.",
+  "intro": "Esta receta toma la idea clásica del chorizo jalapeño con queso y la aterriza en una versión de cerdo bien sazonada: carne de cerdo, grasa, jalapeño fresco y cheddar en cubos. El resultado es un chorizo fresco, pensado para embutir y cocinar, con mordida jugosa, picante limpio y pequeños bolsillos de queso derretido al dorarse.",
+  "stats": [
+    {
+      "label": "Rendimiento base",
+      "value": "1 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Embutido fresco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Intermedio"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "45 min"
+    },
+    {
+      "label": "Tiempo de reposo",
+      "value": "8–12 h"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural de cerdo, cal. 32–36 mm"
+    }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Basado en recetas de chorizo fresco de cerdo con jalapeño y en versiones con queso cheddar y queso latino."
+    },
+    {
+      "title": "Textura",
+      "description": "Molienda gruesa y jugosa, con jalapeño picado y cubos de cheddar que se ablandan sin desaparecer."
+    },
+    {
+      "title": "Sabor",
+      "description": "Picante medio, lácteo y salado, con ajo, pimienta y el toque herbal del jalapeño."
+    }
+  ],
+  "quote": "El truco está en mantener el queso frío y los cubos pequeños: así el cheddar perfuma la mordida sin desaparecer por completo.",
+  "ingredientsNote": "Usa cheddar bien frío, cortado en cubos pequeños, y jalapeños sin exceso de humedad. Eso ayuda a embutir sin que la mezcla se rompa.",
+  "ingredients": [
+    {
+      "name": "Carne de cerdo (paleta o pierna)",
+      "amount": "800 g",
+      "pct": "80%"
+    },
+    {
+      "name": "Grasa de cerdo",
+      "amount": "200 g",
+      "pct": "20%"
+    },
+    {
+      "name": "Jalapeño fresco, sin semillas y picado fino",
+      "amount": "60 g",
+      "pct": "6%"
+    },
+    {
+      "name": "Queso cheddar curado, en cubos fríos",
+      "amount": "120 g",
+      "pct": "12%"
+    },
+    {
+      "name": "Sal",
+      "amount": "18 g",
+      "pct": "1.8%"
+    },
+    {
+      "name": "Pimienta negra",
+      "amount": "2 g",
+      "pct": "0.2%"
+    },
+    {
+      "name": "Ajo fresco triturado",
+      "amount": "5 g",
+      "pct": "0.5%"
+    },
+    {
+      "name": "Cebolla en polvo",
+      "amount": "3 g",
+      "pct": "0.3%"
+    },
+    {
+      "name": "Comino molido",
+      "amount": "2 g",
+      "pct": "0.2%"
+    },
+    {
+      "name": "Orégano seco",
+      "amount": "2 g",
+      "pct": "0.2%"
+    },
+    {
+      "name": "Vinagre blanco",
+      "amount": "25 ml",
+      "pct": "2.5%"
+    }
+  ],
+  "proportionNote": "La base es 80/20 de carne y grasa, con jalapeño al 6% y cheddar al 12%. El queso suma riqueza y volumen, pero conviene mantenerlo en cubos fríos para que el embutido no se compacte de más.",
+  "charcuteroNote": "Es un chorizo fresco: no lleva sal de cura. Se mezcla, se embute y se cocina pronto o se congela para uso posterior.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Enfría el queso cheddar y córtalo en cubos pequeños."
+    },
+    {
+      "n": "02",
+      "text": "Retira semillas y venas del jalapeño, pícalo fino y escurre el exceso de líquido."
+    },
+    {
+      "n": "03",
+      "text": "Mezcla sal, pimienta, ajo, cebolla en polvo, comino y orégano."
+    },
+    {
+      "n": "04",
+      "text": "Muele la carne de cerdo y la grasa con disco de 8 mm."
+    },
+    {
+      "n": "05",
+      "text": "Incorpora especias, jalapeño y vinagre; amasa hasta que la mezcla quede pegajosa."
+    },
+    {
+      "n": "06",
+      "text": "Añade el cheddar al final, mezcla lo justo y embute en tripa natural de cerdo."
+    },
+    {
+      "n": "07",
+      "text": "Reposa 8–12 horas en refrigeración y cocina antes de servir."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Queso frío",
+      "description": "Si el cheddar se calienta demasiado, se aplasta y se pierde en la masa."
+    },
+    {
+      "title": "Jalapeño escurrido",
+      "description": "Menos agua significa una textura más limpia y mejor embutido."
+    },
+    {
+      "title": "Cocción suave",
+      "description": "Cocínalo a fuego medio para que el queso funda sin reventar la tripa."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Sartén",
+      "description": "Dorado lento en rodajas o enteros, hasta que el cheddar empiece a asomar."
+    },
+    {
+      "title": "Parrilla",
+      "description": "A fuego medio, girando con frecuencia para que el queso no escape."
+    }
+  ],
+  "recommendations": [
+    "Mantén todo muy frío antes de embutir.",
+    "No picates demasiado fino el jalapeño para que conserve presencia.",
+    "Usa cheddar curado para mejor sabor y estructura.",
+    "Cocina a fuego medio para evitar que se rompa la tripa."
+  ],
+  "resultNote": "El resultado es un chorizo fresco de cerdo con picor nítido, aroma de ajo y el contraste cremoso del cheddar. Funciona muy bien en tortas, tacos o a la parrilla.",
+  "finalQuote": "Cuando el jalapeño y el cheddar entran al chorizo de cerdo, el picante deja de ser solo fuego y se vuelve mordida.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
