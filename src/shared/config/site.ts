@@ -40,6 +40,8 @@ export const appRoutes = {
   sales: '/asistente',
   start: '/asistente/nuevo',
   session: '/asistente/sesion',
+  newRecipe: '/asistente/nueva-receta',
+  subscription: '/asistente/suscripcion',
 } as const;
 
 export const navItems: readonly NavItem[] = [

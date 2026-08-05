@@ -22,7 +22,7 @@ export function AssistantCourses(): ReactNode {
           </p>
           <div className="mt-8">
             <ButtonLink href={appRoutes.start} variant="primary">
-              Ver los cursos
+              Empezar mi primera receta
             </ButtonLink>
           </div>
         </div>

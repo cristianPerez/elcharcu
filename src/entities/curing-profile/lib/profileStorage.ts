@@ -1,11 +1,4 @@
-import {
-  COUNTRIES,
-  CURING_PRODUCTS,
-  EXPERIENCE_LEVELS,
-  type CountryCode,
-  type CuringProductId,
-  type ExperienceLevel,
-} from '../model/options';
+import { isCountryCode, isCuringProductId, isExperienceLevel } from '../model/options';
 import { type CuringProfile } from '../model/profile.types';
 
 /**
@@ -16,22 +9,6 @@ import { type CuringProfile } from '../model/profile.types';
  * credenciales: la app entera solo conoce `loadProfile` / `saveProfile`.
  */
 const STORAGE_KEY = 'elcharcu:curing-profile';
-
-function isCountryCode(value: unknown): value is CountryCode {
-  return typeof value === 'string' && COUNTRIES.some((country) => country.id === value);
-}
-
-function isExperienceLevel(value: unknown): value is ExperienceLevel {
-  return (
-    typeof value === 'string' && EXPERIENCE_LEVELS.some((level) => level.id === value)
-  );
-}
-
-function isCuringProductId(value: unknown): value is CuringProductId {
-  return (
-    typeof value === 'string' && CURING_PRODUCTS.some((product) => product.id === value)
-  );
-}
 
 /** Valida lo que salga del navegador: nunca confiamos en `localStorage`. */
 function parseProfile(value: unknown): CuringProfile | null {

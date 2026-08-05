@@ -50,6 +50,22 @@ export const CURING_PRODUCTS = [
 
 export type CuringProductId = (typeof CURING_PRODUCTS)[number]['id'];
 
+export function isCountryCode(value: unknown): value is CountryCode {
+  return typeof value === 'string' && COUNTRIES.some((country) => country.id === value);
+}
+
+export function isExperienceLevel(value: unknown): value is ExperienceLevel {
+  return (
+    typeof value === 'string' && EXPERIENCE_LEVELS.some((level) => level.id === value)
+  );
+}
+
+export function isCuringProductId(value: unknown): value is CuringProductId {
+  return (
+    typeof value === 'string' && CURING_PRODUCTS.some((product) => product.id === value)
+  );
+}
+
 export function countryName(id: CountryCode): string {
   return COUNTRIES.find((country) => country.id === id)?.name ?? 'tu país';
 }

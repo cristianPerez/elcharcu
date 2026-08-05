@@ -4,10 +4,11 @@ import { type ReactNode } from 'react';
 
 import { COUNTRIES, CURING_PRODUCTS, EXPERIENCE_LEVELS } from '@/entities/curing-profile';
 
+import { OptionTile } from '@/shared/ui';
+
 import { useOnboarding } from '../model/useOnboarding';
 
 import { DoneStep } from './DoneStep';
-import { OptionTile } from './OptionTile';
 import { StepShell } from './StepShell';
 
 /** Las tres preguntas del arranque. Cada respuesta avanza sola. */

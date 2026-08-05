@@ -14,6 +14,8 @@ export const ANALYTICS_EVENTS = {
   freeRecipeStarted: 'free_recipe_started',
   /** El usuario llevó su receta gratis hasta el final. */
   freeRecipeCompleted: 'free_recipe_completed',
+  /** El usuario abrió una receta cualquiera (gratis o de pago). */
+  recipeStarted: 'recipe_started',
   /** El usuario intentó una SEGUNDA receta y chocó con el muro de suscripción. */
   paywallHit: 'paywall_hit',
   /** El usuario pagó después de chocar con el muro. */
