@@ -1,14 +1,14 @@
 import { type Metadata } from 'next';
 import { type ReactNode } from 'react';
 
-import { SesionPage } from '@/views/sesion';
+import { NuevaRecetaPage } from '@/views/nueva-receta';
 
 export const metadata: Metadata = {
-  title: 'Tu receta · El Charcu',
-  description: 'La sesión donde curas tu pieza con el asistente al lado.',
+  title: 'Empezar otra receta · El Charcu',
+  description: 'Elige la siguiente pieza que vas a curar con el asistente.',
   robots: { index: false, follow: false },
 };
 
 export default function Page(): ReactNode {
-  return <SesionPage />;
+  return <NuevaRecetaPage />;
 }

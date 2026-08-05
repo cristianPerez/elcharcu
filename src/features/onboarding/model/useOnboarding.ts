@@ -9,6 +9,7 @@ import {
   type CuringProfile,
   type ExperienceLevel,
 } from '@/entities/curing-profile';
+import { startSession } from '@/entities/recipe-session';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
@@ -66,6 +67,9 @@ export function useOnboarding(): OnboardingController {
       };
 
       saveProfile(nextProfile);
+      // Esta es LA receta gratis: queda abierta desde ya, para que el candado
+      // sepa que la cuenta ya gastó su cortesía.
+      startSession(value, true);
       setProfile(nextProfile);
       setStep('listo');
 
