@@ -9,6 +9,7 @@ import chorizoDeAjo from '../recipes/chorizo-de-ajo.json';
 import chorizoIberico from '../recipes/chorizo-iberico.json';
 import chorizoParrillero from '../recipes/chorizo-parrillero.json';
 import chorizoRiojano from '../recipes/chorizo-riojano.json';
+import chorizoSantarrosano from '../recipes/chorizo-santarrosano.json';
 import chorizoVenezolano from '../recipes/chorizo-venezolano.json';
 import chorizoVerdeMexicano from '../recipes/chorizo-verde-mexicano.json';
 import chorizosPicantesJalapenoQuesoCheddar from '../recipes/chorizos-picantes-jalapeno-queso-cheddar.json';
@@ -55,6 +56,7 @@ const recipes: readonly Recipe[] = [
   chorizoVerdeMexicano,
   chorizosPicantesJalapenoQuesoCheddar,
   chorizoVenezolano,
+  chorizoSantarrosano,
   chistorra,
   salchichon,
   salchichonIberico,

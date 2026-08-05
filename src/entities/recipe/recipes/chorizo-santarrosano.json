@@ -1,0 +1,178 @@
+{
+  "slug": "chorizo-santarrosano",
+  "name": "Chorizo Santarrosano",
+  "description": "Uno de los chorizos más tradicionales de Colombia — carne magra de cerdo y tocino en equilibrio, jugoso y perfecto para la parrilla.",
+  "image": "/recipes/chorizo-santarrosano.jpg",
+  "tags": ["Colombia", "Fresco", "Parrillero"],
+  "eyebrow": "Receta · El camino del charcutero",
+  "subtitle": "El chorizo tradicional de Santa Rosa, jugoso y directo a la parrilla.",
+  "intro": "🔥 Así se prepara uno de los chorizos más tradicionales de Colombia: el chorizo santarrosano. 🌭\n\nCon una mezcla sencilla pero llena de sabor: 700 g de carne magra de cerdo y 300 g de tocino, logramos un chorizo jugoso, con excelente textura y perfecto para la parrilla.",
+  "stats": [
+    {
+      "label": "Rendimiento base",
+      "value": "1 kg"
+    },
+    {
+      "label": "Tipo",
+      "value": "Embutido fresco"
+    },
+    {
+      "label": "Nivel",
+      "value": "Fácil"
+    },
+    {
+      "label": "Tiempo de preparación",
+      "value": "30 min"
+    },
+    {
+      "label": "Tiempo de reposo",
+      "value": "24–36 h"
+    },
+    {
+      "label": "Tipo de tripa",
+      "value": "Natural"
+    }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Carne magra de cerdo y tocino, en proporción 70/30 — la base clásica del santarrosano."
+    },
+    {
+      "title": "Textura",
+      "description": "300 g de tocino por kilo aportan jugosidad sin perder firmeza al morder."
+    },
+    {
+      "title": "Sabor",
+      "description": "Ajo fresco, cebolla larga, comino y paprika dulce dan el sabor tradicional que nunca pasa de moda."
+    }
+  ],
+  "quote": "El santarrosano es la prueba de que la tradición no necesita complicarse: carne, tocino y las especias justas.",
+  "ingredientsNote": "Condimentos para 1 kg de carne (700 g de carne magra de cerdo y 300 g de tocino).",
+  "ingredients": [
+    {
+      "name": "Carne magra de cerdo",
+      "amount": "700 g",
+      "pct": "70%"
+    },
+    {
+      "name": "Tocino",
+      "amount": "300 g",
+      "pct": "30%"
+    },
+    {
+      "name": "Sal",
+      "amount": "18 g",
+      "pct": "1.8%"
+    },
+    {
+      "name": "Sal de cura (Prague Powder #1)",
+      "amount": "2.5 g",
+      "pct": "0.25%"
+    },
+    {
+      "name": "Ajo fresco",
+      "amount": "18 g",
+      "pct": "1.8%"
+    },
+    {
+      "name": "Cebolla larga finamente picada",
+      "amount": "25 g",
+      "pct": "2.5%"
+    },
+    {
+      "name": "Pimienta negra molida",
+      "amount": "2 g",
+      "pct": "0.2%"
+    },
+    {
+      "name": "Comino molido",
+      "amount": "2 g",
+      "pct": "0.2%"
+    },
+    {
+      "name": "Paprika dulce",
+      "amount": "2 g",
+      "pct": "0.2%"
+    }
+  ],
+  "proportionNote": "70% carne magra y 30% tocino es el balance santarrosano tradicional: suficiente grasa para lograr jugosidad sin perder firmeza en la parrilla.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. Domínalo y escalas la receta a cualquier cantidad.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Mezclar la carne magra, el tocino, la sal, la sal de cura, el ajo, la cebolla larga y las especias hasta integrar bien."
+    },
+    {
+      "n": "02",
+      "text": "Embutir la mezcla en tripa natural."
+    },
+    {
+      "n": "03",
+      "text": "Dejar secar una noche a temperatura ambiente, en un lugar fresco y protegido."
+    },
+    {
+      "n": "04",
+      "text": "Reposar 24 horas más en refrigeración."
+    },
+    {
+      "n": "05",
+      "text": "Al día siguiente, asar, freír o cocinar."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Precisión con la sal de cura",
+      "description": "Pesa la sal de cura (Prague Powder #1) con exactitud: es clave para la seguridad y el color del embutido."
+    },
+    {
+      "title": "Cebolla fresca, picada fina",
+      "description": "Pícala lo más fino posible para que se integre sin dejar bolsas de humedad en la mezcla."
+    },
+    {
+      "title": "Respeta el doble reposo",
+      "description": "El secado a temperatura ambiente y las 24 h en frío que siguen son las que asientan el sabor tradicional."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Parrilla",
+      "description": "A fuego medio, girando con frecuencia hasta dorar parejo por todos los lados."
+    },
+    {
+      "title": "Sartén o freír",
+      "description": "Fuego medio-bajo hasta dorar y cocinar por completo; también se puede cocinar antes de dorar."
+    }
+  ],
+  "recommendations": [
+    "Mantén la carne y el tocino fríos durante todo el proceso.",
+    "Pesa la sal de cura con precisión.",
+    "Respeta el secado a temperatura ambiente antes de refrigerar.",
+    "No pinches los chorizos durante la cocción."
+  ],
+  "resultNote": "Al día siguiente tendrás unos chorizos listos para asar, freír o cocinar, con un sabor tradicional que nunca pasa de moda.",
+  "finalQuote": "El chorizo santarrosano no necesita trucos: carne magra, tocino y el tiempo de reposo justo hacen todo el trabajo.",
+  "finalQuoteCaption": "Consejo de El Charcu",
+  "socialPost": {
+    "caption": "🔥 Así se prepara uno de los chorizos más tradicionales de Colombia: el chorizo santarrosano. 🌭\n\nCon una mezcla sencilla pero llena de sabor: 700 g de carne magra de cerdo y 300 g de tocino, logramos un chorizo jugoso, con excelente textura y perfecto para la parrilla.",
+    "instructions": "Después de mezclar todos los ingredientes, embutimos en tripa natural, dejamos secar una noche a temperatura ambiente en un lugar fresco y protegido, y luego reposamos 24 horas más en refrigeración. Al día siguiente tendrás unos chorizos listos para asar, freír o cocinar, con un sabor tradicional que nunca pasa de moda. 🔥",
+    "callToAction": "💬 Comenta “CHORIZO SANTAROSANO” y te envío la receta completa con el paso a paso.",
+    "hashtags": [
+      "#ChorizoSantarrosano",
+      "#ChorizoArtesanal",
+      "#ChorizoColombiano",
+      "#Charcuteria",
+      "#Embutidos",
+      "#Parrilla",
+      "#BBQ",
+      "#Recetas",
+      "#HechoEnCasa",
+      "#FoodTok",
+      "#Cocina",
+      "#Carnes",
+      "#MeatLovers",
+      "#ReelsColombia",
+      "#FYP"
+    ]
+  }
+}
