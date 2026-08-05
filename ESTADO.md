@@ -84,12 +84,15 @@ No se empieza por el chat.
 
 - [x] **0. Reconocimiento** de lo instalado
 - [x] **1. Página de ventas** (`/asistente`) — hecha y verificada en el navegador
-- [ ] **2. Onboarding** (país, nivel, qué vas a curar) ← sigue
-- [ ] **2b. Conectar el CTA:** cambiar `appRoutes.start` en `src/shared/config/site.ts`
-      de `/asistente#precios` a `/asistente/nuevo` cuando exista el onboarding.
-      Los 5 botones de la página de ventas lo siguen solos.
-- [ ] **3. Paywall** + regla de 1 receta gratis
-- [ ] **4. Login** (Supabase: teléfono/OTP, Google, email)
+- [x] **2. Onboarding** (`/asistente/nuevo`) — 3 preguntas, recorrido de punta a punta
+      en el navegador. Los 6 CTA de la página de ventas ya apuntan aquí.
+- [x] **2b. Sesión de la receta gratis** (`/asistente/sesion`) — lee el perfil y muestra
+      la receta elegida. El chat todavía es una vista previa rotulada como tal.
+- [x] **3. Paywall + candado de 1 receta gratis** — `/asistente/suscripcion` y
+      `/asistente/nueva-receta`. Los 3 caminos del candado probados en el navegador:
+      volver a la misma receta pasa, la segunda distinta choca con el muro, y el
+      suscrito pasa. La regla vive en `src/features/start-recipe/model/gate.ts`.
+- [ ] **4. Login** (Supabase: teléfono/OTP, Google, email) ← sigue
 - [ ] **5. Asistente** (chat + foto de moho + guardrails de seguridad)
 - [ ] **6. Mini-cursos** en video con puerta libre/pago
 - [ ] **7. Pagos reales** (Mercado Pago + webhook)
@@ -114,6 +117,18 @@ No se empieza por el chat.
   destiladas dentro del propio spec. Si los tienes, pásalos y afino el copy.
 - ⚠️ **El link del sistema de diseño de Claude devolvió 403** (es privado). Uso los
   tokens que ya están en `tailwind.config.ts`, que vienen de la Guía de Marca.
+- ⚠️ **El perfil del onboarding se guarda HOY en el navegador** (`localStorage`), no en
+  una base de datos. Eso significa que si el usuario cambia de celular o borra datos,
+  pierde su receta gratis — y que el límite de "una sola receta gratis" todavía se puede
+  saltar. Se arregla solo cuando llegue Supabase. Todo el guardado está aislado en
+  `src/entities/curing-profile/lib/profileStorage.ts`: ese es el único archivo a cambiar.
+- ⚠️ **El muro todavía no cobra.** Los botones de los planes abren WhatsApp con el plan
+  escrito, que es por donde El Charcu ya vende hoy. Sirve para vender desde ya, pero
+  hay que atender esos mensajes a mano. Se reemplaza por el checkout de Mercado Pago en
+  el paso 7; el único archivo a tocar es `src/widgets/paywall/ui/PaywallPlans.tsx`.
+- ⚠️ **Al compilar (`pnpm build`) hay que parar antes el servidor de desarrollo.**
+  El build reescribe la carpeta `.next` y deja al servidor sin sus archivos, y la web
+  se queda sin responder a los clics. Si pasa: parar, borrar `.next`, volver a arrancar.
 - ⚠️ **Ninguna clave se pega en el chat.** Cuando toque, van a un archivo `.env.local`
   que no se sube a git. Si alguna vez pegas una clave en el chat, hay que rotarla.
 - ⚠️ La clave de Anthropic y la de Supabase **nunca** se exponen en el navegador:
