@@ -1,0 +1,122 @@
+{
+  "slug": "jamon-pierna-horneado",
+  "name": "Jamón de Pierna Horneado",
+  "description": "El jamón cocido casero hecho al horno en vez de en agua — pierna de cerdo en salmuera, envuelta y horneada, prensada y reposada hasta quedar jugosa y lista para fetear.",
+  "image": "/recipes/jamon-pierna-horneado.jpg",
+  "tags": ["Argentina", "Curado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Pierna en salmuera, horneada envuelta y prensada en frío.",
+  "intro": "De una pierna de cerdo de 4 kilos y medio, deshuesada y sin cuero, salen más de 2 kilos de jamón cocido casero — y realmente solo lleva tiempo, no es difícil. La pieza se sumerge en una salmuera de agua, azúcar, sal y sal de cura durante 5 a 6 días, se ata bien compacta y se cocina envuelta al horno en lugar del tradicional baño de agua a 80 °C. Un prensado y un reposo en frío toda la noche terminan el trabajo: al día siguiente aparece ese color rosado clásico y una textura jugosa, lista para cortar.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "4 kg (pierna deshuesada)" },
+    { "label": "Tipo", "value": "Curado en salmuera, horneado y prensado" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Salmuera", "value": "5–6 días en frío" },
+    { "label": "Horneado", "value": "Envuelto, aprox. 3 h" },
+    { "label": "Prensado", "value": "Toda la noche en frío, con peso" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Pierna o paleta de cerdo deshuesada y sin cuero — la pieza económica que rinde más de 2 kilos de jamón."
+    },
+    {
+      "title": "Textura",
+      "description": "Jugosa, con vetas de grasa visibles al corte — cuanto más veteado, mejor calidad."
+    },
+    {
+      "title": "Sabor",
+      "description": "Suave y clásico de jamón cocido, con el color rosado propio de la sal de cura, sin ahumar."
+    }
+  ],
+  "quote": "Cuantas más vetas y textura tenga el jamón, de mejor calidad es — si lo ves muy liso, desconfía.",
+  "ingredientsNote": "La clave está en que la pieza quede realmente bien sumergida en la salmuera, cubriendo todas sus partes — usa un peso encima si hace falta para que no flote.",
+  "ingredients": [
+    {
+      "name": "Pierna de cerdo (deshuesada, sin cuero)",
+      "amount": "4000 g",
+      "pct": "100%"
+    },
+    { "name": "Agua fría (para la salmuera)", "amount": "4000 ml", "pct": "100%" },
+    { "name": "Sal", "amount": "280 g", "pct": "7%" },
+    { "name": "Sal de cura #1 (Prague Powder #1)", "amount": "10 g", "pct": "0.25%" },
+    { "name": "Azúcar", "amount": "104 g", "pct": "2.6%" }
+  ],
+  "proportionNote": "La salmuera lleva un 7% de sal sobre el peso de la carne, disuelta en igual peso de agua fría — la misma lógica que un curado en salmuera de cualquier pieza grande. El azúcar suaviza el salado sin competir con el sabor del jamón.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la pierna. Valores por kilo: agua 1000 ml, sal 70 g, sal de cura #1 2.5 g, azúcar 26 g.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Deshuesa la pierna de cerdo y retira el cuero — es la parte más laboriosa, pero deja la carne lista para la salmuera."
+    },
+    {
+      "n": "02",
+      "text": "Prepara la salmuera disolviendo el agua, la sal, la sal de cura y el azúcar."
+    },
+    {
+      "n": "03",
+      "text": "Sumerge la pieza por completo en la salmuera, cubriendo todas sus partes; usa un peso encima si hace falta para que no flote."
+    },
+    {
+      "n": "04",
+      "text": "Cura en la nevera entre 5 y 6 días."
+    },
+    {
+      "n": "05",
+      "text": "Pasado el tiempo, retira la pieza, lávala bien bajo agua fría y sécala por completo."
+    },
+    {
+      "n": "06",
+      "text": "Átala con rejilla para jamón o con hilo de matambre, dándole una forma compacta y cilíndrica."
+    },
+    {
+      "n": "07",
+      "text": "Envuelve la pieza en una capa de papel manteca y otra de papel aluminio."
+    },
+    {
+      "n": "08",
+      "text": "Hornea a temperatura controlada (similar a un baño de agua a 80 °C) durante unas 3 horas, hasta que la pieza alcance 68–70 °C internos."
+    },
+    {
+      "n": "09",
+      "text": "Deja atemperar, ponle un peso encima y refrigera toda la noche."
+    },
+    {
+      "n": "10",
+      "text": "Al día siguiente, desenvuelve: tendrás un jamón cocido de color rosado y textura jugosa, listo para fetear con máquina o cuchillo."
+    }
+  ],
+  "tips": [
+    {
+      "title": "La pieza debe quedar bien sumergida",
+      "description": "Cubre por completo con la salmuera y usa un peso si es necesario — cualquier zona expuesta al aire no cura parejo."
+    },
+    {
+      "title": "El prensado marca la textura",
+      "description": "El peso y el reposo toda la noche en frío son los que le dan al jamón esa textura firme y fácil de fetear."
+    },
+    {
+      "title": "Más vetas, mejor calidad",
+      "description": "Un jamón con vetas y textura visibles al corte es buena señal; si lo ves demasiado liso, algo no está bien."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Al horno (esta receta)",
+      "description": "Envuelto en papel manteca y aluminio, a temperatura controlada, unas 3 horas hasta el punto interno."
+    },
+    {
+      "title": "A baño de agua (tradicional)",
+      "description": "Sumergido en agua a 80 °C hasta alcanzar el punto interno — el método clásico del jamón cocido."
+    }
+  ],
+  "recommendations": [
+    "No omitas la sal de cura — es la que da el color rosado clásico y la seguridad del curado.",
+    "Verifica que la pieza quede totalmente cubierta por la salmuera durante los 5–6 días.",
+    "No te saltes el prensado ni el reposo en frío — son los que dan la textura final.",
+    "Congela lo que no vayas a consumir pronto; rinde para varias semanas."
+  ],
+  "resultNote": "El resultado: más de 2 kilos de jamón cocido casero, de color rosado clásico y textura jugosa — todo por una fracción de lo que cuesta comprarlo ya hecho.",
+  "finalQuote": "Es un 10.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
