@@ -20,6 +20,13 @@ export const ANALYTICS_EVENTS = {
   paywallHit: 'paywall_hit',
   /** El usuario pagó después de chocar con el muro. */
   subscriptionStarted: 'subscription_started',
+  /** El usuario le preguntó algo al asistente (con o sin foto). */
+  assistantMessageSent: 'assistant_message_sent',
+  /**
+   * El código de seguridad bloqueó una respuesta por proponer una dosis de sal
+   * de cura por encima del tope. Si este evento sube, hay que revisar el prompt.
+   */
+  unsafeDoseBlocked: 'unsafe_dose_blocked',
 } as const;
 
 export type AnalyticsEvent = (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];

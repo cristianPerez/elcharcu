@@ -2,6 +2,8 @@
 
 import { useEffect, useState, type ReactNode } from 'react';
 
+import { AssistantChat } from '@/features/assistant-chat';
+
 import {
   countryName,
   curingProductName,
@@ -102,28 +104,12 @@ export function FreeSession(): ReactNode {
         </ul>
       )}
 
-      <div className="mt-10 rounded-2xl border border-terracota/40 bg-terracota/10 p-6">
-        <p className="font-serif text-lg text-cream">
-          Vista previa: el asistente todavía no está conectado.
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-cream/70">
-          Esta es la pantalla donde vas a conversar con él mientras curas. Falta el
-          siguiente paso de construcción para que responda de verdad — nada de lo que veas
-          aquí abajo son respuestas reales.
-        </p>
-      </div>
-
-      <div className="mt-8 rounded-2xl border border-cream/15 p-6">
-        <p className="text-xs uppercase tracking-eyebrow text-cream/40">
-          Así se va a ver
-        </p>
-        <p className="mt-4 text-sm leading-relaxed text-cream/50">
-          «Vamos con tu {recipe.toLowerCase()}. Cuéntame cuántos kilos de carne tienes y a
-          qué temperatura y humedad está el lugar donde lo vas a colgar.»
-        </p>
-        <div className="mt-6 rounded-full border border-cream/15 px-5 py-3 text-sm text-cream/30">
-          Escribe tu duda…
-        </div>
+      <div className="mt-10">
+        <AssistantChat
+          product={recipe}
+          level={profile?.level ?? 'apasionado'}
+          country={profile === null ? 'Colombia' : countryName(profile.country)}
+        />
       </div>
 
       <div className="mt-10 border-t border-cream/15 pt-8">
