@@ -4,6 +4,8 @@ import { type ReactNode } from 'react';
 
 import { AppProviders } from '@/app/providers';
 
+import { site } from '@/shared/config';
+
 import './styles/globals.css';
 
 const fraunces = Fraunces({
@@ -22,6 +24,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.homeUrl),
   title: 'El Charcu · Charcutería Artesanal',
   description:
     'Charcutería artesanal curada con técnica europea en Manizales, Colombia. Sin aditivos, sin atajos. Producto artesanal y Cursos Maestros del oficio.',
@@ -39,6 +42,22 @@ export const metadata: Metadata = {
       'Charcutería artesanal curada con técnica europea. Sin aditivos, sin atajos.',
     type: 'website',
     locale: 'es_CO',
+    siteName: site.name,
+    images: [
+      {
+        url: '/recipes/chorizo-iberico.jpg',
+        width: 430,
+        height: 180,
+        alt: site.name,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'El Charcu · Charcutería Artesanal',
+    description:
+      'Charcutería artesanal curada con técnica europea. Sin aditivos, sin atajos.',
+    images: ['/recipes/chorizo-iberico.jpg'],
   },
 };
 

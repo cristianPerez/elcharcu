@@ -20,9 +20,22 @@ export async function generateMetadata({ params }: TablaRouteProps): Promise<Met
   if (!tabla) {
     return { title: 'Tabla no encontrada · El Charcu' };
   }
+  const title = `${tabla.name} · El Charcu`;
   return {
-    title: `${tabla.name} · El Charcu`,
+    title,
     description: tabla.description,
+    openGraph: {
+      title,
+      description: tabla.description,
+      type: 'article',
+      images: [{ url: tabla.image, width: 430, height: 180, alt: tabla.name }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: tabla.description,
+      images: [tabla.image],
+    },
   };
 }
 

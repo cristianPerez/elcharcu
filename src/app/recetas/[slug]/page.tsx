@@ -20,9 +20,22 @@ export async function generateMetadata({ params }: RecetaRouteProps): Promise<Me
   if (!recipe) {
     return { title: 'Receta no encontrada · El Charcu' };
   }
+  const title = `${recipe.name} · El Charcu`;
   return {
-    title: `${recipe.name} · El Charcu`,
+    title,
     description: recipe.description,
+    openGraph: {
+      title,
+      description: recipe.description,
+      type: 'article',
+      images: [{ url: recipe.image, width: 430, height: 180, alt: recipe.name }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: recipe.description,
+      images: [recipe.image],
+    },
   };
 }
 
