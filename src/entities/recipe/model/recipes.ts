@@ -2,6 +2,7 @@ import biltong from '../recipes/biltong.json';
 import bresaola from '../recipes/bresaola.json';
 import bundnerfleisch from '../recipes/bundnerfleisch.json';
 import cecinaDeLeon from '../recipes/cecina-de-leon.json';
+import charquiDeRes from '../recipes/charqui-de-res.json';
 import chistorra from '../recipes/chistorra.json';
 import chorizoCantimpalo from '../recipes/chorizo-cantimpalo.json';
 import chorizoCriolloArgentino from '../recipes/chorizo-criollo-argentino.json';
@@ -86,6 +87,7 @@ const recipes: readonly Recipe[] = [
   hamburguesaCerdoEuropea,
   mortadelaDePolloCasera,
   jamonPiernaHorneado,
+  charquiDeRes,
 ];
 
 export function getRecipes(): readonly Recipe[] {

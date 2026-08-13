@@ -1,0 +1,106 @@
+{
+  "slug": "charqui-de-res",
+  "name": "Charqui de Res (Beef Jerky)",
+  "description": "El beef jerky andino, dulce y picante — carne de res marinada en miel y sriracha, deshidratada al horno hasta quedar firme y lista para picar.",
+  "image": "/recipes/charqui-de-res.jpg",
+  "tags": ["Andes", "Picante"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Res marinada en miel y sriracha, deshidratada al horno.",
+  "intro": "Más de 500 años de historia, resueltos con apenas cuatro ingredientes. El charqui es una de las formas más antiguas de conservar carne en los Andes, y esta versión le suma un giro moderno: miel, sriracha, sal y sal de ajo. La carne se marina bien impregnada, se acomoda en rejilla y se deshidrata al horno a baja temperatura durante varias horas, hasta quedar firme y correosa — el beef jerky casero, dulce, picante e intenso.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg (carne fresca)" },
+    { "label": "Tipo", "value": "Marinado y deshidratado al horno" },
+    { "label": "Nivel", "value": "Fácil" },
+    { "label": "Marinado", "value": "6–12 h en frío" },
+    { "label": "Deshidratado", "value": "80 °C, 3–4 horas" },
+    { "label": "Formato", "value": "Láminas finas, a favor de la fibra" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Carne de res muy magra, marinada con una mezcla dulce-picante inspirada en la tradición andina del charqui."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme y correosa — el charqui pierde gran parte de su humedad al deshidratarse en el horno."
+    },
+    {
+      "title": "Sabor",
+      "description": "Dulce y picante, con un fondo salado de ajo — miel y sriracha en equilibrio."
+    }
+  ],
+  "quote": "Más de 500 años de historia, resueltos con apenas cuatro ingredientes.",
+  "ingredientsNote": "Al ser un marinado corto seguido de una deshidratación completa al horno —no un curado largo al aire— esta receta no necesita sal de cura.",
+  "ingredients": [
+    { "name": "Carne de res (muy magra, sin grasa)", "amount": "1000 g", "pct": "100%" },
+    { "name": "Sriracha", "amount": "60 g", "pct": "6%" },
+    { "name": "Miel", "amount": "40 g", "pct": "4%" },
+    { "name": "Sal", "amount": "12 g", "pct": "1.2%" },
+    { "name": "Sal de ajo", "amount": "8 g", "pct": "0.8%" }
+  ],
+  "proportionNote": "La miel y la sriracha, al 10% combinado, son las que definen el carácter dulce-picante del charqui; la sal y la sal de ajo sazonan sin dominar.",
+  "charcuteroNote": "El porcentaje es el peso sobre el peso de la carne. Valores por kilo: sriracha 60 g, miel 40 g, sal 12 g, sal de ajo 8 g. Sin sal de cura — el marinado corto y la deshidratación completa hacen el trabajo de conservación.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Corta la carne en láminas delgadas (aprox. 0.5 cm), a favor de la fibra, y retira toda la grasa visible."
+    },
+    {
+      "n": "02",
+      "text": "Mezcla la miel, la sriracha, la sal y la sal de ajo hasta integrar bien."
+    },
+    {
+      "n": "03",
+      "text": "Cubre cada lámina de carne con la marinada, asegurándote de que quede bien impregnada por ambos lados."
+    },
+    {
+      "n": "04",
+      "text": "Marina en refrigeración entre 6 y 12 horas."
+    },
+    {
+      "n": "05",
+      "text": "Escurre el exceso de marinada y acomoda las láminas sobre una rejilla, sin que se toquen entre sí."
+    },
+    {
+      "n": "06",
+      "text": "Hornea a 80 °C durante 3 a 4 horas, volteando a la mitad del tiempo, hasta que la carne se vea completamente deshidratada."
+    },
+    {
+      "n": "07",
+      "text": "Deja enfriar por completo antes de guardar — el charqui termina de firmar su textura mientras se enfría."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Corta bien fino y parejo",
+      "description": "Láminas de grosor uniforme se deshidratan al mismo tiempo, sin puntos crudos ni sobrecocidos."
+    },
+    {
+      "title": "Sin grasa",
+      "description": "La grasa no se deshidrata igual que la carne y puede enranciarse — retírala toda antes de marinar."
+    },
+    {
+      "title": "Rejilla, no bandeja",
+      "description": "Apoyar las láminas sobre una rejilla deja que el aire circule por ambos lados y se sequen parejo."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Como snack",
+      "description": "Se come directo, en tiras, sin más preparación — el uso más clásico del charqui."
+    },
+    {
+      "title": "En ensaladas o arroces",
+      "description": "En tiras finas o desmenuzado, aporta un salado dulce-picante intenso."
+    }
+  ],
+  "recommendations": [
+    "No satures el horno — deja espacio entre las láminas para que el aire circule.",
+    "Voltea las láminas a mitad de la cocción para un secado parejo.",
+    "Deja enfriar por completo antes de guardar, para que no genere humedad en el envase.",
+    "Guarda en un recipiente hermético; se conserva varias semanas en un lugar fresco."
+  ],
+  "resultNote": "El resultado: charqui dulce, picante e intenso, de textura firme y correosa — de 1 kg de carne fresca salen unos 350–400 g de charqui seco, listo para comer directo o guardar para más tarde.",
+  "finalQuote": "Cuatro ingredientes y un poco de paciencia — la misma fórmula que los Andes usan desde hace 500 años, con un giro dulce-picante.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
