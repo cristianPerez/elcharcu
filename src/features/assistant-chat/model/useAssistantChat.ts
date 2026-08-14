@@ -108,6 +108,14 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
         });
 
         if (!response.ok) {
+          if (response.status === 429) {
+            setError(
+              'El asistente descansa hasta mañana: hoy ya atendió a mucha gente. Escríbenos por WhatsApp si es urgente.',
+            );
+            track(ANALYTICS_EVENTS.aiBudgetExhausted, { recipe: params.product });
+            return;
+          }
+
           setError(
             response.status === 503
               ? 'El asistente todavía no está conectado.'

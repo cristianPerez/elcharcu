@@ -5,4 +5,4 @@
  */
 export { geminiConfig, isGeminiConfigured } from './config';
 export { generateAnswer } from './generate';
-export type { GeminiTurn, GeminiImage, GeminiResult } from './generate';
+export type { GeminiTurn, GeminiImage, GeminiResult, GeminiUsage } from './generate';
