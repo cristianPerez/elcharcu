@@ -3,6 +3,7 @@
 import { useCallback, useState } from 'react';
 
 import { type ChatMessage } from '@/entities/charcu-assistant';
+import { incrementImages, incrementQuestions } from '@/entities/usage-quota';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
@@ -68,6 +69,12 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
 
       setError(null);
       setIsThinking(true);
+
+      // Incrementar contadores de uso
+      incrementQuestions();
+      if (file !== null) {
+        incrementImages();
+      }
 
       const dataUrl = file === null ? '' : await readFileAsDataUrl(file);
       const userMessage: ChatMessage = {
