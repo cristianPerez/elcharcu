@@ -21,6 +21,36 @@ export type Database = {
   };
   charcu: {
     Tables: {
+      ai_spend: {
+        Row: {
+          answer_tokens: number;
+          cost_usd: number;
+          day: string;
+          prompt_tokens: number;
+          requests: number;
+          thought_tokens: number;
+          updated_at: string;
+        };
+        Insert: {
+          answer_tokens?: number;
+          cost_usd?: number;
+          day?: string;
+          prompt_tokens?: number;
+          requests?: number;
+          thought_tokens?: number;
+          updated_at?: string;
+        };
+        Update: {
+          answer_tokens?: number;
+          cost_usd?: number;
+          day?: string;
+          prompt_tokens?: number;
+          requests?: number;
+          thought_tokens?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       chat_messages: {
         Row: {
           content: string;
@@ -265,6 +295,16 @@ export type Database = {
     };
     Functions: {
       has_active_subscription: { Args: { p_user_id: string }; Returns: boolean };
+      record_ai_spend: {
+        Args: {
+          p_answer_tokens: number;
+          p_cost_usd: number;
+          p_prompt_tokens: number;
+          p_thought_tokens: number;
+        };
+        Returns: number;
+      };
+      today_ai_spend: { Args: never; Returns: number };
     };
     Enums: {
       [_ in never]: never;

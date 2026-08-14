@@ -27,6 +27,11 @@ export const ANALYTICS_EVENTS = {
    * de cura por encima del tope. Si este evento sube, hay que revisar el prompt.
    */
   unsafeDoseBlocked: 'unsafe_dose_blocked',
+  /**
+   * Se agotó el presupuesto diario de IA y el asistente dejó de responder.
+   * Si aparece, o hay mucho uso real o alguien está abusando: hay que mirarlo.
+   */
+  aiBudgetExhausted: 'ai_budget_exhausted',
 } as const;
 
 export type AnalyticsEvent = (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];

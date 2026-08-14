@@ -12,8 +12,15 @@ export interface GeminiTurn {
   readonly image?: GeminiImage | undefined;
 }
 
+/** Lo que Gemini dice que consumió. Es la cifra real, no una estimación. */
+export interface GeminiUsage {
+  readonly promptTokens: number;
+  readonly thoughtTokens: number;
+  readonly answerTokens: number;
+}
+
 export type GeminiResult =
-  | { readonly ok: true; readonly text: string }
+  | { readonly ok: true; readonly text: string; readonly usage: GeminiUsage }
   | { readonly ok: false; readonly reason: 'sin-clave' | 'error-api' | 'sin-respuesta' };
 
 interface GeminiPart {
@@ -76,6 +83,34 @@ function readAnswer(payload: unknown): string | null {
   return text === '' ? null : text;
 }
 
+function readNumber(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0;
+}
+
+/** Lee el consumo declarado por la API. Si falta, devuelve ceros. */
+function readUsage(payload: unknown): GeminiUsage {
+  if (typeof payload !== 'object' || payload === null) {
+    return { promptTokens: 0, thoughtTokens: 0, answerTokens: 0 };
+  }
+
+  const { usageMetadata } = payload as { usageMetadata?: unknown };
+  if (typeof usageMetadata !== 'object' || usageMetadata === null) {
+    return { promptTokens: 0, thoughtTokens: 0, answerTokens: 0 };
+  }
+
+  const meta = usageMetadata as {
+    promptTokenCount?: unknown;
+    thoughtsTokenCount?: unknown;
+    candidatesTokenCount?: unknown;
+  };
+
+  return {
+    promptTokens: readNumber(meta.promptTokenCount),
+    thoughtTokens: readNumber(meta.thoughtsTokenCount),
+    answerTokens: readNumber(meta.candidatesTokenCount),
+  };
+}
+
 /** Una llamada a Gemini. Devuelve un resultado, nunca lanza. */
 export async function generateAnswer(
   systemPrompt: string,
@@ -116,7 +151,9 @@ export async function generateAnswer(
     const payload: unknown = await response.json();
     const text = readAnswer(payload);
 
-    return text === null ? { ok: false, reason: 'sin-respuesta' } : { ok: true, text };
+    return text === null
+      ? { ok: false, reason: 'sin-respuesta' }
+      : { ok: true, text, usage: readUsage(payload) };
   } catch {
     return { ok: false, reason: 'error-api' };
   }

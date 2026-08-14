@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
+import { checkBudget, recordSpend } from '@/entities/ai-budget';
 import { buildSystemPrompt } from '@/entities/charcu-assistant';
 import { auditCureDoses, MAX_CURE_1_G_PER_KG } from '@/entities/cure-safety';
 
@@ -97,6 +98,15 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'peticion-invalida' }, { status: 400 });
   }
 
+  // Freno de gasto: se comprueba ANTES de llamar a Gemini, que es lo que cuesta.
+  const budget = await checkBudget();
+  if (budget.isExhausted) {
+    console.warn(
+      `[presupuesto] tope diario alcanzado: ${budget.spentUsd.toFixed(4)} de ${String(budget.budgetUsd)} USD`,
+    );
+    return NextResponse.json({ error: 'sin-presupuesto' }, { status: 429 });
+  }
+
   const systemPrompt = buildSystemPrompt({
     product: parsed.product,
     level: parsed.level,
@@ -109,6 +119,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const status = result.reason === 'sin-clave' ? 503 : 502;
     return NextResponse.json({ error: result.reason }, { status });
   }
+
+  // Se apunta lo que de verdad consumió, no una estimación.
+  await recordSpend(result.usage);
 
   // Segunda barrera: se revisa la respuesta antes de que la vea nadie.
   const verdict = auditCureDoses(result.text);

@@ -67,7 +67,7 @@ Cada una es reversible. Si alguna no te gusta, se cambia.
 | --- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | D1  | **No instalar el SO en `docs/sistema/`**                                                        | Pedido explícito de Cristian: usar el proyecto y la arquitectura ya instalados y no gastar contexto en eso. Sigo el rol y la secuencia maestra de memoria.                                                                                         |
 | D2  | **Stack = el que ya está** (Next 15 + FSD + Tailwind)                                           | Ya existe, ya cumple el spec (Next App Router + TS + Tailwind) y ya tiene los tokens de marca. Migrar sería destruir trabajo bueno.                                                                                                                |
-| D3  | **Monetización = onboarding-first, no hard paywall**                                            | Regla dura del spec: una receta completa gratis, sin tarjeta. La receta gratis _es_ el argumento de venta. El muro aparece en la SEGUNDA receta.                                                                                                   |
+| D3  | ~~**Monetización = 1 receta gratis completa**~~ **SUPERADA por D14** (2026-08-05)               | Fue la regla del spec original. Cristian la cambia por un plan medido en preguntas e imágenes, con captura de datos tras la primera pregunta. Lo construido sigue sirviendo; cambia la unidad que se cuenta.                                       |
 | D4  | **Precios PROPUESTOS en COP** (ajustables)                                                      | Mercado colombiano; suscripción en dólares es una objeción documentada. Mensual $29.900 · Anual $239.000 (2 meses gratis) · Curso suelto $89.000.                                                                                                  |
 | D5  | **Vender también el curso suelto**                                                              | Este nicho compra pago único con menos fricción que auto-renovación mensual.                                                                                                                                                                       |
 | D6  | **Pasarela: Mercado Pago primero** (PSE, Nequi, tarjeta), detrás de una interfaz intercambiable | Métodos locales de Colombia. Hotmart queda como alternativa para cursos sueltos; Stripe solo para España/US.                                                                                                                                       |
@@ -76,6 +76,9 @@ Cada una es reversible. Si alguna no te gusta, se cambia.
 | D10 | **La IA es Gemini (Google), no Claude**                                                         | Decisión de Cristian el 2026-08-05, en contra de lo que decía el spec original. `.env.local` ya está preparado para Gemini. Los topes de seguridad de la sal de cura y la lectura de fotos de moho se implementan igual, solo cambia el proveedor. |
 | D11 | **Todo el esquema vive en `charcu`, no en `public`**                                            | Así El Charcu nunca choca ni se mezcla con otra app que comparta base.                                                                                                                                                                             |
 | D12 | **El candado y la puerta de cursos viven en la base de datos**                                  | Un trigger rechaza la segunda receta sin suscripción, y las políticas RLS deciden qué videos se entregan. Desde el navegador ya no se puede burlar.                                                                                                |
+| D14 | **El asistente vive en la PORTADA** (`/`), no detrás de una landing                             | Pedido de Cristian (2026-08-05). Que el visitante pruebe el producto en el primer segundo, sin leer nada ni registrarse. El producto ES el argumento de venta.                                                                                     |
+| D15 | **El plan se mide en PREGUNTAS e IMÁGENES**, no en recetas                                      | Pedido de Cristian (2026-08-05). Es la unidad que el usuario entiende y la que de verdad cuesta dinero (cada pregunta gasta tokens de Gemini; cada imagen gasta bastante más).                                                                     |
+| D16 | **Muro blando tras la 1ª pregunta: nombre, correo y WhatsApp**                                  | Pedido de Cristian (2026-08-05). Captura el contacto en el momento de máximo interés —ya vio que funciona— y sin pedir contraseña. WhatsApp es el canal real de venta de El Charcu.                                                                |
 | D13 | **Login por enlace al correo primero**                                                          | Es lo único que funciona sin configurar nada más ni gastar dinero. Teléfono/SMS necesita un proveedor que se paga por mensaje, y Google necesita credenciales aparte; ambos se suman después sin rehacer nada.                                     |
 | D9  | **Ruta de la app: `/asistente`**                                                                | Consistente con `/recetas` y `/tablas`, en español, y no rompe nada del sitio actual.                                                                                                                                                              |
 
@@ -116,6 +119,119 @@ No se empieza por el chat.
 
 ---
 
+## 💰 Tope de gasto de la IA (hecho el 2026-08-05)
+
+`AI_DAILY_BUDGET_USD` (hoy en **5 USD**) ya frena de verdad las llamadas a Gemini.
+
+**Cómo funciona.** Antes de cada llamada se mira cuánto se lleva gastado hoy; si se
+pasó del tope, se corta y ni se llama a Google. Después de cada respuesta se apunta
+el consumo **real** que declara Gemini, no una estimación. El contador vive en
+`charcu.ai_spend`, en la base y no en memoria, porque en producción el servidor se
+reinicia solo y un contador en memoria se borraría con él.
+
+**Números medidos** (una pregunta de texto, sin foto):
+
+| Concepto               | Tokens          | Nota                                         |
+| ---------------------- | --------------- | -------------------------------------------- |
+| Entrada (prompt)       | ~830            | a 0,75 USD el millón                         |
+| **Pensamiento**        | **~950**        | se cobra como salida — es el gasto principal |
+| Respuesta              | ~360            | a 3,75 USD el millón                         |
+| **Coste por pregunta** | **~0,0055 USD** | ≈ **900 preguntas al día** con 5 USD         |
+
+Lo llamativo: **el modelo gasta más pensando que respondiendo** (950 contra 360), y
+eso se cobra a precio de salida. Es donde está el dinero.
+
+⚠️ **El precio de Gemini se duplica el 1 de enero de 2027** (de 0,75/3,75 a 1,50/7,50
+por millón). Las dos tarifas ya están en el código con la fecha de corte, así que el
+cálculo se ajusta solo. Ese día el presupuesto rendirá la mitad: ~450 preguntas.
+
+**Decisiones de diseño, por si hay que revisarlas:**
+
+- Si `AI_DAILY_BUDGET_USD` falta o está rota, se asume **0 = todo cortado**. Ante una
+  configuración mala preferimos un asistente mudo a una factura sin freno.
+- Si la base de datos no responde al consultar el contador, **se deja pasar**. Una
+  caída de Supabase no debería dejar mudo al asistente, y el gasto de unas pocas
+  llamadas es menos grave que una caída total.
+- El `thinkingBudget: 512` que le pedimos a Gemini es **una sugerencia, no un límite**:
+  en la práctica gastó 951. No se puede confiar en él para controlar el coste.
+
+**Pendiente relacionado:** no hay aviso automático cuando se agota. Hoy solo queda el
+evento `ai_budget_exhausted` en Mixpanel y una línea en el log del servidor.
+
+---
+
+## 🔄 Cambio de rumbo (2026-08-05): el asistente a la portada
+
+Pedido de Cristian. Cambia el embudo completo: se deja de vender **antes** de probar y
+se pasa a **probar primero, pedir datos después**.
+
+### El embudo nuevo
+
+```
+Llega a elcharcu.co
+      ↓
+Ve el asistente YA, en la portada. Sin leer nada, sin registrarse.
+      ↓
+Pregunta 1 · GRATIS · sin pedir absolutamente nada
+      ↓
+Muro blando: nombre + correo + WhatsApp
+      ↓
+Preguntas 2..N gratis (N por definir) con su cupo de imágenes
+      ↓
+Se acaba el cupo → muro de suscripción, planes medidos en preguntas e imágenes
+```
+
+Por qué así: la primera pregunta es la demostración. Pedir los datos justo después es
+el momento de máximo interés —acaba de ver que funciona— y todavía no le hemos cobrado
+nada. El contacto de WhatsApp además cae en el canal por donde El Charcu ya vende.
+
+### Qué hay que construir
+
+- [ ] **9a. Asistente en la portada.** Mover el chat a `/`, arriba del todo, listo para
+      escribir. El sitio actual (historia, productos, recetas, cursos) baja. Sin
+      onboarding previo: se arranca a ciegas y el asistente pregunta lo que necesite.
+- [ ] **9b. Contador de preguntas e imágenes** por visitante. Sustituye al candado de
+      recetas: la unidad ya no es "receta", es "pregunta" y "imagen". Antes de que
+      exista cuenta, el contador vive en el navegador y se ata a la cuenta cuando el
+      usuario deja sus datos.
+- [ ] **9c. Muro blando de captura** tras la primera respuesta: nombre, correo y
+      WhatsApp. Sin contraseña. Tabla nueva `charcu.leads` con RLS.
+- [ ] **9d. Planes nuevos** medidos en preguntas/mes e imágenes/mes. Reescribe
+      `entities/plan` y los textos de la página de precios y del muro.
+- [ ] **9e. Nuevo muro de suscripción** cuando se agota el cupo, con el argumento de
+      cuántas preguntas le quedan y qué gana al pasar.
+
+### Qué queda obsoleto (y qué se salva)
+
+| Pieza actual                                        | Qué pasa con ella                                                                                             |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Trigger `enforce_recipe_gate` en Postgres           | **Ya no aplica**: contaba recetas, no preguntas. Hay que reemplazarlo por contadores de preguntas e imágenes. |
+| `features/start-recipe` (candado de recetas)        | Se retira o se reduce mucho.                                                                                  |
+| `/asistente/nuevo` (onboarding de 3 preguntas)      | Deja de ser obligatorio para entrar. Puede quedar como ajuste opcional del perfil.                            |
+| `/asistente` (página de ventas)                     | Se conserva, pero deja de ser la puerta principal.                                                            |
+| `features/assistant-chat` + guardrails de seguridad | **Se salva entero.** Es lo que se mueve a la portada.                                                         |
+| Esquema de Supabase, login, RLS                     | **Se salva.** Solo se añaden tablas y contadores.                                                             |
+
+### ⚠️ Avisos de este cambio
+
+- **Datos personales.** Guardar nombre, correo y WhatsApp es tratar datos personales.
+  Hace falta una nota de privacidad visible en el formulario y decir para qué se usan
+  (en Colombia aplica la Ley 1581 de 2012, habeas data). No es opcional.
+- **El coste sube y se vuelve el riesgo principal.** Con el asistente en la portada,
+  cualquiera que pase lo puede usar. Sin el tope de gasto (pendiente nº 1) esto puede
+  vaciar el presupuesto de Gemini en un día. **El tope de gasto pasa a ser bloqueante
+  antes de publicar este cambio**, no un "ya lo haremos".
+- **Las imágenes cuestan mucho más que el texto.** Por eso su cupo debe ser bastante
+  más chico que el de preguntas.
+- **Falta decidir N**, el número de preguntas gratis tras dejar los datos, y los cupos
+  de cada plan. Se propondrán con números concretos al construir el 9d.
+- **El sistema de diseño de Claude sigue sin poder leerse.** El MCP `claude_design` no
+  está conectado en la sesión del agente y el enlace público devuelve 403. Para usar el
+  diseño de `Home Charcu App.dc.html` hay que conectar ese MCP o exportar los archivos
+  al repo. Mientras tanto, la portada se haría con los tokens de marca ya instalados.
+
+---
+
 ## ⚠️ Pendientes y avisos
 
 ### ✅ Base de datos conectada y verificada (2026-08-05)
@@ -135,10 +251,8 @@ desde la base real en `src/shared/api/supabase/database.types.ts`.
 
 ### 🔴 Pendientes de la cuenta
 
-1. **Sin control de gasto de la IA.** `AI_DAILY_BUDGET_USD=5` está en el archivo pero
-   NADIE lo lee todavía: hoy no hay tope que frene las llamadas a Gemini. Cada
-   respuesta gasta bastante en "pensamiento" (unos 600 tokens antes de responder).
-   Hay que medirlo y cortarlo antes de abrir al público.
+1. ✅ **RESUELTO (2026-08-05): el tope de gasto ya funciona.** `AI_DAILY_BUDGET_USD`
+   ahora sí se lee y frena de verdad. Ver la sección "Tope de gasto" más abajo.
 2. **El correo de entrada es el de prueba de Supabase**: en plan gratis está limitado
    a unos pocos envíos por hora y no sirve para lanzar. Antes de abrir al público hay
    que conectar un SMTP propio (Resend, SendGrid o similar).
