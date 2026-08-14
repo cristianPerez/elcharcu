@@ -1,15 +1,3 @@
-/* eslint-disable */
-/**
- * Tipos de la base de datos de El Charcu — GENERADOS, NO EDITAR A MANO.
- *
- * Para regenerarlos tras cambiar el esquema:
- *
- *   supabase gen types typescript --project-id lcvmsbfnnpviumsqcxip --schema charcu \
- *     > src/shared/api/supabase/database.types.ts
- *
- * (Necesita `SUPABASE_ACCESS_TOKEN` en el entorno; ya está en `.env.local`.)
- */
-
 export type Json =
   string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
@@ -116,6 +104,39 @@ export type Database = {
           name?: string;
           position?: number;
           rating?: number | null;
+        };
+        Relationships: [];
+      };
+      leads: {
+        Row: {
+          created_at: string;
+          email: string;
+          id: string;
+          images_used: number;
+          name: string;
+          questions_used: number;
+          user_id: string | null;
+          whatsapp: string;
+        };
+        Insert: {
+          created_at?: string;
+          email: string;
+          id?: string;
+          images_used?: number;
+          name: string;
+          questions_used?: number;
+          user_id?: string | null;
+          whatsapp: string;
+        };
+        Update: {
+          created_at?: string;
+          email?: string;
+          id?: string;
+          images_used?: number;
+          name?: string;
+          questions_used?: number;
+          user_id?: string | null;
+          whatsapp?: string;
         };
         Relationships: [];
       };
@@ -321,8 +342,7 @@ type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, 'public'>]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-    | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
-    | { schema: keyof DatabaseWithoutInternals },
+    keyof DefaultSchema['Tables'] | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
   }
@@ -338,10 +358,8 @@ export type Tables<
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] &
-        DefaultSchema['Views'])
-    ? (DefaultSchema['Tables'] &
-        DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
         Row: infer R;
       }
       ? R
