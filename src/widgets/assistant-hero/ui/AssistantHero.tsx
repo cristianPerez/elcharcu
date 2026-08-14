@@ -1,45 +1,36 @@
+'use client';
+
 import { type ReactNode } from 'react';
 
-import { appRoutes, site } from '@/shared/config';
-import { ButtonLink, Container, Eyebrow } from '@/shared/ui';
+import { AssistantChat } from '@/features/assistant-chat';
 
-/** Apertura de la página de ventas: el momento de la duda, no la lista de features. */
+import { Container, Eyebrow } from '@/shared/ui';
+
+/**
+ * Asistente en la portada: usable sin registro, sin onboarding previo.
+ * El asistente pregunta lo que necesite saber.
+ */
 export function AssistantHero(): ReactNode {
   return (
-    <section className="bg-grain relative overflow-hidden bg-forest text-cream">
-      <Container className="py-20 md:py-28">
-        <div className="max-w-3xl">
-          <Eyebrow className="text-sage">El maestro charcutero de bolsillo</Eyebrow>
-
-          <h1 className="mt-6 font-serif text-4xl font-semibold leading-[1.08] md:text-6xl">
-            Son las once de la noche
-            <br />y le salió una mancha verde.
+    <section className="bg-grain bg-forest py-12 text-cream md:py-16">
+      <Container>
+        <div className="mx-auto max-w-3xl">
+          <Eyebrow className="text-sage">Pregúntale al maestro</Eyebrow>
+          <h1 className="mt-4 font-serif text-3xl font-semibold leading-tight md:text-4xl">
+            Asistente de charcutería artesanal.
           </h1>
-
-          <p className="mt-6 font-serif text-2xl italic text-terracota">
-            Ahora sí hay a quién preguntarle.
+          <p className="mt-3 text-sm leading-relaxed text-cream/75 md:text-[15px]">
+            Sal de cura, moho, temperatura, tiempo — todo lo que necesites para curar tu
+            pieza sin riesgos.
           </p>
 
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-cream/80">
-            El asistente de {site.name} responde en el momento exacto de la duda: cuánta
-            sal de cura va por kilo, si ese moho se limpia o se bota, por qué te quedó
-            café por dentro. Entrenado con el método de Cristian —{' '}
-            <span className="text-cream">{site.slogan.toLowerCase()}</span> — no con
-            recetas sueltas de internet.
-          </p>
-
-          <div className="mt-9 flex flex-wrap gap-4">
-            <ButtonLink href={appRoutes.start} variant="primary">
-              Curar mi primera receta gratis
-            </ButtonLink>
-            <ButtonLink href="#como-funciona" variant="outline">
-              Ver cómo funciona
-            </ButtonLink>
+          <div className="mt-10">
+            <AssistantChat
+              product="consulta general"
+              level="apasionado"
+              country="Colombia"
+            />
           </div>
-
-          <p className="mt-5 text-sm text-cream/55">
-            Una receta completa, de principio a fin, sin tarjeta.
-          </p>
         </div>
       </Container>
     </section>

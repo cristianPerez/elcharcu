@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react';
 
+import { AssistantHero } from '@/widgets/assistant-hero';
 import { BrandQuote } from '@/widgets/brand-quote';
 import { BrandStory } from '@/widgets/brand-story';
 import { ContactCta } from '@/widgets/contact-cta';
@@ -19,6 +20,7 @@ export function HomePage(): ReactNode {
     <>
       <SiteHeader />
       <main>
+        <AssistantHero />
         <Hero />
         <BrandStory />
         <ProductShowcase />
