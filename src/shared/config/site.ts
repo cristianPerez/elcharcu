@@ -44,15 +44,19 @@ export const appRoutes = {
   subscription: '/asistente/suscripcion',
 } as const;
 
+/**
+ * El menú sigue la separación de 2026-08-14: el home es la app y la
+ * charcutería física vive en `/tienda`. Por eso `Productos`, `Proceso` y
+ * `Contacto` ya no son anclas del home — apuntan a la tienda.
+ */
 export const navItems: readonly NavItem[] = [
-  { label: 'Historia', href: '/#historia' },
-  { label: 'Productos', href: '/#productos' },
+  { label: 'Asistente', href: '/' },
+  { label: 'Cursos', href: '/#cursos' },
+  { label: 'Precios', href: '/#precios' },
   { label: 'Recetas', href: '/recetas' },
   { label: 'Tablas', href: '/tablas' },
-  { label: 'Asistente', href: appRoutes.sales },
-  { label: 'Cursos', href: '/#cursos' },
-  { label: 'Proceso', href: '/#proceso' },
-  { label: 'Contacto', href: '/#contacto' },
+  { label: 'Tienda', href: '/tienda' },
+  { label: 'Contacto', href: '/tienda#contacto' },
 ];
 
 export const contactChannels: readonly ContactChannel[] = [
