@@ -23,16 +23,16 @@ export function AssistantChat({
     <section aria-label="Asistente de charcutería">
       {/* `aria-live` para que un lector de pantalla cante la respuesta cuando
           llega, en vez de dejarla en silencio a mitad de la página. */}
-      <div className="flex flex-col gap-7" aria-live="polite">
+      <div className="flex flex-col gap-6" aria-live="polite">
         {messages.map((message) => (
           <MessageBubble key={message.id} message={message} />
         ))}
 
         {isThinking ? (
-          <div className="flex items-center gap-1.5 text-cream/40" aria-label="Pensando">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-cream/40 [animation-delay:0ms]" />
-            <span className="h-2 w-2 animate-pulse rounded-full bg-cream/40 [animation-delay:200ms]" />
-            <span className="h-2 w-2 animate-pulse rounded-full bg-cream/40 [animation-delay:400ms]" />
+          <div className="flex items-center gap-1.5" aria-label="Pensando">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-sage [animation-delay:0ms]" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-sage [animation-delay:160ms]" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-sage [animation-delay:320ms]" />
           </div>
         ) : null}
       </div>
@@ -40,7 +40,7 @@ export function AssistantChat({
       {error === null ? null : (
         <p
           role="alert"
-          className="mt-4 rounded-2xl border border-terracota/40 bg-terracota/10 px-4 py-3 text-sm text-cream"
+          className="mt-4 rounded-2xl border border-terracota/35 bg-terracota/5 px-4 py-3 text-sm text-cocoa"
         >
           {error}
         </p>
@@ -54,11 +54,27 @@ export function AssistantChat({
         }}
       />
 
-      <p className="mt-4 text-xs leading-relaxed text-cream/40">
-        El asistente acompaña tu criterio, no lo reemplaza. Nunca recomienda más de 2,5 g
-        de sal de cura #1 por kilo, y ante un moho dudoso siempre dice descartar. La
-        manipulación higiénica y la decisión final son tuyas.
-      </p>
+      {/*
+        El aviso de seguridad se pliega. Sigue estando —es importante y no se
+        esconde— pero cuatro líneas de gris pesaban más que la caja de escribir,
+        que es lo único que el visitante tiene que hacer aquí.
+      */}
+      <details className="group mt-4">
+        <summary className="cursor-pointer list-none text-xs text-cocoa/45 transition-colors hover:text-cocoa/70">
+          Cómo funciona la seguridad de este asistente
+          <span
+            aria-hidden
+            className="ml-1 inline-block transition-transform group-open:rotate-90"
+          >
+            ›
+          </span>
+        </summary>
+        <p className="mt-2 text-xs leading-relaxed text-cocoa/55">
+          El asistente acompaña tu criterio, no lo reemplaza. Nunca recomienda más de 2,5
+          g de sal de cura #1 por kilo, y ante un moho dudoso siempre dice descartar. La
+          manipulación higiénica y la decisión final son tuyas.
+        </p>
+      </details>
     </section>
   );
 }
