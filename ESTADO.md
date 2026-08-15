@@ -402,11 +402,14 @@ desde la base real en `src/shared/api/supabase/database.types.ts`.
 
 1. ✅ **RESUELTO (2026-08-05): el tope de gasto ya funciona.** `AI_DAILY_BUDGET_USD`
    ahora sí se lee y frena de verdad. Ver la sección "Tope de gasto" más abajo.
-2. **El correo de entrada es el de prueba de Supabase**: en plan gratis está limitado
-   a unos pocos envíos por hora y no sirve para lanzar. Antes de abrir al público hay
-   que conectar un SMTP propio (Resend, SendGrid o similar).
-3. **No se pueden editar las plantillas de correo en plan gratis.** Por eso el correo
-   sale en inglés y con el texto por defecto de Supabase. Se arregla con el SMTP propio.
+2. ✅ **RESUELTO (2026-08-15): Resend conectado al dominio.** `RESEND_API_KEY` y
+   `RESEND_FROM` ya están en `.env.local`. Se acabó el límite de unos pocos envíos
+   por hora del correo de prueba de Supabase.
+3. ✅ **Plantilla de correo propia**: `supabase/templates/magic-link.html`, con la
+   paleta de El Charcu y probada a 375px. Hay que **pegarla a mano** en Supabase
+   (Authentication → Email Templates → Magic Link); no se despliega desde el repo.
+   Faltan por hacer las otras plantillas (Confirm signup, Change email, Recovery),
+   que siguen en inglés por defecto.
 4. **`site_url` sigue en `http://localhost:3000`.** Hay que cambiarlo al dominio real
    antes de publicar, o los enlaces del correo llevarán al vacío.
 
