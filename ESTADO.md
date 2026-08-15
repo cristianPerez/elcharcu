@@ -1,7 +1,7 @@
 # ESTADO — El Charcu (plataforma)
 
 Memoria viva del proyecto. Se actualiza al cerrar cada etapa.
-Última actualización: 2026-08-04
+Última actualización: 2026-08-14
 
 ---
 
@@ -187,19 +187,19 @@ nada. El contacto de WhatsApp además cae en el canal por donde El Charcu ya ven
 
 ### Qué hay que construir
 
-- [ ] **9a. Asistente en la portada.** Mover el chat a `/`, arriba del todo, listo para
-      escribir. El sitio actual (historia, productos, recetas, cursos) baja. Sin
+- [x] **9a. Asistente en la portada.** El chat vive en `/`, arriba del todo, sin
       onboarding previo: se arranca a ciegas y el asistente pregunta lo que necesite.
-- [ ] **9b. Contador de preguntas e imágenes** por visitante. Sustituye al candado de
-      recetas: la unidad ya no es "receta", es "pregunta" y "imagen". Antes de que
-      exista cuenta, el contador vive en el navegador y se ata a la cuenta cuando el
-      usuario deja sus datos.
-- [ ] **9c. Muro blando de captura** tras la primera respuesta: nombre, correo y
-      WhatsApp. Sin contraseña. Tabla nueva `charcu.leads` con RLS.
-- [ ] **9d. Planes nuevos** medidos en preguntas/mes e imágenes/mes. Reescribe
-      `entities/plan` y los textos de la página de precios y del muro.
-- [ ] **9e. Nuevo muro de suscripción** cuando se agota el cupo, con el argumento de
-      cuántas preguntas le quedan y qué gana al pasar.
+- [x] **9b. Contador de preguntas e imágenes** por visitante (`entities/usage-quota`).
+      El periodo es el **mes natural**, no el día — un reseteo diario dejaría el plan
+      gratis ilimitado en la práctica. Vive en `localStorage`; se ata a la cuenta
+      cuando llegue el 4b.
+- [x] **9c. Muro blando de captura** tras la primera respuesta: nombre, correo y
+      WhatsApp, sin contraseña, con la nota de la Ley 1581/2012. Tabla `charcu.leads`.
+- [x] **9d. Planes medidos en preguntas/mes e imágenes/mes** (2026-08-14). `Plan` ahora
+      lleva `quota`, y los textos de precios y del muro hablan de preguntas y fotos.
+- [x] **9e. Muro de suscripción al agotar el cupo** (2026-08-14):
+      `features/quota-wall`, que reemplaza al chat en la portada cuando se acaban las
+      preguntas del mes. Probado en el navegador con el cupo forzado.
 
 ### Qué queda obsoleto (y qué se salva)
 
@@ -223,8 +223,18 @@ nada. El contacto de WhatsApp además cae en el canal por donde El Charcu ya ven
   antes de publicar este cambio**, no un "ya lo haremos".
 - **Las imágenes cuestan mucho más que el texto.** Por eso su cupo debe ser bastante
   más chico que el de preguntas.
-- **Falta decidir N**, el número de preguntas gratis tras dejar los datos, y los cupos
-  de cada plan. Se propondrán con números concretos al construir el 9d.
+- ✅ **N y los cupos ya están puestos** (2026-08-14), y son PROPUESTA — se cambian en
+  `entities/plan/model/plans.ts` y `entities/usage-quota/model/types.ts`:
+
+  | Plan               | Preguntas/mes           | Fotos/mes | Coste IA estimado |
+  | ------------------ | ----------------------- | --------- | ----------------- |
+  | Aprendiz (gratis)  | 8 (la 1ª sin dar datos) | 2         | ~0,04 USD         |
+  | Charcutero $29.900 | 200                     | 30        | ~1,10 USD + fotos |
+  | Anual $239.000     | 300                     | 50        | ~1,65 USD + fotos |
+
+  Con ~7,50 USD de ingreso mensual, el margen aguanta. **Cuando el precio de Gemini se
+  duplique el 1/1/2027 hay que volver a esta tabla.**
+
 - **El sistema de diseño de Claude sigue sin poder leerse.** El MCP `claude_design` no
   está conectado en la sesión del agente y el enlace público devuelve 403. Para usar el
   diseño de `Home Charcu App.dc.html` hay que conectar ese MCP o exportar los archivos
@@ -281,6 +291,12 @@ desde la base real en `src/shared/api/supabase/database.types.ts`.
   pierde su receta gratis — y que el límite de "una sola receta gratis" todavía se puede
   saltar. Se arregla solo cuando llegue Supabase. Todo el guardado está aislado en
   `src/entities/curing-profile/lib/profileStorage.ts`: ese es el único archivo a cambiar.
+- 🔴 **El cupo de preguntas se puede burlar desde el navegador.** Vive en
+  `localStorage`, así que borrar los datos del sitio o abrir una ventana de incógnito
+  reinicia el contador. Lo que hoy protege el bolsillo de verdad es el tope diario de
+  gasto (`AI_DAILY_BUDGET_USD`), no el cupo. El cupo pasa a ser de verdad cuando se
+  cuente en Postgres (paso 4b) y se compruebe **en `/api/asistente`**, no solo en la
+  pantalla.
 - ⚠️ **El muro todavía no cobra.** Los botones de los planes abren WhatsApp con el plan
   escrito, que es por donde El Charcu ya vende hoy. Sirve para vender desde ya, pero
   hay que atender esos mensajes a mano. Se reemplaza por el checkout de Mercado Pago en

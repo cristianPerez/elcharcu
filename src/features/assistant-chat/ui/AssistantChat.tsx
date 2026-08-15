@@ -7,8 +7,16 @@ import { useAssistantChat, type AssistantChatParams } from '../model/useAssistan
 import { ChatComposer } from './ChatComposer';
 import { MessageBubble } from './MessageBubble';
 
+interface AssistantChatProps extends AssistantChatParams {
+  /** `false` cuando se agotó el cupo de fotos del mes. Por defecto, se puede. */
+  readonly canSendImages?: boolean;
+}
+
 /** El asistente de charcutería, atado a la receta que el usuario está haciendo. */
-export function AssistantChat(params: AssistantChatParams): ReactNode {
+export function AssistantChat({
+  canSendImages = true,
+  ...params
+}: AssistantChatProps): ReactNode {
   const { messages, isThinking, error, send } = useAssistantChat(params);
 
   return (
@@ -38,6 +46,7 @@ export function AssistantChat(params: AssistantChatParams): ReactNode {
 
       <ChatComposer
         isThinking={isThinking}
+        canSendImages={canSendImages}
         onSend={(text, file) => {
           void send(text, file);
         }}

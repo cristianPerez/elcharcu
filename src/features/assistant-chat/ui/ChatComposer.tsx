@@ -4,11 +4,17 @@ import { useRef, useState, type FormEvent, type ReactNode } from 'react';
 
 interface ChatComposerProps {
   readonly isThinking: boolean;
+  /** `false` cuando se agotó el cupo de fotos: se puede escribir, no adjuntar. */
+  readonly canSendImages: boolean;
   readonly onSend: (text: string, file: File | null) => void;
 }
 
 /** Caja para escribir la duda y adjuntar la foto del moho o del corte. */
-export function ChatComposer({ isThinking, onSend }: ChatComposerProps): ReactNode {
+export function ChatComposer({
+  isThinking,
+  canSendImages,
+  onSend,
+}: ChatComposerProps): ReactNode {
   const [text, setText] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const fileInput = useRef<HTMLInputElement>(null);
@@ -47,22 +53,32 @@ export function ChatComposer({ isThinking, onSend }: ChatComposerProps): ReactNo
       )}
 
       <div className="flex items-end gap-2">
-        <label
-          className="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-full border border-cream/20 text-lg text-cream/60 transition-colors hover:border-terracota hover:text-cream"
-          title="Adjuntar una foto"
-        >
-          <span aria-hidden>📷</span>
-          <span className="sr-only">Adjuntar una foto</span>
-          <input
-            ref={fileInput}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(event) => {
-              setFile(event.target.files?.[0] ?? null);
-            }}
-          />
-        </label>
+        {canSendImages ? (
+          <label
+            className="flex h-12 w-12 shrink-0 cursor-pointer items-center justify-center rounded-full border border-cream/20 text-lg text-cream/60 transition-colors hover:border-terracota hover:text-cream"
+            title="Adjuntar una foto"
+          >
+            <span aria-hidden>📷</span>
+            <span className="sr-only">Adjuntar una foto</span>
+            <input
+              ref={fileInput}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(event) => {
+                setFile(event.target.files?.[0] ?? null);
+              }}
+            />
+          </label>
+        ) : (
+          <span
+            title="Se acabaron tus fotos del mes"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-cream/10 text-lg text-cream/20"
+          >
+            <span aria-hidden>📷</span>
+            <span className="sr-only">Se acabaron tus fotos del mes</span>
+          </span>
+        )}
 
         <textarea
           value={text}
