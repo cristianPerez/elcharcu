@@ -54,8 +54,12 @@ Verificado en el repo el 2026-08-04:
 
 - ✅ Supabase: librerías, código, esquema aplicado y tipos generados. Conectado y probado.
 - ✅ Gemini conectado (`gemini-3.6-flash`), sin SDK: llamada directa desde el servidor
-- ❌ Pasarela de pago
+- 🔜 Pasarela: **Hotmart** (D17). El producto lo está configurando Cristian; el
+  webhook que activa la suscripción todavía no existe (paso 7).
+- ❌ Video: **Bunny** todavía sin cuenta ni videos (paso 6).
+- ❌ Librería de animación: no hay ninguna. La capa 5 del rescate visual la necesita.
 - ❌ PWA (instalable en el celular)
+- ❌ Despliegue: **nada escucha a `develop`**. `git push` no publica.
 
 ---
 
@@ -252,6 +256,42 @@ nada. El contacto de WhatsApp además cae en el canal por donde El Charcu ya ven
 
 ---
 
+## 🎨 Rescate visual (2026-08-14, en curso)
+
+Diagnóstico a 375px: un solo verde plano de arriba abajo, y la caja de escribir
+—lo único que el visitante tiene que hacer— era lo que menos se veía.
+
+Dirección elegida por Cristian: **clara, tipo cocina profesional**. Tres niveles
+de superficie construidos SIN añadir colores a la paleta (`cream` → `cream-white`
+→ `cream` otra vez dentro de la tarjeta; las sombras son `cocoa` con muy poca
+opacidad). Terracota `#C17A5A` es **el único color de resalte** y solo aparece en
+lo que se toca. Se mantiene Inter: el problema no era la fuente, era que todo el
+texto pesaba igual.
+
+- [x] **Capa 1 — tokens y profundidad.** `cream-white` y las sombras `surface` /
+      `raised` en `tailwind.config.ts`.
+- [x] **Capa 2 — el asistente.** Tarjeta blanca sobre crema, texto de 14 a 16px
+      (se leen dosis de sal de cura con las manos llenas de carne, y 16 evita el
+      zoom automático de iOS), muere el eyebrow en mayúsculas, el aviso de
+      seguridad se pliega en un `details`.
+- [ ] **Capa 3 — precios.** La sección sigue sobre `forest-dark` y NO se ha
+      revisado con los tokens nuevos. Es lo siguiente.
+- [ ] **Capa 4 — tipografía.** Escala aplicada solo en el asistente; falta el
+      resto del sitio.
+- [ ] **Capa 5 — movimiento.** No hay ni una animación y **no hay librería
+      instalada**. Requiere `motion` (~4kb) y decidirlo, porque es una
+      dependencia nueva. Las 7 de base están especificadas en el plan.
+- [ ] **Estados de carga y vacíos.** No existen: hoy no hay skeleton ni empty
+      state en ninguna pantalla.
+
+**El revisor visual ya existe**: `.claude/agents/revisor-visual.md`. Recibe la
+RUTA de una captura, puntúa usabilidad /40 y craft /20 contra esta paleta, y la
+puerta es ≥36 **y** ≥16. Quien hace el cambio no se puntúa a sí mismo.
+⚠️ Las capas 1 y 2 se dieron por buenas **sin pasar por él** (no existía todavía).
+Hay que pasarlas antes de darlas por cerradas.
+
+---
+
 ## ⚠️ Pendientes y avisos
 
 ### 🗂️ Las migraciones ahora sí se ejecutan desde los archivos (2026-08-14)
@@ -259,7 +299,7 @@ nada. El contacto de WhatsApp además cae en el canal por donde El Charcu ya ven
 El esquema se había aplicado a mano y `supabase_migrations.schema_migrations` estaba
 **vacío**: el repo y la base podían haberse separado sin que nadie se enterara. Con la
 base todavía sin usuarios ni leads se borró el esquema `charcu` y se reconstruyó
-ejecutando `supabase/migrations/0001…0006` en orden, cada archivo registrado en el
+ejecutando `supabase/migrations/0001…0007` en orden, cada archivo registrado en el
 historial. De aquí en adelante: **un cambio de esquema = un archivo nuevo**, nunca SQL
 suelto en el panel.
 
@@ -297,13 +337,24 @@ desde la base real en `src/shared/api/supabase/database.types.ts`.
 4. **`site_url` sigue en `http://localhost:3000`.** Hay que cambiarlo al dominio real
    antes de publicar, o los enlaces del correo llevarán al vacío.
 
-### Cosas que SOLO Cristian puede hacer (te aviso clic por clic cuando toque)
+### Cosas que SOLO Cristian puede hacer
 
-1. Crear la cuenta de **Supabase** y pasarme 2 claves (base de datos + login).
-2. Crear la cuenta de **Anthropic** y pasarme 1 clave (el cerebro del asistente). **Cuesta dinero por uso.**
-3. Crear la cuenta de **Mercado Pago** (o Hotmart) y pasarme las claves de cobro.
-4. Confirmar los **precios** finales.
-5. Dar el **contenido**: videos de los cursos y tus recetas reales.
+1. ✅ Cuenta de **Supabase** — hecha y conectada.
+2. ✅ Clave de la IA — es **Gemini**, no Anthropic (D10). Conectada y con tope de gasto.
+3. ✅ **Precios** confirmados: US$ 9,99 / US$ 89,90 (D18).
+4. 🔜 **Configurar el producto en Hotmart** (en curso): un producto de suscripción
+   con DOS planes de cobro, mensual y anual. El gratis no va en Hotmart, vive en la
+   app. Después hacen falta las claves para el webhook (`HOTMART_HOTTOK` ya está en
+   `.env.local`).
+5. 🔜 **`supabase link --project-ref lcvmsbfnnpviumsqcxip`** — pide la contraseña de
+   la base y esa no se pega en el chat. Sin esto la CLI no puede hacer `db push` y
+   las migraciones hay que aplicarlas por el MCP.
+6. 🔜 **Precio del curso suelto en dólares.** Sigue en $89.000 COP, con la moneda
+   escrita al lado para que nadie lo lea como 89 dólares. Chirría junto a US$ 9,99.
+7. 🔜 Dar el **contenido**: los videos de los cursos (van a Bunny) y tus recetas.
+8. 🔜 Decidir si conectamos **Vercel a `develop`**. Hoy `git push` NO despliega nada:
+   no hay `.github/workflows`, ni `vercel.json`, ni `netlify.toml`. "Subido" y
+   "desplegado" no son lo mismo, y tampoco tengo forma de avisarte al celular.
 
 ### Avisos abiertos
 
