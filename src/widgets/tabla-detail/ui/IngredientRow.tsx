@@ -18,7 +18,7 @@ export function IngredientRow({ ingredient }: IngredientRowProps): ReactNode {
         </span>
       </div>
       {ingredient.note ? (
-        <p className="text-xs leading-relaxed text-cocoa/55">{ingredient.note}</p>
+        <p className="text-xs leading-relaxed text-cocoa/65">{ingredient.note}</p>
       ) : null}
     </div>
   );

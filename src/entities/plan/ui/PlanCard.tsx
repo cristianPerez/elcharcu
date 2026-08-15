@@ -38,14 +38,14 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
       )}
     >
       {isHighlighted ? (
-        <span className="mb-4 self-start rounded-full bg-terracota px-3 py-1 text-[11px] font-medium uppercase tracking-eyebrow text-cream">
+        <span className="mb-4 self-start rounded-full bg-terracota-dark px-3 py-1 text-[11px] font-medium uppercase tracking-eyebrow text-cream-white">
           El más elegido
         </span>
       ) : null}
 
       <h3 className="font-serif text-2xl font-semibold">{plan.name}</h3>
       <p
-        className={cn('mt-2 text-sm', isHighlighted ? 'text-cream/70' : 'text-cocoa/60')}
+        className={cn('mt-2 text-sm', isHighlighted ? 'text-cream/75' : 'text-cocoa/65')}
       >
         {plan.pitch}
       </p>
@@ -55,7 +55,7 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
           {price === null ? 'Gratis' : formatUsd(price.perMonthUsd)}
         </span>
         <span
-          className={cn('text-sm', isHighlighted ? 'text-cream/60' : 'text-cocoa/50')}
+          className={cn('text-sm', isHighlighted ? 'text-cream/75' : 'text-cocoa/65')}
         >
           {price === null ? '' : '/mes'}
         </span>
@@ -66,7 +66,7 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
         <p
           className={cn(
             'mt-1 text-xs',
-            isHighlighted ? 'text-cream/55' : 'text-cocoa/50',
+            isHighlighted ? 'text-cream/75' : 'text-cocoa/65',
           )}
         >
           Se cobra {formatUsd(price.priceUsd)} una vez al año
@@ -102,8 +102,8 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
         className={cn(
           'mt-8 inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium tracking-wide transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-[0.97]',
           isHighlighted
-            ? 'bg-terracota text-cream hover:bg-terracota-dark'
-            : 'bg-terracota text-cream-white hover:bg-terracota-dark',
+            ? 'bg-terracota-dark text-cream-white shadow-surface hover:shadow-raised'
+            : 'bg-terracota-dark text-cream-white shadow-surface hover:shadow-raised',
         )}
       >
         {plan.ctaLabel}
@@ -112,7 +112,7 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
       <p
         className={cn(
           'mt-3 text-center text-xs',
-          isHighlighted ? 'text-cream/55' : 'text-cocoa/50',
+          isHighlighted ? 'text-cream/75' : 'text-cocoa/65',
         )}
       >
         {price?.note ?? plan.note}

@@ -12,7 +12,7 @@ export function CourseCard({ course }: CourseCardProps): ReactNode {
     <article className="flex items-start justify-between gap-6 border-b border-cream/15 py-6 last:border-b-0">
       <div>
         <h3 className="font-serif text-xl font-semibold text-cream">{course.name}</h3>
-        <p className="mt-2 max-w-md text-sm leading-relaxed text-cream/60">
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-cream/75">
           {course.description}
         </p>
       </div>

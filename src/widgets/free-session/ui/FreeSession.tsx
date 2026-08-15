@@ -11,116 +11,84 @@ import {
   loadProfile,
   type CuringProfile,
 } from '@/entities/curing-profile';
-import {
-  loadSessions,
-  startSession,
-  type RecipeSession,
-} from '@/entities/recipe-session';
+import { useUsageQuota } from '@/entities/usage-quota';
 
-import { appRoutes } from '@/shared/config';
-import { ANALYTICS_EVENTS, track } from '@/shared/lib';
-import { ButtonLink, Container, Eyebrow } from '@/shared/ui';
+import { Container } from '@/shared/ui';
 
 import { SessionEmpty } from './SessionEmpty';
 
 type SessionState =
   | { readonly status: 'loading' }
   | { readonly status: 'empty' }
-  | {
-      readonly status: 'ready';
-      readonly session: RecipeSession;
-      readonly profile: CuringProfile | null;
-      readonly openCount: number;
-    };
+  | { readonly status: 'ready'; readonly profile: CuringProfile };
 
 /**
- * La receta abierta. Hoy muestra su estado; el chat con el asistente se conecta
- * en el siguiente paso, cuando exista la clave de Anthropic.
+ * La receta que el visitante abrió desde el onboarding.
+ *
+ * ⚠️ Pantalla de transición. Nació con el modelo viejo —recetas en
+ * `localStorage`, "una receta gratis" contada en el navegador— y ese modelo lo
+ * jubiló D19: ahora las recetas viven en `charcu.recipes` y el cupo lo cuenta
+ * Postgres. Aquí ya NO se leen sesiones del navegador, porque decían cosas que
+ * la base contradice ("tienes 2 recetas abiertas" cuando el plan gratis da 1).
+ *
+ * Se queda hasta que exista la pantalla de "Mis recetas" de verdad, que es la
+ * que la sustituye.
  */
 export function FreeSession(): ReactNode {
   const [state, setState] = useState<SessionState>({ status: 'loading' });
+  const { quota, status, isKnown } = useUsageQuota();
 
   useEffect(() => {
     const profile = loadProfile();
-    let sessions = loadSessions();
-
-    // Rescate de quien hizo el onboarding antes de que existieran las sesiones:
-    // su receta gratis estaba solo en el perfil.
-    if (sessions.length === 0 && profile !== null) {
-      startSession(profile.freeRecipe, true);
-      sessions = loadSessions();
-    }
-
-    const session = sessions[sessions.length - 1];
-    if (session === undefined) {
-      setState({ status: 'empty' });
-      return;
-    }
-
-    setState({ status: 'ready', session, profile, openCount: sessions.length });
-    track(
-      session.isFree
-        ? ANALYTICS_EVENTS.freeRecipeStarted
-        : ANALYTICS_EVENTS.recipeStarted,
-      { recipe: session.product, is_free: session.isFree },
-    );
+    setState(profile === null ? { status: 'empty' } : { status: 'ready', profile });
   }, []);
 
   if (state.status === 'loading') {
-    return <div className="py-20 text-center text-sm text-cream/40">Abriendo…</div>;
+    return <div className="py-20 text-center text-sm text-cocoa/65">Abriendo…</div>;
   }
 
   if (state.status === 'empty') {
     return <SessionEmpty />;
   }
 
-  const { session, profile, openCount } = state;
-  const recipe = curingProductName(session.product);
-  const chips =
-    profile === null
-      ? []
-      : [countryName(profile.country), experienceLevelName(profile.level)];
+  const { profile } = state;
+  const recipe = curingProductName(profile.freeRecipe);
 
   return (
-    <Container className="py-12 md:py-16">
-      <Eyebrow className="text-sage">
-        {session.isFree ? 'Tu receta gratis' : 'Tu receta'}
-      </Eyebrow>
+    <Container className="py-10 md:py-16">
+      <div className="mx-auto max-w-3xl">
+        <h1 className="font-serif text-[32px] font-semibold leading-[1.1] text-forest md:text-4xl">
+          {recipe}
+        </h1>
 
-      <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-cream md:text-4xl">
-        {recipe}
-      </h1>
-
-      {chips.length === 0 ? null : (
-        <ul className="mt-5 flex flex-wrap gap-2">
-          {chips.map((chip) => (
-            <li
-              key={chip}
-              className="rounded-full border border-cream/20 px-4 py-1.5 text-sm text-cream/75"
-            >
-              {chip}
-            </li>
-          ))}
+        <ul className="mt-4 flex flex-wrap gap-2">
+          {[countryName(profile.country), experienceLevelName(profile.level)].map(
+            (chip) => (
+              <li
+                key={chip}
+                className="rounded-full border border-cocoa/15 px-3 py-1 text-sm text-cocoa/65"
+              >
+                {chip}
+              </li>
+            ),
+          )}
         </ul>
-      )}
 
-      <div className="mt-10">
-        <AssistantChat
-          product={recipe}
-          level={profile?.level ?? 'apasionado'}
-          country={profile === null ? 'Colombia' : countryName(profile.country)}
-        />
-      </div>
+        <div className="mt-8 rounded-2xl border border-cocoa/10 bg-cream-white p-4 shadow-raised md:p-6">
+          <AssistantChat
+            product={recipe}
+            level={profile.level}
+            country={countryName(profile.country)}
+            canSendImages={!status.areImagesExhausted}
+          />
 
-      <div className="mt-10 border-t border-cream/15 pt-8">
-        <ButtonLink href={appRoutes.newRecipe} variant="outline" className="text-cream">
-          Empezar otra receta
-        </ButtonLink>
-        <p className="mt-3 text-xs leading-relaxed text-cream/40">
-          {openCount === 1
-            ? 'Tienes 1 receta abierta. La segunda receta distinta pide suscripción.'
-            : `Tienes ${String(openCount)} recetas abiertas.`}
-        </p>
+          {isKnown && quota.questionsUsed > 0 ? (
+            <p className="mt-3 text-xs text-cocoa/65">
+              Te quedan {status.questionsLeft} preguntas y {status.imagesLeft} fotos este
+              mes.
+            </p>
+          ) : null}
+        </div>
       </div>
     </Container>
   );

@@ -13,7 +13,7 @@ export function AssistantCta(): ReactNode {
           <br />
           no tiene por qué salir mal.
         </h2>
-        <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-cream/70">
+        <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-cream/75">
           Empieza una receta hoy y llévala hasta el final con el asistente al lado. La
           primera va por cuenta de la casa.
         </p>

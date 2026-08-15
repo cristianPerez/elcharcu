@@ -17,7 +17,7 @@ export function ProductShowcase(): ReactNode {
               Curados y ahumados, hechos a mano.
             </h2>
           </div>
-          <p className="max-w-sm text-sm leading-relaxed text-cream/70">
+          <p className="max-w-sm text-sm leading-relaxed text-cream/75">
             Venta directa por WhatsApp e Instagram en {site.location}. Lotes pequeños,
             siempre frescos.
           </p>

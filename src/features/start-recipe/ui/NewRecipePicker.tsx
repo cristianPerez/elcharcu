@@ -24,12 +24,12 @@ export function NewRecipePicker(): ReactNode {
 
   return (
     <div>
-      <Eyebrow className="text-sage">Otra receta</Eyebrow>
+      <Eyebrow className="text-terracota-dark">Otra receta</Eyebrow>
 
-      <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-cream md:text-4xl">
+      <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-forest md:text-4xl">
         ¿Qué vas a curar ahora?
       </h1>
-      <p className="mt-3 text-sm leading-relaxed text-cream/60">
+      <p className="mt-3 text-sm leading-relaxed text-cocoa/65">
         Si eliges una que ya tenías abierta, vuelves justo donde la dejaste.
       </p>
 

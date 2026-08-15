@@ -54,9 +54,9 @@ export function BillingToggle({
               }}
               className={cn(
                 'rounded-full px-5 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota',
-                isActive && 'bg-terracota text-cream',
-                !isActive && onDark && 'text-cream/60 hover:text-cream',
-                !isActive && !onDark && 'text-cocoa/55 hover:text-cocoa',
+                isActive && 'bg-terracota-dark text-cream-white',
+                !isActive && onDark && 'text-cream/75 hover:text-cream',
+                !isActive && !onDark && 'text-cocoa/65 hover:text-cocoa',
               )}
             >
               {option.label}
@@ -69,7 +69,7 @@ export function BillingToggle({
         <span
           className={cn(
             'rounded-full px-3 py-1 text-xs font-medium',
-            onDark ? 'bg-sage/20 text-sage' : 'bg-forest/10 text-forest',
+            onDark ? 'bg-cream/15 text-cream' : 'bg-forest/10 text-forest',
           )}
         >
           Ahorras {savingPercent}% al año

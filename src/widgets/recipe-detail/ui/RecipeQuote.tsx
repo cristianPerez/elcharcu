@@ -28,7 +28,7 @@ export function RecipeQuote({
         {quote}
       </blockquote>
       {caption ? (
-        <figcaption className="mt-5 text-xs uppercase tracking-eyebrow text-cocoa/50">
+        <figcaption className="mt-5 text-xs uppercase tracking-eyebrow text-cocoa/65">
           {caption}
         </figcaption>
       ) : null}

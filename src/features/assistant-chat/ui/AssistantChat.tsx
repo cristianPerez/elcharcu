@@ -80,7 +80,7 @@ export function AssistantChat({
           }
         }}
       >
-        <summary className="cursor-pointer list-none text-xs text-cocoa/45 transition-colors hover:text-cocoa/70">
+        <summary className="cursor-pointer list-none text-xs text-cocoa/65 transition-colors hover:text-cocoa/70">
           Cómo funciona la seguridad de este asistente
           <span
             aria-hidden
@@ -89,7 +89,7 @@ export function AssistantChat({
             ›
           </span>
         </summary>
-        <p className="mt-2 text-xs leading-relaxed text-cocoa/55">
+        <p className="mt-2 text-xs leading-relaxed text-cocoa/65">
           El asistente acompaña tu criterio, no lo reemplaza. Nunca recomienda más de 2,5
           g de sal de cura #1 por kilo, y ante un moho dudoso siempre dice descartar. La
           manipulación higiénica y la decisión final son tuyas.

@@ -24,14 +24,14 @@ export function StepShell({
   return (
     <div>
       <div className="flex items-center justify-between gap-4">
-        <Eyebrow className="text-sage">
+        <Eyebrow className="text-terracota-dark">
           Paso {stepIndex} de {TOTAL_STEPS}
         </Eyebrow>
         {onBack === null ? null : (
           <button
             type="button"
             onClick={onBack}
-            className="rounded-full px-3 py-1 text-sm text-cream/60 transition-colors hover:text-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota"
+            className="rounded-full px-3 py-1 text-sm text-cocoa/65 transition-colors hover:text-forest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota"
           >
             ← Atrás
           </button>
@@ -58,10 +58,10 @@ export function StepShell({
         ))}
       </div>
 
-      <h1 className="mt-8 font-serif text-3xl font-semibold leading-tight text-cream md:text-4xl">
+      <h1 className="mt-8 font-serif text-3xl font-semibold leading-tight text-forest md:text-4xl">
         {title}
       </h1>
-      <p className="mt-3 text-sm leading-relaxed text-cream/60">{why}</p>
+      <p className="mt-3 text-sm leading-relaxed text-cocoa/65">{why}</p>
 
       <div className="mt-8 flex flex-col gap-3">{children}</div>
     </div>

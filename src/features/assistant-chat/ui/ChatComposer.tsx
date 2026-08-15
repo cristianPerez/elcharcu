@@ -92,7 +92,7 @@ export function ChatComposer({
               type="button"
               onClick={clearFile}
               aria-label="Quitar la foto"
-              className="shrink-0 rounded-full px-2 text-lg leading-none text-cocoa/40 transition-colors hover:text-cocoa"
+              className="shrink-0 rounded-full px-2 text-lg leading-none text-cocoa/65 transition-colors hover:text-cocoa"
             >
               ×
             </button>
@@ -136,7 +136,7 @@ export function ChatComposer({
             onKeyDown={handleKeyDown}
             rows={1}
             placeholder="Escribe tu duda…"
-            className="max-h-[200px] flex-1 resize-none bg-transparent px-1 py-2.5 text-base leading-relaxed text-cocoa placeholder:text-cocoa/35 focus:outline-none"
+            className="max-h-[200px] flex-1 resize-none bg-transparent px-1 py-2.5 text-base leading-relaxed text-cocoa placeholder:text-cocoa/65 focus:outline-none"
           />
 
           <button
@@ -147,7 +147,7 @@ export function ChatComposer({
               'flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota',
               isThinking || isEmpty
                 ? 'bg-cocoa/10 text-cocoa/35'
-                : 'bg-terracota text-cream-white shadow-surface hover:bg-terracota-dark active:scale-[0.97]',
+                : 'bg-terracota-dark text-cream-white shadow-surface hover:shadow-raised active:scale-[0.97]',
             )}
           >
             <span aria-hidden className="text-lg leading-none">
@@ -157,7 +157,7 @@ export function ChatComposer({
         </div>
       </div>
 
-      <p className="mt-2 hidden px-2 text-xs text-cocoa/40 md:block">
+      <p className="mt-2 hidden px-2 text-xs text-cocoa/65 md:block">
         Enter envía · Shift + Enter hace salto de línea
       </p>
     </form>

@@ -81,7 +81,7 @@ export function TagFacetDropdown({
                 className="accent-terracota"
               />
               <span className="flex-1">{option.tag}</span>
-              <span className="text-cocoa/40">{option.count}</span>
+              <span className="text-cocoa/65">{option.count}</span>
             </label>
           ))}
         </div>

@@ -52,11 +52,11 @@ export function QuotaWallPlans(): ReactNode {
           <span className="font-serif text-4xl font-semibold">
             {formatUsd(price.perMonthUsd)}
           </span>
-          <span className="text-sm text-cocoa/50">/mes</span>
+          <span className="text-sm text-cocoa/65">/mes</span>
         </p>
 
         {price.cycle === 'anual' ? (
-          <p className="mt-1 text-xs text-cocoa/50">
+          <p className="mt-1 text-xs text-cocoa/65">
             Se cobra {formatUsd(price.priceUsd)} una vez al año
           </p>
         ) : null}
@@ -79,12 +79,12 @@ export function QuotaWallPlans(): ReactNode {
               from: 'quota_wall',
             });
           }}
-          className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-terracota px-6 py-3 text-sm font-medium tracking-wide text-cream-white shadow-surface transition-colors duration-200 hover:bg-terracota-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-[0.97]"
+          className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-terracota-dark px-6 py-3 text-sm font-medium tracking-wide text-cream-white shadow-surface transition-shadow duration-200 hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-[0.97]"
         >
           {proPlan.ctaLabel}
         </a>
 
-        <p className="mt-3 text-center text-xs text-cocoa/50">{price.note}</p>
+        <p className="mt-3 text-center text-xs text-cocoa/65">{price.note}</p>
       </article>
     </div>
   );

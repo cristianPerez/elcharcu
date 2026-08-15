@@ -15,7 +15,7 @@ export function BrandQuote(): ReactNode {
             El Charcu no es solo una charcutería. Es el maestro que enseña con pasión —
             hoy en Manizales, mañana en toda Latinoamérica.
           </blockquote>
-          <figcaption className="mt-6 text-xs uppercase tracking-eyebrow text-cocoa/50">
+          <figcaption className="mt-6 text-xs uppercase tracking-eyebrow text-cocoa/65">
             Sin aditivos · Sin atajos
           </figcaption>
         </figure>

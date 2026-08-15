@@ -30,7 +30,7 @@ export function Pricing(): ReactNode {
           <h2 className="mt-6 font-serif text-3xl font-semibold leading-tight md:text-5xl">
             La primera pregunta va por cuenta de la casa.
           </h2>
-          <p className="mt-6 text-base leading-relaxed text-cream/70">
+          <p className="mt-6 text-base leading-relaxed text-cream/75">
             Preguntas sin registrarte y sin poner tarjeta. Los planes se miden en
             preguntas y fotos al mes: pagas por la ayuda que usas, no por meses en los que
             no curaste nada.
@@ -57,17 +57,17 @@ export function Pricing(): ReactNode {
             <p className="font-serif text-lg text-cream">
               ¿No quieres suscripción? Compra el curso suelto.
             </p>
-            <p className="mt-1 text-sm text-cream/60">
+            <p className="mt-1 text-sm text-cream/75">
               Un curso completo, pago único, tuyo para siempre —{' '}
               {formatCop(oneTimeCourseCop)} COP.
             </p>
           </div>
-          <span className="text-xs uppercase tracking-eyebrow text-sage">
+          <span className="text-xs uppercase tracking-eyebrow text-cream/75">
             Disponible al lanzar
           </span>
         </div>
 
-        <p className="mt-8 text-sm text-cream/55">
+        <p className="mt-8 text-sm text-cream/75">
           Pagas con tarjeta, PSE o Nequi a través de Hotmart. El precio está en dólares y
           se cobra al cambio del día. Cancelas cuando quieras, sin llamar a nadie.
         </p>

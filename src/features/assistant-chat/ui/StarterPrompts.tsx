@@ -23,7 +23,7 @@ interface StarterPromptsProps {
 export function StarterPrompts({ onPick, isDisabled }: StarterPromptsProps): ReactNode {
   return (
     <div>
-      <p className="text-sm text-cocoa/55">¿Con qué te ayudo?</p>
+      <p className="text-sm text-cocoa/65">¿Con qué te ayudo?</p>
 
       <div className="mt-3 flex flex-wrap gap-2">
         {STARTER_PROMPTS.map((starter) => (

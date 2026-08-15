@@ -106,7 +106,7 @@ export function TablaSearch({ tablas }: TablaSearchProps): ReactNode {
       <section className="bg-cream py-8 md:py-12">
         <Container>
           {filtered.length === 0 ? (
-            <p className="text-sm text-cocoa/50">
+            <p className="text-sm text-cocoa/65">
               No encontramos tablas con esos filtros.
             </p>
           ) : (

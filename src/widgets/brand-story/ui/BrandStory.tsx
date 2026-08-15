@@ -41,7 +41,7 @@ export function BrandStory(): ReactNode {
               <dt className="font-serif text-4xl font-semibold text-forest md:text-5xl">
                 {stat.value}
               </dt>
-              <dd className="mt-2 text-sm text-cocoa/60">{stat.label}</dd>
+              <dd className="mt-2 text-sm text-cocoa/65">{stat.label}</dd>
             </div>
           ))}
         </dl>

@@ -65,7 +65,7 @@ export function AssistantHero(): ReactNode {
             <h1 className="font-serif text-[32px] font-semibold leading-[1.1] text-forest md:text-5xl">
               Cura sin miedo a arruinar la pieza.
             </h1>
-            <p className="mt-2 text-base text-cocoa/60">
+            <p className="mt-2 text-base text-cocoa/65">
               Pregúntale al maestro. La primera va por cuenta de la casa.
             </p>
 
@@ -85,7 +85,7 @@ export function AssistantHero(): ReactNode {
                   />
 
                   {isKnown && quota.questionsUsed > 0 ? (
-                    <p className="mt-3 text-xs text-cocoa/45">
+                    <p className="mt-3 text-xs text-cocoa/65">
                       Te quedan {status.questionsLeft} preguntas y {status.imagesLeft}{' '}
                       fotos este mes.
                     </p>

@@ -20,13 +20,13 @@ export function DoneStep({ profile }: DoneStepProps): ReactNode {
 
   return (
     <div>
-      <Eyebrow className="text-sage">Todo listo</Eyebrow>
+      <Eyebrow className="text-terracota-dark">Todo listo</Eyebrow>
 
-      <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-cream md:text-4xl">
+      <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-forest md:text-4xl">
         {recipe} es tu receta gratis.
       </h1>
 
-      <p className="mt-4 text-base leading-relaxed text-cream/70">
+      <p className="mt-4 text-base leading-relaxed text-cocoa/65">
         Tienes esta pieza completa con el asistente al lado, de principio a fin, sin poner
         tarjeta. Puedes volver las veces que quieras mientras dure el curado.
       </p>
@@ -36,7 +36,7 @@ export function DoneStep({ profile }: DoneStepProps): ReactNode {
           (chip) => (
             <li
               key={chip}
-              className="rounded-full border border-cream/20 px-4 py-1.5 text-sm text-cream/75"
+              className="rounded-full border border-cocoa/15 px-4 py-1.5 text-sm text-cocoa/70"
             >
               {chip}
             </li>
@@ -50,7 +50,7 @@ export function DoneStep({ profile }: DoneStepProps): ReactNode {
         </ButtonLink>
       </div>
 
-      <p className="mt-5 text-sm leading-relaxed text-cream/45">
+      <p className="mt-5 text-sm leading-relaxed text-cocoa/65">
         Cuando empieces una segunda receta distinta, ahí sí aparece la suscripción.
       </p>
     </div>

@@ -47,7 +47,7 @@ export function AssistantCourses(): ReactNode {
               <p className="mt-2 max-w-md text-sm leading-relaxed text-cocoa/65">
                 {course.description}
               </p>
-              <p className="mt-3 text-xs uppercase tracking-eyebrow text-cocoa/45">
+              <p className="mt-3 text-xs uppercase tracking-eyebrow text-cocoa/65">
                 {course.videoCount} videos · {course.freeVideoCount} gratis
               </p>
             </article>

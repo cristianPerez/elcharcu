@@ -63,29 +63,29 @@ export function AssistantTrust(): ReactNode {
 
           <ul className="mt-8 grid gap-6 md:grid-cols-3">
             <li>
-              <p className="font-serif text-lg text-terracota">El tope es el tope</p>
-              <p className="mt-2 text-sm leading-relaxed text-cream/70">
+              <p className="font-serif text-lg text-cream">El tope es el tope</p>
+              <p className="mt-2 text-sm leading-relaxed text-cream/75">
                 Nunca recomienda más de 2,5 g de sal de cura #1 por kilo de carne — el
                 máximo permitido, unas 156 ppm de nitrito. Se lo pidas como se lo pidas.
               </p>
             </li>
             <li>
-              <p className="font-serif text-lg text-terracota">Ante la duda, se bota</p>
-              <p className="mt-2 text-sm leading-relaxed text-cream/70">
+              <p className="font-serif text-lg text-cream">Ante la duda, se bota</p>
+              <p className="mt-2 text-sm leading-relaxed text-cream/75">
                 Con moho verde ambiguo o mal olor, la respuesta es descartar. Vale más
                 perder un kilo de carne que un domingo en urgencias.
               </p>
             </li>
             <li>
-              <p className="font-serif text-lg text-terracota">Te explica el porqué</p>
-              <p className="mt-2 text-sm leading-relaxed text-cream/70">
+              <p className="font-serif text-lg text-cream">Te explica el porqué</p>
+              <p className="mt-2 text-sm leading-relaxed text-cream/75">
                 Nunca te suelta un número solo. Te dice qué hace el nitrito, por qué el
                 botulismo importa, y qué estás previniendo.
               </p>
             </li>
           </ul>
 
-          <p className="mt-8 border-t border-cream/15 pt-6 text-xs leading-relaxed text-cream/50">
+          <p className="mt-8 border-t border-cream/15 pt-6 text-xs leading-relaxed text-cream/75">
             El asistente acompaña tu criterio, no lo reemplaza. Sigue siendo tu
             responsabilidad manipular la carne con higiene y descartar lo que no te dé
             confianza.
