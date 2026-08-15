@@ -1,9 +1,11 @@
 import { type Metadata } from 'next';
 import { Fraunces, Inter } from 'next/font/google';
+import { cookies } from 'next/headers';
 import { type ReactNode } from 'react';
 
 import { AppProviders } from '@/app/providers';
 
+import { VISITOR_COOKIE } from '@/shared/api/visitor';
 import { site } from '@/shared/config';
 
 import './styles/globals.css';
@@ -65,11 +67,18 @@ interface RootLayoutProps {
   readonly children: ReactNode;
 }
 
-export default function RootLayout({ children }: RootLayoutProps): ReactNode {
+export default async function RootLayout({
+  children,
+}: RootLayoutProps): Promise<ReactNode> {
+  // El middleware ya garantizó la cookie antes de llegar aquí, así que el
+  // identificador viaja al navegador en el primer render y ninguna medición
+  // sale sin él.
+  const visitorId = (await cookies()).get(VISITOR_COOKIE)?.value ?? '';
+
   return (
     <html lang="es" className={`${fraunces.variable} ${inter.variable}`}>
       <body className="font-sans antialiased">
-        <AppProviders>{children}</AppProviders>
+        <AppProviders visitorId={visitorId}>{children}</AppProviders>
       </body>
     </html>
   );

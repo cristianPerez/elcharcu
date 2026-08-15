@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { checkBudget, recordSpend } from '@/entities/ai-budget';
 import { buildSystemPrompt } from '@/entities/charcu-assistant';
 import { auditCureDoses, MAX_CURE_1_G_PER_KG } from '@/entities/cure-safety';
+import { createRecipe, ownsRecipe, touchRecipe } from '@/entities/recipe-chat/server';
 import { consumeQuota, refundQuota } from '@/entities/usage-quota/server';
 
 import { generateAnswer, type GeminiTurn } from '@/shared/api/gemini';
@@ -18,6 +19,14 @@ interface AssistantRequest {
   readonly level: string;
   readonly country: string;
   readonly turns: readonly GeminiTurn[];
+  /**
+   * La receta a la que pertenece esta pregunta.
+   *
+   * Si no viene, la pregunta ABRE una receta nueva: es la opción B que decidió
+   * Cristian, la receta se crea sola con la primera pregunta en vez de pedirle
+   * al visitante que rellene un formulario antes de poder escribir.
+   */
+  readonly recipeId: string | null;
 }
 
 function parseTurn(value: unknown): GeminiTurn | null {
@@ -56,11 +65,12 @@ function parseRequest(value: unknown): AssistantRequest | null {
     return null;
   }
 
-  const { product, level, country, turns } = value as {
+  const { product, level, country, turns, recipeId } = value as {
     product?: unknown;
     level?: unknown;
     country?: unknown;
     turns?: unknown;
+    recipeId?: unknown;
   };
 
   if (
@@ -78,7 +88,15 @@ function parseRequest(value: unknown): AssistantRequest | null {
     .map((turn: unknown) => parseTurn(turn))
     .filter((turn): turn is GeminiTurn => turn !== null);
 
-  return parsed.length === 0 ? null : { product, level, country, turns: parsed };
+  return parsed.length === 0
+    ? null
+    : {
+        product,
+        level,
+        country,
+        turns: parsed,
+        recipeId: typeof recipeId === 'string' && recipeId !== '' ? recipeId : null,
+      };
 }
 
 /**
@@ -131,11 +149,23 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const userId = authData.user?.id ?? null;
 
   const images = countImages(parsed.turns);
-  const quota = await consumeQuota(visitorId, userId, images);
+
+  // Si viene con receta, tiene que ser suya. Si no lo es, se trata como si no
+  // hubiera mandado ninguna y se le abre la suya: nunca se escribe en la
+  // receta de otro ni se le devuelve su historial.
+  const ownsIt =
+    parsed.recipeId !== null && (await ownsRecipe(parsed.recipeId, visitorId, userId));
+  const recipeId = ownsIt ? parsed.recipeId : null;
+  const isNewRecipe = recipeId === null;
+
+  const quota = await consumeQuota(visitorId, userId, images, isNewRecipe);
 
   if (quota !== null && !quota.allowed) {
     return attachVisitorCookie(
-      NextResponse.json({ error: 'sin-cupo', quota: quota.snapshot }, { status: 402 }),
+      NextResponse.json(
+        { error: 'sin-cupo', deniedBy: quota.deniedBy, quota: quota.snapshot },
+        { status: 402 },
+      ),
       visitorId,
     );
   }
@@ -152,7 +182,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // No llegó respuesta: se le devuelve la pregunta que se le acababa de
     // cobrar. El fallo es nuestro (o de Google), no suyo.
     if (quota !== null) {
-      await refundQuota(visitorId, userId, images);
+      await refundQuota(visitorId, userId, images, isNewRecipe);
     }
 
     const status = result.reason === 'sin-clave' ? 503 : 502;
@@ -164,6 +194,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   // Se apunta lo que de verdad consumió, no una estimación.
   await recordSpend(result.usage);
+
+  // La receta se crea DESPUÉS de que la respuesta llegó bien. Si se creara
+  // antes, un fallo de Gemini dejaría recetas vacías en el historial de la
+  // gente, que es basura que después hay que explicar.
+  const lastTurn = parsed.turns[parsed.turns.length - 1];
+  const activeRecipeId = isNewRecipe
+    ? await createRecipe(visitorId, userId, lastTurn?.text ?? '')
+    : recipeId;
+
+  if (activeRecipeId !== null && !isNewRecipe) {
+    await touchRecipe(activeRecipeId);
+  }
 
   // Segunda barrera: se revisa la respuesta antes de que la vea nadie.
   const verdict = auditCureDoses(result.text);
@@ -178,6 +220,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         text: blockedAnswer(),
         wasBlocked: true,
         quota: quota?.snapshot ?? null,
+        recipeId: activeRecipeId,
       }),
       visitorId,
     );
@@ -188,6 +231,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       text: result.text,
       wasBlocked: false,
       quota: quota?.snapshot ?? null,
+      recipeId: activeRecipeId,
     }),
     visitorId,
   );

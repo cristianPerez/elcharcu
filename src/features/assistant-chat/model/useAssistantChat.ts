@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { type ChatMessage } from '@/entities/charcu-assistant';
 import { publishQuotaFrom } from '@/entities/usage-quota';
@@ -25,6 +25,8 @@ interface ApiAnswer {
   readonly wasBlocked?: unknown;
   /** El cupo que queda tras esta pregunta, tal como lo contó la base. */
   readonly quota?: unknown;
+  /** La receta de esta conversación. La crea el servidor con la 1ª pregunta. */
+  readonly recipeId?: unknown;
 }
 
 function createId(): string {
@@ -54,6 +56,11 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
   const [messages, setMessages] = useState<readonly ChatMessage[]>([]);
   const [isThinking, setIsThinking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // La receta a la que pertenece esta conversación. Vacía al empezar: la
+  // primera pregunta la crea en el servidor y aquí solo se guarda el id para
+  // que las siguientes vayan a la misma y no abran una nueva cada vez.
+  const recipeId = useRef<string | null>(null);
 
   const send = useCallback(
     async (text: string, file: File | null): Promise<void> => {
@@ -114,7 +121,7 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
         const response = await fetch('/api/asistente', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...params, turns }),
+          body: JSON.stringify({ ...params, turns, recipeId: recipeId.current }),
         });
 
         if (!response.ok) {
@@ -156,6 +163,10 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
 
         const answer: ApiAnswer = (await response.json()) as ApiAnswer;
         publishQuotaFrom(answer.quota);
+
+        if (typeof answer.recipeId === 'string' && answer.recipeId !== '') {
+          recipeId.current = answer.recipeId;
+        }
 
         if (typeof answer.text !== 'string') {
           setError('Me llegó una respuesta vacía. Vuelve a preguntarme.');

@@ -45,34 +45,37 @@ export type Database = {
           created_at: string;
           id: string;
           image_path: string | null;
+          recipe_id: string;
           role: string;
-          session_id: string;
-          user_id: string;
+          user_id: string | null;
+          visitor_id: string | null;
         };
         Insert: {
           content: string;
           created_at?: string;
           id?: string;
           image_path?: string | null;
+          recipe_id: string;
           role: string;
-          session_id: string;
-          user_id: string;
+          user_id?: string | null;
+          visitor_id?: string | null;
         };
         Update: {
           content?: string;
           created_at?: string;
           id?: string;
           image_path?: string | null;
+          recipe_id?: string;
           role?: string;
-          session_id?: string;
-          user_id?: string;
+          user_id?: string | null;
+          visitor_id?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'chat_messages_session_id_fkey';
-            columns: ['session_id'];
+            foreignKeyName: 'chat_messages_recipe_id_fkey';
+            columns: ['recipe_id'];
             isOneToOne: false;
-            referencedRelation: 'recipe_sessions';
+            referencedRelation: 'recipes';
             referencedColumns: ['id'];
           },
         ];
@@ -181,16 +184,19 @@ export type Database = {
           images_per_month: number;
           plan_id: string;
           questions_per_month: number;
+          recipes_per_month: number | null;
         };
         Insert: {
           images_per_month: number;
           plan_id: string;
           questions_per_month: number;
+          recipes_per_month?: number | null;
         };
         Update: {
           images_per_month?: number;
           plan_id?: string;
           questions_per_month?: number;
+          recipes_per_month?: number | null;
         };
         Relationships: [];
       };
@@ -221,33 +227,42 @@ export type Database = {
         };
         Relationships: [];
       };
-      recipe_sessions: {
+      recipes: {
         Row: {
-          completed_at: string | null;
+          closed_at: string | null;
           id: string;
-          is_free: boolean;
-          product: string;
+          last_message_at: string;
+          product: string | null;
           started_at: string;
           status: string;
-          user_id: string;
+          summary: string | null;
+          title: string;
+          user_id: string | null;
+          visitor_id: string;
         };
         Insert: {
-          completed_at?: string | null;
+          closed_at?: string | null;
           id?: string;
-          is_free?: boolean;
-          product: string;
+          last_message_at?: string;
+          product?: string | null;
           started_at?: string;
           status?: string;
-          user_id: string;
+          summary?: string | null;
+          title?: string;
+          user_id?: string | null;
+          visitor_id: string;
         };
         Update: {
-          completed_at?: string | null;
+          closed_at?: string | null;
           id?: string;
-          is_free?: boolean;
-          product?: string;
+          last_message_at?: string;
+          product?: string | null;
           started_at?: string;
           status?: string;
-          user_id?: string;
+          summary?: string | null;
+          title?: string;
+          user_id?: string | null;
+          visitor_id?: string;
         };
         Relationships: [];
       };
@@ -327,6 +342,7 @@ export type Database = {
           images_used: number;
           period_key: string;
           questions_used: number;
+          recipes_used: number;
           updated_at: string;
           user_id: string | null;
           visitor_id: string;
@@ -337,6 +353,7 @@ export type Database = {
           images_used?: number;
           period_key: string;
           questions_used?: number;
+          recipes_used?: number;
           updated_at?: string;
           user_id?: string | null;
           visitor_id: string;
@@ -347,6 +364,7 @@ export type Database = {
           images_used?: number;
           period_key?: string;
           questions_used?: number;
+          recipes_used?: number;
           updated_at?: string;
           user_id?: string | null;
           visitor_id?: string;
@@ -403,14 +421,22 @@ export type Database = {
     };
     Functions: {
       consume_quota: {
-        Args: { p_images?: number; p_user_id: string; p_visitor_id: string };
+        Args: {
+          p_images?: number;
+          p_new_recipe?: boolean;
+          p_user_id: string;
+          p_visitor_id: string;
+        };
         Returns: {
           allowed: boolean;
+          denied_by: string;
           images_limit: number;
           images_used: number;
           plan: string;
           questions_limit: number;
           questions_used: number;
+          recipes_limit: number;
+          recipes_used: number;
         }[];
       };
       current_period_key: { Args: never; Returns: string };
@@ -432,6 +458,8 @@ export type Database = {
           plan: string;
           questions_limit: number;
           questions_used: number;
+          recipes_limit: number;
+          recipes_used: number;
         }[];
       };
       record_ai_spend: {
@@ -444,7 +472,12 @@ export type Database = {
         Returns: number;
       };
       refund_quota: {
-        Args: { p_images?: number; p_user_id: string; p_visitor_id: string };
+        Args: {
+          p_images?: number;
+          p_new_recipe?: boolean;
+          p_user_id: string;
+          p_visitor_id: string;
+        };
         Returns: undefined;
       };
       save_onboarding: {
