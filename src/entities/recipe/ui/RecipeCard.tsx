@@ -18,7 +18,9 @@ export function RecipeCard({ recipe, className }: RecipeCardProps): ReactNode {
         className,
       )}
     >
-      <div className="relative h-[180px]">
+      {/* `shrink-0`: sin él, un título de dos líneas comprime la foto y las
+          tarjetas dejan de tener imágenes del mismo tamaño. */}
+      <div className="relative h-[150px] shrink-0 md:h-[180px]">
         {recipe.image ? (
           <div
             role="img"
@@ -34,13 +36,18 @@ export function RecipeCard({ recipe, className }: RecipeCardProps): ReactNode {
           </div>
         )}
       </div>
-      <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-serif text-xl font-semibold text-cocoa">{recipe.name}</h3>
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-cocoa/70">
+      {/* `min-h-0` deja que el cuerpo se encoja dentro de la altura fija de la
+          tarjeta; los `line-clamp` recortan el texto sobrante con puntos
+          suspensivos en vez de empujar las etiquetas fuera del recorte. */}
+      <div className="flex min-h-0 flex-1 flex-col p-5">
+        <h3 className="line-clamp-2 font-serif text-xl font-semibold text-cocoa">
+          {recipe.name}
+        </h3>
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-cocoa/70 md:line-clamp-3">
           {recipe.description}
         </p>
         {recipe.tags.length > 0 ? (
-          <div className="mt-4 flex flex-wrap gap-1.5">
+          <div className="mt-auto flex flex-wrap gap-1.5 pt-3">
             {recipe.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}

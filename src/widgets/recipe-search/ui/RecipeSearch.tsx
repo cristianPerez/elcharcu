@@ -101,7 +101,12 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
           <SearchBar value={query} onChange={setQuery} className="max-w-md" />
           <div className="mt-4 flex flex-wrap gap-2">
             {facetGroups.map(({ facet, label, options }) => (
-              <TagFacetDropdown key={facet} label={label} options={options} onToggle={toggleTag} />
+              <TagFacetDropdown
+                key={facet}
+                label={label}
+                options={options}
+                onToggle={toggleTag}
+              />
             ))}
           </div>
 
@@ -151,7 +156,7 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
                     });
                   }}
                 >
-                  <RecipeCard recipe={recipe} className="h-[300px] md:h-[340px]" />
+                  <RecipeCard recipe={recipe} className="h-[340px] md:h-[390px]" />
                 </Link>
               ))}
             </div>
