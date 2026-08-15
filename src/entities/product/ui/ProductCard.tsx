@@ -42,7 +42,7 @@ export function ProductCard({ product, orderHref }: ProductCardProps): ReactNode
             <span className="font-serif text-2xl font-semibold text-forest">
               {product.price}
             </span>
-            <span className="ml-1 text-xs text-cocoa/50">/ {product.unit}</span>
+            <span className="ml-1 text-xs text-cocoa/65">/ {product.unit}</span>
           </div>
           <a
             href={orderHref}

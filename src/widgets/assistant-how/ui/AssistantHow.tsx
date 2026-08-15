@@ -26,7 +26,7 @@ export function AssistantHow(): ReactNode {
             <li key={step.number} className="border-t border-cream/15 pt-6">
               <span className="font-serif text-3xl text-terracota">{step.number}</span>
               <h3 className="mt-3 font-serif text-xl font-semibold">{step.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-cream/65">
+              <p className="mt-3 text-sm leading-relaxed text-cream/75">
                 {step.description}
               </p>
             </li>

@@ -42,6 +42,7 @@ export const appRoutes = {
   session: '/asistente/sesion',
   newRecipe: '/asistente/nueva-receta',
   subscription: '/asistente/suscripcion',
+  login: '/entrar',
 } as const;
 
 /**
@@ -57,6 +58,7 @@ export const navItems: readonly NavItem[] = [
   { label: 'Tablas', href: '/tablas' },
   { label: 'Tienda', href: '/tienda' },
   { label: 'Contacto', href: '/tienda#contacto' },
+  { label: 'Entrar', href: appRoutes.login },
 ];
 
 export const contactChannels: readonly ContactChannel[] = [

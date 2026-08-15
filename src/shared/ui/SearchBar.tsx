@@ -29,7 +29,7 @@ export function SearchBar({
         viewBox="0 0 16 16"
         fill="none"
         aria-hidden
-        className="shrink-0 text-cocoa/50"
+        className="shrink-0 text-cocoa/65"
       >
         <circle cx="7" cy="7" r="5.5" stroke="currentColor" strokeWidth="1.5" />
         <line
@@ -49,7 +49,7 @@ export function SearchBar({
           onChange(event.target.value);
         }}
         placeholder={placeholder}
-        className="min-w-0 flex-1 border-none bg-transparent font-sans text-sm text-cocoa outline-none placeholder:text-cocoa/40"
+        className="min-w-0 flex-1 border-none bg-transparent font-sans text-sm text-cocoa outline-none placeholder:text-cocoa/65"
       />
     </div>
   );

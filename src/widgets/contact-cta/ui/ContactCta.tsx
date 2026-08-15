@@ -13,7 +13,7 @@ export function ContactCta(): ReactNode {
           <h2 className="mt-6 font-serif text-4xl font-semibold leading-tight md:text-5xl">
             Hagamos mesa.
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-cream/70">
+          <p className="mt-4 text-base leading-relaxed text-cream/75">
             Pedidos en lotes pequeños, siempre frescos. Escríbenos y llevamos la
             charcutería a tu mesa en {site.location}.
           </p>
@@ -32,7 +32,7 @@ export function ContactCta(): ReactNode {
                 <span className="block font-serif text-lg font-semibold text-cream">
                   {channel.label}
                 </span>
-                <span className="mt-1 block text-sm text-cream/60">{channel.value}</span>
+                <span className="mt-1 block text-sm text-cream/75">{channel.value}</span>
               </span>
               <span
                 aria-hidden

@@ -17,7 +17,7 @@ export function MasterCourses(): ReactNode {
           <h2 className="mt-6 font-serif text-4xl font-semibold leading-tight md:text-5xl">
             Aprende el oficio, no solo la receta.
           </h2>
-          <p className="mt-5 text-base leading-relaxed text-cream/70">
+          <p className="mt-5 text-base leading-relaxed text-cream/75">
             El Charcu no es solo producto: es también la escuela donde se enseña el
             oficio. Una Academia con calificación 4.6–5.0, para quitar el miedo a
             dosificar y empezar a curar con seguridad.

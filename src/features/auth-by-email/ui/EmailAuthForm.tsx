@@ -19,20 +19,20 @@ export function EmailAuthForm(): ReactNode {
   if (state.status === 'sent') {
     return (
       <div>
-        <Eyebrow className="text-sage">Revisa tu correo</Eyebrow>
-        <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-cream md:text-4xl">
+        <Eyebrow className="text-terracota-dark">Revisa tu correo</Eyebrow>
+        <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-forest md:text-4xl">
           Te mandamos un enlace.
         </h1>
-        <p className="mt-4 text-base leading-relaxed text-cream/70">
-          Abre el correo que llegó a <span className="text-cream">{state.email}</span> y
+        <p className="mt-4 text-base leading-relaxed text-cocoa/65">
+          Abre el correo que llegó a <span className="text-forest">{state.email}</span> y
           toca el enlace. Con eso entras — no hay contraseña que recordar.
         </p>
-        <p className="mt-6 text-sm text-cream/50">
+        <p className="mt-6 text-sm text-cocoa/65">
           ¿No llegó? Mira en spam, o{' '}
           <button
             type="button"
             onClick={reset}
-            className="text-terracota underline underline-offset-4 hover:text-cream"
+            className="text-terracota underline underline-offset-4 hover:text-forest"
           >
             prueba con otro correo
           </button>
@@ -46,18 +46,18 @@ export function EmailAuthForm(): ReactNode {
 
   return (
     <div>
-      <Eyebrow className="text-sage">Tu cuenta</Eyebrow>
+      <Eyebrow className="text-terracota-dark">Tu cuenta</Eyebrow>
 
-      <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-cream md:text-4xl">
+      <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-forest md:text-4xl">
         Guarda tus recetas.
       </h1>
-      <p className="mt-4 text-base leading-relaxed text-cream/70">
+      <p className="mt-4 text-base leading-relaxed text-cocoa/65">
         Con una cuenta, tus curados te siguen aunque cambies de celular. Un curado dura
         semanas: no querrás perderlo a medias.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-8">
-        <label htmlFor="email" className="block text-sm text-cream/60">
+        <label htmlFor="email" className="block text-sm text-cocoa/65">
           Tu correo
         </label>
         <input
@@ -71,13 +71,13 @@ export function EmailAuthForm(): ReactNode {
             setEmail(event.target.value);
           }}
           placeholder="tunombre@correo.com"
-          className="mt-2 w-full rounded-2xl border border-cream/20 bg-cream/5 px-5 py-4 text-cream placeholder:text-cream/30 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/40"
+          className="mt-2 w-full rounded-2xl border border-cocoa/15 bg-cream-white px-5 py-4 text-forest placeholder:text-cocoa/65 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/40"
         />
 
         <button
           type="submit"
           disabled={isSending}
-          className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-terracota px-6 py-4 text-sm font-medium tracking-wide text-cream transition-colors hover:bg-terracota-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 disabled:opacity-60"
+          className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-terracota-dark px-6 py-4 text-sm font-medium tracking-wide text-cream-white shadow-surface transition-shadow hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 disabled:opacity-60"
         >
           {isSending ? 'Enviando…' : 'Enviarme el enlace'}
         </button>
@@ -89,7 +89,7 @@ export function EmailAuthForm(): ReactNode {
         </p>
       ) : null}
 
-      <p className="mt-6 text-xs leading-relaxed text-cream/40">
+      <p className="mt-6 text-xs leading-relaxed text-cocoa/65">
         No pedimos contraseña ni tarjeta. Solo el correo, para que tus recetas no se
         pierdan.
       </p>

@@ -26,7 +26,7 @@ export function AssistantPains(): ReactNode {
           ))}
         </div>
 
-        <p className="mt-10 max-w-3xl text-sm leading-relaxed text-cocoa/60">
+        <p className="mt-10 max-w-3xl text-sm leading-relaxed text-cocoa/65">
           También: ajustes por humedad y temporada de tu región, qué hacer si no tienes
           embutidora ni tripa, curar fuera de temporada, atados y tripas que se revientan,
           superficie pegajosa.

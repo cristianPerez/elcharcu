@@ -18,13 +18,13 @@ export function Paywall(): ReactNode {
   return (
     <Container className="py-14 md:py-20">
       <div className="max-w-2xl">
-        <Eyebrow className="text-sage">El Charcu Pro</Eyebrow>
+        <Eyebrow className="text-terracota-dark">El Charcu Pro</Eyebrow>
 
-        <h1 className="mt-6 font-serif text-4xl font-semibold leading-[1.1] text-cream md:text-5xl">
+        <h1 className="mt-6 font-serif text-4xl font-semibold leading-[1.1] text-forest md:text-5xl">
           Salva tu próximo kilo de carne.
         </h1>
 
-        <p className="mt-6 text-base leading-relaxed text-cream/75">
+        <p className="mt-6 text-base leading-relaxed text-cocoa/70">
           El asistente al lado durante todo el curado: la dosis exacta de sal de cura, el
           moho revisado por foto y la respuesta a la hora en que te asalta la duda. Con lo
           que vale una pieza echada a perder, el plan se paga solo.
@@ -33,22 +33,22 @@ export function Paywall(): ReactNode {
         <QuotaWallPlans />
       </div>
 
-      <div className="mt-10 flex flex-col items-start justify-between gap-4 rounded-2xl border border-cream/15 p-6 md:flex-row md:items-center">
+      <div className="mt-10 flex flex-col items-start justify-between gap-4 rounded-2xl border border-cocoa/10 p-6 md:flex-row md:items-center">
         <div>
-          <p className="font-serif text-lg text-cream">
+          <p className="font-serif text-lg text-forest">
             ¿No quieres suscripción? Compra el curso suelto.
           </p>
-          <p className="mt-1 text-sm text-cream/60">
+          <p className="mt-1 text-sm text-cocoa/65">
             Un curso completo, pago único, tuyo para siempre —{' '}
             {formatCop(oneTimeCourseCop)} COP.
           </p>
         </div>
-        <span className="text-xs uppercase tracking-eyebrow text-sage">
+        <span className="text-xs uppercase tracking-eyebrow text-cream/75">
           Disponible al lanzar
         </span>
       </div>
 
-      <p className="mt-8 text-sm leading-relaxed text-cream/55">
+      <p className="mt-8 text-sm leading-relaxed text-cocoa/65">
         Pagas con tarjeta, PSE o Nequi a través de Hotmart. El precio está en dólares y se
         cobra al cambio del día. Cancelas cuando quieras, sin llamar a nadie.
       </p>

@@ -51,7 +51,7 @@ export function RecipeCard({ recipe, className }: RecipeCardProps): ReactNode {
             {recipe.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="rounded-full border border-cocoa/10 bg-cream px-2.5 py-0.5 text-[11px] text-cocoa/60"
+                className="rounded-full border border-cocoa/10 bg-cream px-2.5 py-0.5 text-[11px] text-cocoa/65"
               >
                 {tag}
               </span>

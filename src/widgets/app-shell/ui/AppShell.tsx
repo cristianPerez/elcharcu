@@ -14,8 +14,17 @@ interface AppShellProps {
 }
 
 /**
- * Marco de las pantallas del producto: fondo de marca y logo, sin la navegación
- * del sitio público. Menos salidas, más gente que termina lo que empezó.
+ * Marco de las pantallas del producto: sin la navegación del sitio público.
+ * Menos salidas, más gente que termina lo que empezó.
+ *
+ * Fondo CLARO desde el 2026-08-15. Antes era verde oscuro, y al rehacer el chat
+ * para superficie clara quedaron dos sistemas de diseño en el mismo producto:
+ * el home en crema y todo `/asistente/*` en verde, con los textos de apoyo del
+ * chat (`cocoa/40`) ilegibles sobre el verde. Se arregla en el marco y no
+ * pantalla por pantalla, que es donde estaba la causa.
+ *
+ * La barra de arriba se queda verde a propósito: es la firma de marca y separa
+ * el encabezado del lienzo de trabajo.
  */
 export function AppShell({
   children,
@@ -23,11 +32,11 @@ export function AppShell({
   centered = false,
 }: AppShellProps): ReactNode {
   return (
-    <div className="bg-grain flex min-h-screen flex-col bg-forest">
+    <div className="flex min-h-screen flex-col bg-cream">
       <header
         className={cn(
-          'px-6 py-6 md:px-10',
-          withHeaderBorder && 'border-b border-cream/10',
+          'bg-forest px-6 py-6 md:px-10',
+          withHeaderBorder && 'border-b border-cocoa/10',
         )}
       >
         <Link href={appRoutes.sales} aria-label="Volver a El Charcu">

@@ -126,7 +126,7 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="text-[12px] text-cocoa/50 underline hover:text-cocoa/70"
+                className="text-[12px] text-cocoa/65 underline hover:text-cocoa/70"
               >
                 Limpiar filtros
               </button>
@@ -138,7 +138,7 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
       <section className="bg-cream py-8 md:py-12">
         <Container>
           {filtered.length === 0 ? (
-            <p className="text-sm text-cocoa/50">
+            <p className="text-sm text-cocoa/65">
               No encontramos recetas con esos filtros.
             </p>
           ) : (

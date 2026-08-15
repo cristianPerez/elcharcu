@@ -91,7 +91,7 @@ export function LeadCaptureModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               disabled={isSubmitting}
-              className="mt-1.5 w-full rounded-xl border border-cocoa/15 bg-cream px-4 py-2.5 text-base text-cocoa placeholder-cocoa/35 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/30 disabled:opacity-50"
+              className="mt-1.5 w-full rounded-xl border border-cocoa/15 bg-cream px-4 py-2.5 text-base text-cocoa placeholder-cocoa/65 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/30 disabled:opacity-50"
               placeholder="Tu nombre"
             />
           </div>
@@ -107,7 +107,7 @@ export function LeadCaptureModal({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isSubmitting}
-              className="mt-1.5 w-full rounded-xl border border-cocoa/15 bg-cream px-4 py-2.5 text-base text-cocoa placeholder-cocoa/35 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/30 disabled:opacity-50"
+              className="mt-1.5 w-full rounded-xl border border-cocoa/15 bg-cream px-4 py-2.5 text-base text-cocoa placeholder-cocoa/65 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/30 disabled:opacity-50"
               placeholder="tu@correo.com"
             />
           </div>
@@ -123,7 +123,7 @@ export function LeadCaptureModal({
               value={whatsapp}
               onChange={(e) => setWhatsapp(e.target.value)}
               disabled={isSubmitting}
-              className="mt-1.5 w-full rounded-xl border border-cocoa/15 bg-cream px-4 py-2.5 text-base text-cocoa placeholder-cocoa/35 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/30 disabled:opacity-50"
+              className="mt-1.5 w-full rounded-xl border border-cocoa/15 bg-cream px-4 py-2.5 text-base text-cocoa placeholder-cocoa/65 focus:border-terracota focus:outline-none focus:ring-2 focus:ring-terracota/30 disabled:opacity-50"
               placeholder="+57 300 123 4567"
             />
           </div>
@@ -137,12 +137,12 @@ export function LeadCaptureModal({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-full bg-terracota px-6 py-3 font-medium text-cream-white shadow-surface transition-colors hover:bg-terracota-dark focus:outline-none focus:ring-2 focus:ring-terracota focus:ring-offset-2 active:scale-[0.97] disabled:opacity-50"
+            className="w-full rounded-full bg-terracota-dark px-6 py-3 font-medium text-cream-white shadow-surface transition-shadow hover:shadow-raised focus:outline-none focus:ring-2 focus:ring-terracota focus:ring-offset-2 active:scale-[0.97] disabled:opacity-50"
           >
             {isSubmitting ? 'Guardando…' : 'Continuar usando el asistente'}
           </button>
 
-          <p className="text-xs leading-relaxed text-cocoa/50">
+          <p className="text-xs leading-relaxed text-cocoa/65">
             Al continuar, aceptas que usemos estos datos para contactarte sobre El Charcu
             y personalizar tu experiencia. Puedes pedirnos borrarlos en cualquier momento
             escribiéndonos a hola@elcharcu.co — Ley 1581/2012.

@@ -45,7 +45,7 @@ export function QuotaWall({ questionsUsed, questionsLimit }: QuotaWallProps): Re
 
       <QuotaWallPlans />
 
-      <p className="mt-6 text-xs leading-relaxed text-cocoa/45">
+      <p className="mt-6 text-xs leading-relaxed text-cocoa/65">
         Pagas con tarjeta, PSE o Nequi a través de Hotmart. El precio está en dólares y se
         cobra al cambio del día.
       </p>
