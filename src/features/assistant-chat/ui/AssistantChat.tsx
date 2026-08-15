@@ -21,16 +21,18 @@ export function AssistantChat({
 
   return (
     <section aria-label="Asistente de charcutería">
-      <div className="flex flex-col gap-4">
+      {/* `aria-live` para que un lector de pantalla cante la respuesta cuando
+          llega, en vez de dejarla en silencio a mitad de la página. */}
+      <div className="flex flex-col gap-7" aria-live="polite">
         {messages.map((message) => (
           <MessageBubble key={message.id} message={message} />
         ))}
 
         {isThinking ? (
-          <div className="flex justify-start">
-            <div className="rounded-2xl border border-cream/15 px-5 py-3.5 text-sm text-cream/40">
-              Pensando…
-            </div>
+          <div className="flex items-center gap-1.5 text-cream/40" aria-label="Pensando">
+            <span className="h-2 w-2 animate-pulse rounded-full bg-cream/40 [animation-delay:0ms]" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-cream/40 [animation-delay:200ms]" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-cream/40 [animation-delay:400ms]" />
           </div>
         ) : null}
       </div>
@@ -38,7 +40,7 @@ export function AssistantChat({
       {error === null ? null : (
         <p
           role="alert"
-          className="mt-4 rounded-xl border border-terracota/40 bg-terracota/10 px-4 py-3 text-sm text-cream"
+          className="mt-4 rounded-2xl border border-terracota/40 bg-terracota/10 px-4 py-3 text-sm text-cream"
         >
           {error}
         </p>
