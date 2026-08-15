@@ -4,6 +4,8 @@ import { type ReactNode } from 'react';
 
 import { STARTER_PROMPTS } from '@/entities/charcu-assistant';
 
+import { ANALYTICS_EVENTS, track } from '@/shared/lib';
+
 interface StarterPromptsProps {
   readonly onPick: (prompt: string) => void;
   readonly isDisabled: boolean;
@@ -30,6 +32,7 @@ export function StarterPrompts({ onPick, isDisabled }: StarterPromptsProps): Rea
             type="button"
             disabled={isDisabled}
             onClick={() => {
+              track(ANALYTICS_EVENTS.assistantStarterPicked, { label: starter.label });
               onPick(starter.prompt);
             }}
             className="rounded-full border border-cocoa/15 bg-cream px-4 py-3 text-left text-sm text-cocoa/80 transition-colors hover:border-terracota hover:bg-cream-white hover:text-terracota focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota active:scale-[0.97] disabled:opacity-50"

@@ -6,7 +6,7 @@ import { AsistentePage } from '@/views/asistente';
 export const metadata: Metadata = {
   title: 'Asistente de charcutería · El Charcu',
   description:
-    'El maestro charcutero de bolsillo: dosis de sal de cura, diagnóstico de moho por foto y ajuste por tu clima, en el momento exacto de la duda. Tu primera receta, gratis y sin tarjeta.',
+    'Ten al Charcu para preguntarle lo que quieras: dosis de sal de cura, diagnóstico de moho por foto y ajuste por tu clima, en el momento exacto de la duda. La primera pregunta es gratis y sin tarjeta.',
   keywords: [
     'asistente de charcutería',
     'sal de cura por kilo',

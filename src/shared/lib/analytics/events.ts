@@ -8,6 +8,14 @@ export const ANALYTICS_EVENTS = {
   salesPageViewed: 'sales_page_viewed',
   /** El usuario eligió un plan en la sección de precios. */
   planSelected: 'plan_selected',
+  /** El usuario abrió el onboarding (vio la primera pregunta). */
+  onboardingStarted: 'onboarding_started',
+  /** Cada paso que se pinta, para ver EXACTAMENTE dónde se cae la gente. */
+  onboardingStepViewed: 'onboarding_step_viewed',
+  /** Contestó una de las tres preguntas. Lleva cuál y qué respondió. */
+  onboardingAnswered: 'onboarding_answered',
+  /** Se devolvió un paso: si sube, la pregunta anterior no se entiende. */
+  onboardingWentBack: 'onboarding_went_back',
   /** El usuario terminó el onboarding y quedó listo para su receta gratis. */
   onboardingCompleted: 'onboarding_completed',
   /** El usuario abrió su primera sesión gratis con el asistente. */
@@ -24,6 +32,18 @@ export const ANALYTICS_EVENTS = {
   subscriptionStarted: 'subscription_started',
   /** El usuario le preguntó algo al asistente (con o sin foto). */
   assistantMessageSent: 'assistant_message_sent',
+  /** Tocó una de las preguntas de ejemplo en vez de escribir. */
+  assistantStarterPicked: 'assistant_starter_picked',
+  /** Adjuntó una foto en la caja de escribir. */
+  assistantPhotoAttached: 'assistant_photo_attached',
+  /** Llegó respuesta del asistente. Lleva cuánto tardó y si traía foto. */
+  assistantAnswerReceived: 'assistant_answer_received',
+  /** El asistente no pudo responder. Lleva el motivo. */
+  assistantFailed: 'assistant_failed',
+  /** Desplegó el aviso de cómo funciona la seguridad. */
+  assistantSafetyOpened: 'assistant_safety_opened',
+  /** Dejó sus datos en el muro blando. */
+  leadCaptured: 'lead_captured',
   /**
    * El código de seguridad bloqueó una respuesta por proponer una dosis de sal
    * de cura por encima del tope. Si este evento sube, hay que revisar el prompt.

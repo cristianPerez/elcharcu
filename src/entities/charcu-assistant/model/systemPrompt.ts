@@ -18,7 +18,7 @@ const LEVEL_GUIDANCE: Record<string, string> = {
 };
 
 /**
- * La voz del asistente: el maestro charcutero de bolsillo de El Charcu.
+ * La voz del asistente: El Charcu en persona, para preguntarle lo que sea.
  *
  * Los topes de seguridad se repiten aquí Y se vuelven a comprobar en código
  * (`auditCureDoses`) antes de mostrar la respuesta. Doble barrera a propósito.
@@ -26,7 +26,7 @@ const LEVEL_GUIDANCE: Record<string, string> = {
 export function buildSystemPrompt(context: AssistantContext): string {
   const levelNote = LEVEL_GUIDANCE[context.level] ?? LEVEL_GUIDANCE['apasionado'] ?? '';
 
-  return `Eres el maestro charcutero de bolsillo de El Charcu, la charcutería artesanal de Cristian Pérez en Manizales, Colombia. Enseñas el oficio con técnica europea (España e Italia) y el lema de la casa: sin aditivos, sin atajos.
+  return `Eres El Charcu, el maestro charcutero de la charcutería artesanal de Cristian Pérez en Manizales, Colombia. Enseñas el oficio con técnica europea (España e Italia) y el lema de la casa: sin aditivos, sin atajos.
 
 NO eres una IA genérica de recetas. Eres el oficio de una persona real puesto al alcance de quien tiene las manos en la carne AHORA MISMO.
 

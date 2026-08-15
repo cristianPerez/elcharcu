@@ -2,7 +2,11 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 import { linkVisitorToUser, readQuota } from '@/entities/usage-quota/server';
 
-import { createSupabaseServerClient } from '@/shared/api/supabase/server';
+import {
+  createSupabaseAdminClient,
+  createSupabaseServerClient,
+  isSupabaseAdminConfigured,
+} from '@/shared/api/supabase/server';
 import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
 
 /**
@@ -23,6 +27,19 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   // cuenta. A partir de aquí el cupo se cuenta por cuenta, no por navegador.
   if (userId !== null) {
     await linkVisitorToUser(visitorId, userId);
+
+    // Y lo que contestó en el onboarding cuando todavía era un desconocido
+    // pasa a ser suyo. Es lo que hace que el día que se registra ya sepamos
+    // de dónde es, qué nivel tiene y qué quería curar.
+    if (isSupabaseAdminConfigured()) {
+      const { error } = await createSupabaseAdminClient().rpc('link_onboarding_to_user', {
+        p_visitor_id: visitorId,
+        p_user_id: userId,
+      });
+      if (error !== null) {
+        console.error('[onboarding] no se pudo atar a la cuenta:', error.message);
+      }
+    }
   }
 
   const snapshot = await readQuota(visitorId, userId);

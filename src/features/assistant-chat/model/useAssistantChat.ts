@@ -64,6 +64,7 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
 
       setError(null);
       setIsThinking(true);
+      const startedAt = Date.now();
 
       // El cupo ya no se cuenta aquí: lo descuenta el servidor antes de llamar
       // a Gemini, y nos devuelve cómo quedó. El navegador solo lo muestra.
@@ -81,7 +82,18 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
       track(ANALYTICS_EVENTS.assistantMessageSent, {
         recipe: params.product,
         with_photo: file !== null,
+        // Cuántos turnos lleva la conversación: mide si de verdad conversan
+        // o si preguntan una vez y se van.
+        turn: history.length,
+        characters: trimmed.length,
       });
+
+      if (file !== null) {
+        track(ANALYTICS_EVENTS.assistantPhotoAttached, {
+          recipe: params.product,
+          size_kb: Math.round(file.size / 1024),
+        });
+      }
 
       const turns = history.map((message) => {
         const base = {
@@ -111,6 +123,10 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
             // para que la portada levante el muro sin preguntar otra vez.
             const spent: ApiAnswer = (await response.json()) as ApiAnswer;
             publishQuotaFrom(spent.quota);
+            track(ANALYTICS_EVENTS.assistantFailed, {
+              reason: 'sin-cupo',
+              recipe: params.product,
+            });
             return;
           }
 
@@ -119,6 +135,10 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
               'El asistente descansa hasta mañana: hoy ya atendió a mucha gente. Escríbenos por WhatsApp si es urgente.',
             );
             track(ANALYTICS_EVENTS.aiBudgetExhausted, { recipe: params.product });
+            track(ANALYTICS_EVENTS.assistantFailed, {
+              reason: 'sin-presupuesto',
+              recipe: params.product,
+            });
             return;
           }
 
@@ -127,6 +147,10 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
               ? 'El asistente todavía no está conectado.'
               : 'No pude responder ahora mismo. Inténtalo otra vez en un momento.',
           );
+          track(ANALYTICS_EVENTS.assistantFailed, {
+            reason: String(response.status),
+            recipe: params.product,
+          });
           return;
         }
 
@@ -135,8 +159,21 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
 
         if (typeof answer.text !== 'string') {
           setError('Me llegó una respuesta vacía. Vuelve a preguntarme.');
+          track(ANALYTICS_EVENTS.assistantFailed, {
+            reason: 'respuesta-vacia',
+            recipe: params.product,
+          });
           return;
         }
+
+        // El tiempo de respuesta es la métrica de producto que más importa
+        // aquí: si sube, la gente deja de preguntar aunque conteste bien.
+        track(ANALYTICS_EVENTS.assistantAnswerReceived, {
+          recipe: params.product,
+          with_photo: file !== null,
+          seconds: Math.round((Date.now() - startedAt) / 100) / 10,
+          was_blocked: answer.wasBlocked === true,
+        });
 
         setMessages([
           ...history,
@@ -153,6 +190,10 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
         }
       } catch {
         setError('Se cayó la conexión. Inténtalo otra vez.');
+        track(ANALYTICS_EVENTS.assistantFailed, {
+          reason: 'conexion',
+          recipe: params.product,
+        });
       } finally {
         setIsThinking(false);
       }
