@@ -1,4 +1,4 @@
-export type { QuotaSnapshot, QuotaStatus } from './model/types';
+export type { QuotaSnapshot, QuotaStatus, QuotaDeniedBy } from './model/types';
 export {
   QUESTIONS_BEFORE_LEAD,
   EMPTY_QUOTA,

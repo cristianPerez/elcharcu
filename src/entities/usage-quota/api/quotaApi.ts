@@ -3,7 +3,7 @@ import {
   isSupabaseAdminConfigured,
 } from '@/shared/api/supabase/server';
 
-import { type QuotaSnapshot } from '../model/types';
+import { type QuotaDeniedBy, type QuotaSnapshot } from '../model/types';
 
 /**
  * El cupo, contado en Postgres. SOLO SERVIDOR.
@@ -18,12 +18,17 @@ interface QuotaRow {
   readonly plan: string;
   readonly questions_used: number;
   readonly images_used: number;
+  readonly recipes_used: number;
   readonly questions_limit: number;
   readonly images_limit: number;
+  /** `null` = recetas ilimitadas. */
+  readonly recipes_limit: number | null;
 }
 
 interface ConsumeRow extends QuotaRow {
   readonly allowed: boolean;
+  /** Cuál de los tres topes cerró la puerta: `preguntas`, `fotos` o `recetas`. */
+  readonly denied_by: string | null;
 }
 
 function toSnapshot(row: QuotaRow): QuotaSnapshot {
@@ -31,15 +36,23 @@ function toSnapshot(row: QuotaRow): QuotaSnapshot {
     plan: row.plan,
     questionsUsed: row.questions_used,
     imagesUsed: row.images_used,
+    recipesUsed: row.recipes_used,
     questionsLimit: row.questions_limit,
     imagesLimit: row.images_limit,
+    recipesLimit: row.recipes_limit,
   };
 }
 
 export interface ConsumeResult {
   /** `false` = se acabó el cupo y NO se consumió nada. */
   readonly allowed: boolean;
+  /** Qué tope cerró la puerta. Sirve para enseñar el muro correcto. */
+  readonly deniedBy: QuotaDeniedBy | null;
   readonly snapshot: QuotaSnapshot;
+}
+
+function toDeniedBy(value: string | null): QuotaDeniedBy | null {
+  return value === 'preguntas' || value === 'fotos' || value === 'recetas' ? value : null;
 }
 
 /**
@@ -53,6 +66,7 @@ export async function consumeQuota(
   visitorId: string,
   userId: string | null,
   images: number,
+  isNewRecipe: boolean,
 ): Promise<ConsumeResult | null> {
   if (!isSupabaseAdminConfigured()) {
     return null;
@@ -63,6 +77,7 @@ export async function consumeQuota(
     p_visitor_id: visitorId,
     p_user_id: userId as string,
     p_images: images,
+    p_new_recipe: isNewRecipe,
   });
 
   if (error !== null) {
@@ -75,7 +90,11 @@ export async function consumeQuota(
     return null;
   }
 
-  return { allowed: row.allowed, snapshot: toSnapshot(row) };
+  return {
+    allowed: row.allowed,
+    deniedBy: toDeniedBy(row.denied_by),
+    snapshot: toSnapshot(row),
+  };
 }
 
 /**
@@ -89,6 +108,7 @@ export async function refundQuota(
   visitorId: string,
   userId: string | null,
   images: number,
+  isNewRecipe: boolean,
 ): Promise<void> {
   if (!isSupabaseAdminConfigured()) {
     return;
@@ -99,6 +119,7 @@ export async function refundQuota(
     p_visitor_id: visitorId,
     p_user_id: userId as string,
     p_images: images,
+    p_new_recipe: isNewRecipe,
   });
 
   if (error !== null) {
