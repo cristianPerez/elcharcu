@@ -58,7 +58,7 @@ export function Pricing(): ReactNode {
             </p>
             <p className="mt-1 text-sm text-cream/60">
               Un curso completo, pago único, tuyo para siempre —{' '}
-              {formatCop(oneTimeCourseCop)}.
+              {formatCop(oneTimeCourseCop)} COP.
             </p>
           </div>
           <span className="text-xs uppercase tracking-eyebrow text-sage">
@@ -67,8 +67,8 @@ export function Pricing(): ReactNode {
         </div>
 
         <p className="mt-8 text-sm text-cream/55">
-          Pagas en pesos colombianos con Nequi, PSE o tarjeta. Nada en dólares. Cancelas
-          desde la app cuando quieras, sin llamar a nadie.
+          Pagas con tarjeta, PSE o Nequi a través de Hotmart. El precio está en dólares y
+          se cobra al cambio del día. Cancelas cuando quieras, sin llamar a nadie.
         </p>
       </Container>
     </section>

@@ -3,6 +3,11 @@ import { type BillingCycle, type Plan, type PlanPrice } from './plan.types';
 /**
  * DOS planes y nada más: el gratis y el de pago (2026-08-14).
  *
+ * ⚠️ Los precios están en DÓLARES por decisión de Cristian (2026-08-14), en
+ * contra de D4. Ojo: el propio ESTADO documenta que la desconfianza hacia las
+ * suscripciones en dólares es la objeción nº1 de este mercado, y US$ 9,99 son
+ * ~$39.960 COP, un 34% más que los $29.900 que había antes.
+ *
  * El de pago se cobra al mes o al año — es el mismo plan, con el mismo cupo,
  * y el año solo cambia el precio. Antes eran tres tarjetas y la del anual
  * competía con la del mensual en vez de complementarla.
@@ -11,26 +16,26 @@ import { type BillingCycle, type Plan, type PlanPrice } from './plan.types';
  * y la base cumple. Cuentas detrás de los números en ESTADO.md.
  */
 
-const MONTHLY_COP = 29900;
-const YEARLY_COP = 239000;
+const MONTHLY_USD = 9.99;
+const YEARLY_USD = 89.9;
 
-/** El año sale por 8 mensualidades: se regalan 4 meses, un 33%. */
-const YEARLY_PER_MONTH_COP = Math.round(YEARLY_COP / 12);
-const YEARLY_SAVING_PERCENT = Math.round((1 - YEARLY_PER_MONTH_COP / MONTHLY_COP) * 100);
+/** El año sale por 9 mensualidades: se regalan 3 meses, un 25%. */
+const YEARLY_PER_MONTH_USD = YEARLY_USD / 12;
+const YEARLY_SAVING_PERCENT = Math.round((1 - YEARLY_PER_MONTH_USD / MONTHLY_USD) * 100);
 
 export const proPrices: readonly PlanPrice[] = [
   {
     cycle: 'mensual',
-    priceCop: MONTHLY_COP,
-    perMonthCop: MONTHLY_COP,
+    priceUsd: MONTHLY_USD,
+    perMonthUsd: MONTHLY_USD,
     billingId: 'mensual',
     note: 'Cancelas cuando quieras, desde la app.',
     savingPercent: 0,
   },
   {
     cycle: 'anual',
-    priceCop: YEARLY_COP,
-    perMonthCop: YEARLY_PER_MONTH_COP,
+    priceUsd: YEARLY_USD,
+    perMonthUsd: YEARLY_PER_MONTH_USD,
     billingId: 'anual',
     note: 'Un solo cobro al año. Precio congelado por 12 meses.',
     savingPercent: YEARLY_SAVING_PERCENT,

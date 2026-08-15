@@ -30,9 +30,9 @@ export function AssistantChat({
 
         {isThinking ? (
           <div className="flex items-center gap-1.5" aria-label="Pensando">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-sage [animation-delay:0ms]" />
-            <span className="h-2 w-2 animate-pulse rounded-full bg-sage [animation-delay:160ms]" />
-            <span className="h-2 w-2 animate-pulse rounded-full bg-sage [animation-delay:320ms]" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-terracota [animation-delay:0ms]" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-terracota [animation-delay:160ms]" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-terracota [animation-delay:320ms]" />
           </div>
         ) : null}
       </div>

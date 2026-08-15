@@ -22,10 +22,10 @@ export interface PlanQuota {
  */
 export interface PlanPrice {
   readonly cycle: BillingCycle;
-  /** Lo que se cobra de una vez. */
-  readonly priceCop: number;
+  /** Lo que se cobra de una vez, en dólares. */
+  readonly priceUsd: number;
   /** A cuánto sale el mes, para poder comparar de verdad. */
-  readonly perMonthCop: number;
+  readonly perMonthUsd: number;
   /** El `plan_id` que entienden `charcu.plan_quotas` y la pasarela. */
   readonly billingId: string;
   /** Nota chica bajo el botón. */

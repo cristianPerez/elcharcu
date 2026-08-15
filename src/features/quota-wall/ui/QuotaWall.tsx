@@ -46,7 +46,8 @@ export function QuotaWall({ questionsUsed, questionsLimit }: QuotaWallProps): Re
       <QuotaWallPlans />
 
       <p className="mt-6 text-xs leading-relaxed text-cocoa/45">
-        Pagas en pesos colombianos con Nequi, PSE o tarjeta. Nada en dólares.
+        Pagas con tarjeta, PSE o Nequi a través de Hotmart. El precio está en dólares y se
+        cobra al cambio del día.
       </p>
     </div>
   );
