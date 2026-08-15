@@ -46,19 +46,12 @@ function readFileAsDataUrl(file: File): Promise<string> {
   });
 }
 
-function greeting(product: string): ChatMessage {
-  return {
-    id: 'saludo',
-    role: 'assistant',
-    content: `Vamos con tu ${product.toLowerCase()}. Cuéntame cuántos kilos de carne tienes y a qué temperatura y humedad está el lugar donde lo vas a colgar. Si ya lo tienes colgado y algo no te cuadra, mándame una foto.`,
-  };
-}
-
 /** El chat con el asistente. Toda la llamada a la IA pasa por el servidor. */
 export function useAssistantChat(params: AssistantChatParams): AssistantChatController {
-  const [messages, setMessages] = useState<readonly ChatMessage[]>([
-    greeting(params.product),
-  ]);
+  // Arranca VACÍO. Antes abría con un saludo de seis líneas que explicaba qué
+  // escribir; ahora esa explicación son cuatro preguntas de ejemplo que se
+  // tocan, y el asistente pregunta lo que le falte cuando le falte.
+  const [messages, setMessages] = useState<readonly ChatMessage[]>([]);
   const [isThinking, setIsThinking] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
