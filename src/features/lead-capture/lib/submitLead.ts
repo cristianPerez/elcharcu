@@ -1,5 +1,3 @@
-import { createSupabaseBrowserClient } from '@/shared/api/supabase';
-
 import type { LeadData } from '../model/types';
 
 interface SubmitResult {
@@ -8,33 +6,28 @@ interface SubmitResult {
 }
 
 /**
- * Guarda los datos del lead en Supabase.
- * También guarda cuántas preguntas e imágenes había usado al momento de captura.
+ * Manda los datos del lead al servidor.
+ *
+ * Antes se insertaba directo en Supabase desde el navegador. Ahora pasa por
+ * `/api/lead` porque hay dos cosas que el navegador no puede saber: el
+ * `visitor_id` (vive en una cookie httpOnly) y cuántas preguntas lleva de
+ * verdad este visitante, que solo la base conoce. Que el propio formulario
+ * dijera cuánto había usado era pedirle la verdad a la parte interesada.
  */
-export async function submitLead(
-  data: LeadData,
-  questionsUsed: number,
-  imagesUsed: number,
-): Promise<SubmitResult> {
+export async function submitLead(data: LeadData): Promise<SubmitResult> {
   try {
-    const supabase = createSupabaseBrowserClient();
-
-    const { error } = await supabase.from('leads').insert({
-      name: data.name,
-      email: data.email,
-      whatsapp: data.whatsapp,
-      questions_used: questionsUsed,
-      images_used: imagesUsed,
+    const response = await fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
     });
 
-    if (error) {
-      console.error('[lead-capture] error al guardar:', error);
+    if (!response.ok) {
       return { ok: false, error: 'No pudimos guardar tus datos. Inténtalo otra vez.' };
     }
 
     return { ok: true };
-  } catch (err) {
-    console.error('[lead-capture] error inesperado:', err);
-    return { ok: false, error: 'Algo salió mal. Inténtalo otra vez.' };
+  } catch {
+    return { ok: false, error: 'Se cayó la conexión. Inténtalo otra vez.' };
   }
 }

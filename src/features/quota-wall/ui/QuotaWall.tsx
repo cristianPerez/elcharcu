@@ -2,8 +2,6 @@
 
 import { useEffect, type ReactNode } from 'react';
 
-import { FREE_TIER_LIMITS } from '@/entities/usage-quota';
-
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
 import { QuotaWallPlans } from './QuotaWallPlans';
@@ -11,6 +9,8 @@ import { QuotaWallPlans } from './QuotaWallPlans';
 interface QuotaWallProps {
   /** Preguntas del mes que el visitante ya gastó. */
   readonly questionsUsed: number;
+  /** Su tope del mes, tal como lo cuenta la base. */
+  readonly questionsLimit: number;
 }
 
 /**
@@ -19,13 +19,13 @@ interface QuotaWallProps {
  * Sustituye al viejo muro de "segunda receta": la unidad ahora es la pregunta.
  * El tono es de valor, no de castigo — ya se llevó respuestas de verdad, gratis.
  */
-export function QuotaWall({ questionsUsed }: QuotaWallProps): ReactNode {
+export function QuotaWall({ questionsUsed, questionsLimit }: QuotaWallProps): ReactNode {
   useEffect(() => {
     track(ANALYTICS_EVENTS.quotaWallHit, {
       questions_used: questionsUsed,
-      free_questions: FREE_TIER_LIMITS.questionsPerMonth,
+      free_questions: questionsLimit,
     });
-  }, [questionsUsed]);
+  }, [questionsUsed, questionsLimit]);
 
   return (
     <div className="rounded-2xl border border-cream/15 bg-forest-dark/40 p-6 md:p-8">
@@ -38,9 +38,9 @@ export function QuotaWall({ questionsUsed }: QuotaWallProps): ReactNode {
       </h2>
 
       <p className="mt-4 text-sm leading-relaxed text-cream/75">
-        Ya usaste tus {FREE_TIER_LIMITS.questionsPerMonth} preguntas gratis de este mes
-        sin poner un peso. Con lo que vale una pieza echada a perder, el plan se paga solo
-        — y el cupo vuelve a cero el mes que viene, pagues o no.
+        Ya usaste tus {questionsLimit} preguntas gratis de este mes sin poner un peso. Con
+        lo que vale una pieza echada a perder, el plan se paga solo — y el cupo vuelve a
+        cero el mes que viene, pagues o no.
       </p>
 
       <QuotaWallPlans />

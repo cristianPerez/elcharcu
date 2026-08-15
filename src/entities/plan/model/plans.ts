@@ -34,7 +34,7 @@ export const plans: readonly Plan[] = [
   },
   {
     id: 'mensual',
-    name: 'Charcutero',
+    name: 'El Charcu Pro',
     priceCop: 29900,
     billing: 'mensual',
     quota: { questionsPerMonth: 200, imagesPerMonth: 30 },
@@ -53,14 +53,14 @@ export const plans: readonly Plan[] = [
   },
   {
     id: 'anual',
-    name: 'Charcutero anual',
+    name: 'El Charcu Pro anual',
     priceCop: 239000,
     billing: 'anual',
     quota: { questionsPerMonth: 300, imagesPerMonth: 50 },
     pitch: 'Un curado serio toma meses. Este plan también.',
     features: [
       '300 preguntas y 50 fotos cada mes, todo el año',
-      'Todo lo del plan Charcutero',
+      'Todo lo del plan El Charcu Pro',
       'Dos meses gratis frente al mensual',
       'Precio congelado por todo el año',
     ],

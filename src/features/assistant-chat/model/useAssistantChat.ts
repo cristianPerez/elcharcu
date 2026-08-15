@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react';
 
 import { type ChatMessage } from '@/entities/charcu-assistant';
-import { incrementImages, incrementQuestions } from '@/entities/usage-quota';
+import { publishQuotaFrom } from '@/entities/usage-quota';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
@@ -23,6 +23,8 @@ export interface AssistantChatController {
 interface ApiAnswer {
   readonly text?: unknown;
   readonly wasBlocked?: unknown;
+  /** El cupo que queda tras esta pregunta, tal como lo contó la base. */
+  readonly quota?: unknown;
 }
 
 function createId(): string {
@@ -70,12 +72,8 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
       setError(null);
       setIsThinking(true);
 
-      // Incrementar contadores de uso
-      incrementQuestions();
-      if (file !== null) {
-        incrementImages();
-      }
-
+      // El cupo ya no se cuenta aquí: lo descuenta el servidor antes de llamar
+      // a Gemini, y nos devuelve cómo quedó. El navegador solo lo muestra.
       const dataUrl = file === null ? '' : await readFileAsDataUrl(file);
       const userMessage: ChatMessage = {
         id: createId(),
@@ -115,6 +113,14 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
         });
 
         if (!response.ok) {
+          if (response.status === 402) {
+            // Se acabó el cupo. Se publica el cupo que devuelve el servidor
+            // para que la portada levante el muro sin preguntar otra vez.
+            const spent: ApiAnswer = (await response.json()) as ApiAnswer;
+            publishQuotaFrom(spent.quota);
+            return;
+          }
+
           if (response.status === 429) {
             setError(
               'El asistente descansa hasta mañana: hoy ya atendió a mucha gente. Escríbenos por WhatsApp si es urgente.',
@@ -132,6 +138,8 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
         }
 
         const answer: ApiAnswer = (await response.json()) as ApiAnswer;
+        publishQuotaFrom(answer.quota);
+
         if (typeof answer.text !== 'string') {
           setError('Me llegó una respuesta vacía. Vuelve a preguntarme.');
           return;

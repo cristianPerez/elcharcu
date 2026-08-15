@@ -2,32 +2,50 @@
 
 import { useEffect, useState } from 'react';
 
-import { loadQuota, quotaStatus, subscribeToQuota } from '../lib/quotaStorage';
+import { fetchQuota, subscribeToQuota } from '../lib/quotaChannel';
 
-import { type QuotaStatus, type UsageQuota } from './types';
+import { EMPTY_QUOTA, quotaStatus, type QuotaSnapshot, type QuotaStatus } from './types';
 
 export interface UsageQuotaController {
-  readonly quota: UsageQuota;
+  readonly quota: QuotaSnapshot;
   readonly status: QuotaStatus;
-  /** `false` hasta que se lee el navegador, para no pintar el muro en el servidor. */
+  /** `false` hasta que el servidor contesta, para no pintar el muro de más. */
   readonly isReady: boolean;
 }
 
-const SERVER_QUOTA: UsageQuota = { questionsUsed: 0, imagesUsed: 0, periodKey: '' };
-
 /**
- * El cupo, ya reactivo. El contador vive en `localStorage`, así que el primer
- * render (servidor e hidratación) usa un cupo vacío y `isReady` en `false`:
- * así el muro nunca aparece por un instante antes de saber la verdad.
+ * El cupo del visitante, preguntado al servidor y mantenido al día.
+ *
+ * El primer render (servidor e hidratación) va con el cupo vacío y
+ * `isReady` en `false`: así el muro nunca parpadea antes de saber la verdad.
  */
 export function useUsageQuota(): UsageQuotaController {
-  const [quota, setQuota] = useState<UsageQuota>(SERVER_QUOTA);
+  const [quota, setQuota] = useState<QuotaSnapshot>(EMPTY_QUOTA);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    setQuota(loadQuota());
-    setIsReady(true);
-    return subscribeToQuota(setQuota);
+    let isMounted = true;
+
+    void fetchQuota().then((snapshot) => {
+      if (!isMounted) {
+        return;
+      }
+      if (snapshot !== null) {
+        setQuota(snapshot);
+      }
+      setIsReady(true);
+    });
+
+    const unsubscribe = subscribeToQuota((snapshot) => {
+      if (isMounted) {
+        setQuota(snapshot);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
   }, []);
 
   return { quota, status: quotaStatus(quota), isReady };

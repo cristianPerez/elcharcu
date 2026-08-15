@@ -1,43 +1,22 @@
 /**
- * Cupo de uso del visitante, medido en PREGUNTAS e IMÁGENES (D15).
+ * Cupo de uso, medido en PREGUNTAS e IMÁGENES (D15).
  *
- * El periodo es el MES natural, no el día: los planes se venden por mes, así
- * que el cupo gratis se mide con la misma vara. Un reseteo diario haría que el
- * plan gratis fuera, en la práctica, ilimitado.
+ * Desde el 2026-08-14 la verdad vive en Postgres (`charcu.usage_counters`) y
+ * la manda el servidor; el navegador solo la muestra. El periodo es el MES
+ * natural en hora de Colombia — los planes se venden por mes, así que el cupo
+ * gratis se mide con la misma vara.
  */
-export interface UsageQuota {
-  /** Preguntas de texto enviadas en el periodo actual. */
+export interface QuotaSnapshot {
+  /** Plan que le aplica ahora mismo: `aprendiz`, `mensual` o `anual`. */
+  readonly plan: string;
   readonly questionsUsed: number;
-  /** Imágenes enviadas en el periodo actual. */
   readonly imagesUsed: number;
-  /** Periodo al que pertenecen los contadores, como `YYYY-MM`. */
-  readonly periodKey: string;
+  /** Tope del mes, según el plan. Lo decide la base, no la pantalla. */
+  readonly questionsLimit: number;
+  readonly imagesLimit: number;
 }
 
-/** Los límites del plan gratuito, en preguntas e imágenes por mes. */
-export interface FreeTierLimits {
-  /** Preguntas gratis antes del muro blando de captura de datos. */
-  readonly questionsBeforeLead: number;
-  /** Preguntas gratis TOTALES al mes, ya con los datos dejados. */
-  readonly questionsPerMonth: number;
-  /** Imágenes gratis TOTALES al mes. */
-  readonly imagesPerMonth: number;
-}
-
-/**
- * Números propuestos, alineados con el plan `aprendiz` de `entities/plan`.
- *
- * Con ~0,0055 USD por pregunta, 8 preguntas gratis cuestan ~0,044 USD por
- * visitante que agote el cupo: sostenible frente al tope diario de 5 USD.
- * Las imágenes van mucho más apretadas porque cuestan bastante más.
- */
-export const FREE_TIER_LIMITS: FreeTierLimits = {
-  questionsBeforeLead: 1,
-  questionsPerMonth: 8,
-  imagesPerMonth: 2,
-};
-
-/** Qué le queda al visitante y si ya chocó con el muro. */
+/** Qué le queda al visitante y contra qué muro está. */
 export interface QuotaStatus {
   readonly questionsLeft: number;
   readonly imagesLeft: number;
@@ -45,4 +24,56 @@ export interface QuotaStatus {
   readonly isExhausted: boolean;
   /** Quedan preguntas, pero ya no puede mandar más fotos. */
   readonly areImagesExhausted: boolean;
+}
+
+/**
+ * Cuántas preguntas se contestan antes de pedir nombre, correo y WhatsApp (D16).
+ *
+ * Esto NO vive en la base: no es un tope de gasto sino una regla del embudo.
+ * La primera pregunta es la demostración; el muro blando viene justo después,
+ * en el momento de máximo interés.
+ */
+export const QUESTIONS_BEFORE_LEAD = 1;
+
+/** Cupo vacío, para el primer render antes de que conteste el servidor. */
+export const EMPTY_QUOTA: QuotaSnapshot = {
+  plan: 'aprendiz',
+  questionsUsed: 0,
+  imagesUsed: 0,
+  questionsLimit: 0,
+  imagesLimit: 0,
+};
+
+export function quotaStatus(snapshot: QuotaSnapshot): QuotaStatus {
+  const questionsLeft = Math.max(0, snapshot.questionsLimit - snapshot.questionsUsed);
+  const imagesLeft = Math.max(0, snapshot.imagesLimit - snapshot.imagesUsed);
+
+  return {
+    questionsLeft,
+    imagesLeft,
+    isExhausted: questionsLeft === 0,
+    areImagesExhausted: imagesLeft === 0,
+  };
+}
+
+/** Valida lo que llega del servidor: nunca se confía en una respuesta a ciegas. */
+export function parseQuotaSnapshot(value: unknown): QuotaSnapshot | null {
+  if (typeof value !== 'object' || value === null) {
+    return null;
+  }
+
+  const { plan, questionsUsed, imagesUsed, questionsLimit, imagesLimit } =
+    value as Record<string, unknown>;
+
+  if (
+    typeof plan !== 'string' ||
+    typeof questionsUsed !== 'number' ||
+    typeof imagesUsed !== 'number' ||
+    typeof questionsLimit !== 'number' ||
+    typeof imagesLimit !== 'number'
+  ) {
+    return null;
+  }
+
+  return { plan, questionsUsed, imagesUsed, questionsLimit, imagesLimit };
 }

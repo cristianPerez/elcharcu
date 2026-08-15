@@ -9,7 +9,8 @@
     "*.config.js",
     "*.config.cjs",
     "*.config.mjs",
-    "scripts/**"
+    "scripts/**",
+    "src/shared/api/supabase/database.types.ts"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

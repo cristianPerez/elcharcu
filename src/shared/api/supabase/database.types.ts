@@ -116,6 +116,7 @@ export type Database = {
           name: string;
           questions_used: number;
           user_id: string | null;
+          visitor_id: string | null;
           whatsapp: string;
         };
         Insert: {
@@ -126,6 +127,7 @@ export type Database = {
           name: string;
           questions_used?: number;
           user_id?: string | null;
+          visitor_id?: string | null;
           whatsapp: string;
         };
         Update: {
@@ -136,7 +138,26 @@ export type Database = {
           name?: string;
           questions_used?: number;
           user_id?: string | null;
+          visitor_id?: string | null;
           whatsapp?: string;
+        };
+        Relationships: [];
+      };
+      plan_quotas: {
+        Row: {
+          images_per_month: number;
+          plan_id: string;
+          questions_per_month: number;
+        };
+        Insert: {
+          images_per_month: number;
+          plan_id: string;
+          questions_per_month: number;
+        };
+        Update: {
+          images_per_month?: number;
+          plan_id?: string;
+          questions_per_month?: number;
         };
         Relationships: [];
       };
@@ -266,6 +287,39 @@ export type Database = {
         };
         Relationships: [];
       };
+      usage_counters: {
+        Row: {
+          created_at: string;
+          id: string;
+          images_used: number;
+          period_key: string;
+          questions_used: number;
+          updated_at: string;
+          user_id: string | null;
+          visitor_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          images_used?: number;
+          period_key: string;
+          questions_used?: number;
+          updated_at?: string;
+          user_id?: string | null;
+          visitor_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          images_used?: number;
+          period_key?: string;
+          questions_used?: number;
+          updated_at?: string;
+          user_id?: string | null;
+          visitor_id?: string;
+        };
+        Relationships: [];
+      };
       videos: {
         Row: {
           course_id: string;
@@ -315,7 +369,34 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      consume_quota: {
+        Args: { p_images?: number; p_user_id: string; p_visitor_id: string };
+        Returns: {
+          allowed: boolean;
+          images_limit: number;
+          images_used: number;
+          plan: string;
+          questions_limit: number;
+          questions_used: number;
+        }[];
+      };
+      current_period_key: { Args: never; Returns: string };
+      effective_plan: { Args: { p_user_id: string }; Returns: string };
       has_active_subscription: { Args: { p_user_id: string }; Returns: boolean };
+      link_visitor_to_user: {
+        Args: { p_user_id: string; p_visitor_id: string };
+        Returns: undefined;
+      };
+      quota_status: {
+        Args: { p_user_id: string; p_visitor_id: string };
+        Returns: {
+          images_limit: number;
+          images_used: number;
+          plan: string;
+          questions_limit: number;
+          questions_used: number;
+        }[];
+      };
       record_ai_spend: {
         Args: {
           p_answer_tokens: number;
@@ -325,7 +406,28 @@ export type Database = {
         };
         Returns: number;
       };
+      refund_quota: {
+        Args: { p_images?: number; p_user_id: string; p_visitor_id: string };
+        Returns: undefined;
+      };
       today_ai_spend: { Args: never; Returns: number };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
+  public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
     };
     Enums: {
       [_ in never]: never;
@@ -342,7 +444,8 @@ type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, 'public'>]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
-    keyof DefaultSchema['Tables'] | { schema: keyof DatabaseWithoutInternals },
+    | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals;
   }
@@ -358,8 +461,10 @@ export type Tables<
     }
     ? R
     : never
-  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
-    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] &
+        DefaultSchema['Views'])
+    ? (DefaultSchema['Tables'] &
+        DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
         Row: infer R;
       }
       ? R
@@ -448,6 +553,9 @@ export type CompositeTypes<
 
 export const Constants = {
   charcu: {
+    Enums: {},
+  },
+  public: {
     Enums: {},
   },
 } as const;

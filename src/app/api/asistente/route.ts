@@ -3,8 +3,11 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { checkBudget, recordSpend } from '@/entities/ai-budget';
 import { buildSystemPrompt } from '@/entities/charcu-assistant';
 import { auditCureDoses, MAX_CURE_1_G_PER_KG } from '@/entities/cure-safety';
+import { consumeQuota, refundQuota } from '@/entities/usage-quota/server';
 
 import { generateAnswer, type GeminiTurn } from '@/shared/api/gemini';
+import { createSupabaseServerClient } from '@/shared/api/supabase/server';
+import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
 
 /** Tope de la imagen en base64 (~3 MB de foto). */
 const MAX_IMAGE_CHARS = 4_000_000;
@@ -90,12 +93,22 @@ El tope es **${String(MAX_CURE_1_G_PER_KG)} g de sal de cura #1 por kilo de carn
 Cuéntame cuántos kilos tienes exactamente y qué sal de cura estás usando (#1 o #2), y te doy la cantidad justa.`;
 }
 
+/** Cuántas fotos trae esta pregunta. Las imágenes cuestan bastante más. */
+function countImages(turns: readonly GeminiTurn[]): number {
+  const last = turns[turns.length - 1];
+  return last?.image === undefined ? 0 : 1;
+}
+
 export async function POST(request: NextRequest): Promise<NextResponse> {
+  const visitorId = ensureVisitorId(request);
   const payload: unknown = await request.json().catch(() => null);
   const parsed = parseRequest(payload);
 
   if (parsed === null) {
-    return NextResponse.json({ error: 'peticion-invalida' }, { status: 400 });
+    return attachVisitorCookie(
+      NextResponse.json({ error: 'peticion-invalida' }, { status: 400 }),
+      visitorId,
+    );
   }
 
   // Freno de gasto: se comprueba ANTES de llamar a Gemini, que es lo que cuesta.
@@ -104,7 +117,27 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     console.warn(
       `[presupuesto] tope diario alcanzado: ${budget.spentUsd.toFixed(4)} de ${String(budget.budgetUsd)} USD`,
     );
-    return NextResponse.json({ error: 'sin-presupuesto' }, { status: 429 });
+    return attachVisitorCookie(
+      NextResponse.json({ error: 'sin-presupuesto' }, { status: 429 }),
+      visitorId,
+    );
+  }
+
+  // El cupo del visitante, también ANTES de llamar a Gemini. Aquí es donde el
+  // muro deja de ser una pantalla y se vuelve una regla: por más que alguien
+  // llame a esta ruta a mano, sin cupo no hay respuesta.
+  const supabase = await createSupabaseServerClient();
+  const { data: authData } = await supabase.auth.getUser();
+  const userId = authData.user?.id ?? null;
+
+  const images = countImages(parsed.turns);
+  const quota = await consumeQuota(visitorId, userId, images);
+
+  if (quota !== null && !quota.allowed) {
+    return attachVisitorCookie(
+      NextResponse.json({ error: 'sin-cupo', quota: quota.snapshot }, { status: 402 }),
+      visitorId,
+    );
   }
 
   const systemPrompt = buildSystemPrompt({
@@ -116,8 +149,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const result = await generateAnswer(systemPrompt, parsed.turns);
 
   if (!result.ok) {
+    // No llegó respuesta: se le devuelve la pregunta que se le acababa de
+    // cobrar. El fallo es nuestro (o de Google), no suyo.
+    if (quota !== null) {
+      await refundQuota(visitorId, userId, images);
+    }
+
     const status = result.reason === 'sin-clave' ? 503 : 502;
-    return NextResponse.json({ error: result.reason }, { status });
+    return attachVisitorCookie(
+      NextResponse.json({ error: result.reason }, { status }),
+      visitorId,
+    );
   }
 
   // Se apunta lo que de verdad consumió, no una estimación.
@@ -131,8 +173,22 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       '[asistente] respuesta bloqueada por dosis insegura:',
       verdict.dangerous.map((finding) => finding.excerpt),
     );
-    return NextResponse.json({ text: blockedAnswer(), wasBlocked: true });
+    return attachVisitorCookie(
+      NextResponse.json({
+        text: blockedAnswer(),
+        wasBlocked: true,
+        quota: quota?.snapshot ?? null,
+      }),
+      visitorId,
+    );
   }
 
-  return NextResponse.json({ text: result.text, wasBlocked: false });
+  return attachVisitorCookie(
+    NextResponse.json({
+      text: result.text,
+      wasBlocked: false,
+      quota: quota?.snapshot ?? null,
+    }),
+    visitorId,
+  );
 }
