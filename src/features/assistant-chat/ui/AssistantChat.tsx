@@ -6,6 +6,7 @@ import { useAssistantChat, type AssistantChatParams } from '../model/useAssistan
 
 import { ChatComposer } from './ChatComposer';
 import { MessageBubble } from './MessageBubble';
+import { StarterPrompts } from './StarterPrompts';
 
 interface AssistantChatProps extends AssistantChatParams {
   /** `false` cuando se agotó el cupo de fotos del mes. Por defecto, se puede. */
@@ -18,12 +19,22 @@ export function AssistantChat({
   ...params
 }: AssistantChatProps): ReactNode {
   const { messages, isThinking, error, send } = useAssistantChat(params);
+  const hasStarted = messages.length > 0;
 
   return (
     <section aria-label="Asistente de charcutería">
+      {hasStarted ? null : (
+        <StarterPrompts
+          isDisabled={isThinking}
+          onPick={(prompt) => {
+            void send(prompt, null);
+          }}
+        />
+      )}
+
       {/* `aria-live` para que un lector de pantalla cante la respuesta cuando
           llega, en vez de dejarla en silencio a mitad de la página. */}
-      <div className="flex flex-col gap-6" aria-live="polite">
+      <div className="flex flex-col gap-6 empty:hidden" aria-live="polite">
         {messages.map((message) => (
           <MessageBubble key={message.id} message={message} />
         ))}

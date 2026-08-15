@@ -157,7 +157,7 @@ export function ChatComposer({
         </div>
       </div>
 
-      <p className="mt-2 px-2 text-xs text-cocoa/40">
+      <p className="mt-2 hidden px-2 text-xs text-cocoa/40 md:block">
         Enter envía · Shift + Enter hace salto de línea
       </p>
     </form>

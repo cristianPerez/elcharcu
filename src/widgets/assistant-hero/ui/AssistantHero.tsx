@@ -23,7 +23,7 @@ import { Container } from '@/shared/ui';
  *   2. Al agotar las preguntas del mes, el muro de suscripción (9e).
  */
 export function AssistantHero(): ReactNode {
-  const { quota, status, isReady } = useUsageQuota();
+  const { quota, status, isKnown } = useUsageQuota();
   const [showLeadCapture, setShowLeadCapture] = useState(false);
   const [hasLead, setHasLead] = useState(true);
 
@@ -31,7 +31,7 @@ export function AssistantHero(): ReactNode {
     setHasLead(isLeadCaptured());
   }, []);
 
-  const needsLead = isReady && !hasLead && quota.questionsUsed >= QUESTIONS_BEFORE_LEAD;
+  const needsLead = isKnown && !hasLead && quota.questionsUsed >= QUESTIONS_BEFORE_LEAD;
 
   useEffect(() => {
     if (!needsLead) {
@@ -52,19 +52,21 @@ export function AssistantHero(): ReactNode {
     setHasLead(true);
   };
 
-  const isWalled = isReady && status.isExhausted;
+  // Solo se levanta el muro si SABEMOS que se acabó el cupo. Si no se pudo
+  // leer, se deja pasar: quien de verdad protege el bolsillo es el tope diario
+  // de gasto, que es global y vive en el servidor.
+  const isWalled = isKnown && status.isExhausted;
 
   return (
     <>
-      <section className="bg-cream py-10 md:py-16">
+      <section className="bg-cream py-8 md:py-14">
         <Container>
           <div className="mx-auto max-w-3xl">
             <h1 className="font-serif text-[32px] font-semibold leading-[1.1] text-forest md:text-5xl">
               Cura sin miedo a arruinar la pieza.
             </h1>
-            <p className="mt-3 max-w-xl text-base leading-relaxed text-cocoa/65">
-              Sal de cura, moho, temperatura, tiempo — todo lo que necesites para curar tu
-              pieza sin riesgos. La primera pregunta va por cuenta de la casa.
+            <p className="mt-2 text-base text-cocoa/60">
+              Pregúntale al maestro. La primera va por cuenta de la casa.
             </p>
 
             <div className="mt-8 rounded-2xl border border-cocoa/10 bg-cream-white p-4 shadow-raised md:p-6">
@@ -82,7 +84,7 @@ export function AssistantHero(): ReactNode {
                     canSendImages={!status.areImagesExhausted}
                   />
 
-                  {isReady && quota.questionsUsed > 0 ? (
+                  {isKnown && quota.questionsUsed > 0 ? (
                     <p className="mt-3 text-xs text-cocoa/45">
                       Te quedan {status.questionsLeft} preguntas y {status.imagesLeft}{' '}
                       fotos este mes.

@@ -11,6 +11,15 @@ export interface UsageQuotaController {
   readonly status: QuotaStatus;
   /** `false` hasta que el servidor contesta, para no pintar el muro de más. */
   readonly isReady: boolean;
+  /**
+   * `true` solo si de verdad SABEMOS cuál es el cupo.
+   *
+   * No es lo mismo "te quedan cero preguntas" que "no pude preguntar cuántas
+   * te quedan". Si se confunden, una caída de red le enseña el muro de pago a
+   * alguien que acaba de llegar — que es exactamente lo que pasaba antes de
+   * separar estas dos cosas.
+   */
+  readonly isKnown: boolean;
 }
 
 /**
@@ -22,6 +31,7 @@ export interface UsageQuotaController {
 export function useUsageQuota(): UsageQuotaController {
   const [quota, setQuota] = useState<QuotaSnapshot>(EMPTY_QUOTA);
   const [isReady, setIsReady] = useState(false);
+  const [isKnown, setIsKnown] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -32,6 +42,7 @@ export function useUsageQuota(): UsageQuotaController {
       }
       if (snapshot !== null) {
         setQuota(snapshot);
+        setIsKnown(true);
       }
       setIsReady(true);
     });
@@ -39,6 +50,7 @@ export function useUsageQuota(): UsageQuotaController {
     const unsubscribe = subscribeToQuota((snapshot) => {
       if (isMounted) {
         setQuota(snapshot);
+        setIsKnown(true);
       }
     });
 
@@ -48,5 +60,5 @@ export function useUsageQuota(): UsageQuotaController {
     };
   }, []);
 
-  return { quota, status: quotaStatus(quota), isReady };
+  return { quota, status: quotaStatus(quota), isReady, isKnown };
 }
