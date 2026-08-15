@@ -1,24 +1,46 @@
-import { type Plan } from './plan.types';
+import { type BillingCycle, type Plan, type PlanPrice } from './plan.types';
 
 /**
- * Precios PROPUESTOS, en pesos colombianos y ajustables.
+ * DOS planes y nada más: el gratis y el de pago (2026-08-14).
  *
- * La unidad ya no es la receta sino la PREGUNTA y la IMAGEN (D15). El plan
- * Aprendiz da la primera pregunta sin pedir nada; el resto del cupo se abre al
- * dejar nombre, correo y WhatsApp.
+ * El de pago se cobra al mes o al año — es el mismo plan, con el mismo cupo,
+ * y el año solo cambia el precio. Antes eran tres tarjetas y la del anual
+ * competía con la del mensual en vez de complementarla.
  *
- * Cuentas detrás de los cupos (ver "Tope de gasto" en ESTADO.md): una pregunta
- * de texto cuesta ~0,0055 USD. 200 preguntas ≈ 1,10 USD contra ~7,50 USD de
- * ingreso mensual. Las imágenes van mucho más cortas porque cuestan bastante
- * más que el texto. Si el precio de Gemini se duplica el 1/1/2027, estos cupos
- * hay que revisarlos.
+ * Los cupos tienen que coincidir con `charcu.plan_quotas`: la pantalla promete
+ * y la base cumple. Cuentas detrás de los números en ESTADO.md.
  */
+
+const MONTHLY_COP = 29900;
+const YEARLY_COP = 239000;
+
+/** El año sale por 8 mensualidades: se regalan 4 meses, un 33%. */
+const YEARLY_PER_MONTH_COP = Math.round(YEARLY_COP / 12);
+const YEARLY_SAVING_PERCENT = Math.round((1 - YEARLY_PER_MONTH_COP / MONTHLY_COP) * 100);
+
+export const proPrices: readonly PlanPrice[] = [
+  {
+    cycle: 'mensual',
+    priceCop: MONTHLY_COP,
+    perMonthCop: MONTHLY_COP,
+    billingId: 'mensual',
+    note: 'Cancelas cuando quieras, desde la app.',
+    savingPercent: 0,
+  },
+  {
+    cycle: 'anual',
+    priceCop: YEARLY_COP,
+    perMonthCop: YEARLY_PER_MONTH_COP,
+    billingId: 'anual',
+    note: 'Un solo cobro al año. Precio congelado por 12 meses.',
+    savingPercent: YEARLY_SAVING_PERCENT,
+  },
+];
+
 export const plans: readonly Plan[] = [
   {
     id: 'aprendiz',
     name: 'Aprendiz',
-    priceCop: 0,
-    billing: 'gratis',
     quota: { questionsPerMonth: 8, imagesPerMonth: 2 },
     pitch: 'Para probar el asistente con una duda de verdad.',
     features: [
@@ -29,14 +51,13 @@ export const plans: readonly Plan[] = [
       'Dos videos de introducción de los cursos',
     ],
     ctaLabel: 'Preguntar gratis',
+    prices: [],
     note: 'Sin tarjeta. En serio.',
     isHighlighted: false,
   },
   {
-    id: 'mensual',
+    id: 'pro',
     name: 'El Charcu Pro',
-    priceCop: 29900,
-    billing: 'mensual',
     quota: { questionsPerMonth: 200, imagesPerMonth: 30 },
     pitch: 'Para el que ya cura seguido y no quiere perder una pieza más.',
     features: [
@@ -48,27 +69,19 @@ export const plans: readonly Plan[] = [
       'Tu historial guardado durante todo el curado',
     ],
     ctaLabel: 'Suscribirme',
-    note: 'Cancelas cuando quieras, desde la app.',
+    prices: proPrices,
+    note: '',
     isHighlighted: true,
   },
-  {
-    id: 'anual',
-    name: 'El Charcu Pro anual',
-    priceCop: 239000,
-    billing: 'anual',
-    quota: { questionsPerMonth: 300, imagesPerMonth: 50 },
-    pitch: 'Un curado serio toma meses. Este plan también.',
-    features: [
-      '300 preguntas y 50 fotos cada mes, todo el año',
-      'Todo lo del plan El Charcu Pro',
-      'Dos meses gratis frente al mensual',
-      'Precio congelado por todo el año',
-    ],
-    ctaLabel: 'Pagar el año',
-    note: 'Equivale a $ 19.917 al mes.',
-    isHighlighted: false,
-  },
 ];
+
+export const freePlan = plans[0] as Plan;
+export const proPlan = plans[1] as Plan;
+
+/** El precio del plan para el ciclo elegido. `null` si el plan es gratis. */
+export function priceFor(plan: Plan, cycle: BillingCycle): PlanPrice | null {
+  return plan.prices.find((price) => price.cycle === cycle) ?? null;
+}
 
 /** Compra por una sola vez, para quien no quiere suscripción. */
 export const oneTimeCourseCop = 89000;
