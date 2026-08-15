@@ -84,25 +84,25 @@ export function ChatComposer({
 
   return (
     <form onSubmit={handleSubmit} className="mt-6">
-      <div className="rounded-3xl border border-cream/20 bg-cream/5 p-2 transition-colors focus-within:border-cream/40">
+      <div className="rounded-3xl border border-cocoa/15 bg-cream p-2 transition-colors focus-within:border-terracota focus-within:shadow-surface">
         {file === null ? null : (
-          <div className="mb-2 flex items-center justify-between gap-3 rounded-2xl bg-cream/10 px-4 py-2.5 text-sm text-cream/80">
+          <div className="mb-2 flex items-center justify-between gap-3 rounded-2xl bg-cream-white px-4 py-2.5 text-sm text-cocoa/75">
             <span className="truncate">{file.name}</span>
             <button
               type="button"
               onClick={clearFile}
               aria-label="Quitar la foto"
-              className="shrink-0 rounded-full px-2 text-lg leading-none text-cream/50 transition-colors hover:text-cream"
+              className="shrink-0 rounded-full px-2 text-lg leading-none text-cocoa/40 transition-colors hover:text-cocoa"
             >
               ×
             </button>
           </div>
         )}
 
-        <div className="flex items-end gap-2">
+        <div className="flex items-center gap-2">
           {canSendImages ? (
             <label
-              className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-cream/25 text-xl leading-none text-cream/70 transition-colors focus-within:ring-2 focus-within:ring-terracota hover:border-cream/50 hover:text-cream"
+              className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-full border border-cocoa/25 text-xl leading-none text-cocoa/70 transition-colors focus-within:ring-2 focus-within:ring-terracota hover:border-terracota hover:bg-cream-white hover:text-terracota"
               title="Adjuntar una foto"
             >
               <span aria-hidden>+</span>
@@ -120,7 +120,7 @@ export function ChatComposer({
           ) : (
             <span
               title="Se acabaron tus fotos del mes"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-cream/10 text-xl leading-none text-cream/20"
+              className="border-cocoa/12 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-xl leading-none text-cocoa/25"
             >
               <span aria-hidden>+</span>
               <span className="sr-only">Se acabaron tus fotos del mes</span>
@@ -135,8 +135,8 @@ export function ChatComposer({
             }}
             onKeyDown={handleKeyDown}
             rows={1}
-            placeholder="Pregúntale al maestro…"
-            className="max-h-[200px] flex-1 resize-none self-center bg-transparent px-2 py-2.5 text-sm leading-relaxed text-cream placeholder:text-cream/35 focus:outline-none"
+            placeholder="Escribe tu duda…"
+            className="max-h-[200px] flex-1 resize-none bg-transparent px-1 py-2.5 text-base leading-relaxed text-cocoa placeholder:text-cocoa/35 focus:outline-none"
           />
 
           <button
@@ -146,8 +146,8 @@ export function ChatComposer({
             className={cn(
               'flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota',
               isThinking || isEmpty
-                ? 'bg-cream/15 text-cream/30'
-                : 'bg-terracota text-cream hover:bg-terracota-dark',
+                ? 'bg-cocoa/10 text-cocoa/35'
+                : 'bg-terracota text-cream-white shadow-surface hover:bg-terracota-dark active:scale-[0.97]',
             )}
           >
             <span aria-hidden className="text-lg leading-none">
@@ -157,7 +157,7 @@ export function ChatComposer({
         </div>
       </div>
 
-      <p className="mt-2 px-2 text-[11px] text-cream/35">
+      <p className="mt-2 px-2 text-xs text-cocoa/40">
         Enter envía · Shift + Enter hace salto de línea
       </p>
     </form>

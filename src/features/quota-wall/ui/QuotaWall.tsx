@@ -28,16 +28,16 @@ export function QuotaWall({ questionsUsed, questionsLimit }: QuotaWallProps): Re
   }, [questionsUsed, questionsLimit]);
 
   return (
-    <div className="rounded-2xl border border-cream/15 bg-forest-dark/40 p-6 md:p-8">
-      <p className="text-xs uppercase tracking-eyebrow text-sage">
+    <div>
+      <p className="text-sm font-medium text-terracota-dark">
         Se acabaron tus preguntas del mes
       </p>
 
-      <h2 className="mt-4 font-serif text-2xl font-semibold leading-tight text-cream md:text-3xl">
+      <h2 className="mt-3 font-serif text-2xl font-semibold leading-tight text-forest md:text-3xl">
         Salva tu próximo kilo de carne.
       </h2>
 
-      <p className="mt-4 text-sm leading-relaxed text-cream/75">
+      <p className="mt-3 text-base leading-relaxed text-cocoa/70">
         Ya usaste tus {questionsLimit} preguntas gratis de este mes sin poner un peso. Con
         lo que vale una pieza echada a perder, el plan se paga solo — y el cupo vuelve a
         cero el mes que viene, pagues o no.
@@ -45,7 +45,7 @@ export function QuotaWall({ questionsUsed, questionsLimit }: QuotaWallProps): Re
 
       <QuotaWallPlans />
 
-      <p className="mt-6 text-xs leading-relaxed text-cream/45">
+      <p className="mt-6 text-xs leading-relaxed text-cocoa/45">
         Pagas en pesos colombianos con Nequi, PSE o tarjeta. Nada en dólares.
       </p>
     </div>

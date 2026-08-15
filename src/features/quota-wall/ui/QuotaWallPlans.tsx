@@ -42,10 +42,9 @@ export function QuotaWallPlans(): ReactNode {
         cycle={cycle}
         onChange={setCycle}
         savingPercent={yearly?.savingPercent ?? 0}
-        onDark
       />
 
-      <article className="mt-6 rounded-xl border border-terracota bg-cream p-6 text-cocoa">
+      <article className="mt-6 rounded-2xl border border-cocoa/10 bg-cream p-6 text-cocoa">
         <h3 className="font-serif text-xl font-semibold">{proPlan.name}</h3>
 
         <p className="mt-2 flex items-baseline gap-1">

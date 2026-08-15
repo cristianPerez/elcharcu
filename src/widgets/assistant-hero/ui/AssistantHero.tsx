@@ -8,11 +8,15 @@ import { QuotaWall } from '@/features/quota-wall';
 
 import { QUESTIONS_BEFORE_LEAD, useUsageQuota } from '@/entities/usage-quota';
 
-import { Container, Eyebrow } from '@/shared/ui';
+import { Container } from '@/shared/ui';
 
 /**
  * Asistente en la portada: usable sin registro, sin onboarding previo.
- * El asistente pregunta lo que necesite saber.
+ *
+ * La conversación vive en una tarjeta blanca sobre fondo crema. Ese contraste
+ * es lo que dice "aquí se trabaja" sin necesidad de un letrero: antes todo era
+ * el mismo verde y la caja de escribir —lo único que hay que hacer— era lo que
+ * menos se veía.
  *
  * Dos muros, en este orden:
  *   1. Tras la primera pregunta, el muro blando de captura (9c).
@@ -52,19 +56,18 @@ export function AssistantHero(): ReactNode {
 
   return (
     <>
-      <section className="bg-grain bg-forest py-12 text-cream md:py-16">
+      <section className="bg-cream py-10 md:py-16">
         <Container>
           <div className="mx-auto max-w-3xl">
-            <Eyebrow className="text-sage">Pregúntale al maestro</Eyebrow>
-            <h1 className="mt-4 font-serif text-3xl font-semibold leading-tight md:text-4xl">
-              Asistente de charcutería artesanal.
+            <h1 className="font-serif text-[32px] font-semibold leading-[1.1] text-forest md:text-5xl">
+              Cura sin miedo a arruinar la pieza.
             </h1>
-            <p className="mt-3 text-sm leading-relaxed text-cream/75">
+            <p className="mt-3 max-w-xl text-base leading-relaxed text-cocoa/65">
               Sal de cura, moho, temperatura, tiempo — todo lo que necesites para curar tu
-              pieza sin riesgos.
+              pieza sin riesgos. La primera pregunta va por cuenta de la casa.
             </p>
 
-            <div className="mt-10">
+            <div className="mt-8 rounded-2xl border border-cocoa/10 bg-cream-white p-4 shadow-raised md:p-6">
               {isWalled ? (
                 <QuotaWall
                   questionsUsed={quota.questionsUsed}
@@ -80,7 +83,7 @@ export function AssistantHero(): ReactNode {
                   />
 
                   {isReady && quota.questionsUsed > 0 ? (
-                    <p className="mt-4 text-xs text-cream/40">
+                    <p className="mt-3 text-xs text-cocoa/45">
                       Te quedan {status.questionsLeft} preguntas y {status.imagesLeft}{' '}
                       fotos este mes.
                     </p>
