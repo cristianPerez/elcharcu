@@ -2,6 +2,8 @@
 
 import { useState, type FormEvent, type ReactNode } from 'react';
 
+import { ANALYTICS_EVENTS, track } from '@/shared/lib';
+
 import { markLeadCaptured } from '../lib/leadFlag';
 import { submitLead } from '../lib/submitLead';
 import type { LeadCaptureState } from '../model/types';
@@ -46,6 +48,10 @@ export function LeadCaptureModal({
     if (result.ok) {
       setState({ status: 'success' });
       markLeadCaptured();
+      track(ANALYTICS_EVENTS.leadCaptured, {
+        // Sin datos personales: solo si dejó WhatsApp, que es el canal de venta.
+        has_whatsapp: whatsapp.trim() !== '',
+      });
       onSuccess();
     } else {
       setState({

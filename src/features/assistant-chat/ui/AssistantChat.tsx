@@ -2,6 +2,8 @@
 
 import { type ReactNode } from 'react';
 
+import { ANALYTICS_EVENTS, track } from '@/shared/lib';
+
 import { useAssistantChat, type AssistantChatParams } from '../model/useAssistantChat';
 
 import { ChatComposer } from './ChatComposer';
@@ -70,7 +72,14 @@ export function AssistantChat({
         esconde— pero cuatro líneas de gris pesaban más que la caja de escribir,
         que es lo único que el visitante tiene que hacer aquí.
       */}
-      <details className="group mt-4">
+      <details
+        className="group mt-4"
+        onToggle={(event) => {
+          if (event.currentTarget.open) {
+            track(ANALYTICS_EVENTS.assistantSafetyOpened, {});
+          }
+        }}
+      >
         <summary className="cursor-pointer list-none text-xs text-cocoa/45 transition-colors hover:text-cocoa/70">
           Cómo funciona la seguridad de este asistente
           <span

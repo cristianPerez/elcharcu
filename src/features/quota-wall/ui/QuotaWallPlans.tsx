@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 
 import {
   BillingToggle,
+  DEFAULT_BILLING_CYCLE,
   formatUsd,
   priceFor,
   proPlan,
@@ -28,7 +29,7 @@ function whatsappHref(price: PlanPrice): string {
 }
 
 export function QuotaWallPlans(): ReactNode {
-  const [cycle, setCycle] = useState<BillingCycle>('mensual');
+  const [cycle, setCycle] = useState<BillingCycle>(DEFAULT_BILLING_CYCLE);
   const price = priceFor(proPlan, cycle);
   const yearly = priceFor(proPlan, 'anual');
 

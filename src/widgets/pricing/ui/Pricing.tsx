@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 
 import {
   BillingToggle,
+  DEFAULT_BILLING_CYCLE,
   PlanCard,
   formatCop,
   oneTimeCourseCop,
@@ -18,7 +19,7 @@ import { Container, Eyebrow } from '@/shared/ui';
 
 /** Dos planes —gratis y de pago— y un toggle para elegir mes o año. */
 export function Pricing(): ReactNode {
-  const [cycle, setCycle] = useState<BillingCycle>('mensual');
+  const [cycle, setCycle] = useState<BillingCycle>(DEFAULT_BILLING_CYCLE);
   const yearly = priceFor(proPlan, 'anual');
 
   return (
@@ -45,7 +46,7 @@ export function Pricing(): ReactNode {
           />
         </div>
 
-        <div className="mt-10 grid items-start gap-6 md:max-w-3xl md:grid-cols-2">
+        <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
           {plans.map((plan) => (
             <PlanCard key={plan.id} plan={plan} cycle={cycle} href={appRoutes.start} />
           ))}

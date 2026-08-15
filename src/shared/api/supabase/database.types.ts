@@ -143,6 +143,39 @@ export type Database = {
         };
         Relationships: [];
       };
+      onboarding_answers: {
+        Row: {
+          country: string | null;
+          created_at: string;
+          id: string;
+          level: string | null;
+          product: string | null;
+          updated_at: string;
+          user_id: string | null;
+          visitor_id: string;
+        };
+        Insert: {
+          country?: string | null;
+          created_at?: string;
+          id?: string;
+          level?: string | null;
+          product?: string | null;
+          updated_at?: string;
+          user_id?: string | null;
+          visitor_id: string;
+        };
+        Update: {
+          country?: string | null;
+          created_at?: string;
+          id?: string;
+          level?: string | null;
+          product?: string | null;
+          updated_at?: string;
+          user_id?: string | null;
+          visitor_id?: string;
+        };
+        Relationships: [];
+      };
       plan_quotas: {
         Row: {
           images_per_month: number;
@@ -383,6 +416,10 @@ export type Database = {
       current_period_key: { Args: never; Returns: string };
       effective_plan: { Args: { p_user_id: string }; Returns: string };
       has_active_subscription: { Args: { p_user_id: string }; Returns: boolean };
+      link_onboarding_to_user: {
+        Args: { p_user_id: string; p_visitor_id: string };
+        Returns: undefined;
+      };
       link_visitor_to_user: {
         Args: { p_user_id: string; p_visitor_id: string };
         Returns: undefined;
@@ -408,6 +445,16 @@ export type Database = {
       };
       refund_quota: {
         Args: { p_images?: number; p_user_id: string; p_visitor_id: string };
+        Returns: undefined;
+      };
+      save_onboarding: {
+        Args: {
+          p_country: string;
+          p_level: string;
+          p_product: string;
+          p_user_id: string;
+          p_visitor_id: string;
+        };
         Returns: undefined;
       };
       today_ai_spend: { Args: never; Returns: number };

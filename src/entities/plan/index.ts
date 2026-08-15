@@ -1,9 +1,10 @@
 export {
   plans,
-  proPrices,
   freePlan,
   proPlan,
+  maestroPlan,
   priceFor,
+  DEFAULT_BILLING_CYCLE,
   oneTimeCourseCop,
 } from './model/plans';
 export type {

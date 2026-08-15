@@ -1,4 +1,4 @@
-export type PlanId = 'aprendiz' | 'pro';
+export type PlanId = 'aprendiz' | 'pro' | 'maestro';
 
 /** Cada cuánto se cobra el plan de pago. */
 export type BillingCycle = 'mensual' | 'anual';
