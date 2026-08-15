@@ -1,4 +1,5 @@
 import biltong from '../recipes/biltong.json';
+import bondiolaCocidaBajoSodio from '../recipes/bondiola-cocida-bajo-sodio.json';
 import bresaola from '../recipes/bresaola.json';
 import bundnerfleisch from '../recipes/bundnerfleisch.json';
 import cecinaDeLeon from '../recipes/cecina-de-leon.json';
@@ -20,6 +21,7 @@ import hamburguesaCerdoEuropea from '../recipes/hamburguesa-cerdo-europea.json';
 import jamonAhumadoPicante from '../recipes/jamon-ahumado-picante.json';
 import jamonPiernaHorneado from '../recipes/jamon-pierna-horneado.json';
 import jamonSelvaNegra from '../recipes/jamon-selva-negra.json';
+import kielbasaBajoSodio from '../recipes/kielbasa-bajo-sodio.json';
 import kielbasaDePollo from '../recipes/kielbasa-de-pollo.json';
 import linguicaCalabresa from '../recipes/linguica-calabresa.json';
 import linguicaPortuguesa from '../recipes/linguica-portuguesa.json';
@@ -88,6 +90,8 @@ const recipes: readonly Recipe[] = [
   mortadelaDePolloCasera,
   jamonPiernaHorneado,
   charquiDeRes,
+  kielbasaBajoSodio,
+  bondiolaCocidaBajoSodio,
 ];
 
 export function getRecipes(): readonly Recipe[] {

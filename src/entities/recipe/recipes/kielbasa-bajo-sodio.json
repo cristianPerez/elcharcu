@@ -1,0 +1,151 @@
+{
+  "slug": "kielbasa-bajo-sodio",
+  "name": "Kielbasa Cocida de Bajo Sodio",
+  "description": "La kielbasa reformulada para dietas de sodio restringido — sin sal añadida, sin sal de cura y sin apio: una salchicha fresca cocida que se conserva por frío, no por curado.",
+  "image": "/recipes/kielbasa-bajo-sodio.jpg",
+  "tags": ["Polonia", "Fresco", "Bajo sodio"],
+  "eyebrow": "Receta · Formulaciones especiales",
+  "subtitle": "Kielbasa sin sal añadida ni sal de cura: producto cocido, no curado.",
+  "intro": "Esta no es una kielbasa curada con menos sal: es otra cosa, y conviene decirlo desde el principio. Al retirar la sal y la sal de cura #1 desaparecen las dos barreras que hacen segura una salchicha ahumada en frío o semicurada, así que la formulación se convierte en un embutido fresco que se cuece por completo y se conserva únicamente por refrigeración o congelación. A cambio, el sodio baja de unos 850 mg por 100 g a los ~60 mg que la propia carne de cerdo ya trae. Todo el trabajo de sabor lo hacen las especias, subidas casi al doble, más ajo fresco, mejorana y un toque ácido que engaña al paladar y devuelve parte de la sensación salada perdida.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg de masa" },
+    { "label": "Tipo", "value": "Embutido fresco cocido (NO curado)" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Sodio estimado", "value": "≈ 60 mg / 100 g cocido" },
+    { "label": "Reposo", "value": "12 h en frío (0–4 °C)" },
+    { "label": "Cocción", "value": "Hasta 72 °C internos" },
+    { "label": "Conservación", "value": "0–4 °C, 3 días · −18 °C, 2 meses" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–36 mm" }
+  ],
+  "details": [
+    {
+      "title": "Objetivo",
+      "description": "Reducir el sodio al mínimo técnicamente posible — solo el que aporta la carne — sin inventar un método de curado que no existe sin sal."
+    },
+    {
+      "title": "Textura",
+      "description": "Más quebradiza y granulosa que una kielbasa clásica: sin sal no hay extracción de miosina, así que no hay ligazón real. La fécula de papa y el picado fino compensan en parte."
+    },
+    {
+      "title": "Sabor",
+      "description": "Aromático e intenso — ajo, mejorana, coriandro y paprika al doble de dosis — con un fondo ácido que sustituye la percepción salada."
+    },
+    {
+      "title": "Diferencia con la kielbasa tradicional",
+      "description": "La tradicional lleva 18 g de sal y 2,5 g de Prague Powder #1 por kilo: color rosado, sabor curado, ahumado en frío seguro y vida útil larga. Esta no tiene nada de eso — es gris al corte, sabe a carne especiada y caduca como una hamburguesa fresca."
+    }
+  ],
+  "quote": "Sin sal no hay curado. Se puede hacer una kielbasa deliciosa con casi nada de sodio, pero hay que llamarla por su nombre: es un embutido fresco cocido.",
+  "ingredientsNote": "Sin sal y sin Prague Powder #1 esta masa NO está curada: no debe ahumarse en frío, ni fermentarse, ni secarse al aire, ni mantenerse entre 10 y 50 °C más de lo imprescindible. Se cuece hasta 72 °C internos y se refrigera o congela de inmediato. El apio en polvo queda excluido a propósito: aportaría nitrato y sodio, y no cumple el objetivo.",
+  "ingredients": [
+    { "name": "Carne de cerdo magra (paleta)", "amount": "800 g", "pct": "80%" },
+    { "name": "Tocino / grasa dorsal de cerdo", "amount": "200 g", "pct": "20%" },
+    { "name": "Sal", "amount": "0 g", "pct": "0%" },
+    { "name": "Sal de cura #1 (Prague Powder #1)", "amount": "0 g", "pct": "0%" },
+    { "name": "Agua helada", "amount": "60 g", "pct": "6%" },
+    { "name": "Fécula de papa (ligante sin sodio)", "amount": "20 g", "pct": "2%" },
+    { "name": "Ajo fresco machacado", "amount": "8 g", "pct": "0.8%" },
+    { "name": "Ajo en polvo (puro, sin sal)", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Vinagre de manzana", "amount": "10 g", "pct": "1%" },
+    { "name": "Azúcar", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Pimienta negra molida", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Paprika dulce", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Coriandro molido", "amount": "2 g", "pct": "0.2%" },
+    { "name": "Mostaza en polvo", "amount": "1.5 g", "pct": "0.15%" },
+    { "name": "Chile quebrado", "amount": "1.5 g", "pct": "0.15%" },
+    { "name": "Mejorana seca", "amount": "1 g", "pct": "0.1%" },
+    { "name": "Nuez moscada", "amount": "0.4 g", "pct": "0.04%" }
+  ],
+  "proportionNote": "80% magro y 20% grasa, como una kielbasa clásica: la grasa es aún más importante aquí, porque sin sal la masa no liga y es la grasa la que sostiene la jugosidad. Las especias van al doble de la fórmula tradicional (pimienta 1,2 → 2,5 g; ajo 1,5 → 3 g; paprika 1,2 → 2,5 g; coriandro 1 → 2 g), y el azúcar se mantiene en 2,5 g porque no aporta sodio y redondea el conjunto.",
+  "charcuteroNote": "Sodio estimado por kilo de masa: carne magra 800 g ≈ 456 mg (≈57 mg/100 g), tocino 200 g ≈ 60 mg, fécula y especias ≈ 5 mg, agua ≈ 10 mg. TOTAL ≈ 530 mg de sodio por kg de masa cruda. Con una merma de cocción del ~12% (≈880 g de producto terminado): ≈ 60 mg de sodio por 100 g. La misma kielbasa tradicional aporta ≈ 8.500 mg/kg (sal 18 g = 7.074 mg Na; Prague #1 2,5 g = 2,34 g de NaCl ≈ 920 mg Na; carne ≈ 516 mg), es decir ≈ 850 mg/100 g. La reducción es de aproximadamente el 94%. Nota: los valores de sodio de la carne son de tabla de composición y varían por corte y proveedor; para una etiqueta nutricional real hace falta un análisis de laboratorio del producto terminado (dato necesario para validar).",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Enfría todo — carne, grasa, molino y bol — hasta rozar la congelación. Sin sal, la emulsión es frágil y el frío es la única ayuda que tienes."
+    },
+    {
+      "n": "02",
+      "text": "Muele el magro con disco de 4–6 mm y la grasa con disco de 8 mm, por separado."
+    },
+    {
+      "n": "03",
+      "text": "Mezcla las especias secas con la fécula de papa, y aparte disuelve el azúcar y el vinagre en el agua helada."
+    },
+    {
+      "n": "04",
+      "text": "Amasa la carne con las especias y el ajo fresco, añadiendo el agua en dos veces, hasta que la masa se vea homogénea y ligeramente pegajosa. No esperes el hilo pegajoso de una masa salada: no va a aparecer."
+    },
+    {
+      "n": "05",
+      "text": "Mantén la masa por debajo de 4 °C durante todo el amasado; si se calienta, para y devuélvela al frío."
+    },
+    {
+      "n": "06",
+      "text": "Fríe una cucharada de prueba y ajusta especias — sin sal, el punto de sazón se juzga solo con la muestra cocida."
+    },
+    {
+      "n": "07",
+      "text": "Embute en tripa natural de cerdo de 32–36 mm y forma las herraduras clásicas, sin apretar en exceso."
+    },
+    {
+      "n": "08",
+      "text": "Reposa un máximo de 12 horas en refrigeración a 0–4 °C. Sin sal de cura, no alargues este reposo ni lo dejes a temperatura ambiente."
+    },
+    {
+      "n": "09",
+      "text": "Cuece en agua a 78–80 °C (o al horno con vapor) hasta alcanzar 72 °C en el centro de la pieza, medidos con termómetro."
+    },
+    {
+      "n": "10",
+      "text": "Si quieres humo, hazlo SOLO después de la cocción y en caliente: guayaba con una madera suave, a más de 90 °C de cámara y no más de 20–30 minutos, para dar aroma sin bajar la temperatura a la zona de riesgo."
+    },
+    {
+      "n": "11",
+      "text": "Enfría en baño de agua con hielo hasta bajar por debajo de 10 °C en menos de una hora, seca y refrigera de inmediato a 0–4 °C."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Sin Prague Powder #1, sin ahumado en frío",
+      "description": "El nitrito es la barrera que hace seguro mantener una masa cárnica horas entre 20 y 50 °C. Sin él, cualquier ahumado en frío o a baja temperatura es un riesgo de Clostridium botulinum. Cuece primero, ahúma después y en caliente."
+    },
+    {
+      "title": "La acidez suple parte de la sal",
+      "description": "El vinagre, el ajo fresco y la mostaza aumentan la percepción de sazón. No bajan el pH lo suficiente como para ser una barrera de conservación — solo son sabor."
+    },
+    {
+      "title": "Nada de cloruro de potasio",
+      "description": "Los sustitutos de sal a base de KCl aportan potasio, que muchas dietas renales restringen tanto o más que el sodio. No se usan aquí sin indicación médica."
+    },
+    {
+      "title": "Espera una textura distinta",
+      "description": "La sal extrae miosina y liga la masa. Sin ella el corte es granuloso, más cerca de una salchicha de desayuno que de una kielbasa. Es el precio real del bajo sodio, no un defecto de la receta."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Pochada a 78–80 °C",
+      "description": "El método principal y el más seguro: cocción suave hasta 72 °C internos, controlada con termómetro."
+    },
+    {
+      "title": "A la sartén o parrilla",
+      "description": "Ya cocida y fría, solo dorar unos minutos para reforzar el sabor tostado antes de servir."
+    },
+    {
+      "title": "Ahumado en caliente, al final",
+      "description": "Guayaba y madera suave, sobre 90 °C de cámara, 20–30 minutos después de la cocción — aroma sin ventana de riesgo."
+    }
+  ],
+  "recommendations": [
+    "Este producto NO está curado: no lo seques, no lo fermentes y no lo ahúmes en frío.",
+    "Cocina siempre hasta 72 °C internos, verificados con termómetro.",
+    "Enfría rápido: por debajo de 10 °C en menos de una hora tras la cocción.",
+    "Refrigerado a 0–4 °C consúmelo en un máximo de 3 días; envasado al vacío y congelado a −18 °C, hasta 2 meses.",
+    "Si la masa cruda se queda a temperatura ambiente más de 2 horas, descártala.",
+    "Datos necesarios para validar cualquier afirmación de vida útil más larga: aw y pH medidos del producto terminado y análisis microbiológico. No los estimes.",
+    "Si el destinatario sigue una dieta médica de sodio restringido, revisa la formulación con su nutricionista o médico antes de producirla."
+  ],
+  "resultNote": "El resultado: una salchicha gris-rosada al corte, aromática y jugosa, con un sodio de ~60 mg por 100 g frente a los ~850 mg de una kielbasa tradicional — una reducción cercana al 94%. No tiene el color rosado ni el sabor curado de la kielbasa polaca clásica, y no los tendrá: eso lo daba exactamente lo que aquí se ha quitado.",
+  "finalQuote": "Se puede quitar toda la sal de una kielbasa. Lo que no se puede es quitarla y seguir llamándola curada.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
