@@ -1,88 +1,91 @@
 'use client';
 
-import { type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 
-import { formatCop, plans, type Plan } from '@/entities/plan';
+import {
+  BillingToggle,
+  formatCop,
+  priceFor,
+  proPlan,
+  type BillingCycle,
+  type PlanPrice,
+} from '@/entities/plan';
 
 import { site } from '@/shared/config';
-import { ANALYTICS_EVENTS, cn, track } from '@/shared/lib';
+import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
 /**
- * Los planes dentro del muro de cupo, compactos: precio y cupo, nada más.
+ * El plan de pago dentro del muro, con el mismo toggle que la página de precios.
  *
- * ⚠️ Todavía no hay pasarela: cada botón abre WhatsApp con el plan escrito, que
- * es por donde El Charcu ya vende hoy. Cuando entre Mercado Pago se cambia el
- * `href` por el checkout y el evento pasa a llevar `rail: 'mercadopago'`.
+ * ⚠️ Todavía no hay pasarela: el botón abre WhatsApp con el plan escrito, que
+ * es por donde El Charcu ya vende hoy. Cuando entre Hotmart (D17) se cambia el
+ * `href` por el checkout y el evento pasa a llevar `rail: 'hotmart'`.
  */
-function whatsappHref(plan: Plan): string {
-  const message = `Hola El Charcu, quiero el plan ${plan.name} (${formatCop(plan.priceCop)}) del asistente 🥩`;
+function whatsappHref(price: PlanPrice): string {
+  const cycle = price.cycle === 'anual' ? 'anual' : 'mensual';
+  const message = `Hola El Charcu, quiero el plan ${proPlan.name} ${cycle} (${formatCop(price.priceCop)}) del asistente 🥩`;
   return `${site.whatsappUrl.split('?')[0] ?? site.whatsappUrl}?text=${encodeURIComponent(message)}`;
 }
 
-const paidPlans = plans.filter((plan) => plan.priceCop > 0);
-
 export function QuotaWallPlans(): ReactNode {
+  const [cycle, setCycle] = useState<BillingCycle>('mensual');
+  const price = priceFor(proPlan, cycle);
+  const yearly = priceFor(proPlan, 'anual');
+
+  if (price === null) {
+    return null;
+  }
+
   return (
-    <div className="mt-6 grid items-start gap-4 md:grid-cols-2">
-      {paidPlans.map((plan) => (
-        <article
-          key={plan.id}
-          className={cn(
-            'flex flex-col rounded-xl border p-5',
-            plan.isHighlighted
-              ? 'border-terracota bg-cream text-cocoa'
-              : 'border-cream/20 text-cream',
-          )}
+    <div className="mt-6">
+      <BillingToggle
+        cycle={cycle}
+        onChange={setCycle}
+        savingPercent={yearly?.savingPercent ?? 0}
+        onDark
+      />
+
+      <article className="mt-6 rounded-xl border border-terracota bg-cream p-6 text-cocoa">
+        <h3 className="font-serif text-xl font-semibold">{proPlan.name}</h3>
+
+        <p className="mt-2 flex items-baseline gap-1">
+          <span className="font-serif text-4xl font-semibold">
+            {formatCop(price.perMonthCop)}
+          </span>
+          <span className="text-sm text-cocoa/50">/mes</span>
+        </p>
+
+        {price.cycle === 'anual' ? (
+          <p className="mt-1 text-xs text-cocoa/50">
+            Se cobra {formatCop(price.priceCop)} una vez al año
+          </p>
+        ) : null}
+
+        <p className="mt-4 text-sm leading-relaxed text-cocoa/70">
+          {proPlan.quota.questionsPerMonth} preguntas y {proPlan.quota.imagesPerMonth}{' '}
+          fotos cada mes.
+        </p>
+
+        <a
+          href={whatsappHref(price)}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => {
+            track(ANALYTICS_EVENTS.subscriptionStarted, {
+              plan_id: proPlan.id,
+              billing: price.cycle,
+              price_cop: price.priceCop,
+              rail: 'whatsapp',
+              from: 'quota_wall',
+            });
+          }}
+          className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-forest px-6 py-3 text-sm font-medium tracking-wide text-cream transition-colors duration-200 hover:bg-forest-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2"
         >
-          <h3 className="font-serif text-lg font-semibold">{plan.name}</h3>
+          {proPlan.ctaLabel}
+        </a>
 
-          <p className="mt-2 flex items-baseline gap-1">
-            <span className="font-serif text-3xl font-semibold">
-              {formatCop(plan.priceCop)}
-            </span>
-            <span
-              className={cn(
-                'text-xs',
-                plan.isHighlighted ? 'text-cocoa/50' : 'text-cream/50',
-              )}
-            >
-              {plan.billing === 'anual' ? '/año' : '/mes'}
-            </span>
-          </p>
-
-          <p
-            className={cn(
-              'mt-3 flex-1 text-sm leading-relaxed',
-              plan.isHighlighted ? 'text-cocoa/70' : 'text-cream/70',
-            )}
-          >
-            {plan.quota.questionsPerMonth} preguntas y {plan.quota.imagesPerMonth} fotos
-            cada mes.
-          </p>
-
-          <a
-            href={whatsappHref(plan)}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-              track(ANALYTICS_EVENTS.subscriptionStarted, {
-                plan_id: plan.id,
-                price_cop: plan.priceCop,
-                rail: 'whatsapp',
-                from: 'quota_wall',
-              });
-            }}
-            className={cn(
-              'mt-5 inline-flex items-center justify-center rounded-full px-5 py-2.5 text-sm font-medium tracking-wide transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2',
-              plan.isHighlighted
-                ? 'bg-forest text-cream hover:bg-forest-dark'
-                : 'bg-terracota text-cream hover:bg-terracota-dark',
-            )}
-          >
-            {plan.ctaLabel}
-          </a>
-        </article>
-      ))}
+        <p className="mt-3 text-center text-xs text-cocoa/50">{price.note}</p>
+      </article>
     </div>
   );
 }

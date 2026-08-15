@@ -5,28 +5,26 @@ import { type ReactNode } from 'react';
 import { ANALYTICS_EVENTS, cn, track } from '@/shared/lib';
 
 import { formatCop } from '../lib/formatCop';
-import { type Plan, type PlanBilling } from '../model/plan.types';
+import { type BillingCycle, type Plan } from '../model/plan.types';
+import { priceFor } from '../model/plans';
 
 interface PlanCardProps {
   readonly plan: Plan;
+  /** Ciclo elegido en el toggle. El plan gratis lo ignora. */
+  readonly cycle: BillingCycle;
   readonly href: string;
 }
 
-const BILLING_SUFFIX: Record<PlanBilling, string> = {
-  gratis: '',
-  mensual: '/mes',
-  anual: '/año',
-};
-
 /** Tarjeta de plan. Registra `plan_selected` para medir el embudo de pago. */
-export function PlanCard({ plan, href }: PlanCardProps): ReactNode {
+export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
   const { isHighlighted } = plan;
+  const price = priceFor(plan, cycle);
 
   const handleClick = (): void => {
     track(ANALYTICS_EVENTS.planSelected, {
       plan_id: plan.id,
-      billing: plan.billing,
-      price_cop: plan.priceCop,
+      billing: price?.cycle ?? 'gratis',
+      price_cop: price?.priceCop ?? 0,
     });
   };
 
@@ -54,14 +52,26 @@ export function PlanCard({ plan, href }: PlanCardProps): ReactNode {
 
       <p className="mt-6 flex items-baseline gap-1">
         <span className="font-serif text-4xl font-semibold">
-          {plan.priceCop === 0 ? 'Gratis' : formatCop(plan.priceCop)}
+          {price === null ? 'Gratis' : formatCop(price.perMonthCop)}
         </span>
         <span
           className={cn('text-sm', isHighlighted ? 'text-cream/60' : 'text-cocoa/50')}
         >
-          {BILLING_SUFFIX[plan.billing]}
+          {price === null ? '' : '/mes'}
         </span>
       </p>
+
+      {/* En el anual se cobra de una vez: decirlo aquí y no en la letra chica. */}
+      {price !== null && price.cycle === 'anual' ? (
+        <p
+          className={cn(
+            'mt-1 text-xs',
+            isHighlighted ? 'text-cream/55' : 'text-cocoa/50',
+          )}
+        >
+          Se cobra {formatCop(price.priceCop)} una vez al año
+        </p>
+      ) : null}
 
       <p
         className={cn(
@@ -69,8 +79,8 @@ export function PlanCard({ plan, href }: PlanCardProps): ReactNode {
           isHighlighted ? 'bg-cream/10 text-cream/75' : 'bg-forest/5 text-cocoa/65',
         )}
       >
-        {plan.quota.questionsPerMonth} preguntas · {plan.quota.imagesPerMonth} fotos
-        {plan.billing === 'gratis' ? ' al mes' : ' cada mes'}
+        {plan.quota.questionsPerMonth} preguntas · {plan.quota.imagesPerMonth} fotos al
+        mes
       </p>
 
       <ul className="mt-6 flex flex-1 flex-col gap-3">
@@ -105,7 +115,7 @@ export function PlanCard({ plan, href }: PlanCardProps): ReactNode {
           isHighlighted ? 'text-cream/55' : 'text-cocoa/50',
         )}
       >
-        {plan.note}
+        {price?.note ?? plan.note}
       </p>
     </article>
   );

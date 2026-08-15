@@ -1,46 +1,37 @@
 import { type ReactNode } from 'react';
 
-import { curingProductName, isCuringProductId } from '@/entities/curing-profile';
+import { QuotaWallPlans } from '@/features/quota-wall';
+
 import { formatCop, oneTimeCourseCop } from '@/entities/plan';
 
-import { appRoutes } from '@/shared/config';
 import { Container, Eyebrow } from '@/shared/ui';
 
-import { PaywallPlans } from './PaywallPlans';
-
-interface PaywallProps {
-  /** La receta que intentó empezar, si viene en la URL. */
-  readonly attemptedProduct: string | null;
-}
-
 /**
- * El muro. Aparece al empezar la SEGUNDA receta.
- * El tono es de valor, no de escasez: no le quitamos nada, le ofrecemos seguir.
+ * La página de suscripción (`/asistente/suscripcion`).
+ *
+ * Nació como el muro de "segunda receta". Desde D15 la unidad es la pregunta,
+ * así que el texto habla de preguntas y los planes son los mismos que ve todo
+ * el mundo — se reutiliza `QuotaWallPlans` en vez de mantener dos tarjetas de
+ * precio que se desincronizan en cuanto alguien cambia un número.
  */
-export function Paywall({ attemptedProduct }: PaywallProps): ReactNode {
-  const attempted = isCuringProductId(attemptedProduct)
-    ? curingProductName(attemptedProduct).toLowerCase()
-    : null;
-
+export function Paywall(): ReactNode {
   return (
     <Container className="py-14 md:py-20">
       <div className="max-w-2xl">
-        <Eyebrow className="text-sage">Ya usaste tu receta gratis</Eyebrow>
+        <Eyebrow className="text-sage">El Charcu Pro</Eyebrow>
 
         <h1 className="mt-6 font-serif text-4xl font-semibold leading-[1.1] text-cream md:text-5xl">
           Salva tu próximo kilo de carne.
         </h1>
 
         <p className="mt-6 text-base leading-relaxed text-cream/75">
-          {attempted === null
-            ? 'Tu primera receta ya la curaste con el asistente al lado, sin pagar nada.'
-            : `Para abrir tu ${attempted} necesitas la suscripción. Tu primera receta ya la curaste con el asistente al lado, sin pagar nada.`}{' '}
-          De aquí en adelante son recetas ilimitadas — y con lo que vale una pieza echada
-          a perder, el plan se paga solo.
+          El asistente al lado durante todo el curado: la dosis exacta de sal de cura, el
+          moho revisado por foto y la respuesta a la hora en que te asalta la duda. Con lo
+          que vale una pieza echada a perder, el plan se paga solo.
         </p>
-      </div>
 
-      <PaywallPlans />
+        <QuotaWallPlans />
+      </div>
 
       <div className="mt-10 flex flex-col items-start justify-between gap-4 rounded-2xl border border-cream/15 p-6 md:flex-row md:items-center">
         <div>
@@ -61,19 +52,6 @@ export function Paywall({ attemptedProduct }: PaywallProps): ReactNode {
         Pagas en pesos colombianos con Nequi, PSE o tarjeta. Nada en dólares. Cancelas
         cuando quieras, sin llamar a nadie.
       </p>
-
-      <div className="border-cream/12 mt-10 border-t pt-8">
-        <a
-          href={appRoutes.session}
-          className="text-sm text-cream/60 underline underline-offset-4 transition-colors hover:text-cream"
-        >
-          Seguir con la receta que ya tengo abierta
-        </a>
-        <p className="mt-2 text-xs leading-relaxed text-cream/40">
-          Nunca te cerramos una receta empezada. Un curado dura semanas y esa pieza es
-          tuya hasta el final, pagues o no.
-        </p>
-      </div>
     </Container>
   );
 }

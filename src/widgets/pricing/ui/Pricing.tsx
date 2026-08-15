@@ -1,12 +1,26 @@
-import { type ReactNode } from 'react';
+'use client';
 
-import { PlanCard, formatCop, oneTimeCourseCop, plans } from '@/entities/plan';
+import { useState, type ReactNode } from 'react';
+
+import {
+  BillingToggle,
+  PlanCard,
+  formatCop,
+  oneTimeCourseCop,
+  plans,
+  priceFor,
+  proPlan,
+  type BillingCycle,
+} from '@/entities/plan';
 
 import { appRoutes } from '@/shared/config';
 import { Container, Eyebrow } from '@/shared/ui';
 
-/** Precios en pesos, con la regla de la receta gratis al frente. */
+/** Dos planes —gratis y de pago— y un toggle para elegir mes o año. */
 export function Pricing(): ReactNode {
+  const [cycle, setCycle] = useState<BillingCycle>('mensual');
+  const yearly = priceFor(proPlan, 'anual');
+
   return (
     <section id="precios" className="bg-grain bg-forest-dark py-20 text-cream md:py-28">
       <Container>
@@ -22,9 +36,18 @@ export function Pricing(): ReactNode {
           </p>
         </div>
 
-        <div className="mt-14 grid items-start gap-6 md:grid-cols-3">
+        <div className="mt-10">
+          <BillingToggle
+            cycle={cycle}
+            onChange={setCycle}
+            savingPercent={yearly?.savingPercent ?? 0}
+            onDark
+          />
+        </div>
+
+        <div className="mt-10 grid items-start gap-6 md:max-w-3xl md:grid-cols-2">
           {plans.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} href={appRoutes.start} />
+            <PlanCard key={plan.id} plan={plan} cycle={cycle} href={appRoutes.start} />
           ))}
         </div>
 
