@@ -4,7 +4,7 @@ import { type ReactNode } from 'react';
 
 import { ANALYTICS_EVENTS, cn, track } from '@/shared/lib';
 
-import { formatCop } from '../lib/formatCop';
+import { formatUsd } from '../lib/formatUsd';
 import { type BillingCycle, type Plan } from '../model/plan.types';
 import { priceFor } from '../model/plans';
 
@@ -24,7 +24,7 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
     track(ANALYTICS_EVENTS.planSelected, {
       plan_id: plan.id,
       billing: price?.cycle ?? 'gratis',
-      price_cop: price?.priceCop ?? 0,
+      price_usd: price?.priceUsd ?? 0,
     });
   };
 
@@ -52,7 +52,7 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
 
       <p className="mt-6 flex items-baseline gap-1">
         <span className="font-serif text-4xl font-semibold">
-          {price === null ? 'Gratis' : formatCop(price.perMonthCop)}
+          {price === null ? 'Gratis' : formatUsd(price.perMonthUsd)}
         </span>
         <span
           className={cn('text-sm', isHighlighted ? 'text-cream/60' : 'text-cocoa/50')}
@@ -69,7 +69,7 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
             isHighlighted ? 'text-cream/55' : 'text-cocoa/50',
           )}
         >
-          Se cobra {formatCop(price.priceCop)} una vez al año
+          Se cobra {formatUsd(price.priceUsd)} una vez al año
         </p>
       ) : null}
 
@@ -100,10 +100,10 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
         href={href}
         onClick={handleClick}
         className={cn(
-          'mt-8 inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium tracking-wide transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2',
+          'mt-8 inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium tracking-wide transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-[0.97]',
           isHighlighted
             ? 'bg-terracota text-cream hover:bg-terracota-dark'
-            : 'bg-forest text-cream hover:bg-forest-dark',
+            : 'bg-terracota text-cream-white hover:bg-terracota-dark',
         )}
       >
         {plan.ctaLabel}

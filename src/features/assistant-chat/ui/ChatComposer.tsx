@@ -84,7 +84,7 @@ export function ChatComposer({
 
   return (
     <form onSubmit={handleSubmit} className="mt-6">
-      <div className="rounded-3xl border border-cocoa/15 bg-cream p-2 transition-colors focus-within:border-terracota focus-within:shadow-surface">
+      <div className="rounded-3xl border border-cocoa/15 bg-cream p-2 transition-shadow focus-within:ring-2 focus-within:ring-terracota/45">
         {file === null ? null : (
           <div className="mb-2 flex items-center justify-between gap-3 rounded-2xl bg-cream-white px-4 py-2.5 text-sm text-cocoa/75">
             <span className="truncate">{file.name}</span>

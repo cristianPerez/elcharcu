@@ -14,5 +14,6 @@ export type {
   PlanPrice,
 } from './model/plan.types';
 export { formatCop } from './lib/formatCop';
+export { formatUsd } from './lib/formatUsd';
 export { PlanCard } from './ui/PlanCard';
 export { BillingToggle } from './ui/BillingToggle';

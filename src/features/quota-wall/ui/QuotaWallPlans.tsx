@@ -4,7 +4,7 @@ import { useState, type ReactNode } from 'react';
 
 import {
   BillingToggle,
-  formatCop,
+  formatUsd,
   priceFor,
   proPlan,
   type BillingCycle,
@@ -23,7 +23,7 @@ import { ANALYTICS_EVENTS, track } from '@/shared/lib';
  */
 function whatsappHref(price: PlanPrice): string {
   const cycle = price.cycle === 'anual' ? 'anual' : 'mensual';
-  const message = `Hola El Charcu, quiero el plan ${proPlan.name} ${cycle} (${formatCop(price.priceCop)}) del asistente 🥩`;
+  const message = `Hola El Charcu, quiero el plan ${proPlan.name} ${cycle} (${formatUsd(price.priceUsd)}) del asistente 🥩`;
   return `${site.whatsappUrl.split('?')[0] ?? site.whatsappUrl}?text=${encodeURIComponent(message)}`;
 }
 
@@ -49,14 +49,14 @@ export function QuotaWallPlans(): ReactNode {
 
         <p className="mt-2 flex items-baseline gap-1">
           <span className="font-serif text-4xl font-semibold">
-            {formatCop(price.perMonthCop)}
+            {formatUsd(price.perMonthUsd)}
           </span>
           <span className="text-sm text-cocoa/50">/mes</span>
         </p>
 
         {price.cycle === 'anual' ? (
           <p className="mt-1 text-xs text-cocoa/50">
-            Se cobra {formatCop(price.priceCop)} una vez al año
+            Se cobra {formatUsd(price.priceUsd)} una vez al año
           </p>
         ) : null}
 
@@ -73,12 +73,12 @@ export function QuotaWallPlans(): ReactNode {
             track(ANALYTICS_EVENTS.subscriptionStarted, {
               plan_id: proPlan.id,
               billing: price.cycle,
-              price_cop: price.priceCop,
+              price_usd: price.priceUsd,
               rail: 'whatsapp',
               from: 'quota_wall',
             });
           }}
-          className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-forest px-6 py-3 text-sm font-medium tracking-wide text-cream transition-colors duration-200 hover:bg-forest-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2"
+          className="mt-6 inline-flex w-full items-center justify-center rounded-full bg-terracota px-6 py-3 text-sm font-medium tracking-wide text-cream-white shadow-surface transition-colors duration-200 hover:bg-terracota-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-[0.97]"
         >
           {proPlan.ctaLabel}
         </a>

@@ -6,7 +6,7 @@ import { SuscripcionPage } from '@/views/suscripcion';
 export const metadata: Metadata = {
   title: 'Suscripción · El Charcu',
   description:
-    'El asistente al lado durante todo el curado, en pesos colombianos y con métodos locales.',
+    'El asistente al lado durante todo el curado. Pago seguro con tarjeta, PSE o Nequi.',
   robots: { index: false, follow: false },
 };
 
