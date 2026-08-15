@@ -18,6 +18,8 @@ export const ANALYTICS_EVENTS = {
   recipeStarted: 'recipe_started',
   /** El usuario intentó una SEGUNDA receta y chocó con el muro de suscripción. */
   paywallHit: 'paywall_hit',
+  /** Se le acabaron las preguntas gratis del mes y vio el muro de cupo. */
+  quotaWallHit: 'quota_wall_hit',
   /** El usuario pagó después de chocar con el muro. */
   subscriptionStarted: 'subscription_started',
   /** El usuario le preguntó algo al asistente (con o sin foto). */

@@ -13,11 +13,12 @@ export function Pricing(): ReactNode {
         <div className="max-w-2xl">
           <Eyebrow className="text-sage">Planes</Eyebrow>
           <h2 className="mt-6 font-serif text-3xl font-semibold leading-tight md:text-5xl">
-            La primera receta va por cuenta de la casa.
+            La primera pregunta va por cuenta de la casa.
           </h2>
           <p className="mt-6 text-base leading-relaxed text-cream/70">
-            Curas una pieza completa con el asistente al lado, de principio a fin, sin
-            poner tarjeta. Si te sirvió, sigues. Si no, no pagaste nada.
+            Preguntas sin registrarte y sin poner tarjeta. Los planes se miden en
+            preguntas y fotos al mes: pagas por la ayuda que usas, no por meses en los que
+            no curaste nada.
           </p>
         </div>
 

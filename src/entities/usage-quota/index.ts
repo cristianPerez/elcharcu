@@ -1,4 +1,4 @@
-export type { UsageQuota, FreeTierLimits } from './model/types';
+export type { UsageQuota, FreeTierLimits, QuotaStatus } from './model/types';
 export { FREE_TIER_LIMITS } from './model/types';
 export {
   loadQuota,
@@ -6,4 +6,8 @@ export {
   incrementQuestions,
   incrementImages,
   clearQuota,
+  quotaStatus,
+  subscribeToQuota,
 } from './lib/quotaStorage';
+export { useUsageQuota } from './model/useUsageQuota';
+export type { UsageQuotaController } from './model/useUsageQuota';

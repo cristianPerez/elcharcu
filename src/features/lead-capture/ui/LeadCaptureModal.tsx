@@ -2,8 +2,9 @@
 
 import { useState, type FormEvent, type ReactNode } from 'react';
 
-import { loadQuota } from '@/entities/usage-quota';
+import { FREE_TIER_LIMITS, loadQuota } from '@/entities/usage-quota';
 
+import { markLeadCaptured } from '../lib/leadFlag';
 import { submitLead } from '../lib/submitLead';
 import type { LeadCaptureState } from '../model/types';
 
@@ -13,11 +14,11 @@ interface LeadCaptureModalProps {
 
 /**
  * Muro blando de captura: nombre, correo y WhatsApp.
- * 
+ *
  * Aparece tras la primera respuesta del asistente. Es el momento de máximo
  * interés —el usuario acaba de comprobar que el producto funciona— y todavía
  * no le hemos cobrado nada.
- * 
+ *
  * ⚠️ Incluye nota de privacidad (Ley 1581/2012 de Colombia).
  */
 export function LeadCaptureModal({ onSuccess }: LeadCaptureModalProps): ReactNode {
@@ -28,7 +29,7 @@ export function LeadCaptureModal({ onSuccess }: LeadCaptureModalProps): ReactNod
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
-    
+
     if (state.status === 'submitting') {
       return;
     }
@@ -44,8 +45,7 @@ export function LeadCaptureModal({ onSuccess }: LeadCaptureModalProps): ReactNod
 
     if (result.ok) {
       setState({ status: 'success' });
-      // Marcar en localStorage que ya dejó los datos
-      localStorage.setItem('elcharcu:lead-captured', 'true');
+      markLeadCaptured();
       onSuccess();
     } else {
       setState({
@@ -64,11 +64,18 @@ export function LeadCaptureModal({ onSuccess }: LeadCaptureModalProps): ReactNod
           Te gustó, ¿verdad?
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-cream/75">
-          Déjanos tu nombre, correo y WhatsApp para seguir ayudándote con tus recetas.
-          Sin compromiso.
+          Déjanos tu nombre, correo y WhatsApp y sigues con{' '}
+          {FREE_TIER_LIMITS.questionsPerMonth} preguntas y{' '}
+          {FREE_TIER_LIMITS.imagesPerMonth} fotos al mes, gratis. Sin contraseña y sin
+          compromiso.
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <form
+          onSubmit={(event) => {
+            void handleSubmit(event);
+          }}
+          className="mt-6 space-y-4"
+        >
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-cream/90">
               Nombre

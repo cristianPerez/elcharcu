@@ -63,6 +63,16 @@ export function PlanCard({ plan, href }: PlanCardProps): ReactNode {
         </span>
       </p>
 
+      <p
+        className={cn(
+          'mt-4 rounded-xl px-3 py-2 text-xs leading-relaxed',
+          isHighlighted ? 'bg-cream/10 text-cream/75' : 'bg-forest/5 text-cocoa/65',
+        )}
+      >
+        {plan.quota.questionsPerMonth} preguntas · {plan.quota.imagesPerMonth} fotos
+        {plan.billing === 'gratis' ? ' al mes' : ' cada mes'}
+      </p>
+
       <ul className="mt-6 flex flex-1 flex-col gap-3">
         {plan.features.map((feature) => (
           <li key={feature} className="flex gap-3 text-sm leading-relaxed">

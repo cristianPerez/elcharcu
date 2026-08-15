@@ -3,9 +3,10 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
 import { AssistantChat } from '@/features/assistant-chat';
-import { LeadCaptureModal } from '@/features/lead-capture';
+import { isLeadCaptured, LeadCaptureModal } from '@/features/lead-capture';
+import { QuotaWall } from '@/features/quota-wall';
 
-import { FREE_TIER_LIMITS, loadQuota } from '@/entities/usage-quota';
+import { FREE_TIER_LIMITS, useUsageQuota } from '@/entities/usage-quota';
 
 import { Container, Eyebrow } from '@/shared/ui';
 
@@ -13,36 +14,42 @@ import { Container, Eyebrow } from '@/shared/ui';
  * Asistente en la portada: usable sin registro, sin onboarding previo.
  * El asistente pregunta lo que necesite saber.
  *
- * Tras la primera respuesta, aparece el muro blando de captura de datos.
+ * Dos muros, en este orden:
+ *   1. Tras la primera pregunta, el muro blando de captura (9c).
+ *   2. Al agotar las preguntas del mes, el muro de suscripción (9e).
  */
 export function AssistantHero(): ReactNode {
+  const { quota, status, isReady } = useUsageQuota();
   const [showLeadCapture, setShowLeadCapture] = useState(false);
-  const [hasSeenResponse, setHasSeenResponse] = useState(false);
+  const [hasLead, setHasLead] = useState(true);
 
   useEffect(() => {
-    // Verificar si ya dejó los datos
-    const alreadyCaptured = localStorage.getItem('elcharcu:lead-captured') === 'true';
-    if (alreadyCaptured) {
+    setHasLead(isLeadCaptured());
+  }, []);
+
+  const needsLead =
+    isReady && !hasLead && quota.questionsUsed >= FREE_TIER_LIMITS.questionsBeforeLead;
+
+  useEffect(() => {
+    if (!needsLead) {
       return undefined;
     }
 
-    // Verificar si ya usó la primera pregunta gratis
-    const quota = loadQuota();
-    if (quota.questionsUsed >= FREE_TIER_LIMITS.questionsBeforeLead && !hasSeenResponse) {
-      setHasSeenResponse(true);
-      // Mostrar el modal tras un pequeño delay para que vea la respuesta
-      const timer = setTimeout(() => {
-        setShowLeadCapture(true);
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-
-    return undefined;
-  }, [hasSeenResponse]);
+    // Un respiro para que alcance a leer la respuesta antes del formulario.
+    const timer = setTimeout(() => {
+      setShowLeadCapture(true);
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [needsLead]);
 
   const handleLeadCaptured = (): void => {
     setShowLeadCapture(false);
+    setHasLead(true);
   };
+
+  const isWalled = isReady && status.isExhausted;
 
   return (
     <>
@@ -53,23 +60,39 @@ export function AssistantHero(): ReactNode {
             <h1 className="mt-4 font-serif text-3xl font-semibold leading-tight md:text-4xl">
               Asistente de charcutería artesanal.
             </h1>
-            <p className="mt-3 text-sm leading-relaxed text-cream/75 md:text-[15px]">
+            <p className="mt-3 text-sm leading-relaxed text-cream/75">
               Sal de cura, moho, temperatura, tiempo — todo lo que necesites para curar tu
               pieza sin riesgos.
             </p>
 
             <div className="mt-10">
-              <AssistantChat
-                product="consulta general"
-                level="apasionado"
-                country="Colombia"
-              />
+              {isWalled ? (
+                <QuotaWall questionsUsed={quota.questionsUsed} />
+              ) : (
+                <>
+                  <AssistantChat
+                    product="consulta general"
+                    level="apasionado"
+                    country="Colombia"
+                    canSendImages={!status.areImagesExhausted}
+                  />
+
+                  {isReady && quota.questionsUsed > 0 ? (
+                    <p className="mt-4 text-xs text-cream/40">
+                      Te quedan {status.questionsLeft} preguntas y {status.imagesLeft}{' '}
+                      fotos este mes.
+                    </p>
+                  ) : null}
+                </>
+              )}
             </div>
           </div>
         </Container>
       </section>
 
-      {showLeadCapture ? <LeadCaptureModal onSuccess={handleLeadCaptured} /> : null}
+      {showLeadCapture && !isWalled ? (
+        <LeadCaptureModal onSuccess={handleLeadCaptured} />
+      ) : null}
     </>
   );
 }
