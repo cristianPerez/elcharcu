@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <!--
+      Le decimos al cliente de correo que este mensaje solo tiene modo claro.
+      Sin esto, Gmail y Outlook en modo oscuro invierten los colores por su
+      cuenta y el crema se vuelve gris sucio y el verde, negro.
+    -->
+    <meta name="color-scheme" content="light" />
+    <meta name="supported-color-schemes" content="light" />
+    <title>Tu enlace para entrar a El Charcu</title>
+  </head>
+
+  <body
+    style="margin:0; padding:0; width:100%; background-color:#F4F1EB; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;"
+  >
+    <!--
+      Línea de vista previa: es lo que se lee en la bandeja de entrada antes de
+      abrir. Si no se pone, el cliente coge la primera frase que encuentre y
+      suele quedar un "Ver este correo en el navegador".
+    -->
+    <div
+      style="display:none; font-size:1px; color:#F4F1EB; line-height:1px; max-height:0; max-width:0; opacity:0; overflow:hidden;"
+    >
+      Tu enlace para entrar. Caduca en una hora y sirve una sola vez.
+      &#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;
+    </div>
+
+    <table
+      role="presentation"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      width="100%"
+      style="background-color:#F4F1EB;"
+    >
+      <tr>
+        <td align="center" style="padding:24px 12px;">
+          <!-- 600px es el ancho que aguanta Outlook sin partirse. -->
+          <table
+            role="presentation"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            width="600"
+            style="width:100%; max-width:600px;"
+          >
+            <!-- Cabecera de marca -->
+            <tr>
+              <td
+                align="left"
+                style="background-color:#2D4A3E; border-radius:16px 16px 0 0; padding:28px 32px;"
+              >
+                <div
+                  style="font-family:Georgia,'Times New Roman',serif; font-size:22px; font-weight:700; letter-spacing:0.02em; color:#FFFFFF;"
+                >
+                  EL CHARCU
+                </div>
+                <div
+                  style="font-family:Arial,Helvetica,sans-serif; font-size:11px; letter-spacing:0.28em; color:#7A9E8E; padding-top:6px;"
+                >
+                  ARTESANAL
+                </div>
+              </td>
+            </tr>
+
+            <!-- Cuerpo -->
+            <tr>
+              <td
+                style="background-color:#FFFFFF; padding:36px 32px 8px 32px; border-left:1px solid #E8E8E7; border-right:1px solid #E8E8E7;"
+              >
+                <h1
+                  style="margin:0; font-family:Georgia,'Times New Roman',serif; font-size:26px; line-height:1.2; font-weight:600; color:#2D4A3E;"
+                >
+                  Entra a tu cuenta
+                </h1>
+
+                <p
+                  style="margin:16px 0 0 0; font-family:Arial,Helvetica,sans-serif; font-size:16px; line-height:1.6; color:#1E1612;"
+                >
+                  Toca el botón y quedas dentro. No hay contraseña que recordar.
+                </p>
+              </td>
+            </tr>
+
+            <!-- Botón -->
+            <tr>
+              <td
+                align="left"
+                style="background-color:#FFFFFF; padding:24px 32px 8px 32px; border-left:1px solid #E8E8E7; border-right:1px solid #E8E8E7;"
+              >
+                <!--
+                  Botón "a prueba de balas": una tabla con relleno, no un <a>
+                  con padding. Outlook ignora el padding de los enlaces y el
+                  botón quedaría como texto suelto.
+                -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="center" bgcolor="#A8664A" style="border-radius:999px;">
+                      <a
+                        href="{{ .ConfirmationURL }}"
+                        target="_blank"
+                        style="display:inline-block; padding:16px 34px; font-family:Arial,Helvetica,sans-serif; font-size:16px; font-weight:bold; line-height:1; color:#FFFFFF; text-decoration:none; border-radius:999px; mso-padding-alt:0;"
+                      >
+                        Entrar a El Charcu
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+
+            <!-- Enlace de respaldo -->
+            <tr>
+              <td
+                style="background-color:#FFFFFF; padding:16px 32px 32px 32px; border-left:1px solid #E8E8E7; border-right:1px solid #E8E8E7;"
+              >
+                <p
+                  style="margin:0; font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:1.6; color:#787371;"
+                >
+                  ¿No se ve el botón? Copia y pega esta dirección en tu navegador:
+                </p>
+                <p style="margin:8px 0 0 0; word-break:break-all;">
+                  <a
+                    href="{{ .ConfirmationURL }}"
+                    target="_blank"
+                    style="font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:1.6; color:#A8664A; text-decoration:underline;"
+                    >{{ .ConfirmationURL }}</a
+                  >
+                </p>
+
+                <p
+                  style="margin:24px 0 0 0; padding-top:20px; border-top:1px solid #E8E8E7; font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:1.6; color:#787371;"
+                >
+                  El enlace caduca en una hora y sirve una sola vez. Si no fuiste tú quien
+                  lo pidió, ignora este correo: sin tocar el enlace, no pasa nada.
+                </p>
+              </td>
+            </tr>
+
+            <!-- Pie -->
+            <tr>
+              <td
+                style="background-color:#F4F1EB; border:1px solid #E8E8E7; border-top:0; border-radius:0 0 16px 16px; padding:24px 32px;"
+              >
+                <p
+                  style="margin:0; font-family:Arial,Helvetica,sans-serif; font-size:12px; line-height:1.6; color:#787371;"
+                >
+                  <strong style="color:#2D4A3E;">El Charcu</strong> &middot; Charcutería
+                  artesanal<br />
+                  Manizales, Colombia &middot; Sin aditivos, sin atajos
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
