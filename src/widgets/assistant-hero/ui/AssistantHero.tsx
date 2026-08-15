@@ -6,7 +6,7 @@ import { AssistantChat } from '@/features/assistant-chat';
 import { isLeadCaptured, LeadCaptureModal } from '@/features/lead-capture';
 import { QuotaWall } from '@/features/quota-wall';
 
-import { FREE_TIER_LIMITS, useUsageQuota } from '@/entities/usage-quota';
+import { QUESTIONS_BEFORE_LEAD, useUsageQuota } from '@/entities/usage-quota';
 
 import { Container, Eyebrow } from '@/shared/ui';
 
@@ -27,8 +27,7 @@ export function AssistantHero(): ReactNode {
     setHasLead(isLeadCaptured());
   }, []);
 
-  const needsLead =
-    isReady && !hasLead && quota.questionsUsed >= FREE_TIER_LIMITS.questionsBeforeLead;
+  const needsLead = isReady && !hasLead && quota.questionsUsed >= QUESTIONS_BEFORE_LEAD;
 
   useEffect(() => {
     if (!needsLead) {
@@ -67,7 +66,10 @@ export function AssistantHero(): ReactNode {
 
             <div className="mt-10">
               {isWalled ? (
-                <QuotaWall questionsUsed={quota.questionsUsed} />
+                <QuotaWall
+                  questionsUsed={quota.questionsUsed}
+                  questionsLimit={quota.questionsLimit}
+                />
               ) : (
                 <>
                   <AssistantChat
@@ -91,7 +93,11 @@ export function AssistantHero(): ReactNode {
       </section>
 
       {showLeadCapture && !isWalled ? (
-        <LeadCaptureModal onSuccess={handleLeadCaptured} />
+        <LeadCaptureModal
+          questionsLimit={quota.questionsLimit}
+          imagesLimit={quota.imagesLimit}
+          onSuccess={handleLeadCaptured}
+        />
       ) : null}
     </>
   );

@@ -2,13 +2,14 @@
 
 import { useState, type FormEvent, type ReactNode } from 'react';
 
-import { FREE_TIER_LIMITS, loadQuota } from '@/entities/usage-quota';
-
 import { markLeadCaptured } from '../lib/leadFlag';
 import { submitLead } from '../lib/submitLead';
 import type { LeadCaptureState } from '../model/types';
 
 interface LeadCaptureModalProps {
+  /** Preguntas que gana al dejar los datos. Lo dice la base, no la pantalla. */
+  readonly questionsLimit: number;
+  readonly imagesLimit: number;
   readonly onSuccess: () => void;
 }
 
@@ -21,7 +22,11 @@ interface LeadCaptureModalProps {
  *
  * ⚠️ Incluye nota de privacidad (Ley 1581/2012 de Colombia).
  */
-export function LeadCaptureModal({ onSuccess }: LeadCaptureModalProps): ReactNode {
+export function LeadCaptureModal({
+  questionsLimit,
+  imagesLimit,
+  onSuccess,
+}: LeadCaptureModalProps): ReactNode {
   const [state, setState] = useState<LeadCaptureState>({ status: 'idle' });
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -36,12 +41,7 @@ export function LeadCaptureModal({ onSuccess }: LeadCaptureModalProps): ReactNod
 
     setState({ status: 'submitting' });
 
-    const quota = loadQuota();
-    const result = await submitLead(
-      { name, email, whatsapp },
-      quota.questionsUsed,
-      quota.imagesUsed,
-    );
+    const result = await submitLead({ name, email, whatsapp });
 
     if (result.ok) {
       setState({ status: 'success' });
@@ -64,10 +64,8 @@ export function LeadCaptureModal({ onSuccess }: LeadCaptureModalProps): ReactNod
           Te gustó, ¿verdad?
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-cream/75">
-          Déjanos tu nombre, correo y WhatsApp y sigues con{' '}
-          {FREE_TIER_LIMITS.questionsPerMonth} preguntas y{' '}
-          {FREE_TIER_LIMITS.imagesPerMonth} fotos al mes, gratis. Sin contraseña y sin
-          compromiso.
+          Déjanos tu nombre, correo y WhatsApp y sigues con {questionsLimit} preguntas y{' '}
+          {imagesLimit} fotos al mes, gratis. Sin contraseña y sin compromiso.
         </p>
 
         <form

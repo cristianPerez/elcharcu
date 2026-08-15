@@ -105,9 +105,14 @@ No se empieza por el chat.
       `/auth/callback`), middleware que refresca la sesión, y el candado viviendo en
       Postgres. Google y teléfono quedan apagados en Supabase; se suman cuando se
       configuren (el SMS se paga por mensaje).
-- [ ] **4b. Mover perfil, sesiones y suscripción de `localStorage` a Supabase.** El
-      código de la app todavía guarda en el navegador; la base ya está lista para
-      recibirlo. Es lo primero del próximo tramo.
+- [x] **4b. El cupo y el perfil salen de `localStorage`** (2026-08-14). Lo importante:
+      **el cupo ya no lo cuenta el navegador**, lo cuenta Postgres y lo descuenta el
+      servidor antes de llamar a Gemini. El visitante anónimo se identifica con una
+      cookie `httpOnly` (`elcharcu_vid`); al entrar con su correo, sus contadores se
+      atan a la cuenta. El perfil (país y nivel) se guarda en `charcu.profiles` cuando
+      hay cuenta. Probado de punta a punta contra la base real.
+      Pendiente de este bloque: **las sesiones de receta siguen en el navegador**, y se
+      quedan así a propósito — eran la unidad del modelo viejo (D15 las jubiló).
 - [x] **5. Asistente con Gemini** — chat por receta, foto para diagnóstico de moho, y
       doble barrera de seguridad (prompt + revisión en código antes de mostrar). Probado
       contra la API real: dosis correcta, negativa ante 8 g/kg, y veredicto "descartar"
@@ -248,6 +253,22 @@ nada. El contacto de WhatsApp además cae en el canal por donde El Charcu ya ven
 
 ## ⚠️ Pendientes y avisos
 
+### 🗂️ Las migraciones ahora sí se ejecutan desde los archivos (2026-08-14)
+
+El esquema se había aplicado a mano y `supabase_migrations.schema_migrations` estaba
+**vacío**: el repo y la base podían haberse separado sin que nadie se enterara. Con la
+base todavía sin usuarios ni leads se borró el esquema `charcu` y se reconstruyó
+ejecutando `supabase/migrations/0001…0006` en orden, cada archivo registrado en el
+historial. De aquí en adelante: **un cambio de esquema = un archivo nuevo**, nunca SQL
+suelto en el panel.
+
+Ojo con dos cosas al mirar el historial:
+
+- Hay dos entradas que no tienen archivo: el `0000_reset…` de ese día y una limpieza de
+  datos de prueba. Son el registro honesto de lo que pasó, no migraciones del producto.
+- La CLI **no puede hacer `push`** todavía: falta `supabase/config.toml` (`supabase init`)
+  y la contraseña de la base. Por eso se aplicaron por la conexión del MCP.
+
 ### ✅ Base de datos conectada y verificada (2026-08-05)
 
 Proyecto: **`lcvmsbfnnpviumsqcxip`**. El esquema `charcu` está aplicado y probado
@@ -290,17 +311,16 @@ desde la base real en `src/shared/api/supabase/database.types.ts`.
   destiladas dentro del propio spec. Si los tienes, pásalos y afino el copy.
 - ⚠️ **El link del sistema de diseño de Claude devolvió 403** (es privado). Uso los
   tokens que ya están en `tailwind.config.ts`, que vienen de la Guía de Marca.
-- ⚠️ **El perfil del onboarding se guarda HOY en el navegador** (`localStorage`), no en
-  una base de datos. Eso significa que si el usuario cambia de celular o borra datos,
-  pierde su receta gratis — y que el límite de "una sola receta gratis" todavía se puede
-  saltar. Se arregla solo cuando llegue Supabase. Todo el guardado está aislado en
-  `src/entities/curing-profile/lib/profileStorage.ts`: ese es el único archivo a cambiar.
-- 🔴 **El cupo de preguntas se puede burlar desde el navegador.** Vive en
-  `localStorage`, así que borrar los datos del sitio o abrir una ventana de incógnito
-  reinicia el contador. Lo que hoy protege el bolsillo de verdad es el tope diario de
-  gasto (`AI_DAILY_BUDGET_USD`), no el cupo. El cupo pasa a ser de verdad cuando se
-  cuente en Postgres (paso 4b) y se compruebe **en `/api/asistente`**, no solo en la
-  pantalla.
+- ✅ **RESUELTO (2026-08-14): el cupo ya se cuenta en Postgres y lo aplica el servidor.**
+  `/api/asistente` descuenta el cupo ANTES de llamar a Gemini; sin cupo devuelve 402 y
+  no hay respuesta, por más que alguien llame a la ruta a mano. Si Gemini falla, la
+  pregunta **se devuelve** (`charcu.refund_quota`): no se cobra por un error nuestro.
+- ⚠️ **Queda una vía para estirar el cupo gratis: borrar las cookies.** El visitante
+  anónimo es una cookie `httpOnly`; quien la borre estrena 8 preguntas. Se cierra del
+  todo solo pidiendo cuenta para preguntar, que es justo lo contrario de D14. Mientras
+  tanto el freno real del bolsillo sigue siendo `AI_DAILY_BUDGET_USD`, que es global.
+  En cuanto el visitante entra con su correo, el cupo pasa a contarse por cuenta y
+  borrar cookies deja de servir.
 - ⚠️ **El muro todavía no cobra.** Los botones de los planes abren WhatsApp con el plan
   escrito, que es por donde El Charcu ya vende hoy. Sirve para vender desde ya, pero
   hay que atender esos mensajes a mano. Se reemplaza por el checkout de Mercado Pago en
