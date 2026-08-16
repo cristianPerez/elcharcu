@@ -1,0 +1,137 @@
+{
+  "slug": "kielbasa-polaca",
+  "name": "Kielbasa Polaca de Cerdo y Res",
+  "description": "La kielbasa auténtica — cerdo y res, ajo, pimienta y mejorana. Sin paprika, sin mostaza, sin mezclas de especias innecesarias: curada, ahumada y cocida como en Polonia.",
+  "image": "/recipes/kielbasa-polaca.jpg",
+  "tags": ["Polonia", "Ahumado", "Curado"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Cerdo y res con ajo, pimienta y mejorana: el perfil clásico polaco.",
+  "intro": "La kielbasa polaca tradicional no lleva paprika, ni mostaza, ni coriandro, ni chile. Lleva cuatro cosas: sal, sal de cura, ajo y pimienta — y la mejorana, que es la firma aromática que distingue a la polaca de cualquier otra salchicha ahumada de Europa. Todo lo demás sobra. Esta fórmula vuelve a esa base: 70% cerdo y 30% res, un curado en frío de dos o tres días antes de moler, un amasado vigoroso hasta que la masa quede pegajosa, y un ahumado progresivo hasta el dorado característico. El resultado es una salchicha en herradura, firme y jugosa, que sabe a carne, ajo y humo — exactamente lo que debe saber.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg de masa" },
+    { "label": "Tipo", "value": "Curada, ahumada y cocida" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Curado", "value": "2–3 días en frío (0–4 °C)" },
+    { "label": "Molienda", "value": "Media, disco de 8 mm" },
+    { "label": "Ahumado", "value": "Progresivo, hasta dorado" },
+    { "label": "Temperatura interna", "value": "68–70 °C (71 °C con margen)" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 30–32 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "La base polaca de siempre: 70% cerdo por la grasa y la jugosidad, 30% res por el cuerpo y el color más profundo."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme y bien ligada, con grano visible de la molienda de 8 mm — no es una emulsión fina, se le ve la carne."
+    },
+    {
+      "title": "Sabor",
+      "description": "Ajo y pimienta al frente, mejorana de fondo y humo encima. Un perfil limpio, sin especias que compitan entre sí."
+    },
+    {
+      "title": "La mejorana es la firma",
+      "description": "Es lo que hace que una kielbasa sepa a polaca y no a alemana o a húngara. Va poca —0,5 a 1 g por kilo— pero no es opcional."
+    }
+  ],
+  "quote": "La verdadera kielbasa polaca: cerdo y res, ajo, pimienta y mejorana. Sin mezclas de especias innecesarias.",
+  "ingredientsNote": "La sal de cura Prague Powder #1 es obligatoria: esta salchicha pasa horas en el ahumador a temperaturas bajas antes de cocerse, y esa franja es justo donde el nitrito hace falta. A 2,5 g por kilo aporta el nivel estándar de nitrito de entrada de un embutido cocido, además del color rosado y el sabor curado. No la sustituyas ni la reduzcas.",
+  "ingredients": [
+    { "name": "Carne de cerdo (paleta, con su grasa)", "amount": "700 g", "pct": "70%" },
+    { "name": "Carne de res (magra)", "amount": "300 g", "pct": "30%" },
+    { "name": "Agua o hielo triturado", "amount": "80–100 ml", "pct": "8–10%" },
+    { "name": "Sal", "amount": "18 g", "pct": "1.8%" },
+    { "name": "Sal de cura #1 (Prague Powder #1)", "amount": "2.5 g", "pct": "0.25%" },
+    { "name": "Ajo fresco machacado", "amount": "2.5–3 g", "pct": "0.25–0.3%" },
+    { "name": "Pimienta negra molida", "amount": "2 g", "pct": "0.2%" },
+    { "name": "Mejorana seca", "amount": "0.5–1 g", "pct": "0.05–0.1%" }
+  ],
+  "proportionNote": "70/30 cerdo y res: el cerdo aporta la grasa —sin ella la res deja la masa seca— y la res aporta cuerpo y un color más intenso. El agua o hielo al 8–10% no es relleno: es lo que permite que el amasado extraiga la proteína y la masa ligue de verdad.",
+  "charcuteroNote": "El porcentaje es el peso sobre el total de carne. Valores por kilo: cerdo 700 g, res 300 g, sal 18 g, sal de cura #1 2,5 g, ajo fresco 2,5–3 g, pimienta negra 2 g, mejorana 0,5–1 g, agua o hielo 80–100 ml. Los 2,5 g de Prague Powder #1 por kilo equivalen a 156 ppm de nitrito de entrada, el nivel estándar para un embutido cocido.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Mantén las carnes muy frías, casi congeladas, y córtalas en cubos."
+    },
+    {
+      "n": "02",
+      "text": "Mezcla la carne con la sal y la sal de cura, y deja reposar 2 a 3 días en refrigeración a 0–4 °C."
+    },
+    {
+      "n": "03",
+      "text": "Muele el cerdo y la res con molienda media, disco de 8 mm."
+    },
+    {
+      "n": "04",
+      "text": "Agrega el ajo, la pimienta, la mejorana y el agua o hielo triturado."
+    },
+    {
+      "n": "05",
+      "text": "Amasa vigorosamente hasta que la masa quede pegajosa y bien ligada — es el paso que decide la textura final."
+    },
+    {
+      "n": "06",
+      "text": "Embute en tripa natural de cerdo de 30–32 mm, sin dejar bolsas de aire."
+    },
+    {
+      "n": "07",
+      "text": "Forma las herraduras o los eslabones y deja que la superficie se seque al tacto antes del ahumado."
+    },
+    {
+      "n": "08",
+      "text": "Ahúma progresivamente, subiendo la temperatura poco a poco, hasta obtener el color dorado característico."
+    },
+    {
+      "n": "09",
+      "text": "Cocina hasta que el centro alcance 68–70 °C; para mayor margen doméstico, llévala a 71 °C."
+    },
+    {
+      "n": "10",
+      "text": "Enfría rápidamente con agua fría, seca la superficie y refrigera."
+    }
+  ],
+  "tips": [
+    {
+      "title": "La superficie seca antes del humo",
+      "description": "Si la tripa está húmeda, el humo se deposita manchado y el color sale disparejo. Deja que la superficie se seque al tacto — es el paso que más se salta la gente."
+    },
+    {
+      "title": "Ajo fresco, no en polvo",
+      "description": "En la kielbasa polaca el ajo se machaca fresco. El polvo da un sabor plano y no es lo que buscas aquí."
+    },
+    {
+      "title": "Sube el humo por escalones",
+      "description": "Ahumar progresivamente —no de golpe a temperatura alta— evita que la grasa se funda antes de tiempo y que la salchicha quede arrugada y seca."
+    },
+    {
+      "title": "Menos es más",
+      "description": "La tentación de añadir paprika o coriandro es real. No lo hagas: la kielbasa polaca se define tanto por lo que lleva como por lo que no lleva."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Ahumada y cocida",
+      "description": "El método propio de la receta: humo progresivo hasta el dorado y cocción hasta 68–70 °C internos. Queda lista para comer."
+    },
+    {
+      "title": "A la parrilla",
+      "description": "Ya cocida, solo dorar unos minutos para reforzar el tostado antes de servir."
+    },
+    {
+      "title": "En bigos o con chucrut",
+      "description": "El uso clásico polaco: en guiso con col fermentada, donde la mejorana y el ajo se lucen."
+    }
+  ],
+  "recommendations": [
+    "No omitas la sal de cura #1: el ahumado a baja temperatura la hace obligatoria.",
+    "Respeta el curado de 2 a 3 días antes de moler — ahí se asienta el color y el sabor.",
+    "Mantén la carne y la masa por debajo de 4 °C durante todo el proceso.",
+    "Amasa hasta que la masa se pegue a la mano: si no liga, la salchicha queda desmoronada.",
+    "Cocina hasta 68–70 °C internos, verificados con termómetro; 71 °C si quieres margen.",
+    "Enfría rápido con agua fría y refrigera de inmediato."
+  ],
+  "resultNote": "El resultado: una herradura de color dorado ahumado, firme al tacto y rosada al corte, con el grano de la molienda de 8 mm bien visible. Sabe a cerdo, res, ajo y humo, con la mejorana asomando al final — la kielbasa que se reconoce sin necesidad de etiqueta.",
+  "finalQuote": "Cuatro condimentos y dos carnes. La kielbasa polaca se define tanto por lo que lleva como por lo que decidió no llevar.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}

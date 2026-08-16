@@ -23,6 +23,7 @@ import jamonPiernaHorneado from '../recipes/jamon-pierna-horneado.json';
 import jamonSelvaNegra from '../recipes/jamon-selva-negra.json';
 import kielbasaBajoSodio from '../recipes/kielbasa-bajo-sodio.json';
 import kielbasaDePollo from '../recipes/kielbasa-de-pollo.json';
+import kielbasaPolaca from '../recipes/kielbasa-polaca.json';
 import linguicaCalabresa from '../recipes/linguica-calabresa.json';
 import linguicaPortuguesa from '../recipes/linguica-portuguesa.json';
 import lomoCurado from '../recipes/lomo-curado.json';
@@ -74,6 +75,7 @@ const recipes: readonly Recipe[] = [
   loukaniko,
   merguez,
   sujuk,
+  kielbasaPolaca,
   kielbasaDePollo,
   lomoCurado,
   cecinaDeLeon,
