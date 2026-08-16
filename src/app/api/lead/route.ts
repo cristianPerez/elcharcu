@@ -13,9 +13,10 @@ import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
 const MAX_FIELD = 120;
 
 interface LeadPayload {
-  readonly name: string;
   readonly email: string;
-  readonly whatsapp: string;
+  /** Se piden en un segundo momento; al principio solo tenemos el correo. */
+  readonly name: string | null;
+  readonly whatsapp: string | null;
 }
 
 function parseLead(value: unknown): LeadPayload | null {
@@ -25,24 +26,24 @@ function parseLead(value: unknown): LeadPayload | null {
 
   const { name, email, whatsapp } = value as Record<string, unknown>;
 
-  if (typeof name !== 'string' || typeof email !== 'string') {
-    return null;
-  }
-  if (typeof whatsapp !== 'string') {
+  if (typeof email !== 'string') {
     return null;
   }
 
-  const clean = {
-    name: name.trim().slice(0, MAX_FIELD),
-    email: email.trim().toLowerCase().slice(0, MAX_FIELD),
-    whatsapp: whatsapp.trim().slice(0, MAX_FIELD),
+  const cleanEmail = email.trim().toLowerCase().slice(0, MAX_FIELD);
+  if (!cleanEmail.includes('@')) {
+    return null;
+  }
+
+  const opcional = (v: unknown): string | null => {
+    if (typeof v !== 'string') {
+      return null;
+    }
+    const t = v.trim().slice(0, MAX_FIELD);
+    return t === '' ? null : t;
   };
 
-  if (clean.name === '' || !clean.email.includes('@') || clean.whatsapp === '') {
-    return null;
-  }
-
-  return clean;
+  return { email: cleanEmail, name: opcional(name), whatsapp: opcional(whatsapp) };
 }
 
 /**
@@ -80,9 +81,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const { error } = await createSupabaseAdminClient()
     .from('leads')
     .insert({
-      name: lead.name,
       email: lead.email,
-      whatsapp: lead.whatsapp,
+      name: lead.name ?? '',
+      whatsapp: lead.whatsapp ?? '',
       visitor_id: visitorId,
       user_id: userId,
       questions_used: quota?.questionsUsed ?? 0,

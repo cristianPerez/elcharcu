@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 
-import { QuotaWallPlans } from '@/features/quota-wall';
+import { QuotaWallPlans, UpsellTracker } from '@/features/quota-wall';
 
 import { formatCop, oneTimeCourseCop } from '@/entities/plan';
 
@@ -14,9 +14,15 @@ import { Container, Eyebrow } from '@/shared/ui';
  * el mundo — se reutiliza `QuotaWallPlans` en vez de mantener dos tarjetas de
  * precio que se desincronizan en cuanto alguien cambia un número.
  */
-export function Paywall(): ReactNode {
+interface PaywallProps {
+  /** De dónde llegó a esta página, para medir qué camino convierte. */
+  readonly source: string;
+}
+
+export function Paywall({ source }: PaywallProps): ReactNode {
   return (
     <Container className="py-14 md:py-20">
+      <UpsellTracker source={source} />
       <div className="max-w-2xl">
         <Eyebrow className="text-terracota-dark">El Charcu Pro</Eyebrow>
 

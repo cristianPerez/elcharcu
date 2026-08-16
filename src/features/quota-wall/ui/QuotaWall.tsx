@@ -2,9 +2,8 @@
 
 import { useEffect, type ReactNode } from 'react';
 
+import { appRoutes } from '@/shared/config';
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
-
-import { QuotaWallPlans } from './QuotaWallPlans';
 
 interface QuotaWallProps {
   /** Preguntas del mes que el visitante ya gastó. */
@@ -14,10 +13,11 @@ interface QuotaWallProps {
 }
 
 /**
- * El muro que aparece cuando se acaba el cupo gratis de preguntas (9e).
+ * Lo que reemplaza al chat cuando se acaba el cupo del mes.
  *
- * Sustituye al viejo muro de "segunda receta": la unidad ahora es la pregunta.
- * El tono es de valor, no de castigo — ya se llevó respuestas de verdad, gratis.
+ * Es corto a propósito: no vende aquí, lleva a la página de upsell. Vender en
+ * un bloque incrustado se mide a medias; una URL propia se mide sola, se puede
+ * mandar por WhatsApp y sirve de destino para un anuncio.
  */
 export function QuotaWall({ questionsUsed, questionsLimit }: QuotaWallProps): ReactNode {
   useEffect(() => {
@@ -38,16 +38,19 @@ export function QuotaWall({ questionsUsed, questionsLimit }: QuotaWallProps): Re
       </h2>
 
       <p className="mt-3 text-base leading-relaxed text-cocoa/70">
-        Ya usaste tus {questionsLimit} preguntas gratis de este mes sin poner un peso. Con
-        lo que vale una pieza echada a perder, el plan se paga solo — y el cupo vuelve a
-        cero el mes que viene, pagues o no.
+        Usaste tus {questionsLimit} preguntas gratis sin poner un peso. Con lo que vale
+        una pieza echada a perder, el plan se paga solo.
       </p>
 
-      <QuotaWallPlans />
+      <a
+        href={`${appRoutes.subscription}?de=muro`}
+        className="mt-6 inline-flex items-center justify-center rounded-full bg-terracota-dark px-6 py-3 text-sm font-medium tracking-wide text-cream-white shadow-surface transition-shadow hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-[0.97]"
+      >
+        Ver los planes
+      </a>
 
-      <p className="mt-6 text-xs leading-relaxed text-cocoa/65">
-        Pagas con tarjeta, PSE o Nequi a través de Hotmart. El precio está en dólares y se
-        cobra al cambio del día.
+      <p className="mt-4 text-xs leading-relaxed text-cocoa/65">
+        Tu cupo vuelve a cero el mes que viene, pagues o no.
       </p>
     </div>
   );

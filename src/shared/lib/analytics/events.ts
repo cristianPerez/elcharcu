@@ -42,8 +42,14 @@ export const ANALYTICS_EVENTS = {
   assistantFailed: 'assistant_failed',
   /** Desplegó el aviso de cómo funciona la seguridad. */
   assistantSafetyOpened: 'assistant_safety_opened',
-  /** Dejó sus datos en el muro blando. */
+  /** Dejó su correo en el muro blando. */
   leadCaptured: 'lead_captured',
+  /** Se le mandó el enlace de entrada tras dejar el correo. */
+  accountLinkSent: 'account_link_sent',
+  /** Vio la página de upsell (se llega por el muro o por enlace directo). */
+  upsellViewed: 'upsell_viewed',
+  /** Aterrizó en la página de bienvenida tras comprar en Hotmart. */
+  purchaseLanded: 'purchase_landed',
   /**
    * El código de seguridad bloqueó una respuesta por proponer una dosis de sal
    * de cura por encima del tope. Si este evento sube, hay que revisar el prompt.
