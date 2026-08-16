@@ -100,7 +100,6 @@ export function AssistantHero(): ReactNode {
       {showLeadCapture && !isWalled ? (
         <LeadCaptureModal
           questionsLimit={quota.questionsLimit}
-          imagesLimit={quota.imagesLimit}
           onSuccess={handleLeadCaptured}
         />
       ) : null}
