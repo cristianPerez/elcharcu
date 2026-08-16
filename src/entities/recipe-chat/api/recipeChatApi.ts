@@ -21,6 +21,41 @@ export function draftTitle(firstQuestion: string): string {
   return clean.length <= 60 ? clean : `${clean.slice(0, 57)}…`;
 }
 
+/**
+ * La última receta abierta de este visitante, si tiene alguna.
+ *
+ * Es lo que impide que una simple recarga rompa la app: el navegador guarda el
+ * id de la receta en memoria, así que al recargar se pierde y la siguiente
+ * pregunta pediría abrir OTRA receta — que en el plan gratis no cabe. El
+ * servidor no puede fiarse de que el navegador recuerde en qué receta iba.
+ */
+export async function latestOpenRecipe(
+  visitorId: string,
+  userId: string | null,
+): Promise<string | null> {
+  if (!isSupabaseAdminConfigured()) {
+    return null;
+  }
+
+  const supabase = createSupabaseAdminClient();
+  const query = supabase
+    .from('recipes')
+    .select('id')
+    .eq('status', 'activa')
+    .order('last_message_at', { ascending: false })
+    .limit(1);
+
+  const { data, error } =
+    userId === null
+      ? await query.eq('visitor_id', visitorId).maybeSingle()
+      : await query.eq('user_id', userId).maybeSingle();
+
+  if (error !== null || data === null) {
+    return null;
+  }
+  return data.id;
+}
+
 /** Abre una receta nueva y devuelve su id. `null` si no se pudo. */
 export async function createRecipe(
   visitorId: string,

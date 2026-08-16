@@ -3,7 +3,12 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { checkBudget, recordSpend } from '@/entities/ai-budget';
 import { buildSystemPrompt } from '@/entities/charcu-assistant';
 import { auditCureDoses, MAX_CURE_1_G_PER_KG } from '@/entities/cure-safety';
-import { createRecipe, ownsRecipe, touchRecipe } from '@/entities/recipe-chat/server';
+import {
+  createRecipe,
+  latestOpenRecipe,
+  ownsRecipe,
+  touchRecipe,
+} from '@/entities/recipe-chat/server';
 import { consumeQuota, refundQuota } from '@/entities/usage-quota/server';
 
 import { generateAnswer, type GeminiTurn } from '@/shared/api/gemini';
@@ -150,12 +155,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   const images = countImages(parsed.turns);
 
-  // Si viene con receta, tiene que ser suya. Si no lo es, se trata como si no
-  // hubiera mandado ninguna y se le abre la suya: nunca se escribe en la
-  // receta de otro ni se le devuelve su historial.
+  // Si viene con receta, tiene que ser suya. Si no lo es, se ignora: nunca se
+  // escribe en la receta de otro ni se le devuelve su historial.
   const ownsIt =
     parsed.recipeId !== null && (await ownsRecipe(parsed.recipeId, visitorId, userId));
-  const recipeId = ownsIt ? parsed.recipeId : null;
+
+  // Si no viene ninguna, se RETOMA la última abierta antes de dar por hecho
+  // que quiere una nueva. El id de la receta vive en memoria del navegador, así
+  // que una simple recarga lo pierde — y sin esto, la siguiente pregunta pedía
+  // abrir una segunda receta y el plan gratis la rechazaba: el asistente se
+  // quedaba mudo para siempre. El servidor no puede fiarse de que el navegador
+  // recuerde en qué receta iba.
+  const recipeId = ownsIt ? parsed.recipeId : await latestOpenRecipe(visitorId, userId);
   const isNewRecipe = recipeId === null;
 
   const quota = await consumeQuota(visitorId, userId, images, isNewRecipe);

@@ -20,6 +20,16 @@ export interface AssistantChatController {
   readonly send: (text: string, file: File | null) => Promise<void>;
 }
 
+/** Qué decirle cuando el servidor le cierra la puerta, según el motivo. */
+const SIN_CUPO: Record<string, string> = {
+  preguntas:
+    'Se acabaron tus preguntas de este mes. Abajo te dejo los planes — tu cupo vuelve a cero el mes que viene, pagues o no.',
+  fotos:
+    'Se acabaron tus fotos de este mes. Puedes seguir preguntando por texto sin problema.',
+  recetas:
+    'Con el plan gratis puedes llevar una receta a la vez. Sigue preguntando en la que tienes abierta, o suscríbete para llevar varias.',
+};
+
 interface ApiAnswer {
   readonly text?: unknown;
   readonly wasBlocked?: unknown;
@@ -27,6 +37,8 @@ interface ApiAnswer {
   readonly quota?: unknown;
   /** La receta de esta conversación. La crea el servidor con la 1ª pregunta. */
   readonly recipeId?: unknown;
+  /** Cuál de los topes cerró la puerta: `preguntas`, `fotos` o `recetas`. */
+  readonly deniedBy?: unknown;
 }
 
 function createId(): string {
@@ -126,12 +138,21 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
 
         if (!response.ok) {
           if (response.status === 402) {
-            // Se acabó el cupo. Se publica el cupo que devuelve el servidor
-            // para que la portada levante el muro sin preguntar otra vez.
+            // Se acabó el cupo. Se publica para que la portada levante el muro,
+            // y se DICE cuál se acabó: antes esto se quedaba en silencio y el
+            // usuario veía su pregunta sin respuesta y sin explicación, que es
+            // el peor final posible.
             const spent: ApiAnswer = (await response.json()) as ApiAnswer;
             publishQuotaFrom(spent.quota);
+
+            const motivo = typeof spent.deniedBy === 'string' ? spent.deniedBy : '';
+            setError(
+              SIN_CUPO[motivo] ??
+                'Se acabó tu cupo de este mes. Mira los planes para seguir.',
+            );
             track(ANALYTICS_EVENTS.assistantFailed, {
               reason: 'sin-cupo',
+              denied_by: motivo,
               recipe: params.product,
             });
             return;
