@@ -7,6 +7,7 @@ import {
   createRecipe,
   latestOpenRecipe,
   ownsRecipe,
+  saveExchange,
   touchRecipe,
 } from '@/entities/recipe-chat/server';
 import { consumeQuota, refundQuota } from '@/entities/usage-quota/server';
@@ -226,15 +227,38 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       '[asistente] respuesta bloqueada por dosis insegura:',
       verdict.dangerous.map((finding) => finding.excerpt),
     );
+    // Se guarda la corregida, no la peligrosa: el historial que después lee el
+    // modelo no debe contener nunca la dosis que bloqueamos.
+    const corregida = blockedAnswer();
+    if (activeRecipeId !== null) {
+      await saveExchange({
+        recipeId: activeRecipeId,
+        visitorId,
+        userId,
+        question: lastTurn?.text ?? '',
+        answer: corregida,
+      });
+    }
+
     return attachVisitorCookie(
       NextResponse.json({
-        text: blockedAnswer(),
+        text: corregida,
         wasBlocked: true,
         quota: quota?.snapshot ?? null,
         recipeId: activeRecipeId,
       }),
       visitorId,
     );
+  }
+
+  if (activeRecipeId !== null) {
+    await saveExchange({
+      recipeId: activeRecipeId,
+      visitorId,
+      userId,
+      question: lastTurn?.text ?? '',
+      answer: result.text,
+    });
   }
 
   return attachVisitorCookie(
