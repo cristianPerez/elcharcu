@@ -43,6 +43,11 @@ export const appRoutes = {
   newRecipe: '/asistente/nueva-receta',
   subscription: '/asistente/suscripcion',
   login: '/entrar',
+  /**
+   * Receta guiada (EXPERIMENTAL): el curso y el maestro en la misma pantalla.
+   * Hoy solo existe una, así que la ruta apunta directo a ella.
+   */
+  guidedRecipe: '/curso/bondiola-curada',
 } as const;
 
 /**
