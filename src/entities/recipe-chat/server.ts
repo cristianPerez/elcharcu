@@ -8,4 +8,8 @@ export {
   ownsRecipe,
   touchRecipe,
   draftTitle,
+  saveExchange,
+  recipeMessages,
+  recipeHeader,
 } from './api/recipeChatApi';
+export type { StoredMessage } from './api/recipeChatApi';

@@ -18,7 +18,7 @@ export function draftTitle(firstQuestion: string): string {
   if (clean === '') {
     return 'Receta sin nombre';
   }
-  return clean.length <= 60 ? clean : `${clean.slice(0, 57)}…`;
+  return clean.length <= 40 ? clean : `${clean.slice(0, 37)}…`;
 }
 
 /**
@@ -126,4 +126,101 @@ export async function touchRecipe(recipeId: string): Promise<void> {
     .from('recipes')
     .update({ last_message_at: new Date().toISOString() })
     .eq('id', recipeId);
+}
+
+/** Un turno de la conversación tal como se guarda y se devuelve. */
+export interface StoredMessage {
+  readonly id: string;
+  readonly role: 'user' | 'assistant';
+  readonly content: string;
+}
+
+/**
+ * Guarda la pregunta y la respuesta en `charcu.chat_messages`.
+ *
+ * Sin esto, retomar una receta no sirve de nada: el usuario ve un chat vacío
+ * y —peor— el modelo pierde el contexto de lo que estaba curando, así que
+ * vuelve a preguntar los kilos y la humedad que ya le habían dicho.
+ *
+ * ⚠️ La FOTO no se guarda todavía. Guardar imágenes de la cocina de alguien es
+ * dato personal, cuesta almacenamiento y hay que decidir cuánto tiempo se
+ * conservan — está pendiente de que Cristian lo decida. Por ahora se apunta que
+ * hubo foto, no la foto.
+ */
+export async function saveExchange(params: {
+  readonly recipeId: string;
+  readonly visitorId: string;
+  readonly userId: string | null;
+  readonly question: string;
+  readonly answer: string;
+}): Promise<void> {
+  if (!isSupabaseAdminConfigured()) {
+    return;
+  }
+
+  const { error } = await createSupabaseAdminClient()
+    .from('chat_messages')
+    .insert([
+      {
+        recipe_id: params.recipeId,
+        visitor_id: params.visitorId,
+        user_id: params.userId,
+        role: 'user',
+        content: params.question,
+      },
+      {
+        recipe_id: params.recipeId,
+        visitor_id: params.visitorId,
+        user_id: params.userId,
+        role: 'assistant',
+        content: params.answer,
+      },
+    ]);
+
+  if (error !== null) {
+    console.error('[receta] no se pudo guardar la conversación:', error.message);
+  }
+}
+
+/** El historial de una receta, en orden. Vacío si no hay o no se pudo leer. */
+export async function recipeMessages(
+  recipeId: string,
+): Promise<readonly StoredMessage[]> {
+  if (!isSupabaseAdminConfigured()) {
+    return [];
+  }
+
+  const { data, error } = await createSupabaseAdminClient()
+    .from('chat_messages')
+    .select('id, role, content')
+    .eq('recipe_id', recipeId)
+    .order('created_at', { ascending: true })
+    .limit(60);
+
+  if (error !== null || data === null) {
+    return [];
+  }
+
+  return data.map((row) => ({
+    id: row.id,
+    role: row.role === 'user' ? ('user' as const) : ('assistant' as const),
+    content: row.content,
+  }));
+}
+
+/** Título y estado de una receta, para la cabecera del chat. */
+export async function recipeHeader(
+  recipeId: string,
+): Promise<{ readonly title: string } | null> {
+  if (!isSupabaseAdminConfigured()) {
+    return null;
+  }
+
+  const { data, error } = await createSupabaseAdminClient()
+    .from('recipes')
+    .select('title')
+    .eq('id', recipeId)
+    .maybeSingle();
+
+  return error !== null || data === null ? null : { title: data.title };
 }

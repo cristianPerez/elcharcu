@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { type ChatMessage } from '@/entities/charcu-assistant';
 import { publishQuotaFrom } from '@/entities/usage-quota';
@@ -17,7 +17,33 @@ export interface AssistantChatController {
   readonly messages: readonly ChatMessage[];
   readonly isThinking: boolean;
   readonly error: string | null;
+  /** El nombre de la receta abierta, si hay una. */
+  readonly recipeTitle: string | null;
   readonly send: (text: string, file: File | null) => Promise<void>;
+}
+
+interface StoredRecipe {
+  readonly recipeId?: unknown;
+  readonly title?: unknown;
+  readonly messages?: unknown;
+}
+
+/** Lo que devuelve `/api/receta`, validado antes de creerlo. */
+function parseHistory(value: unknown): readonly ChatMessage[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.flatMap((row: unknown): ChatMessage[] => {
+    if (typeof row !== 'object' || row === null) {
+      return [];
+    }
+    const { id, role, content } = row as Record<string, unknown>;
+    if (typeof id !== 'string' || typeof content !== 'string') {
+      return [];
+    }
+    return [{ id, role: role === 'user' ? 'user' : 'assistant', content }];
+  });
 }
 
 /** Qué decirle cuando el servidor le cierra la puerta, según el motivo. */
@@ -73,6 +99,39 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
   // primera pregunta la crea en el servidor y aquí solo se guarda el id para
   // que las siguientes vayan a la misma y no abran una nueva cada vez.
   const recipeId = useRef<string | null>(null);
+  const [recipeTitle, setRecipeTitle] = useState<string | null>(null);
+
+  // Al cargar se recupera la receta abierta y su conversación. Sin esto, una
+  // recarga era una amnesia: el usuario veía el chat en blanco y el modelo
+  // volvía a preguntar los kilos y la humedad que ya le habían dicho.
+  useEffect(() => {
+    let vivo = true;
+
+    void fetch('/api/receta', { cache: 'no-store' })
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: StoredRecipe | null) => {
+        if (!vivo || data === null) {
+          return;
+        }
+        if (typeof data.recipeId === 'string' && data.recipeId !== '') {
+          recipeId.current = data.recipeId;
+        }
+        if (typeof data.title === 'string') {
+          setRecipeTitle(data.title);
+        }
+        const historial = parseHistory(data.messages);
+        if (historial.length > 0) {
+          setMessages(historial);
+        }
+      })
+      .catch(() => {
+        // Sin historial se empieza en blanco: molesto, no roto.
+      });
+
+    return () => {
+      vivo = false;
+    };
+  }, []);
 
   const send = useCallback(
     async (text: string, file: File | null): Promise<void> => {
@@ -233,5 +292,5 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
     [isThinking, messages, params],
   );
 
-  return { messages, isThinking, error, send };
+  return { messages, isThinking, error, recipeTitle, send };
 }
