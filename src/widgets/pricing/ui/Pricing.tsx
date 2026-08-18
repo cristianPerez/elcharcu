@@ -23,7 +23,7 @@ export function Pricing(): ReactNode {
   const yearly = priceFor(proPlan, 'anual');
 
   return (
-    <section id="precios" className="bg-grain bg-forest-dark py-20 text-cream md:py-28">
+    <section id="precios" className="bg-grain bg-forest-dark py-16 text-cream md:py-24">
       <Container>
         <div className="max-w-2xl">
           <Eyebrow className="text-sage">Planes</Eyebrow>
@@ -37,7 +37,7 @@ export function Pricing(): ReactNode {
           </p>
         </div>
 
-        <div className="mt-10">
+        <div className="mt-8">
           <BillingToggle
             cycle={cycle}
             onChange={setCycle}
@@ -46,13 +46,13 @@ export function Pricing(): ReactNode {
           />
         </div>
 
-        <div className="mt-10 grid items-start gap-6 md:grid-cols-3">
+        <div className="mt-8 grid items-start gap-6 md:grid-cols-3">
           {plans.map((plan) => (
             <PlanCard key={plan.id} plan={plan} cycle={cycle} href={appRoutes.start} />
           ))}
         </div>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-4 rounded-2xl border border-cream/15 p-6 md:flex-row md:items-center">
+        <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl border border-cream/15 p-6 md:flex-row md:items-center">
           <div>
             <p className="font-serif text-lg text-cream">
               ¿No quieres suscripción? Compra el curso suelto.

@@ -37,7 +37,7 @@ export function RecipeOverview({
           />
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 md:mt-10 md:grid-cols-3">
+        <div className="mt-6 grid grid-cols-2 gap-3 md:mt-8 md:grid-cols-3">
           {stats.map((stat) => (
             <StatChip key={stat.label} stat={stat} />
           ))}

@@ -82,7 +82,7 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
 
   return (
     <div>
-      <section className="bg-grain bg-forest py-6 text-cream md:py-7">
+      <section className="bg-grain bg-forest py-6 text-cream md:py-24">
         <Container>
           <div className="flex flex-wrap items-baseline gap-4">
             <Eyebrow className="text-sage">La Academia</Eyebrow>
@@ -135,7 +135,7 @@ export function RecipeSearch({ recipes }: RecipeSearchProps): ReactNode {
         </Container>
       </section>
 
-      <section className="bg-cream py-8 md:py-12">
+      <section className="bg-cream py-10 md:py-16">
         <Container>
           {filtered.length === 0 ? (
             <p className="text-sm text-cocoa/65">

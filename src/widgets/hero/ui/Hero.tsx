@@ -12,7 +12,7 @@ export function Hero(): ReactNode {
       id="inicio"
       className="bg-grain relative overflow-hidden bg-forest text-cream"
     >
-      <Container className="grid items-center gap-12 py-20 md:grid-cols-[1.3fr_1fr] md:py-28">
+      <Container className="grid items-center gap-12 py-20 md:grid-cols-[1.3fr_1fr] md:py-24">
         <div>
           <Eyebrow className="text-sage">Charcutería artesanal · {site.location}</Eyebrow>
 

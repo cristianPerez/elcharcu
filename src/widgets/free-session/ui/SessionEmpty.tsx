@@ -6,7 +6,7 @@ import { ButtonLink, Eyebrow } from '@/shared/ui';
 /** Llegó a la sesión sin haber hecho el onboarding. Lo devolvemos, sin regaño. */
 export function SessionEmpty(): ReactNode {
   return (
-    <div className="mx-auto max-w-md py-20 text-center">
+    <div className="mx-auto max-w-md py-16 text-center md:py-24">
       <Eyebrow className="justify-center text-terracota-dark">
         Todavía no hay receta
       </Eyebrow>

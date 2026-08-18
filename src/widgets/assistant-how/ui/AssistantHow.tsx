@@ -9,7 +9,7 @@ export function AssistantHow(): ReactNode {
   return (
     <section
       id="como-funciona"
-      className="bg-grain bg-forest-dark py-20 text-cream md:py-28"
+      className="bg-grain bg-forest-dark py-16 text-cream md:py-24"
     >
       <Container>
         <div className="max-w-2xl">
@@ -21,7 +21,7 @@ export function AssistantHow(): ReactNode {
           </h2>
         </div>
 
-        <ol className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+        <ol className="mt-8 grid gap-10 md:grid-cols-3 md:gap-8">
           {howSteps.map((step) => (
             <li key={step.number} className="border-t border-cream/15 pt-6">
               <span className="font-serif text-3xl text-terracota">{step.number}</span>

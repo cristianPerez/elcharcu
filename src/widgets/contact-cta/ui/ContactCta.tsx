@@ -6,7 +6,7 @@ import { Container, Eyebrow } from '@/shared/ui';
 /** Cierre de conversión: invitación a pedir por WhatsApp / Instagram. */
 export function ContactCta(): ReactNode {
   return (
-    <section id="contacto" className="bg-grain bg-forest py-20 text-cream md:py-28">
+    <section id="contacto" className="bg-grain bg-forest py-16 text-cream md:py-24">
       <Container>
         <div className="mx-auto max-w-2xl text-center">
           <Eyebrow className="text-sage">Contacto</Eyebrow>
@@ -19,7 +19,7 @@ export function ContactCta(): ReactNode {
           </p>
         </div>
 
-        <div className="mx-auto mt-12 grid max-w-2xl gap-4 sm:grid-cols-2">
+        <div className="mx-auto mt-8 grid max-w-2xl gap-4 sm:grid-cols-2">
           {contactChannels.map((channel) => (
             <a
               key={channel.label}

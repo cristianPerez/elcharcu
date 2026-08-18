@@ -44,7 +44,9 @@ export function FreeSession(): ReactNode {
   }, []);
 
   if (state.status === 'loading') {
-    return <div className="py-20 text-center text-sm text-cocoa/65">Abriendo…</div>;
+    return (
+      <div className="py-16 text-center text-sm text-cocoa/65 md:py-24">Abriendo…</div>
+    );
   }
 
   if (state.status === 'empty') {
@@ -55,7 +57,7 @@ export function FreeSession(): ReactNode {
   const recipe = curingProductName(profile.freeRecipe);
 
   return (
-    <Container className="py-10 md:py-16">
+    <Container className="py-16 md:py-24">
       <div className="mx-auto max-w-3xl">
         <h1 className="font-serif text-[32px] font-semibold leading-[1.1] text-forest md:text-4xl">
           {recipe}

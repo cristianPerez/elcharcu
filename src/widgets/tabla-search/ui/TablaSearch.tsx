@@ -55,7 +55,7 @@ export function TablaSearch({ tablas }: TablaSearchProps): ReactNode {
 
   return (
     <div>
-      <section className="bg-grain bg-forest py-12 text-cream md:py-16">
+      <section className="bg-grain bg-forest py-12 text-cream md:py-24">
         <Container>
           <Eyebrow className="text-sage">El Montaje</Eyebrow>
           <h1 className="mt-4 font-serif text-3xl font-semibold leading-tight md:text-4xl">
@@ -103,7 +103,7 @@ export function TablaSearch({ tablas }: TablaSearchProps): ReactNode {
         </Container>
       </section>
 
-      <section className="bg-cream py-8 md:py-12">
+      <section className="bg-cream py-10 md:py-16">
         <Container>
           {filtered.length === 0 ? (
             <p className="text-sm text-cocoa/65">
