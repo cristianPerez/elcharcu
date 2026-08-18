@@ -50,6 +50,10 @@ export const ANALYTICS_EVENTS = {
   upsellViewed: 'upsell_viewed',
   /** Aterrizó en la página de bienvenida tras comprar en Hotmart. */
   purchaseLanded: 'purchase_landed',
+  /** Abrió una receta guiada (curso + asistente). */
+  guidedRecipeViewed: 'guided_recipe_viewed',
+  /** Tocó la duda de un paso y se la mandó al asistente. */
+  guidedStepAsked: 'guided_step_asked',
   /**
    * El código de seguridad bloqueó una respuesta por proponer una dosis de sal
    * de cura por encima del tope. Si este evento sube, hay que revisar el prompt.

@@ -1,6 +1,6 @@
 'use client';
 
-import { type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
@@ -13,18 +13,41 @@ import { StarterPrompts } from './StarterPrompts';
 interface AssistantChatProps extends AssistantChatParams {
   /** `false` cuando se agotó el cupo de fotos del mes. Por defecto, se puede. */
   readonly canSendImages?: boolean;
+  /**
+   * Una pregunta que llega de fuera del chat — hoy, de los pasos de una receta
+   * guiada. Se manda sola en cuanto cambia, para que tocar la duda de un paso
+   * lleve directo a la respuesta sin escribir nada.
+   */
+  readonly pendingPrompt?: string | null;
 }
 
 /** El asistente de charcutería, atado a la receta que el usuario está haciendo. */
 export function AssistantChat({
   canSendImages = true,
+  pendingPrompt = null,
   ...params
 }: AssistantChatProps): ReactNode {
+  // `recipeTitle` no se pinta todavía: hoy el título ES la primera pregunta,
+  // así que una cabecera repetiría palabra por palabra el mensaje de abajo.
+  // Gana sentido en la lista de "Mis recetas", donde hay varias que distinguir.
   const { messages, isThinking, error, send } = useAssistantChat(params);
   const hasStarted = messages.length > 0;
 
+  // Se guarda la última pregunta que llegó de fuera para no reenviarla en cada
+  // render: sin esta guarda, un re-render cualquiera gastaría otra pregunta
+  // del cupo del usuario.
+  const lastExternal = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (pendingPrompt === null || pendingPrompt === lastExternal.current) {
+      return;
+    }
+    lastExternal.current = pendingPrompt;
+    void send(pendingPrompt, null);
+  }, [pendingPrompt, send]);
+
   return (
-    <section aria-label="Asistente de charcutería">
+    <section aria-label="El Charcu, tu maestro charcutero">
       {hasStarted ? null : (
         <StarterPrompts
           isDisabled={isThinking}
@@ -81,7 +104,7 @@ export function AssistantChat({
         }}
       >
         <summary className="cursor-pointer list-none text-xs text-cocoa/65 transition-colors hover:text-cocoa/70">
-          Cómo funciona la seguridad de este asistente
+          Cómo funciona la seguridad
           <span
             aria-hidden
             className="ml-1 inline-block transition-transform group-open:rotate-90"
@@ -90,8 +113,8 @@ export function AssistantChat({
           </span>
         </summary>
         <p className="mt-2 text-xs leading-relaxed text-cocoa/65">
-          El asistente acompaña tu criterio, no lo reemplaza. Nunca recomienda más de 2,5
-          g de sal de cura #1 por kilo, y ante un moho dudoso siempre dice descartar. La
+          El Charcu acompaña tu criterio, no lo reemplaza. Nunca recomienda más de 2,5 g
+          de sal de cura #1 por kilo, y ante un moho dudoso siempre dice descartar. La
           manipulación higiénica y la decisión final son tuyas.
         </p>
       </details>
