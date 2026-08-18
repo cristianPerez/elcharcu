@@ -1,7 +1,7 @@
 # ESTADO — El Charcu (plataforma)
 
 Memoria viva del proyecto. Se actualiza al cerrar cada etapa.
-Última actualización: 2026-08-15
+Última actualización: 2026-08-18
 
 ---
 
@@ -42,7 +42,8 @@ Verificado en el repo el 2026-08-04:
 | Arquitectura FSD | ✅ `app → views → widgets → features → entities → shared`, con ESLint que la vigila |
 | Calidad          | ✅ ESLint + Prettier + Husky (pre-commit con `type-check`)                          |
 | Analítica        | ✅ Mixpanel (`NEXT_PUBLIC_MIXPANEL_TOKEN` ya configurado)                           |
-| Sitio público    | ✅ `/`, `/recetas`, `/recetas/[slug]`, `/tablas`, `/tablas/[slug]`                  |
+| Sitio público    | ✅ `/`, `/recetas`, `/recetas/[slug]`, `/tablas`, `/tablas/[slug]`, `/tienda`       |
+| Receta guiada    | 🧪 `/curso/bondiola-curada` — experimento, una sola receta, videos todavía no       |
 
 **Tokens de marca ya disponibles como clases Tailwind:**
 `forest` (#2D4A3E) · `terracota` (#C17A5A) · `cream` (#F4F1EB) · `sage` (#7A9E8E) ·
@@ -117,24 +118,34 @@ No se empieza por el chat.
       cookie `httpOnly` (`elcharcu_vid`); al entrar con su correo, sus contadores se
       atan a la cuenta. El perfil (país y nivel) se guarda en `charcu.profiles` cuando
       hay cuenta. Probado de punta a punta contra la base real.
-      Pendiente de este bloque: **las sesiones de receta siguen en el navegador**, y se
-      quedan así a propósito — eran la unidad del modelo viejo (D15 las jubiló).
+      Las recetas viven en `charcu.recipes` (2026-08-15) y la conversación de texto
+      en `charcu.chat_messages` (2026-08-18). Ya no dependen del navegador.
 - [x] **5. Asistente con Gemini** — chat por receta, foto para diagnóstico de moho, y
       doble barrera de seguridad (prompt + revisión en código antes de mostrar). Probado
       contra la API real: dosis correcta, negativa ante 8 g/kg, y veredicto "descartar"
-      con foto de moho verde. La conversación todavía NO se guarda: vive en la pantalla.
+      con foto de moho verde. El texto de la conversación ya se guarda; las fotos, no.
 - [ ] **4c. Muro fusionado + cuenta al 3er mensaje.** Hoy son DOS interrupciones
       en el primer minuto: el muro blando (nombre/correo/WhatsApp) en la pregunta
       1 y, si se pide cuenta después, otra. Se fusionan en una sola en el mensaje
       3 — el mismo formulario, que además crea la cuenta con el enlace al correo.
-      🔴 **BLOQUEADO por el SMTP propio**: hoy el correo de entrada es el de
-      prueba de Supabase (pocos envíos por hora). Si la cuenta se vuelve
-      obligatoria en el mensaje 3, ese correo pasa a ser el cuello de botella de
-      TODO el embudo. Cristian está creando la cuenta de Resend.
-- [ ] **5b. Guardar la conversación** en `charcu.chat_messages` y las fotos en Storage.
-      Va junto con el 4b, porque las dos cosas necesitan la sesión del usuario.
+      El SMTP propio ya no bloquea (Resend conectado el 2026-08-15). Falta
+      construir la fusión.
+- [x] **5b. Guardar la conversación** en `charcu.chat_messages` (2026-08-18). Cada
+      intercambio se escribe al responder —incluida la respuesta corregida si el
+      candado de dosis bloqueó la original— y al recargar GET `/api/receta` recupera
+      la receta abierta y el historial. El modelo deja de preguntar otra vez los
+      kilos y la humedad.
+      ⚠️ **Las FOTOS todavía no se guardan.** Guardar imágenes de la cocina de
+      alguien es dato personal, cuesta almacenamiento y hay que decidir cuánto
+      tiempo se conservan. Pendiente de que Cristian lo decida. Por ahora se
+      apunta que hubo foto, no la foto.
 - [ ] **6. Mini-cursos** en video (Bunny) con puerta libre/pago. El video se sirve con
       URL firmada: la app decide quién puede verlo, no Bunny.
+      Mientras tanto hay un **experimento** (2026-08-18): `/curso/bondiola-curada`
+      pone los pasos y el asistente en la misma pantalla. Cada paso trae la duda
+      de siempre ya escrita, lista para mandársela al Charcu. Los videos todavía
+      no existen (portada + "Video en camino"). Si funciona, esto pasa a leerse
+      de la base como el resto.
 - [ ] **7. Pagos reales** (Hotmart + webhook, D17). Tres cosas que hay que resolver sí o
       sí: emparejar la compra con el usuario de Supabase, atender el reembolso/chargeback
       para cortar el acceso, y no confiar en el correo del comprador a ciegas.
@@ -284,7 +295,9 @@ texto pesaba igual.
       zoom automático de iOS), muere el eyebrow en mayúsculas, el aviso de
       seguridad se pliega en un `details`.
 - [ ] **Capa 3 — precios.** La sección sigue sobre `forest-dark` y NO se ha
-      revisado con los tokens nuevos. Es lo siguiente.
+      revisado con los tokens nuevos ni pasó por el revisor visual. El 2026-08-18
+      se alineó el ritmo vertical (`py-16 md:py-24`) aquí y en el resto de
+      secciones, pero eso no cierra la capa.
 - [ ] **Capa 4 — tipografía.** Escala aplicada solo en el asistente; falta el
       resto del sitio.
 - [ ] **Capa 5 — movimiento.** No hay ni una animación y **no hay librería
@@ -405,11 +418,14 @@ desde la base real en `src/shared/api/supabase/database.types.ts`.
 2. ✅ **RESUELTO (2026-08-15): Resend conectado al dominio.** `RESEND_API_KEY` y
    `RESEND_FROM` ya están en `.env.local`. Se acabó el límite de unos pocos envíos
    por hora del correo de prueba de Supabase.
-3. ✅ **Plantilla de correo propia**: `supabase/templates/magic-link.html`, con la
-   paleta de El Charcu y probada a 375px. Hay que **pegarla a mano** en Supabase
-   (Authentication → Email Templates → Magic Link); no se despliega desde el repo.
-   Faltan por hacer las otras plantillas (Confirm signup, Change email, Recovery),
-   que siguen en inglés por defecto.
+3. ✅ **Plantillas de correo propias** (2026-08-15): `magic-link.html`,
+   `confirm-signup.html` y `change-email.html` en `supabase/templates/`. Hay que
+   **pegarlas a mano** en Supabase (Authentication → Email Templates); no se
+   despliegan desde el repo. No hay Reset Password: aquí no hay contraseñas.
+   ⚠️ La importante es **Confirm signup**, no Magic Link: la app usa
+   `signInWithOtp` sin `shouldCreateUser: false`, y a un correo nuevo Supabase
+   le manda esa. Si en el panel sigue el inglés por defecto, el correo feo se
+   lo lleva justo la persona que estamos intentando convertir.
 4. **`site_url` sigue en `http://localhost:3000`.** Hay que cambiarlo al dominio real
    antes de publicar, o los enlaces del correo llevarán al vacío.
 
