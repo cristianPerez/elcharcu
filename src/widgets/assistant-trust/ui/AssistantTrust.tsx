@@ -28,7 +28,7 @@ const differences: readonly Difference[] = [
 /** La objeción "está gratis en YouTube" + el bloque de seguridad alimentaria. */
 export function AssistantTrust(): ReactNode {
   return (
-    <section id="confianza" className="bg-cream py-20 md:py-28">
+    <section id="confianza" className="bg-cream py-16 md:py-24">
       <Container>
         <div className="max-w-3xl">
           <Eyebrow className="text-terracota">Por qué pagar por esto</Eyebrow>
@@ -42,7 +42,7 @@ export function AssistantTrust(): ReactNode {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-8 md:grid-cols-3">
+        <div className="mt-8 grid gap-8 md:grid-cols-3">
           {differences.map((item) => (
             <div key={item.title} className="border-t border-cocoa/15 pt-6">
               <h3 className="font-serif text-xl font-semibold text-forest">
@@ -55,7 +55,7 @@ export function AssistantTrust(): ReactNode {
           ))}
         </div>
 
-        <div className="bg-grain mt-16 rounded-3xl bg-forest p-8 text-cream md:p-12">
+        <div className="bg-grain mt-8 rounded-3xl bg-forest p-8 text-cream md:p-12">
           <Eyebrow className="text-sage">Seguridad primero</Eyebrow>
           <h3 className="mt-5 max-w-2xl font-serif text-2xl font-semibold leading-tight md:text-3xl">
             La regla que no se negocia: que nadie se enferme.
@@ -86,7 +86,7 @@ export function AssistantTrust(): ReactNode {
           </ul>
 
           <p className="mt-8 border-t border-cream/15 pt-6 text-xs leading-relaxed text-cream/75">
-            El asistente acompaña tu criterio, no lo reemplaza. Sigue siendo tu
+            El Charcu acompaña tu criterio, no lo reemplaza. Sigue siendo tu
             responsabilidad manipular la carne con higiene y descartar lo que no te dé
             confianza.
           </p>

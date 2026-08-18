@@ -59,7 +59,7 @@ export function AssistantHero(): ReactNode {
 
   return (
     <>
-      <section className="bg-cream py-8 md:py-14">
+      <section className="bg-cream py-10 md:py-16">
         <Container>
           <div className="mx-auto max-w-3xl">
             <h1 className="font-serif text-[32px] font-semibold leading-[1.1] text-forest md:text-5xl">

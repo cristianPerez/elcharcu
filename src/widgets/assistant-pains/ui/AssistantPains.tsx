@@ -9,7 +9,7 @@ import { PainCard } from './PainCard';
 /** Lo que el asistente resuelve, dicho con las palabras del que cura. */
 export function AssistantPains(): ReactNode {
   return (
-    <section id="dudas" className="bg-cream py-20 md:py-28">
+    <section id="dudas" className="bg-cream py-16 md:py-24">
       <Container>
         <div className="max-w-2xl">
           <Eyebrow className="text-terracota">Las dudas de siempre</Eyebrow>
@@ -20,13 +20,13 @@ export function AssistantPains(): ReactNode {
           </h2>
         </div>
 
-        <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {pains.map((pain) => (
             <PainCard key={pain.id} pain={pain} />
           ))}
         </div>
 
-        <p className="mt-10 max-w-3xl text-sm leading-relaxed text-cocoa/65">
+        <p className="mt-8 max-w-3xl text-sm leading-relaxed text-cocoa/65">
           También: ajustes por humedad y temporada de tu región, qué hacer si no tienes
           embutidora ni tripa, curar fuera de temporada, atados y tripas que se revientan,
           superficie pegajosa.

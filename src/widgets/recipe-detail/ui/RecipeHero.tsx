@@ -12,7 +12,7 @@ interface RecipeHeroProps {
 /** Cabecera de la receta: volver a Recetas, eyebrow, título y subtítulo. */
 export function RecipeHero({ eyebrow, name, subtitle }: RecipeHeroProps): ReactNode {
   return (
-    <section className="bg-grain bg-forest py-12 text-cream md:py-20">
+    <section className="bg-grain bg-forest py-12 text-cream md:py-24">
       <Container>
         <Link
           href="/recetas"

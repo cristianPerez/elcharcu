@@ -8,7 +8,7 @@ import { appCourses } from '../model/courses';
 /** Los mini-cursos en video, conectados con el asistente. */
 export function AssistantCourses(): ReactNode {
   return (
-    <section id="cursos" className="bg-cream py-20 md:py-28">
+    <section id="cursos" className="bg-cream py-16 md:py-24">
       <Container className="grid gap-14 md:grid-cols-[0.85fr_1.15fr] md:gap-20">
         <div>
           <Eyebrow className="text-terracota">Mini-cursos en video</Eyebrow>

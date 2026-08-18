@@ -5,7 +5,7 @@ import { Container } from '@/shared/ui';
 /** Declaración de filosofía de marca. */
 export function BrandQuote(): ReactNode {
   return (
-    <section className="bg-cream py-20 text-cocoa md:py-24">
+    <section className="bg-cream py-16 text-cocoa md:py-24">
       <Container>
         <figure className="mx-auto max-w-3xl text-center">
           <span aria-hidden className="font-serif text-6xl text-terracota/40">

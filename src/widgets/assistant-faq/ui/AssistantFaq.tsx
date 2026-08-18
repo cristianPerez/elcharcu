@@ -7,7 +7,7 @@ import { faqItems } from '../model/faq';
 /** Preguntas frecuentes. `<details>` nativo: accesible y sin JavaScript. */
 export function AssistantFaq(): ReactNode {
   return (
-    <section id="preguntas" className="bg-cream py-20 md:py-28">
+    <section id="preguntas" className="bg-cream py-16 md:py-24">
       <Container className="grid gap-12 md:grid-cols-[0.7fr_1.3fr] md:gap-20">
         <div>
           <Eyebrow className="text-terracota">Preguntas</Eyebrow>

@@ -21,7 +21,7 @@ interface PaywallProps {
 
 export function Paywall({ source }: PaywallProps): ReactNode {
   return (
-    <Container className="py-14 md:py-20">
+    <Container className="py-16 md:py-24">
       <UpsellTracker source={source} />
       <div className="max-w-2xl">
         <Eyebrow className="text-terracota-dark">El Charcu Pro</Eyebrow>
@@ -39,7 +39,7 @@ export function Paywall({ source }: PaywallProps): ReactNode {
         <QuotaWallPlans />
       </div>
 
-      <div className="mt-10 flex flex-col items-start justify-between gap-4 rounded-2xl border border-cocoa/10 p-6 md:flex-row md:items-center">
+      <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl border border-cocoa/10 p-6 md:flex-row md:items-center">
         <div>
           <p className="font-serif text-lg text-forest">
             ¿No quieres suscripción? Compra el curso suelto.

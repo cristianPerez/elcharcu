@@ -47,7 +47,7 @@ export function PurchaseWelcome(): ReactNode {
   }, []);
 
   return (
-    <Container className="py-14 md:py-20">
+    <Container className="py-16 md:py-24">
       <div className="mx-auto max-w-xl">
         <p className="text-sm font-medium text-terracota-dark">Pago recibido</p>
 

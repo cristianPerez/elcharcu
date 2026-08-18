@@ -56,7 +56,7 @@ export function SiteFooter(): ReactNode {
           </nav>
         </div>
 
-        <div className="mt-14 border-t border-cream/10 pt-6 text-center text-xs text-cream/75">
+        <div className="mt-8 border-t border-cream/10 pt-6 text-center text-xs text-cream/75">
           © {year} {site.name}. Todos los derechos reservados.
         </div>
       </Container>
