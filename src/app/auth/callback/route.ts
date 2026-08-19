@@ -18,6 +18,20 @@ function isEmailOtpType(value: string | null): value is EmailOtpType {
 }
 
 /**
+ * A dónde se le manda después de entrar.
+ *
+ * Solo rutas de esta casa. `next` viene de un enlace que llegó por correo, y
+ * pegarlo tal cual detrás del origen convierte `//otro-sitio.co` en un redirect
+ * fuera del dominio — con la sesión recién creada, que es lo peor posible.
+ */
+function safeNext(value: string | null): string {
+  if (value === null || !value.startsWith('/') || value.startsWith('//')) {
+    return appRoutes.appAssistant;
+  }
+  return value;
+}
+
+/**
  * Aterrizaje del enlace del correo.
  *
  * Acepta las DOS formas en que Supabase puede devolver al usuario, porque
@@ -29,7 +43,7 @@ function isEmailOtpType(value: string | null): value is EmailOtpType {
  */
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const { searchParams, origin } = new URL(request.url);
-  const next = searchParams.get('next') ?? appRoutes.session;
+  const next = safeNext(searchParams.get('next'));
 
   const code = searchParams.get('code');
   const tokenHash = searchParams.get('token_hash');

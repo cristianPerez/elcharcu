@@ -11,7 +11,6 @@ import { submitLead } from '../lib/submitLead';
 interface LeadCaptureModalProps {
   /** Preguntas que gana al dejar el correo. Lo dice la base, no la pantalla. */
   readonly questionsLimit: number;
-  readonly onSuccess: () => void;
 }
 
 /**
@@ -25,15 +24,17 @@ interface LeadCaptureModalProps {
  * crea la cuenta: guarda el lead y manda el enlace de entrada. Nombre y
  * WhatsApp se piden después, cuando haya algo que dar a cambio.
  *
- * ⚠️ Se pide validar el correo para seguir (decisión de Cristian, 2026-08-15).
- * Si algún día la espera del correo resulta cara en conversión, el cambio es
- * llamar a `onSuccess()` justo tras enviar el enlace en vez de esperar: se
- * sigue chateando y el enlace solo sirve para guardar las recetas.
+ * ⚠️ BLOQUEA: hay que abrir el enlace del correo para seguir preguntando
+ * (decisión de Cristian, 2026-08-19). No se cierra solo — lo retira la sesión
+ * cuando aparece, que es lo único que prueba que la cuenta existe. Antes se
+ * cerraba en cuanto se enviaba el correo, así que ni siquiera se llegaba a ver
+ * el aviso de "míralo en spam".
+ *
+ * La conversación anterior NO se recupera si abre el enlace en otro
+ * dispositivo: la receta anónima cuelga de la cookie de este navegador. Es
+ * consciente y aceptado para el lanzamiento — se entra a un chat limpio.
  */
-export function LeadCaptureModal({
-  questionsLimit,
-  onSuccess,
-}: LeadCaptureModalProps): ReactNode {
+export function LeadCaptureModal({ questionsLimit }: LeadCaptureModalProps): ReactNode {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [phase, setPhase] = useState<'form' | 'sending' | 'sent'>('form');
@@ -64,9 +65,18 @@ export function LeadCaptureModal({
     track(ANALYTICS_EVENTS.leadCaptured, { step: 'correo' });
 
     const sent = await sendAccountLink(clean);
-    setPhase('sent');
     track(ANALYTICS_EVENTS.accountLinkSent, { delivered: sent });
-    onSuccess();
+
+    if (!sent) {
+      // El lead ya está guardado, así que el contacto no se pierde; lo que
+      // falta es el enlace. Decirlo, en vez de dejarlo esperando un correo que
+      // no va a llegar nunca.
+      setError('No pudimos mandarte el enlace. Revisa el correo e inténtalo otra vez.');
+      setPhase('form');
+      return;
+    }
+
+    setPhase('sent');
   };
 
   return (
@@ -78,10 +88,20 @@ export function LeadCaptureModal({
               Te mandamos un enlace
             </h2>
             <p className="mt-3 text-base leading-relaxed text-cocoa/70">
-              Ábrelo desde este mismo celular y sigues donde ibas, con tus recetas
-              guardadas. Si no llega en un minuto, mira en spam.
+              Ábrelo{' '}
+              <strong className="font-medium text-cocoa">en este mismo aparato</strong> y
+              entras directo a seguir preguntando. Si no llega en un minuto, mira en spam.
             </p>
             <p className="mt-4 text-sm font-medium text-cocoa">{email.trim()}</p>
+            <button
+              type="button"
+              onClick={() => {
+                setPhase('form');
+              }}
+              className="mt-6 text-sm font-medium text-terracota-dark underline underline-offset-4 hover:text-terracota"
+            >
+              Usar otro correo
+            </button>
           </>
         ) : (
           <>
@@ -90,7 +110,7 @@ export function LeadCaptureModal({
             </h2>
             <p className="mt-3 text-base leading-relaxed text-cocoa/70">
               Déjanos tu correo y sigues con {questionsLimit} preguntas al mes, gratis.
-              Sin contraseña: te mandamos un enlace y listo.
+              Sin contraseña: te mandamos un enlace, lo abres y listo.
             </p>
 
             <form
