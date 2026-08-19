@@ -4,3 +4,6 @@ export { ButtonLink } from './ButtonLink';
 export { Logo } from './Logo';
 export { SearchBar } from './SearchBar';
 export { OptionTile } from './OptionTile';
+export { Reveal } from './Reveal';
+export { IconCourses, IconCharcu, IconAccount, IconChevron } from './icons';
+export type { IconProps } from './icons';

@@ -124,12 +124,20 @@ No se empieza por el chat.
       doble barrera de seguridad (prompt + revisión en código antes de mostrar). Probado
       contra la API real: dosis correcta, negativa ante 8 g/kg, y veredicto "descartar"
       con foto de moho verde. El texto de la conversación ya se guarda; las fotos, no.
-- [ ] **4c. Muro fusionado + cuenta al 3er mensaje.** Hoy son DOS interrupciones
-      en el primer minuto: el muro blando (nombre/correo/WhatsApp) en la pregunta
-      1 y, si se pide cuenta después, otra. Se fusionan en una sola en el mensaje
-      3 — el mismo formulario, que además crea la cuenta con el enlace al correo.
-      El SMTP propio ya no bloquea (Resend conectado el 2026-08-15). Falta
-      construir la fusión.
+- [x] **4c. Muro fusionado: una pregunta gratis y a entrar** (2026-08-19). Las dos
+      interrupciones son ahora una sola pantalla que guarda el lead y manda el enlace
+      de entrada en el mismo envío. Y **bloquea**: no se cierra al mandar el correo,
+      la retira la sesión cuando aparece (`useAccountSession` mira Supabase, ya no
+      una marca en `localStorage` — quien vuelve por el enlace entra sin volver a
+      ver el muro). Si el envío falla se dice, en vez de dejarlo esperando.
+      El enlace vuelve a la portada (`?next=/`), que es donde vive el asistente;
+      antes caía en `/asistente/sesion`. El `next` se valida: solo rutas de casa.
+      ⚠️ **La conversación anterior NO se recupera si abre el enlace en otro
+      aparato.** La receta anónima cuelga de la cookie del navegador donde
+      preguntó. Decisión de Cristian (2026-08-19): para lanzar basta con que entre
+      y siga el flujo normal, aunque sea a un chat limpio. La pantalla se lo dice
+      ("ábrelo en este mismo aparato"). Emparejar por el correo del lead queda
+      escrito abajo como mejora, no como bloqueo.
 - [x] **5b. Guardar la conversación** en `charcu.chat_messages` (2026-08-18). Cada
       intercambio se escribe al responder —incluida la respuesta corregida si el
       candado de dosis bloqueó la original— y al recargar GET `/api/receta` recupera
@@ -139,6 +147,58 @@ No se empieza por el chat.
       alguien es dato personal, cuesta almacenamiento y hay que decidir cuánto
       tiempo se conservan. Pendiente de que Cristian lo decida. Por ahora se
       apunta que hubo foto, no la foto.
+- [x] **4d. La APP de quien ya entró** (2026-08-19). Tras validar el correo se cae
+      dentro de la app, no en la web de venta: tres pestañas abajo, como una app de
+      celular —**Mis cursos · El Charcu · Mi cuenta**, con El Charcu EN EL CENTRO
+      porque es el producto y ahí cae el pulgar. Rutas `/cursos`, `/charcu`,
+      `/cuenta` bajo el grupo `src/app/(app)`, y el candado vive en **el layout**:
+      sin sesión, `redirect('/entrar')` antes de pintar nada (comprobado: las tres
+      devuelven 307). Se usa `getUser()`, no `getSession()`, que se fía de la cookie.
+      El marco es `widgets/app-frame`: `max-w-md` en cualquier pantalla y barra
+      inferior con `env(safe-area-inset-bottom)`, para que en un iPhone el último
+      botón no quede bajo la raya de gestos.
+      **Colores de El Charcu, no los de Manos Creadoras**: se copió la ESTRUCTURA
+      (marco de ancho de móvil, barra de 3 pestañas, entrada escalonada de las
+      tarjetas) y se dejó fuera el tema oscuro dorado. Aquí es crema sobre blanco
+      con terracota como único resalte, que es lo que ya dice la Guía de Marca.
+      Sin librerías nuevas: la animación es CSS (`.reveal` en `globals.css`) y los
+      3 iconos son SVG dibujados a mano en `shared/ui/icons.tsx` — no se instaló
+      `lucide` ni `motion` para eso.
+      ⚠️ **Mis cursos está casi vacío a propósito**: una sola receta guiada y tres
+      títulos apagados marcados "grabando". No hay videos que enseñar (paso 6) y
+      rellenar la pantalla con tarjetas falsas se paga en confianza.
+      ⚠️ **Falta pasarla por el revisor visual.**
+- [ ] **4e. Arreglar la portada ahora que la app existe** (escrito el 2026-08-19, sin
+      ejecutar). Desde que hay app de verdad, `/` quedó descolocada. Tres cosas: 1. **"Entrar" no debe aparecer si ya hay sesión.** Hoy el menú lo enseña
+      siempre (`navItems` en `src/shared/config/site.ts:73`, lista fija que no
+      sabe nada del usuario). Con sesión abierta ese enlace debe ser **"Entrar a
+      la app"** y llevar a `/charcu`. Pedirle entrar a quien ya entró es decirle
+      que no lo reconocemos. Ojo al hacerlo: `navItems` es una constante y el
+      encabezado se pinta en el servidor — o el menú pasa a leer la sesión, o el
+      enlace se decide en el widget del encabezado. No vale un `useEffect` que
+      cambie el texto después, porque parpadea. 2. **La portada tiene que ADELGAZAR.** Ya no es el producto: es el anzuelo.
+      Su único trabajo es que un desconocido pruebe el asistente y se suscriba.
+      Todo lo que no empuje a eso —secciones de más, repeticiones del mismo
+      argumento, contenido que ya vive en `/recetas`, `/tablas` y `/tienda`— se
+      va o se acorta. Hoy carga el chat entero, y el chat abajo del todo no
+      convierte a nadie. 3. Decidir a dónde va `/` para quien ya tiene sesión: ¿la ve igual, o se le
+      manda derecho a `/charcu`? Mandarlo derecho es lo cómodo, pero deja al
+      usuario sin forma de volver a ver los precios para mejorar de plan.
+- [ ] **4f. Qué hacemos con las recetas gratuitas** (pregunta abierta de Cristian,
+      2026-08-19 — **decidir antes de tocar nada**). Hoy `/recetas` y `/tablas` son
+      públicas y abiertas: es el contenido que trae gente por buscador, y es también
+      lo que se puede leer sin dar nada a cambio.
+      La idea sobre la mesa es **pedir el correo** para ver la receta completa. A
+      favor: son visitas con intención real —quien busca "cuánta sal de cura" está a
+      un paso de necesitar al asistente— y el correo es el activo que hoy no estamos
+      cogiendo. En contra: un muro delante del contenido **hunde el SEO** (Google ve
+      lo mismo que el visitante) y esas páginas son la puerta de entrada gratis de
+      todo el sitio; taparlas es cortar la rama en la que se está sentado.
+      La vía de en medio, si se quiere probar sin romper: dejar la receta entera
+      abierta y pedir el correo solo por **lo que se lleva a la cocina** — la tabla
+      de dosis descargable, el recordatorio de los días de curado, la receta en PDF.
+      Se da valor a cambio del dato en vez de esconder lo que ya estaba.
+      **Sin decidir. No se ha ejecutado nada.**
 - [ ] **6. Mini-cursos** en video (Bunny) con puerta libre/pago. El video se sirve con
       URL firmada: la app decide quién puede verlo, no Bunny.
       Mientras tanto hay un **experimento** (2026-08-18): `/curso/bondiola-curada`
@@ -155,7 +215,12 @@ No se empieza por el chat.
 
 ## 💰 Tope de gasto de la IA (hecho el 2026-08-05)
 
-`AI_DAILY_BUDGET_USD` (hoy en **5 USD**) ya frena de verdad las llamadas a Gemini.
+`AI_DAILY_BUDGET_USD` (hoy en **2 USD**) ya frena de verdad las llamadas a Gemini.
+
+⚠️ **Bajado de 5 a 2 USD el 2026-08-19** por decisión de Cristian, mientras esto es
+pruebas. Son ~360 preguntas al día: de sobra para probar, y si algo se desboca el
+agujero es de 2 dólares. **Hay que subirlo antes de abrirlo a gente de verdad**, o el
+asistente se queda mudo a media tarde.
 
 **Cómo funciona.** Antes de cada llamada se mira cuánto se lleva gastado hoy; si se
 pasó del tope, se corta y ni se llama a Google. Después de cada respuesta se apunta
@@ -170,7 +235,7 @@ reinicia solo y un contador en memoria se borraría con él.
 | Entrada (prompt)       | ~830            | a 0,75 USD el millón                         |
 | **Pensamiento**        | **~950**        | se cobra como salida — es el gasto principal |
 | Respuesta              | ~360            | a 3,75 USD el millón                         |
-| **Coste por pregunta** | **~0,0055 USD** | ≈ **900 preguntas al día** con 5 USD         |
+| **Coste por pregunta** | **~0,0055 USD** | ≈ **360 preguntas al día** con 2 USD         |
 
 Lo llamativo: **el modelo gasta más pensando que respondiendo** (950 contra 360), y
 eso se cobra a precio de salida. Es donde está el dinero.
@@ -459,12 +524,17 @@ desde la base real en `src/shared/api/supabase/database.types.ts`.
   `/api/asistente` descuenta el cupo ANTES de llamar a Gemini; sin cupo devuelve 402 y
   no hay respuesta, por más que alguien llame a la ruta a mano. Si Gemini falla, la
   pregunta **se devuelve** (`charcu.refund_quota`): no se cobra por un error nuestro.
-- ⚠️ **Queda una vía para estirar el cupo gratis: borrar las cookies.** El visitante
-  anónimo es una cookie `httpOnly`; quien la borre estrena 8 preguntas. Se cierra del
-  todo solo pidiendo cuenta para preguntar, que es justo lo contrario de D14. Mientras
-  tanto el freno real del bolsillo sigue siendo `AI_DAILY_BUDGET_USD`, que es global.
-  En cuanto el visitante entra con su correo, el cupo pasa a contarse por cuenta y
-  borrar cookies deja de servir.
+- ⚠️ **Queda una vía para estirar el cupo gratis: borrar las cookies.** Desde el
+  2026-08-19 el daño está acotado: sin cuenta solo se contesta **1 pregunta**, así que
+  borrar cookies regala una pregunta cada vez (~0,0055 USD), no ocho. El freno real del
+  bolsillo sigue siendo `AI_DAILY_BUDGET_USD`, que es global. En cuanto entra con su
+  correo, el cupo se cuenta por cuenta y borrar cookies deja de servir.
+  🔜 **Pendiente, no bloqueante para el lanzamiento:** medir si alguien lo está
+  haciendo de verdad. La idea es cruzar `visitor_id` contra señales de sesión —muchos
+  visitantes nuevos seguidos con el mismo patrón, o el mismo correo apareciendo con
+  varios `visitor_id`— y sacar un número antes de decidir si hay que cerrarlo. Hoy no
+  hay ninguna medición: no sabemos si el fraude existe. Primero se mide, después se
+  gasta trabajo en tapar.
 - ⚠️ **El muro todavía no cobra.** Los botones de los planes abren WhatsApp con el plan
   escrito, que es por donde El Charcu ya vende hoy. Sirve para vender desde ya, pero
   hay que atender esos mensajes a mano. Se reemplaza por el checkout de Mercado Pago en

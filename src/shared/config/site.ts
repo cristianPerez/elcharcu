@@ -44,6 +44,15 @@ export const appRoutes = {
   subscription: '/asistente/suscripcion',
   login: '/entrar',
   /**
+   * La APP de quien ya entró: tres pestañas abajo, como una app del celular.
+   * El Charcu va en el centro porque es el producto; los cursos a la izquierda
+   * porque es lo primero que se mira al llegar, y la cuenta a la derecha, que
+   * es donde todo el mundo la busca.
+   */
+  appCourses: '/cursos',
+  appAssistant: '/charcu',
+  appAccount: '/cuenta',
+  /**
    * Receta guiada (EXPERIMENTAL): el curso y el maestro en la misma pantalla.
    * Hoy solo existe una, así que la ruta apunta directo a ella.
    */
