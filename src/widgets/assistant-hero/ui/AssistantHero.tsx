@@ -3,7 +3,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
 import { AssistantChat } from '@/features/assistant-chat';
-import { isLeadCaptured, LeadCaptureModal } from '@/features/lead-capture';
+import { LeadCaptureModal, useAccountSession } from '@/features/lead-capture';
 import { QuotaWall } from '@/features/quota-wall';
 
 import { QUESTIONS_BEFORE_LEAD, useUsageQuota } from '@/entities/usage-quota';
@@ -19,22 +19,27 @@ import { Container } from '@/shared/ui';
  * menos se veía.
  *
  * Dos muros, en este orden:
- *   1. Tras la primera pregunta, el muro blando de captura (9c).
+ *   1. Tras la primera pregunta, la cuenta — y es BLOQUEANTE (2026-08-19).
+ *      La demostración es gratis; a partir de ahí hay que entrar.
  *   2. Al agotar las preguntas del mes, el muro de suscripción (9e).
+ *
+ * Lo que decide el primero es la SESIÓN, no una marca en `localStorage`: quien
+ * vuelve por el enlace del correo llega con sesión y el muro se retira solo.
  */
 export function AssistantHero(): ReactNode {
   const { quota, status, isKnown } = useUsageQuota();
+  const { isSignedIn, isReady: isSessionReady } = useAccountSession();
   const [showLeadCapture, setShowLeadCapture] = useState(false);
-  const [hasLead, setHasLead] = useState(true);
+
+  const needsAccount =
+    isKnown &&
+    isSessionReady &&
+    !isSignedIn &&
+    quota.questionsUsed >= QUESTIONS_BEFORE_LEAD;
 
   useEffect(() => {
-    setHasLead(isLeadCaptured());
-  }, []);
-
-  const needsLead = isKnown && !hasLead && quota.questionsUsed >= QUESTIONS_BEFORE_LEAD;
-
-  useEffect(() => {
-    if (!needsLead) {
+    if (!needsAccount) {
+      setShowLeadCapture(false);
       return undefined;
     }
 
@@ -45,12 +50,7 @@ export function AssistantHero(): ReactNode {
     return () => {
       clearTimeout(timer);
     };
-  }, [needsLead]);
-
-  const handleLeadCaptured = (): void => {
-    setShowLeadCapture(false);
-    setHasLead(true);
-  };
+  }, [needsAccount]);
 
   // Solo se levanta el muro si SABEMOS que se acabó el cupo. Si no se pudo
   // leer, se deja pasar: quien de verdad protege el bolsillo es el tope diario
@@ -98,10 +98,7 @@ export function AssistantHero(): ReactNode {
       </section>
 
       {showLeadCapture && !isWalled ? (
-        <LeadCaptureModal
-          questionsLimit={quota.questionsLimit}
-          onSuccess={handleLeadCaptured}
-        />
+        <LeadCaptureModal questionsLimit={quota.questionsLimit} />
       ) : null}
     </>
   );

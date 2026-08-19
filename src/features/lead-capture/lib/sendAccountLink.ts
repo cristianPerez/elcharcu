@@ -18,7 +18,11 @@ export async function sendAccountLink(email: string): Promise<boolean> {
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      // Cae dentro de la app, en la pestaña de El Charcu. Sin `next` el
+      // callback lo mandaba a `/asistente/sesion`, que es del embudo viejo.
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=%2Fcharcu`,
+      },
     });
     return error === null;
   } catch {

@@ -44,7 +44,10 @@ export function useEmailAuth(): EmailAuthController {
     const supabase = createSupabaseBrowserClient();
     const { error } = await supabase.auth.signInWithOtp({
       email: trimmed,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      // Quien entra por `/entrar` también cae dentro de la app.
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=%2Fcharcu`,
+      },
     });
 
     if (error) {

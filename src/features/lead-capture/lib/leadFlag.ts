@@ -1,14 +1,12 @@
 const LEAD_FLAG_KEY = 'elcharcu:lead-captured';
 
-/** ¿Este navegador ya dejó nombre, correo y WhatsApp? */
-export function isLeadCaptured(): boolean {
-  if (typeof window === 'undefined') {
-    return false;
-  }
-  return localStorage.getItem(LEAD_FLAG_KEY) === 'true';
-}
-
-/** Marca que ya dejó los datos, para no volver a pedirlos. */
+/**
+ * Marca que este navegador ya dejó el correo.
+ *
+ * Ya NO decide el muro —eso lo decide la sesión, ver `useAccountSession`—;
+ * queda como rastro para depurar y para medir cuántos se quedan a medio camino
+ * entre dejar el correo y abrir el enlace.
+ */
 export function markLeadCaptured(): void {
   if (typeof window === 'undefined') {
     return;
