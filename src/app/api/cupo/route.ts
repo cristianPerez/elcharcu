@@ -1,12 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { linkVisitorToUser, readQuota } from '@/entities/usage-quota/server';
+import { readQuota } from '@/entities/usage-quota/server';
 
-import {
-  createSupabaseAdminClient,
-  createSupabaseServerClient,
-  isSupabaseAdminConfigured,
-} from '@/shared/api/supabase/server';
+import { currentUser } from '@/shared/api/supabase/server';
 import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
 
 /**
@@ -19,30 +15,13 @@ import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
 export async function GET(request: NextRequest): Promise<NextResponse> {
   const visitorId = ensureVisitorId(request);
 
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.auth.getUser();
-  const userId = data.user?.id ?? null;
-
-  // Si acaba de entrar con su correo, sus contadores de antes se atan a la
-  // cuenta. A partir de aquí el cupo se cuenta por cuenta, no por navegador.
-  if (userId !== null) {
-    await linkVisitorToUser(visitorId, userId);
-
-    // Y lo que contestó en el onboarding cuando todavía era un desconocido
-    // pasa a ser suyo. Es lo que hace que el día que se registra ya sepamos
-    // de dónde es, qué nivel tiene y qué quería curar.
-    if (isSupabaseAdminConfigured()) {
-      const { error } = await createSupabaseAdminClient().rpc('link_onboarding_to_user', {
-        p_visitor_id: visitorId,
-        p_user_id: userId,
-      });
-      if (error !== null) {
-        console.error('[onboarding] no se pudo atar a la cuenta:', error.message);
-      }
-    }
-  }
-
-  const snapshot = await readQuota(visitorId, userId);
+  // Atar el rastro anónimo a la cuenta se hacía AQUÍ, y por tanto en cada
+  // llamada — o sea, en cada cambio de pestaña: dos escrituras a la base para
+  // volver a atar lo que ya estaba atado. Ahora se hace una sola vez, en
+  // `/auth/callback`, que es el único momento en que alguien deja de ser
+  // anónimo.
+  const user = await currentUser();
+  const snapshot = await readQuota(visitorId, user?.id ?? null);
 
   if (snapshot === null) {
     return attachVisitorCookie(

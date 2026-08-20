@@ -11,5 +11,6 @@ export {
   subscribeToQuota,
   fetchQuota,
 } from './lib/quotaChannel';
+export { QuotaProvider } from './model/QuotaProvider';
 export { useUsageQuota } from './model/useUsageQuota';
 export type { UsageQuotaController } from './model/useUsageQuota';

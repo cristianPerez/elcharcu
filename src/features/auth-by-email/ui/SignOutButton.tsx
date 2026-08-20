@@ -1,19 +1,13 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState, type ReactNode } from 'react';
 
 import { createSupabaseBrowserClient, isSupabaseConfigured } from '@/shared/api/supabase';
 
 /**
  * Salir de la cuenta.
- *
- * Después de cerrar sesión se hace `refresh()` además de navegar: sin eso el
- * caché de rutas de Next puede devolver la pantalla de la app ya pintada, y el
- * usuario ve durante un segundo la cuenta de la que acaba de salir.
  */
 export function SignOutButton(): ReactNode {
-  const router = useRouter();
   const [isLeaving, setIsLeaving] = useState(false);
 
   const handleClick = async (): Promise<void> => {
@@ -23,8 +17,18 @@ export function SignOutButton(): ReactNode {
 
     setIsLeaving(true);
     await createSupabaseBrowserClient().auth.signOut();
-    router.replace('/');
-    router.refresh();
+
+    // Recarga entera, no navegación del cliente.
+    //
+    // Salir tiene que dejar el navegador como si nadie hubiera entrado, y hay
+    // cosas que solo se van con una recarga: la conversación que el chat
+    // recuerda en memoria, el caché de rutas de Next y cualquier otro dato de
+    // la sesión anterior. Con `router.replace` el siguiente que entrara en
+    // este celular podía encontrarse el chat del anterior.
+    //
+    // Y de paso evita que esta feature tenga que importar de otra para irlas
+    // limpiando una por una, que es justo lo que CLAUDE.md prohíbe.
+    window.location.assign('/');
   };
 
   return (
