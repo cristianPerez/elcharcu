@@ -1,0 +1,28 @@
+-- ============================================================================
+-- Las recetas se CUENTAN, pero ya no bloquean (decisión de Cristian, 2026-08-20)
+--
+-- El plan gratis pasa a medirse solo en preguntas y fotos, ambas por mes: 8 y 2.
+-- El tope de 1 receta desaparece.
+--
+-- Por qué: el tope de recetas prometía una cosa y hacía otra. El muro decía
+-- "puedes llevar una receta A LA VEZ", pero el contador cuenta CREACIONES DEL
+-- MES — con lo cual cerrar una receta no liberaba nada y la primera del mes te
+-- dejaba sin poder abrir otra hasta el día 1. Dos reglas distintas con el mismo
+-- nombre.
+--
+-- Y no era el tope que protegía el bolsillo: una receta es una fila de 300
+-- bytes. Lo que cuesta dinero son las preguntas y las fotos, que siguen
+-- topadas. Esto ya lo decía D19 para los planes de pago; ahora se aplica
+-- también al gratis.
+--
+-- `recipes_per_month = null` significa ILIMITADAS, y `consume_quota` ya lo
+-- respeta con su guarda `v_r is not null`. No hace falta tocar la función: el
+-- cambio es de datos, así que se revierte con un UPDATE si algún día se quiere
+-- volver a topar.
+--
+-- ⚠️ `usage_counters.recipes_used` SE SIGUE CONTANDO a propósito. Es el dato
+-- que dice cuántos curados distintos lleva alguien, y sirve para entender el
+-- uso aunque no cierre ninguna puerta.
+-- ============================================================================
+
+update charcu.plan_quotas set recipes_per_month = null;

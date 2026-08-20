@@ -48,14 +48,19 @@ function parseHistory(value: unknown): readonly ChatMessage[] {
   });
 }
 
-/** Qué decirle cuando el servidor le cierra la puerta, según el motivo. */
+/**
+ * Qué decirle cuando el servidor le cierra la puerta, según el motivo.
+ *
+ * Ya no hay entrada para `recetas`: desde el 2026-08-20 las recetas se cuentan
+ * pero no topan en ningún plan. Si alguna vez volviera a llegar ese motivo,
+ * cae en el texto genérico de más abajo en vez de prometer una regla que no
+ * existe — que es justo el fallo que tuvo el texto anterior.
+ */
 const SIN_CUPO: Record<string, string> = {
   preguntas:
     'Se acabaron tus preguntas de este mes. Abajo te dejo los planes — tu cupo vuelve a cero el mes que viene, pagues o no.',
   fotos:
     'Se acabaron tus fotos de este mes. Puedes seguir preguntando por texto sin problema.',
-  recetas:
-    'Con el plan gratis puedes llevar una receta a la vez. Sigue preguntando en la que tienes abierta, o suscríbete para llevar varias.',
 };
 
 interface ApiAnswer {
