@@ -1,0 +1,16 @@
+-- ============================================================================
+-- Limpieza para reaplicar los cursos (2026-08-19)
+--
+-- SIN SQL A PROPÓSITO.
+--
+-- Esta migración existe en el historial de la base real, pero nunca tuvo
+-- archivo: fue el borrado de lo que dejó a medias un primer intento fallido de
+-- `0011_cursos`, para poder aplicarla entera.
+--
+-- El archivo se crea aquí solo para que el historial local y el remoto
+-- coincidan. Sin él, la CLI ve una versión remota que no reconoce y se niega
+-- a hacer `db push`.
+--
+-- Va vacía porque sobre una base NUEVA no hay nada que hacer: no hay datos de
+-- prueba que limpiar ni esquema que reconstruir.
+-- ============================================================================

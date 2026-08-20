@@ -208,28 +208,28 @@ No se empieza por el chat.
       `0011_cursos.sql`, aplicada y probada contra el proyecto real.
 
       ```
-          curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
-          ```
+              curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
+              ```
 
-          **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
-          campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
-          tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
-          que no son videos y todo el código que las lee empezaría a mentir. Añadir
-          un tipo nuevo es sumar un valor, no cambiar la estructura.
-          · El **orden es un campo** (`position`) en los tres niveles, con
-            `unique (padre, position)`. Reordenar es cambiar números.
-          · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
-            vigila un `check` por tipo: **una lección de PDF sin archivo no entra
-            en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
-            validación al TypeScript, y con la política de cero `any` eso acaba en
-            guardas de tipo por todos lados.
-          · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
-            al servidor de quien no tiene suscripción. Probado — no sale en la
-            lista y por URL directa da 404. Se contesta 404 y no "no tienes
-            acceso" a propósito: un mensaje distinto delataría qué cursos existen.
-          · En TypeScript la lección es una **unión discriminada por `kind`**, así
-            que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
-            deja de compilar hasta que alguien decida cómo se ve.
+              **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
+              campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
+              tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
+              que no son videos y todo el código que las lee empezaría a mentir. Añadir
+              un tipo nuevo es sumar un valor, no cambiar la estructura.
+              · El **orden es un campo** (`position`) en los tres niveles, con
+                `unique (padre, position)`. Reordenar es cambiar números.
+              · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
+                vigila un `check` por tipo: **una lección de PDF sin archivo no entra
+                en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
+                validación al TypeScript, y con la política de cero `any` eso acaba en
+                guardas de tipo por todos lados.
+              · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
+                al servidor de quien no tiene suscripción. Probado — no sale en la
+                lista y por URL directa da 404. Se contesta 404 y no "no tienes
+                acceso" a propósito: un mensaje distinto delataría qué cursos existen.
+              · En TypeScript la lección es una **unión discriminada por `kind`**, así
+                que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
+                deja de compilar hasta que alguien decida cómo se ve.
 
 - [x] **6a-bis. Progreso por usuario y por curso** (2026-08-19). Se APUNTA por
       lección (`charcu.lesson_progress`) y se MUESTRA por curso
@@ -521,12 +521,41 @@ suelto en el panel.
 
 Ojo con dos cosas al mirar el historial:
 
-- Hay entradas que no tienen archivo: el `0000_reset…` de ese día, las limpiezas de
-  datos de prueba y `limpieza_cursos_reaplicar_20260819` (el primer intento de `0011`
-  se quedó a medias y hubo que borrar lo creado para reaplicarlo entero). Son el
-  registro honesto de lo que pasó, no migraciones del producto.
-- La CLI **no puede hacer `push`** todavía: falta `supabase/config.toml` (`supabase init`)
-  y la contraseña de la base. Por eso se aplicaron por la conexión del MCP.
+- Ya **todas** las entradas del historial tienen archivo (2026-08-19). Las nueve que
+  no lo tenían —el `0000_reset…`, las limpiezas de datos de prueba y
+  `limpieza_cursos_reaplicar_20260819`— ahora existen **vacías, con un comentario
+  que explica qué fueron**. Van sin SQL a propósito: sobre una base nueva no hay
+  datos de prueba que limpiar ni esquema que reconstruir, y el `0000_reset` hacía
+  `drop schema charcu cascade` — reproducirlo convertiría cualquier `db push` en un
+  borrado de la base entera.
+
+### 🗂️ La CLI ya aplica las migraciones (2026-08-19)
+
+`supabase link` hecho y `supabase db push` funcionando: contesta
+**"Remote database is up to date"**, que es lo que tiene que decir.
+
+Para llegar ahí hubo que renombrar los archivos. La CLI espera
+`<timestamp>_nombre.sql` y aquí se llamaban `0001_charcu_schema.sql`: para ella
+"0001" y "20260815033921" eran migraciones distintas, así que veía 21 versiones
+remotas que no reconocía y se negaba a hacer `push`. Ahora el nombre lleva las dos
+cosas — `20260815033921_0001_charcu_schema.sql` — así que la CLI encuentra su
+versión y una persona sigue leyendo el orden de un vistazo.
+
+⚠️ **La CLI sugiere `migration repair --status reverted` cuando pasa esto. NO se
+hace.** Marcaría las 21 como no aplicadas y el siguiente `push` intentaría
+ejecutarlas todas sobre una base que ya las tiene, empezando por el `0000_reset`
+que borra el esquema. Es el consejo genérico de la herramienta y aquí era el peor
+camino posible.
+
+**De aquí en adelante, una migración nueva se crea así** (el timestamp lo pone la
+CLI, y así nunca vuelve a desalinearse):
+
+```bash
+npx supabase migration new nombre_en_snake_case
+npx supabase db push
+```
+
+Y se acabó lo de aplicarlas por el MCP, que además rompía las tildes.
 
 ### ✅ Base de datos conectada y verificada (2026-08-05)
 
@@ -570,9 +599,9 @@ desde la base real en `src/shared/api/supabase/database.types.ts`.
    con DOS planes de cobro, mensual y anual. El gratis no va en Hotmart, vive en la
    app. Después hacen falta las claves para el webhook (`HOTMART_HOTTOK` ya está en
    `.env.local`).
-5. 🔜 **`supabase link --project-ref lcvmsbfnnpviumsqcxip`** — pide la contraseña de
-   la base y esa no se pega en el chat. Sin esto la CLI no puede hacer `db push` y
-   las migraciones hay que aplicarlas por el MCP.
+5. ✅ **`supabase link`** hecho por Cristian (2026-08-19). La contraseña vive en el
+   llavero del sistema y en `supabase/.temp/`, que está en `.gitignore`: no toca el
+   repo. `db push` ya funciona.
 6. 🔜 **Precio del curso suelto en dólares.** Sigue en $89.000 COP, con la moneda
    escrita al lado para que nadie lo lea como 89 dólares. Chirría junto a US$ 9,99.
 7. 🔜 Dar el **contenido**: los videos de los cursos (van a Bunny) y tus recetas.
