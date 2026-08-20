@@ -1,8 +1,12 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
-import { supabaseConfig } from './config';
 import { type Database } from './database.types';
+import {
+  serverSupabasePublishableKey,
+  serverSupabaseUrl,
+  warnIfMisconfigured,
+} from './serverConfig';
 
 export type SupabaseServerClient = ReturnType<
   typeof createServerClient<Database, 'charcu'>
@@ -14,10 +18,11 @@ export type SupabaseServerClient = ReturnType<
  */
 export async function createSupabaseServerClient(): Promise<SupabaseServerClient> {
   const cookieStore = await cookies();
+  warnIfMisconfigured('createSupabaseServerClient');
 
   return createServerClient<Database, 'charcu'>(
-    supabaseConfig.url,
-    supabaseConfig.publishableKey,
+    serverSupabaseUrl(),
+    serverSupabasePublishableKey(),
     {
       db: { schema: 'charcu' },
       cookies: {
