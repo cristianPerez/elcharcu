@@ -1,13 +1,14 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-import { type ReactNode } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { AssistantChat } from '@/features/assistant-chat';
 import { QuotaWall } from '@/features/quota-wall';
 
 import { useUsageQuota } from '@/entities/usage-quota';
 
+import { appRoutes } from '@/shared/config';
 import { Reveal } from '@/shared/ui';
 
 /**
@@ -25,10 +26,28 @@ export function AppAssistant(): ReactNode {
    * La duda que llega de una lección (`/charcu?pregunta=…`).
    *
    * Se manda sola al llegar: el sentido de tocar la pregunta de un paso es no
-   * tener que escribirla. `AssistantChat` ya se guarda de no reenviarla en
-   * cada render, que si no gastaría cupo por cada repintado.
+   * tener que escribirla.
+   *
+   * ⚠️ Y se BORRA de la URL en cuanto se recoge. Mientras el parámetro seguía
+   * ahí, cada vez que esta pantalla se montaba se volvía a mandar: volver dos
+   * veces a la misma lección dejó tres recetas idénticas y gastó tres
+   * preguntas del cupo (2026-08-20). La pregunta se guarda en estado, que no
+   * viaja en la dirección.
    */
-  const pendingPrompt = useSearchParams().get('pregunta');
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const fromUrl = searchParams.get('pregunta');
+  const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
+  const alreadyTaken = useRef(false);
+
+  useEffect(() => {
+    if (fromUrl === null || alreadyTaken.current) {
+      return;
+    }
+    alreadyTaken.current = true;
+    setPendingPrompt(fromUrl);
+    router.replace(appRoutes.appAssistant, { scroll: false });
+  }, [fromUrl, router]);
 
   // Solo se levanta el muro si SABEMOS que se acabó el cupo. Si no se pudo
   // leer, se deja pasar: quien protege el bolsillo es el tope diario de gasto,

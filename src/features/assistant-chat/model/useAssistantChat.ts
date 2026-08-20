@@ -102,13 +102,41 @@ function readFileAsDataUrl(file: File): Promise<string> {
   });
 }
 
-/** El chat con el asistente. Toda la llamada a la IA pasa por el servidor. */
-export function useAssistantChat(params: AssistantChatParams): AssistantChatController {
+/**
+ * El chat con el asistente. Toda la llamada a la IA pasa por el servidor.
+ *
+ * `externalPrompt` es una duda que llega de fuera del chat — hoy, la pregunta
+ * de una lección. Se maneja AQUÍ y no en el componente porque hay que decidir
+ * antes de nada si se retoma la conversación abierta o se abre un hilo nuevo,
+ * y desde fuera esas dos cosas competían: el envío salía antes de que la
+ * conversación terminara de cargarse, así que el `recipeId` iba vacío y se
+ * abría receta nueva de todas formas — pero por accidente, y a veces por
+ * duplicado.
+ */
+export function useAssistantChat(
+  params: AssistantChatParams,
+  externalPrompt: string | null = null,
+): AssistantChatController {
   // Arranca VACÍO. Antes abría con un saludo de seis líneas que explicaba qué
   // escribir; ahora esa explicación son cuatro preguntas de ejemplo que se
   // tocan, y el asistente pregunta lo que le falte cuando le falte.
   const [messages, setMessages] = useState<readonly ChatMessage[]>([]);
   const [isThinking, setIsThinking] = useState(false);
+
+  /**
+   * La misma lista, en una ref.
+   *
+   * `send` la necesita para armar el historial que va al modelo, y leerla del
+   * estado significaba leer el de HACE UN RENDER. Se notaba justo aquí:
+   * empezar un hilo nuevo y mandar en el mismo tirón le colaba al modelo la
+   * conversación anterior, porque el `setMessages([])` todavía no había
+   * llegado.
+   */
+  const messagesRef = useRef<readonly ChatMessage[]>([]);
+  const replaceMessages = useCallback((next: readonly ChatMessage[]): void => {
+    messagesRef.current = next;
+    setMessages(next);
+  }, []);
   const [error, setError] = useState<string | null>(null);
 
   // La receta a la que pertenece esta conversación. Vacía al empezar: la
@@ -123,54 +151,66 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
    * Sirve para tres cosas distintas que son la misma: retomar la que estaba
    * abierta al cargar, y saltar a otra desde el historial.
    */
-  const openRecipe = useCallback(async (id: string): Promise<void> => {
-    const recordado = recallChat();
-    // Si es la que ya está en memoria, no se vuelve a pedir. Abrir el
-    // historial y volver a la misma no es motivo para otro viaje a la base.
-    if (recordado !== null && recordado.recipeId === id) {
-      recipeId.current = id;
-      setRecipeTitle(recordado.title);
-      setMessages(recordado.messages);
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/receta?id=${encodeURIComponent(id)}`, {
-        cache: 'no-store',
-      });
-      if (!response.ok) {
-        return;
-      }
-      const data = (await response.json()) as StoredRecipe;
-      if (typeof data.recipeId !== 'string' || data.recipeId === '') {
-        // El servidor no la reconoce como suya: se suelta en vez de insistir.
-        clearActiveRecipe();
+  const openRecipe = useCallback(
+    async (id: string): Promise<void> => {
+      const recordado = recallChat();
+      // Si es la que ya está en memoria, no se vuelve a pedir. Abrir el
+      // historial y volver a la misma no es motivo para otro viaje a la base.
+      if (recordado !== null && recordado.recipeId === id) {
+        recipeId.current = id;
+        setRecipeTitle(recordado.title);
+        replaceMessages(recordado.messages);
         return;
       }
 
-      const historial = parseHistory(data.messages);
-      const titulo = typeof data.title === 'string' ? data.title : null;
+      try {
+        const response = await fetch(`/api/receta?id=${encodeURIComponent(id)}`, {
+          cache: 'no-store',
+        });
+        if (!response.ok) {
+          return;
+        }
+        const data = (await response.json()) as StoredRecipe;
+        if (typeof data.recipeId !== 'string' || data.recipeId === '') {
+          // El servidor no la reconoce como suya: se suelta en vez de insistir.
+          clearActiveRecipe();
+          return;
+        }
 
-      recipeId.current = data.recipeId;
-      setRecipeTitle(titulo);
-      setMessages(historial);
-      setError(null);
-      rememberActiveRecipe(data.recipeId);
-      rememberChat({ recipeId: data.recipeId, title: titulo, messages: historial });
-    } catch {
-      // Sin historial se empieza en blanco: molesto, no roto.
-    }
-  }, []);
+        const historial = parseHistory(data.messages);
+        const titulo = typeof data.title === 'string' ? data.title : null;
+
+        recipeId.current = data.recipeId;
+        setRecipeTitle(titulo);
+        replaceMessages(historial);
+        setError(null);
+        rememberActiveRecipe(data.recipeId);
+        rememberChat({ recipeId: data.recipeId, title: titulo, messages: historial });
+      } catch {
+        // Sin historial se empieza en blanco: molesto, no roto.
+      }
+    },
+    [replaceMessages],
+  );
 
   /** Deja el chat en blanco. La siguiente pregunta abrirá una receta nueva. */
   const startNewRecipe = useCallback((): void => {
     recipeId.current = null;
     setRecipeTitle(null);
-    setMessages([]);
+    replaceMessages([]);
     setError(null);
     clearActiveRecipe();
     rememberChat({ recipeId: null, title: null, messages: [] });
-  }, []);
+  }, [replaceMessages]);
+
+  /**
+   * Una duda que llega de una lección abre SIEMPRE un hilo aparte.
+   *
+   * Se decide en el primer render y se guarda en una ref, para que los dos
+   * efectos de abajo no se peleen: o se retoma lo que había, o se empieza de
+   * cero, nunca las dos cosas.
+   */
+  const isFromLesson = useRef(externalPrompt !== null);
 
   /**
    * Al cargar: se retoma la conversación abierta, si la hay.
@@ -181,6 +221,14 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
    * (2026-08-20).
    */
   useEffect(() => {
+    if (isFromLesson.current) {
+      // Viene de una lección: la duda del curso no se mezcla con lo que
+      // estuvieras hablando. Se deja el chat limpio y el efecto de abajo la
+      // manda en un hilo nuevo.
+      clearActiveRecipe();
+      return;
+    }
+
     const abierta = activeRecipeId();
     if (abierta === null) {
       return;
@@ -209,8 +257,8 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
         imageDataUrl: dataUrl === '' ? undefined : dataUrl,
       };
 
-      const history = [...messages, userMessage];
-      setMessages(history);
+      const history = [...messagesRef.current, userMessage];
+      replaceMessages(history);
 
       track(ANALYTICS_EVENTS.assistantMessageSent, {
         recipe: params.product,
@@ -333,7 +381,7 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
             wasBlocked: answer.wasBlocked === true,
           },
         ];
-        setMessages(conversacion);
+        replaceMessages(conversacion);
 
         // Se guarda en memoria lo que ya está escrito en la base, para que
         // volver a esta pestaña no obligue a ir a buscarlo otra vez.
@@ -356,8 +404,27 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
         setIsThinking(false);
       }
     },
-    [isThinking, messages, params, recipeTitle],
+    [isThinking, params, recipeTitle, replaceMessages],
   );
+
+  /**
+   * Manda la duda que llegó de fuera, UNA sola vez.
+   *
+   * La guarda de la ref no es un detalle: la pregunta viaja en la URL
+   * (`/charcu?pregunta=…`), así que cada vez que esta pantalla se montaba se
+   * volvía a mandar. Pasó de verdad — tres recetas idénticas, "Especias para
+   * bondiola", y tres preguntas del cupo gastadas por volver a la misma
+   * lección (2026-08-20).
+   */
+  const lastExternal = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (externalPrompt === null || externalPrompt === lastExternal.current) {
+      return;
+    }
+    lastExternal.current = externalPrompt;
+    void send(externalPrompt, null);
+  }, [externalPrompt, send]);
 
   return { messages, isThinking, error, recipeTitle, send, openRecipe, startNewRecipe };
 }
