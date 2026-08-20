@@ -43,7 +43,7 @@ Verificado en el repo el 2026-08-04:
 | Calidad          | ✅ ESLint + Prettier + Husky (pre-commit con `type-check`)                          |
 | Analítica        | ✅ Mixpanel (`NEXT_PUBLIC_MIXPANEL_TOKEN` ya configurado)                           |
 | Sitio público    | ✅ `/`, `/recetas`, `/recetas/[slug]`, `/tablas`, `/tablas/[slug]`, `/tienda`       |
-| Receta guiada    | 🧪 `/curso/bondiola-curada` — experimento, una sola receta, videos todavía no       |
+| Cursos           | ✅ `/cursos` en la base (curso ▸ módulo ▸ lección) con progreso. Sin videos aún     |
 
 **Tokens de marca ya disponibles como clases Tailwind:**
 `forest` (#2D4A3E) · `terracota` (#C17A5A) · `cream` (#F4F1EB) · `sage` (#7A9E8E) ·
@@ -199,13 +199,78 @@ No se empieza por el chat.
       de dosis descargable, el recordatorio de los días de curado, la receta en PDF.
       Se da valor a cambio del dato en vez de esconder lo que ya estaba.
       **Sin decidir. No se ha ejecutado nada.**
-- [ ] **6. Mini-cursos** en video (Bunny) con puerta libre/pago. El video se sirve con
-      URL firmada: la app decide quién puede verlo, no Bunny.
-      Mientras tanto hay un **experimento** (2026-08-18): `/curso/bondiola-curada`
-      pone los pasos y el asistente en la misma pantalla. Cada paso trae la duda
-      de siempre ya escrita, lista para mandársela al Charcu. Los videos todavía
-      no existen (portada + "Video en camino"). Si funciona, esto pasa a leerse
-      de la base como el resto.
+- [ ] **6. Mini-cursos en VIDEO** (Bunny) con puerta libre/pago. El video se sirve
+      con URL firmada: la app decide quién puede verlo, no Bunny. La estructura
+      que lo espera ya está hecha (6a/6b): falta la cuenta de Bunny y los videos.
+      Cuando existan, a una lección se le pone `kind = 'video'` y su
+      `bunny_video_id`, y el sitio del reproductor ya está en `LessonBody`.
+- [x] **6a. Cursos, módulos y lecciones en la base** (2026-08-19). Migración
+      `0011_cursos.sql`, aplicada y probada contra el proyecto real.
+
+      ```
+          curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
+          ```
+
+          **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
+          campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
+          tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
+          que no son videos y todo el código que las lee empezaría a mentir. Añadir
+          un tipo nuevo es sumar un valor, no cambiar la estructura.
+          · El **orden es un campo** (`position`) en los tres niveles, con
+            `unique (padre, position)`. Reordenar es cambiar números.
+          · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
+            vigila un `check` por tipo: **una lección de PDF sin archivo no entra
+            en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
+            validación al TypeScript, y con la política de cero `any` eso acaba en
+            guardas de tipo por todos lados.
+          · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
+            al servidor de quien no tiene suscripción. Probado — no sale en la
+            lista y por URL directa da 404. Se contesta 404 y no "no tienes
+            acceso" a propósito: un mensaje distinto delataría qué cursos existen.
+          · En TypeScript la lección es una **unión discriminada por `kind`**, así
+            que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
+            deja de compilar hasta que alguien decida cómo se ve.
+
+- [x] **6a-bis. Progreso por usuario y por curso** (2026-08-19). Se APUNTA por
+      lección (`charcu.lesson_progress`) y se MUESTRA por curso
+      (`charcu.course_progress`, que lo calcula contando). **Nunca se guarda un
+      porcentaje**: si el curso pasa de 10 a 12 lecciones, quien iba al 100%
+      bajaría al 83% y creería que perdió algo.
+      `last_second` y `completed_at` son cosas distintas: retomar a mitad y dar
+      por vista no son la misma pregunta. Se guarda por función
+      (`save_lesson_progress`) y no por `insert` directo, porque hay que
+      comprobar que la lección sea suya de ver — si no, cualquiera marca como
+      completado un curso que no compró.
+      Una vez terminada, **se queda terminada**: volver a abrirla para mirar un
+      detalle no le descuenta avance a nadie.
+      ⚠️ Hoy se marca **a mano** con un botón. Cuando haya video, el mismo
+      guardado lo dispara el reproductor al 90% (`LESSON_COMPLETE_RATIO`) — 90 y
+      no 100 porque nadie se ve los créditos.
+- [x] **6b. Las pantallas del curso** (2026-08-19): `/cursos` (lista con barra y
+      "1 de 4" por fila) · `/cursos/[curso]` (acordeón de módulos) ·
+      `/cursos/[curso]/[leccion]`.
+      · El acordeón **abre el módulo donde quedó**, no el primero.
+      · La **barra de navegación va ARRIBA** —volver al curso, en qué módulo
+      estás, y anterior/siguiente— porque abajo ya están las tres pestañas de
+      la app y dos barras se pelean por el mismo pulgar. Las flechas sin
+      destino se apagan en vez de desaparecer: si se van, las otras se mueven
+      y el dedo pulsa lo que no era.
+      · "Siguiente" **salta de módulo a módulo**: un curso que obliga a volver
+      al índice cada tres lecciones no se termina.
+      · La duda de la lección (`ask`) lleva a `/charcu?pregunta=…` y se manda
+      sola. Es lo que une el curso con el asistente.
+- [x] **6c. El experimento de la bondiola pasó a la base** (2026-08-19). Se
+      retiraron `entities/guided-recipe`, `widgets/guided-recipe`, `views/curso`
+      y la ruta `/curso/[slug]`. El contenido vive ahora en la base
+      (`0012_curso_bondiola.sql`): 1 curso libre, 2 módulos, 4 lecciones de tipo
+      `texto`, cada una con su `ask`. No se perdió nada.
+      ⚠️ **El curso gratis ahora vive DENTRO de la app**, así que el botón de la
+      web pública (`widgets/master-courses`) lleva a `/entrar` si no hay sesión.
+      Es coherente con el embudo nuevo, pero hay que mirarlo al hacer el 4e.
+      ⚠️ Al aplicar `0012` por el MCP **las tildes llegaron rotas** ("Â¿"). Se
+      corrigió cargando el contenido por la API REST desde la terminal. El
+      archivo del repo está bien; **el aviso es para la próxima**: si una
+      migración lleva texto en español, revisar cómo quedó.
 - [ ] **7. Pagos reales** (Hotmart + webhook, D17). Tres cosas que hay que resolver sí o
       sí: emparejar la compra con el usuario de Supabase, atender el reembolso/chargeback
       para cortar el acceso, y no confiar en el correo del comprador a ciegas.
@@ -456,8 +521,10 @@ suelto en el panel.
 
 Ojo con dos cosas al mirar el historial:
 
-- Hay dos entradas que no tienen archivo: el `0000_reset…` de ese día y una limpieza de
-  datos de prueba. Son el registro honesto de lo que pasó, no migraciones del producto.
+- Hay entradas que no tienen archivo: el `0000_reset…` de ese día, las limpiezas de
+  datos de prueba y `limpieza_cursos_reaplicar_20260819` (el primer intento de `0011`
+  se quedó a medias y hubo que borrar lo creado para reaplicarlo entero). Son el
+  registro honesto de lo que pasó, no migraciones del producto.
 - La CLI **no puede hacer `push`** todavía: falta `supabase/config.toml` (`supabase init`)
   y la contraseña de la base. Por eso se aplicaron por la conexión del MCP.
 

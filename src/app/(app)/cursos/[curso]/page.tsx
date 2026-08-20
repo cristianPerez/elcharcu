@@ -1,0 +1,65 @@
+import { type Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { type ReactNode } from 'react';
+
+import { AppCursoView } from '@/views/app-curso';
+
+import { type CourseProgress } from '@/entities/course';
+import {
+  completedLessonIds,
+  findCourse,
+  progressByCourse,
+} from '@/entities/course/server';
+
+import { createSupabaseServerClient } from '@/shared/api/supabase/server';
+
+interface PageProps {
+  readonly params: Promise<{ readonly curso: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { curso } = await params;
+  const course = await findCourse(curso);
+
+  return course === null
+    ? { title: 'Curso · El Charcu' }
+    : { title: `${course.title} · El Charcu`, description: course.summary };
+}
+
+export default async function CursoPage({ params }: PageProps): Promise<ReactNode> {
+  const { curso } = await params;
+  const course = await findCourse(curso);
+
+  // `null` es a la vez "no existe" y "no te toca": RLS no devuelve el curso de
+  // pago a quien no paga. Se contesta lo mismo en los dos casos a propósito —
+  // un 404 distinto del "no tienes acceso" delata qué cursos existen.
+  if (course === null) {
+    notFound();
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { data } = await supabase.auth.getUser();
+  const userId = data.user?.id ?? null;
+
+  const [progressMap, completed] = await Promise.all([
+    userId === null ? new Map<string, CourseProgress>() : progressByCourse(userId),
+    userId === null ? new Set<string>() : completedLessonIds(userId),
+  ]);
+
+  const progress = progressMap.get(course.id);
+  const nextLessonId = progress?.nextLessonId ?? null;
+
+  // El acordeón abre el módulo donde quedó, no el primero: abrir siempre el
+  // primero obliga a buscar su sitio cada vez que vuelve.
+  const openModuleId =
+    course.modules.find((m) => m.lessons.some((l) => l.id === nextLessonId))?.id ?? null;
+
+  return (
+    <AppCursoView
+      course={course}
+      progress={progress}
+      completedIds={[...completed]}
+      openModuleId={openModuleId}
+    />
+  );
+}
