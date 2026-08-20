@@ -11,5 +11,7 @@ export {
   saveExchange,
   recipeMessages,
   recipeHeader,
+  listRecipes,
+  renameRecipe,
 } from './api/recipeChatApi';
-export type { StoredMessage } from './api/recipeChatApi';
+export type { StoredMessage, RecipeSummary } from './api/recipeChatApi';

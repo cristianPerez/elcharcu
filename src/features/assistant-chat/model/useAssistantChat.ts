@@ -7,6 +7,11 @@ import { publishQuotaFrom } from '@/entities/usage-quota';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
+import {
+  activeRecipeId,
+  clearActiveRecipe,
+  rememberActiveRecipe,
+} from '../lib/activeChat';
 import { recallChat, rememberChat } from '../lib/chatMemory';
 
 export interface AssistantChatParams {
@@ -22,6 +27,10 @@ export interface AssistantChatController {
   /** El nombre de la receta abierta, si hay una. */
   readonly recipeTitle: string | null;
   readonly send: (text: string, file: File | null) => Promise<void>;
+  /** Salta a una conversación del historial. */
+  readonly openRecipe: (id: string) => Promise<void>;
+  /** Deja el chat en blanco: la siguiente pregunta abre receta nueva. */
+  readonly startNewRecipe: () => void;
 }
 
 interface StoredRecipe {
@@ -108,56 +117,76 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
   const recipeId = useRef<string | null>(null);
   const [recipeTitle, setRecipeTitle] = useState<string | null>(null);
 
-  // Al cargar se recupera la receta abierta y su conversación. Sin esto, una
-  // recarga era una amnesia: el usuario veía el chat en blanco y el modelo
-  // volvía a preguntar los kilos y la humedad que ya le habían dicho.
-  useEffect(() => {
-    let vivo = true;
-
-    // Si ya se trajo en esta visita, no se vuelve a pedir. Cambiar de pestaña
-    // y volver no es motivo para otro viaje a la base.
+  /**
+   * Trae una conversación concreta y la pinta.
+   *
+   * Sirve para tres cosas distintas que son la misma: retomar la que estaba
+   * abierta al cargar, y saltar a otra desde el historial.
+   */
+  const openRecipe = useCallback(async (id: string): Promise<void> => {
     const recordado = recallChat();
-    if (recordado !== null) {
-      recipeId.current = recordado.recipeId;
+    // Si es la que ya está en memoria, no se vuelve a pedir. Abrir el
+    // historial y volver a la misma no es motivo para otro viaje a la base.
+    if (recordado !== null && recordado.recipeId === id) {
+      recipeId.current = id;
       setRecipeTitle(recordado.title);
-      if (recordado.messages.length > 0) {
-        setMessages(recordado.messages);
-      }
-      return () => {
-        vivo = false;
-      };
+      setMessages(recordado.messages);
+      return;
     }
 
-    void fetch('/api/receta', { cache: 'no-store' })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data: StoredRecipe | null) => {
-        if (!vivo || data === null) {
-          return;
-        }
-        if (typeof data.recipeId === 'string' && data.recipeId !== '') {
-          recipeId.current = data.recipeId;
-        }
-        if (typeof data.title === 'string') {
-          setRecipeTitle(data.title);
-        }
-        const historial = parseHistory(data.messages);
-        if (historial.length > 0) {
-          setMessages(historial);
-        }
-        rememberChat({
-          recipeId: recipeId.current,
-          title: typeof data.title === 'string' ? data.title : null,
-          messages: historial,
-        });
-      })
-      .catch(() => {
-        // Sin historial se empieza en blanco: molesto, no roto.
+    try {
+      const response = await fetch(`/api/receta?id=${encodeURIComponent(id)}`, {
+        cache: 'no-store',
       });
+      if (!response.ok) {
+        return;
+      }
+      const data = (await response.json()) as StoredRecipe;
+      if (typeof data.recipeId !== 'string' || data.recipeId === '') {
+        // El servidor no la reconoce como suya: se suelta en vez de insistir.
+        clearActiveRecipe();
+        return;
+      }
 
-    return () => {
-      vivo = false;
-    };
+      const historial = parseHistory(data.messages);
+      const titulo = typeof data.title === 'string' ? data.title : null;
+
+      recipeId.current = data.recipeId;
+      setRecipeTitle(titulo);
+      setMessages(historial);
+      setError(null);
+      rememberActiveRecipe(data.recipeId);
+      rememberChat({ recipeId: data.recipeId, title: titulo, messages: historial });
+    } catch {
+      // Sin historial se empieza en blanco: molesto, no roto.
+    }
   }, []);
+
+  /** Deja el chat en blanco. La siguiente pregunta abrirá una receta nueva. */
+  const startNewRecipe = useCallback((): void => {
+    recipeId.current = null;
+    setRecipeTitle(null);
+    setMessages([]);
+    setError(null);
+    clearActiveRecipe();
+    rememberChat({ recipeId: null, title: null, messages: [] });
+  }, []);
+
+  /**
+   * Al cargar: se retoma la conversación abierta, si la hay.
+   *
+   * `activeRecipeId()` devuelve `null` cuando pasó más de una hora desde el
+   * último mensaje o cuando se cerró la pestaña, y entonces se empieza en
+   * blanco. Eso NO es un fallo: es la regla de sesión que pidió Cristian
+   * (2026-08-20).
+   */
+  useEffect(() => {
+    const abierta = activeRecipeId();
+    if (abierta === null) {
+      return;
+    }
+    void openRecipe(abierta);
+  }, [openRecipe]);
 
   const send = useCallback(
     async (text: string, file: File | null): Promise<void> => {
@@ -272,6 +301,9 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
 
         if (typeof answer.recipeId === 'string' && answer.recipeId !== '') {
           recipeId.current = answer.recipeId;
+          // Cada respuesta reinicia la hora de inactividad: mientras se
+          // conversa, la sesión sigue viva.
+          rememberActiveRecipe(answer.recipeId);
         }
 
         if (typeof answer.text !== 'string') {
@@ -327,5 +359,5 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
     [isThinking, messages, params, recipeTitle],
   );
 
-  return { messages, isThinking, error, recipeTitle, send };
+  return { messages, isThinking, error, recipeTitle, send, openRecipe, startNewRecipe };
 }

@@ -1,12 +1,16 @@
-import { NextResponse, type NextRequest } from 'next/server';
+import { after, NextResponse, type NextRequest } from 'next/server';
 
 import { checkBudget, recordSpend } from '@/entities/ai-budget';
-import { buildSystemPrompt } from '@/entities/charcu-assistant';
+import {
+  buildSystemPrompt,
+  cleanTitle,
+  TITLE_SYSTEM_PROMPT,
+} from '@/entities/charcu-assistant';
 import { auditCureDoses, MAX_CURE_1_G_PER_KG } from '@/entities/cure-safety';
 import {
   createRecipe,
-  latestOpenRecipe,
   ownsRecipe,
+  renameRecipe,
   saveExchange,
   touchRecipe,
 } from '@/entities/recipe-chat/server';
@@ -161,13 +165,19 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const ownsIt =
     parsed.recipeId !== null && (await ownsRecipe(parsed.recipeId, visitorId, userId));
 
-  // Si no viene ninguna, se RETOMA la última abierta antes de dar por hecho
-  // que quiere una nueva. El id de la receta vive en memoria del navegador, así
-  // que una simple recarga lo pierde — y sin esto, la siguiente pregunta pedía
-  // abrir una segunda receta y el plan gratis la rechazaba: el asistente se
-  // quedaba mudo para siempre. El servidor no puede fiarse de que el navegador
-  // recuerde en qué receta iba.
-  const recipeId = ownsIt ? parsed.recipeId : await latestOpenRecipe(visitorId, userId);
+  /**
+   * Si no viene receta, se abre una NUEVA. El servidor ya no adivina.
+   *
+   * Hasta el 2026-08-20 aquí se retomaba "la última abierta", porque el id
+   * vivía en memoria del navegador y una recarga lo perdía. Ese rescate
+   * automático tenía un efecto que no queríamos: era IMPOSIBLE empezar un chat
+   * nuevo — daba igual lo que pidiera el navegador, siempre volvía al anterior.
+   *
+   * Ahora el id vive en `sessionStorage` con la regla de las 6 horas, así que
+   * el navegador sí sabe en qué receta iba y una recarga ya no es amnesia.
+   * Quien decide es él; aquí solo se comprueba que la receta sea suya.
+   */
+  const recipeId = ownsIt ? parsed.recipeId : null;
   const isNewRecipe = recipeId === null;
 
   const quota = await consumeQuota(visitorId, userId, images, isNewRecipe);
@@ -217,6 +227,25 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   if (activeRecipeId !== null && !isNewRecipe) {
     await touchRecipe(activeRecipeId);
+  }
+
+  // Ponerle nombre a la receta va DESPUÉS de contestar, con `after()`: es una
+  // segunda llamada al modelo y no tiene por qué hacer esperar a nadie. El
+  // usuario ve su respuesta y el título se escribe por detrás.
+  //
+  // Solo la primera vez de cada receta. Si falla, se queda el título
+  // provisional —la primera pregunta recortada— que es feo pero no roto.
+  if (isNewRecipe && activeRecipeId !== null) {
+    const recipeToTitle = activeRecipeId;
+    const firstQuestion = lastTurn?.text ?? '';
+    after(async () => {
+      const titled = await generateAnswer(TITLE_SYSTEM_PROMPT, [
+        { role: 'user', text: firstQuestion },
+      ]);
+      if (titled.ok) {
+        await renameRecipe(recipeToTitle, cleanTitle(titled.text));
+      }
+    });
   }
 
   // Segunda barrera: se revisa la respuesta antes de que la vea nadie.

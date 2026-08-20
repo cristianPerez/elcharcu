@@ -224,3 +224,80 @@ export async function recipeHeader(
 
   return error !== null || data === null ? null : { title: data.title };
 }
+
+/** Una conversación en la lista del historial. */
+export interface RecipeSummary {
+  readonly id: string;
+  readonly title: string;
+  /** ISO 8601. La lista se ordena por esto, no por cuándo se creó. */
+  readonly lastMessageAt: string;
+}
+
+/**
+ * Las conversaciones de este visitante o de esta cuenta, de la más reciente a
+ * la más vieja.
+ *
+ * Se ordena por `last_message_at` y no por `started_at` a propósito: quien
+ * abre el historial busca "en qué estaba", y eso es lo último que tocó, no lo
+ * último que empezó.
+ *
+ * El tope de 50 es para que la primera versión no traiga un año de historial a
+ * un celular. Cuando alguien lo roce, tocará paginar.
+ */
+export async function listRecipes(
+  visitorId: string,
+  userId: string | null,
+): Promise<readonly RecipeSummary[]> {
+  if (!isSupabaseAdminConfigured()) {
+    return [];
+  }
+
+  const query = createSupabaseAdminClient()
+    .from('recipes')
+    .select('id, title, last_message_at')
+    .neq('status', 'descartada')
+    .order('last_message_at', { ascending: false })
+    .limit(50);
+
+  // Con cuenta se listan las de la cuenta; sin cuenta, las de este navegador.
+  const { data, error } =
+    userId === null
+      ? await query.eq('visitor_id', visitorId)
+      : await query.eq('user_id', userId);
+
+  if (error !== null || data === null) {
+    return [];
+  }
+
+  return data.map((row) => ({
+    id: row.id,
+    title: row.title,
+    lastMessageAt: row.last_message_at,
+  }));
+}
+
+/**
+ * Le pone nombre a una receta.
+ *
+ * Lo llama el titulador automático después de la primera respuesta. Es un
+ * `update` a secas: quien decide que la receta es suya es quien llama.
+ */
+export async function renameRecipe(recipeId: string, title: string): Promise<void> {
+  if (!isSupabaseAdminConfigured()) {
+    return;
+  }
+
+  const clean = title.trim().slice(0, 60);
+  if (clean === '') {
+    return;
+  }
+
+  const { error } = await createSupabaseAdminClient()
+    .from('recipes')
+    .update({ title: clean })
+    .eq('id', recipeId);
+
+  if (error !== null) {
+    console.error('[receta] no se pudo renombrar:', error.message);
+  }
+}
