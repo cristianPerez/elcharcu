@@ -66,7 +66,7 @@ export function AssistantHero(): ReactNode {
               Cura sin miedo a arruinar la pieza.
             </h1>
             <p className="mt-2 text-base text-cocoa/65">
-              Pregúntale al maestro. La primera va por cuenta de la casa.
+              Pregúntale a El Charcu. La primera va por cuenta de la casa.
             </p>
 
             <div className="mt-8 rounded-2xl border border-cocoa/10 bg-cream-white p-4 shadow-raised md:p-6">

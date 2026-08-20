@@ -85,7 +85,7 @@ export function AppLeccionView({
             className="mt-5 block rounded-2xl border border-terracota/30 bg-terracota/5 p-4"
           >
             <span className="text-xs font-medium uppercase tracking-eyebrow text-terracota-dark">
-              Pregúntale al maestro
+              Pregúntale a El Charcu
             </span>
             <span className="mt-2 block text-base leading-relaxed text-cocoa">
               {lesson.ask}

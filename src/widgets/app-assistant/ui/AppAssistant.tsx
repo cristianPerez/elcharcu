@@ -40,7 +40,7 @@ export function AppAssistant(): ReactNode {
       <Reveal>
         <header>
           <p className="text-xs font-medium uppercase tracking-eyebrow text-sage">
-            Pregúntale al maestro
+            Pregúntale a El Charcu
           </p>
           <h1 className="mt-2 font-serif text-3xl font-semibold leading-tight text-forest">
             El Charcu
