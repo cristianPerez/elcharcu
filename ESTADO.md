@@ -208,28 +208,28 @@ No se empieza por el chat.
       `0011_cursos.sql`, aplicada y probada contra el proyecto real.
 
       ```
-                  curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
-                  ```
+                      curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
+                      ```
 
-                  **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
-                  campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
-                  tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
-                  que no son videos y todo el código que las lee empezaría a mentir. Añadir
-                  un tipo nuevo es sumar un valor, no cambiar la estructura.
-                  · El **orden es un campo** (`position`) en los tres niveles, con
-                    `unique (padre, position)`. Reordenar es cambiar números.
-                  · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
-                    vigila un `check` por tipo: **una lección de PDF sin archivo no entra
-                    en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
-                    validación al TypeScript, y con la política de cero `any` eso acaba en
-                    guardas de tipo por todos lados.
-                  · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
-                    al servidor de quien no tiene suscripción. Probado — no sale en la
-                    lista y por URL directa da 404. Se contesta 404 y no "no tienes
-                    acceso" a propósito: un mensaje distinto delataría qué cursos existen.
-                  · En TypeScript la lección es una **unión discriminada por `kind`**, así
-                    que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
-                    deja de compilar hasta que alguien decida cómo se ve.
+                      **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
+                      campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
+                      tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
+                      que no son videos y todo el código que las lee empezaría a mentir. Añadir
+                      un tipo nuevo es sumar un valor, no cambiar la estructura.
+                      · El **orden es un campo** (`position`) en los tres niveles, con
+                        `unique (padre, position)`. Reordenar es cambiar números.
+                      · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
+                        vigila un `check` por tipo: **una lección de PDF sin archivo no entra
+                        en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
+                        validación al TypeScript, y con la política de cero `any` eso acaba en
+                        guardas de tipo por todos lados.
+                      · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
+                        al servidor de quien no tiene suscripción. Probado — no sale en la
+                        lista y por URL directa da 404. Se contesta 404 y no "no tienes
+                        acceso" a propósito: un mensaje distinto delataría qué cursos existen.
+                      · En TypeScript la lección es una **unión discriminada por `kind`**, así
+                        que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
+                        deja de compilar hasta que alguien decida cómo se ve.
 
 - [x] **6a-bis. Progreso por usuario y por curso** (2026-08-19). Se APUNTA por
       lección (`charcu.lesson_progress`) y se MUESTRA por curso
@@ -523,8 +523,39 @@ texto pesaba igual.
       Medido en producción: el esqueleto sale a los **20 ms** de tocar la pestaña y
       el contenido real a los **500 ms**. Antes el usuario se quedaba 1,5 s mirando
       la pantalla anterior, sin señal de que su toque hubiera hecho algo.
-- [ ] **Estados vacíos.** Solo existe el de "no hay cursos publicados". Faltan los
-      del resto: sin recetas, sin conexión, búsqueda sin resultados.
+- [ ] **Estados vacíos: faltan en casi todas partes.** Solo existe el de "no hay
+      cursos publicados". Faltan, como mínimo: sin recetas guardadas, búsqueda de
+      recetas y de tablas sin resultados, curso sin módulos, chat sin historial,
+      lista de leads vacía. Un vacío sin explicar se lee como "está roto" — la
+      pantalla tiene que decir por qué no hay nada y qué se puede hacer.
+- [ ] **Error boundaries propios, uno por pantalla** (pedido de Cristian,
+      2026-08-19). Hoy no hay ni un `error.tsx` en todo el repo: cuando algo falla
+      al pintar, el usuario ve la pantalla de error genérica de Next —en inglés y
+      sin salida— o, peor, una pantalla a medias.
+      Hace falta un `error.tsx` por ruta (o por grupo) que hable el idioma de la
+      casa, diga qué pasó en una frase y ofrezca **reintentar** (`reset()`) y
+      **volver**. La app y el sitio público necesitan tonos distintos: quien está
+      dentro quiere volver a su curso, quien está fuera quiere volver a la portada.
+
+      ⚠️ **El caso que lo destapó: sin conexión a Supabase.** Hoy la pantalla de
+          entrar dice _"Las cuentas todavía no están conectadas. Vuelve en un rato"_
+          cuando en realidad **faltan variables de entorno** —le pasó a Cristian en
+          QA el 2026-08-19 y costó dos rondas de adivinar—. Ese mensaje miente a
+          medias y no hay forma de diagnosticarlo desde fuera. Hay que separar tres
+          cosas que hoy se ven igual:
+          1. **Falta configuración** (sin claves): es un fallo de despliegue, no del
+             usuario. Aviso claro en el log del servidor al arrancar, y en pantalla
+             algo que no invite a "volver en un rato", porque solo, no se arregla.
+          2. **Supabase no responde** (caída o red): ahí sí "vuelve en un rato", con
+             botón de reintentar.
+          3. **El usuario no tiene permiso**: ni error ni vacío, es la puerta
+             haciendo su trabajo.
+
+          Ojo al hacerlo: un `error.tsx` es un componente de cliente y **no atrapa lo
+          que falla en el servidor durante el render** más que como error genérico; el
+          detalle no viaja al navegador a propósito. Si se quiere distinguir los tres
+          casos de arriba, la decisión se toma en el servidor y se baja como dato, no
+          como excepción.
 
 **El revisor visual ya existe**: `.claude/agents/revisor-visual.md`. Recibe la
 RUTA de una captura, puntúa usabilidad /40 y craft /20 contra esta paleta, y la

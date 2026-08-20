@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-import { supabaseConfig } from './config';
 import { type Database } from './database.types';
+import { serverSupabaseSecretKey, serverSupabaseUrl } from './serverConfig';
 
 /**
  * ⚠️ SOLO SERVIDOR Y SOLO PARA LO QUE NO TIENE DUEÑO.
@@ -17,8 +17,8 @@ export type SupabaseAdminClient = ReturnType<typeof createClient<Database, 'char
 
 export function createSupabaseAdminClient(): SupabaseAdminClient {
   return createClient<Database, 'charcu'>(
-    supabaseConfig.url,
-    process.env.SUPABASE_SECRET_KEY ?? '',
+    serverSupabaseUrl(),
+    serverSupabaseSecretKey(),
     {
       db: { schema: 'charcu' },
       auth: { persistSession: false, autoRefreshToken: false },
@@ -27,5 +27,5 @@ export function createSupabaseAdminClient(): SupabaseAdminClient {
 }
 
 export function isSupabaseAdminConfigured(): boolean {
-  return supabaseConfig.url !== '' && (process.env.SUPABASE_SECRET_KEY ?? '') !== '';
+  return serverSupabaseUrl() !== '' && serverSupabaseSecretKey() !== '';
 }

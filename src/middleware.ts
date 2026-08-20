@@ -1,7 +1,11 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { isSupabaseConfigured, supabaseConfig } from '@/shared/api/supabase';
+import {
+  isServerSupabaseConfigured,
+  serverSupabasePublishableKey,
+  serverSupabaseUrl,
+} from '@/shared/api/supabase/serverConfig';
 import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
 
 /**
@@ -23,26 +27,30 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 
   let response = NextResponse.next({ request });
 
-  if (!isSupabaseConfigured()) {
+  if (!isServerSupabaseConfigured()) {
     return attachVisitorCookie(response, visitorId);
   }
 
-  const supabase = createServerClient(supabaseConfig.url, supabaseConfig.publishableKey, {
-    cookies: {
-      getAll() {
-        return request.cookies.getAll();
-      },
-      setAll(cookiesToSet) {
-        for (const { name, value } of cookiesToSet) {
-          request.cookies.set(name, value);
-        }
-        response = NextResponse.next({ request });
-        for (const { name, value, options } of cookiesToSet) {
-          response.cookies.set(name, value, options);
-        }
+  const supabase = createServerClient(
+    serverSupabaseUrl(),
+    serverSupabasePublishableKey(),
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet) {
+          for (const { name, value } of cookiesToSet) {
+            request.cookies.set(name, value);
+          }
+          response = NextResponse.next({ request });
+          for (const { name, value, options } of cookiesToSet) {
+            response.cookies.set(name, value, options);
+          }
+        },
       },
     },
-  });
+  );
 
   // Obligatorio: es la llamada que renueva el token.
   await supabase.auth.getUser();
