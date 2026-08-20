@@ -1,0 +1,15 @@
+-- ============================================================================
+-- Limpieza de las pruebas de recetas (2026-08-15)
+--
+-- SIN SQL A PROPÓSITO.
+--
+-- Esta migración existe en el historial de la base real, pero nunca tuvo
+-- archivo: fue un borrado puntual de filas de prueba.
+--
+-- El archivo se crea aquí solo para que el historial local y el remoto
+-- coincidan. Sin él, la CLI ve una versión remota que no reconoce y se niega
+-- a hacer `db push`.
+--
+-- Va vacía porque sobre una base NUEVA no hay nada que hacer: no hay datos de
+-- prueba que limpiar ni esquema que reconstruir.
+-- ============================================================================
