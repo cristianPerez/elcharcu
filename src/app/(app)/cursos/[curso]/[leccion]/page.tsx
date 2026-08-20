@@ -7,7 +7,7 @@ import { AppLeccionView } from '@/views/app-leccion';
 import { type CourseWithModules, type Lesson } from '@/entities/course';
 import { completedLessonIds, findCourse } from '@/entities/course/server';
 
-import { createSupabaseServerClient } from '@/shared/api/supabase/server';
+import { currentUser } from '@/shared/api/supabase/server';
 
 interface PageProps {
   readonly params: Promise<{
@@ -54,9 +54,7 @@ export default async function LeccionPage({ params }: PageProps): Promise<ReactN
     notFound();
   }
 
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.auth.getUser();
-  const userId = data.user?.id ?? null;
+  const userId = (await currentUser())?.id ?? null;
   const completed =
     userId === null ? new Set<string>() : await completedLessonIds(userId);
 

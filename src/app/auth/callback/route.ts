@@ -1,7 +1,14 @@
 import { type EmailOtpType } from '@supabase/supabase-js';
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { createSupabaseServerClient } from '@/shared/api/supabase/server';
+import { linkVisitorToUser } from '@/entities/usage-quota/server';
+
+import {
+  createSupabaseAdminClient,
+  createSupabaseServerClient,
+  isSupabaseAdminConfigured,
+} from '@/shared/api/supabase/server';
+import { readVisitorId } from '@/shared/api/visitor';
 import { appRoutes } from '@/shared/config';
 
 const EMAIL_OTP_TYPES: readonly EmailOtpType[] = [
@@ -52,18 +59,66 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   const supabase = await createSupabaseServerClient();
 
   if (code !== null) {
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    return error
-      ? NextResponse.redirect(`${origin}/entrar?error=enlace-vencido`)
-      : NextResponse.redirect(`${origin}${next}`);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+      return NextResponse.redirect(`${origin}/entrar?error=enlace-vencido`);
+    }
+    await adoptAnonymousTrail(request, data.user?.id ?? null);
+    return NextResponse.redirect(`${origin}${next}`);
   }
 
   if (tokenHash !== null && isEmailOtpType(type)) {
-    const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash });
-    return error
-      ? NextResponse.redirect(`${origin}/entrar?error=enlace-vencido`)
-      : NextResponse.redirect(`${origin}${next}`);
+    const { data, error } = await supabase.auth.verifyOtp({
+      type,
+      token_hash: tokenHash,
+    });
+    if (error) {
+      return NextResponse.redirect(`${origin}/entrar?error=enlace-vencido`);
+    }
+    await adoptAnonymousTrail(request, data.user?.id ?? null);
+    return NextResponse.redirect(`${origin}${next}`);
   }
 
   return NextResponse.redirect(`${origin}/entrar?error=sin-codigo`);
+}
+
+/**
+ * Lo que hizo de anónimo pasa a ser suyo: cupo, recetas y onboarding.
+ *
+ * Vive AQUÍ, en el único momento en que alguien deja de ser anónimo, y no en
+ * `/api/cupo` como antes. Allí se ejecutaba en cada llamada —o sea, en cada
+ * cambio de pestaña— y eran dos escrituras a la base para volver a atar lo que
+ * ya estaba atado desde el primer segundo.
+ *
+ * Si algo falla no se corta la entrada. Perder el rastro anónimo es una
+ * molestia; dejar a alguien fuera de su cuenta con el enlace del correo ya
+ * gastado es mucho peor.
+ */
+async function adoptAnonymousTrail(
+  request: NextRequest,
+  userId: string | null,
+): Promise<void> {
+  if (userId === null) {
+    return;
+  }
+
+  const visitorId = readVisitorId(request);
+  if (visitorId === null) {
+    return;
+  }
+
+  await linkVisitorToUser(visitorId, userId);
+
+  if (!isSupabaseAdminConfigured()) {
+    return;
+  }
+
+  const { error } = await createSupabaseAdminClient().rpc('link_onboarding_to_user', {
+    p_visitor_id: visitorId,
+    p_user_id: userId,
+  });
+
+  if (error !== null) {
+    console.error('[entrar] no se pudo atar el onboarding a la cuenta:', error.message);
+  }
 }

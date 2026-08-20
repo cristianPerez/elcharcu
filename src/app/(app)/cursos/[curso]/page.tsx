@@ -11,7 +11,7 @@ import {
   progressByCourse,
 } from '@/entities/course/server';
 
-import { createSupabaseServerClient } from '@/shared/api/supabase/server';
+import { currentUser } from '@/shared/api/supabase/server';
 
 interface PageProps {
   readonly params: Promise<{ readonly curso: string }>;
@@ -37,9 +37,7 @@ export default async function CursoPage({ params }: PageProps): Promise<ReactNod
     notFound();
   }
 
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.auth.getUser();
-  const userId = data.user?.id ?? null;
+  const userId = (await currentUser())?.id ?? null;
 
   const [progressMap, completed] = await Promise.all([
     userId === null ? new Map<string, CourseProgress>() : progressByCourse(userId),

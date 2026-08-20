@@ -7,6 +7,8 @@ import { publishQuotaFrom } from '@/entities/usage-quota';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
+import { recallChat, rememberChat } from '../lib/chatMemory';
+
 export interface AssistantChatParams {
   readonly product: string;
   readonly level: string;
@@ -107,6 +109,20 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
   useEffect(() => {
     let vivo = true;
 
+    // Si ya se trajo en esta visita, no se vuelve a pedir. Cambiar de pestaña
+    // y volver no es motivo para otro viaje a la base.
+    const recordado = recallChat();
+    if (recordado !== null) {
+      recipeId.current = recordado.recipeId;
+      setRecipeTitle(recordado.title);
+      if (recordado.messages.length > 0) {
+        setMessages(recordado.messages);
+      }
+      return () => {
+        vivo = false;
+      };
+    }
+
     void fetch('/api/receta', { cache: 'no-store' })
       .then((response) => (response.ok ? response.json() : null))
       .then((data: StoredRecipe | null) => {
@@ -123,6 +139,11 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
         if (historial.length > 0) {
           setMessages(historial);
         }
+        rememberChat({
+          recipeId: recipeId.current,
+          title: typeof data.title === 'string' ? data.title : null,
+          messages: historial,
+        });
       })
       .catch(() => {
         // Sin historial se empieza en blanco: molesto, no roto.
@@ -266,7 +287,7 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
           was_blocked: answer.wasBlocked === true,
         });
 
-        setMessages([
+        const conversacion: readonly ChatMessage[] = [
           ...history,
           {
             id: createId(),
@@ -274,7 +295,16 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
             content: answer.text,
             wasBlocked: answer.wasBlocked === true,
           },
-        ]);
+        ];
+        setMessages(conversacion);
+
+        // Se guarda en memoria lo que ya está escrito en la base, para que
+        // volver a esta pestaña no obligue a ir a buscarlo otra vez.
+        rememberChat({
+          recipeId: recipeId.current,
+          title: recipeTitle,
+          messages: conversacion,
+        });
 
         if (answer.wasBlocked === true) {
           track(ANALYTICS_EVENTS.unsafeDoseBlocked, { recipe: params.product });
@@ -289,7 +319,7 @@ export function useAssistantChat(params: AssistantChatParams): AssistantChatCont
         setIsThinking(false);
       }
     },
-    [isThinking, messages, params],
+    [isThinking, messages, params, recipeTitle],
   );
 
   return { messages, isThinking, error, recipeTitle, send };
