@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
@@ -29,22 +29,9 @@ export function AssistantChat({
   ...params
 }: AssistantChatProps): ReactNode {
   const { messages, isThinking, error, send, recipeTitle, openRecipe, startNewRecipe } =
-    useAssistantChat(params);
+    useAssistantChat(params, pendingPrompt);
   const hasStarted = messages.length > 0;
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-
-  // Se guarda la última pregunta que llegó de fuera para no reenviarla en cada
-  // render: sin esta guarda, un re-render cualquiera gastaría otra pregunta
-  // del cupo del usuario.
-  const lastExternal = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (pendingPrompt === null || pendingPrompt === lastExternal.current) {
-      return;
-    }
-    lastExternal.current = pendingPrompt;
-    void send(pendingPrompt, null);
-  }, [pendingPrompt, send]);
 
   return (
     <section aria-label="El Charcu, tu maestro charcutero">
