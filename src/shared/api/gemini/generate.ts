@@ -125,10 +125,19 @@ export async function generateAnswer(
     contents: turns.map((turn) => ({ role: turn.role, parts: toParts(turn) })),
     generationConfig: {
       temperature: 0.4,
-      // Ojo: los modelos "flash" de Gemini razonan antes de responder, y ese
-      // razonamiento CUENTA dentro de maxOutputTokens. Con un tope bajo la
-      // respuesta se corta a media frase, justo antes de dar la dosis.
-      maxOutputTokens: 4000,
+      /**
+       * Ojo: los modelos "flash" de Gemini razonan antes de responder, y ese
+       * razonamiento CUENTA dentro de maxOutputTokens. Con un tope bajo la
+       * respuesta se corta a media frase, justo antes de dar la dosis.
+       *
+       * Se baja de 4000 a 2000 (2026-08-19). Quien manda en el largo es el
+       * prompt —que pide 80 palabras— y no este número: esto es solo el freno
+       * de emergencia. Medido, el razonamiento gasta ~950, así que quedan
+       * ~1000 para la respuesta, de sobra para 80 palabras y para una
+       * advertencia de seguridad entera. Apretarlo más arriesga cortar justo
+       * la frase que dice cuánta sal de cura poner.
+       */
+      maxOutputTokens: 2000,
       // Limita cuánto razona: respuestas más rápidas y más baratas.
       thinkingConfig: { thinkingBudget: 512 },
     },
