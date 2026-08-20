@@ -208,28 +208,28 @@ No se empieza por el chat.
       `0011_cursos.sql`, aplicada y probada contra el proyecto real.
 
       ```
-              curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
-              ```
+                  curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
+                  ```
 
-              **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
-              campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
-              tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
-              que no son videos y todo el código que las lee empezaría a mentir. Añadir
-              un tipo nuevo es sumar un valor, no cambiar la estructura.
-              · El **orden es un campo** (`position`) en los tres niveles, con
-                `unique (padre, position)`. Reordenar es cambiar números.
-              · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
-                vigila un `check` por tipo: **una lección de PDF sin archivo no entra
-                en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
-                validación al TypeScript, y con la política de cero `any` eso acaba en
-                guardas de tipo por todos lados.
-              · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
-                al servidor de quien no tiene suscripción. Probado — no sale en la
-                lista y por URL directa da 404. Se contesta 404 y no "no tienes
-                acceso" a propósito: un mensaje distinto delataría qué cursos existen.
-              · En TypeScript la lección es una **unión discriminada por `kind`**, así
-                que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
-                deja de compilar hasta que alguien decida cómo se ve.
+                  **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
+                  campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
+                  tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
+                  que no son videos y todo el código que las lee empezaría a mentir. Añadir
+                  un tipo nuevo es sumar un valor, no cambiar la estructura.
+                  · El **orden es un campo** (`position`) en los tres niveles, con
+                    `unique (padre, position)`. Reordenar es cambiar números.
+                  · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
+                    vigila un `check` por tipo: **una lección de PDF sin archivo no entra
+                    en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
+                    validación al TypeScript, y con la política de cero `any` eso acaba en
+                    guardas de tipo por todos lados.
+                  · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
+                    al servidor de quien no tiene suscripción. Probado — no sale en la
+                    lista y por URL directa da 404. Se contesta 404 y no "no tienes
+                    acceso" a propósito: un mensaje distinto delataría qué cursos existen.
+                  · En TypeScript la lección es una **unión discriminada por `kind`**, así
+                    que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
+                    deja de compilar hasta que alguien decida cómo se ve.
 
 - [x] **6a-bis. Progreso por usuario y por curso** (2026-08-19). Se APUNTA por
       lección (`charcu.lesson_progress`) y se MUESTRA por curso
@@ -275,6 +275,88 @@ No se empieza por el chat.
       sí: emparejar la compra con el usuario de Supabase, atender el reembolso/chargeback
       para cortar el acceso, y no confiar en el correo del comprador a ciegas.
 - [ ] **8. Importar recetas de redes** (lo último, es retención no captación)
+
+---
+
+## ⚡ Por qué la app ya no pide datos en cada pestaña (2026-08-19)
+
+Cambiar de pestaña costaba **3,2 s** y disparaba una cascada: la petición de la
+página, `getUser()` tres veces (middleware, layout y página) y **dos llamadas a
+`/api/cupo`** de 1,4 s cada una — que además hacían dos escrituras a la base
+para volver a atar un rastro anónimo que ya estaba atado desde el primer
+segundo.
+
+**No se instaló ninguna librería de estado.** Redux o Zustand habrían dado un
+sitio ordenado donde guardar lo mismo que ya se estaba pidiendo de más; el
+problema no era dónde vivía el dato, era cuántas veces se iba a buscarlo.
+Cuatro arreglos, cero dependencias nuevas:
+
+1. **Caché de rutas del cliente** (`staleTimes` en `next.config.ts`). Las tres
+   pestañas son rutas dinámicas y para esas Next trae `dynamic: 0` de fábrica:
+   cada toque era una petición nueva aunque el usuario acabara de estar ahí.
+   Con 30 segundos, ir y volver es instantáneo. **Medido: `/charcu` pasó de
+   3,2 s a 54 ms.**
+2. **`currentUser()` deduplicado** con el `cache()` de React
+   (`shared/api/supabase/currentUser.ts`). El layout y la página comparten la
+   respuesta en vez de preguntar cada uno lo suyo.
+3. **El cupo se lee UNA vez, en el servidor**, y se reparte con `QuotaProvider`
+   (contexto de React + el canal que ya existía). `/api/cupo` **ya no se llama
+   al cambiar de pestaña**, solo desde el sitio público. Se actualiza solo:
+   cada respuesta del asistente trae el cupo nuevo y lo publica.
+4. **Atar el rastro anónimo se mudó a `/auth/callback`**, el único momento en
+   que alguien deja de ser anónimo. Antes iba en `/api/cupo`, o sea en cada
+   navegación.
+
+Y la conversación abierta se recuerda en memoria (`assistant-chat/lib/chatMemory`):
+volver a la pestaña del asistente ya no vuelve a pedir el historial. Se pierde
+al recargar **a propósito** — recargar es justo cuando sí hay que preguntarle a
+la base, porque pudo haber respondido desde otro dispositivo. Por eso salir de
+la cuenta hace una **recarga entera** y no una navegación: así se va todo lo que
+quedó en memoria del anterior.
+
+⚠️ **La regla para lo que venga**: la base se toca cuando algo CAMBIA (terminar
+una lección, mandar una pregunta), no cuando algo se mira. Después de un cambio,
+`router.refresh()` invalida el caché y trae los datos de verdad.
+
+### 🩻 El esqueleto, y por qué hay que medir en producción
+
+Tocar una pestaña ya no congela: se cambia de pantalla al instante y se enseña
+un esqueleto con la forma de lo que viene (ver "Estados de carga" más abajo).
+
+⚠️ **Lección que costó una hora: `loading.tsx` NO se ve en `pnpm dev`.** En
+desarrollo, Next compila la ruta —y el propio esqueleto— la primera vez que se
+pisa, así que el navegador sigue esperando y parece que el arreglo no funciona.
+Con `pnpm build && pnpm start` el esqueleto aparece a los 20 ms.
+
+**De aquí en adelante, cualquier cosa de rendimiento se mide en producción.**
+Hay una configuración lista en `.claude/launch.json` (`elcharcu-prod`, puerto 4321) para no tener que montarla cada vez. Medir velocidad en desarrollo es
+medir el compilador, no la app.
+
+⚠️ Y de paso: la cascada de aparición (`.reveal`) se acortó a 260 ms con
+retrasos de 0,04-0,16 s. Con los retrasos largos de antes, al quitarse el
+esqueleto quedaba medio segundo de pantalla **en blanco** — hueco gris, luego
+nada, luego el contenido. Se veía peor que no animar.
+
+---
+
+## ✂️ El asistente responde corto (2026-08-19)
+
+Las respuestas eran de manual: párrafos que nadie con las manos en la carne va a
+leer, y tokens de salida —los caros— gastados en explicar lo que no se preguntó.
+
+El prompt ahora manda **80 palabras como máximo, una idea por respuesta**, el
+dato en la primera línea, sin repetir la pregunta ni cerrar con resumen ni
+desearle suerte a nadie. Si el tema da para más, se ofrece en media línea y solo
+se cuenta si lo piden. **Excepción única: una advertencia de seguridad se
+explica entera** — la salud no se resume.
+
+`maxOutputTokens` baja de 4000 a 2000. Es el freno de emergencia, no la regla:
+quien manda en el largo es el prompt. No se aprieta más porque el razonamiento
+del modelo gasta ~950 de ese presupuesto, y cortarse a media frase justo antes
+de decir cuánta sal de cura poner sería peor que una respuesta larga.
+
+Probado: "¿Cuánto tiempo se cura un chorizo?" se contestó en **66 palabras**,
+con los dos casos y una pregunta de vuelta.
 
 ---
 
@@ -433,8 +515,16 @@ texto pesaba igual.
 - [ ] **Capa 5 — movimiento.** No hay ni una animación y **no hay librería
       instalada**. Requiere `motion` (~4kb) y decidirlo, porque es una
       dependencia nueva. Las 7 de base están especificadas en el plan.
-- [ ] **Estados de carga y vacíos.** No existen: hoy no hay skeleton ni empty
-      state en ninguna pantalla.
+- [x] **Estados de carga en la app** (2026-08-19). Las cinco pantallas de dentro
+      tienen su `loading.tsx` con un esqueleto que **tiene la forma de lo que va a
+      aparecer** — un rectángulo genérico no dice nada; una silueta con la forma de
+      la tarjeta deja el ojo colocado. Y cada uno lleva su aviso en `sr-only`, que
+      si no la app se queda muda para quien no ve la pantalla.
+      Medido en producción: el esqueleto sale a los **20 ms** de tocar la pestaña y
+      el contenido real a los **500 ms**. Antes el usuario se quedaba 1,5 s mirando
+      la pantalla anterior, sin señal de que su toque hubiera hecho algo.
+- [ ] **Estados vacíos.** Solo existe el de "no hay cursos publicados". Faltan los
+      del resto: sin recetas, sin conexión, búsqueda sin resultados.
 
 **El revisor visual ya existe**: `.claude/agents/revisor-visual.md`. Recibe la
 RUTA de una captura, puntúa usabilidad /40 y craft /20 contra esta paleta, y la

@@ -83,7 +83,7 @@ export function AppCursoView({
         </Reveal>
       ) : null}
 
-      <Reveal delay={0.12}>
+      <Reveal delay={0.1}>
         <section className="mt-8">
           <h2 className="mb-3 text-sm font-medium text-cocoa/65">Contenido</h2>
           <CourseOutline

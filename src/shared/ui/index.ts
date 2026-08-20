@@ -5,5 +5,6 @@ export { Logo } from './Logo';
 export { SearchBar } from './SearchBar';
 export { OptionTile } from './OptionTile';
 export { Reveal } from './Reveal';
+export { Skeleton, SkeletonHeader, SkeletonCard, SkeletonLabel } from './Skeleton';
 export { IconCourses, IconCharcu, IconAccount, IconChevron } from './icons';
 export type { IconProps } from './icons';
