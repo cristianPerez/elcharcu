@@ -1,5 +1,6 @@
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { type ReactNode } from 'react';
 
 import { AssistantChat } from '@/features/assistant-chat';
@@ -19,6 +20,15 @@ import { Reveal } from '@/shared/ui';
  */
 export function AppAssistant(): ReactNode {
   const { quota, status, isKnown } = useUsageQuota();
+
+  /**
+   * La duda que llega de una lección (`/charcu?pregunta=…`).
+   *
+   * Se manda sola al llegar: el sentido de tocar la pregunta de un paso es no
+   * tener que escribirla. `AssistantChat` ya se guarda de no reenviarla en
+   * cada render, que si no gastaría cupo por cada repintado.
+   */
+  const pendingPrompt = useSearchParams().get('pregunta');
 
   // Solo se levanta el muro si SABEMOS que se acabó el cupo. Si no se pudo
   // leer, se deja pasar: quien protege el bolsillo es el tope diario de gasto,
@@ -52,6 +62,7 @@ export function AppAssistant(): ReactNode {
                 level="apasionado"
                 country="Colombia"
                 canSendImages={!status.areImagesExhausted}
+                pendingPrompt={pendingPrompt}
               />
 
               {isKnown ? (

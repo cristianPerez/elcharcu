@@ -53,10 +53,14 @@ export const appRoutes = {
   appAssistant: '/charcu',
   appAccount: '/cuenta',
   /**
-   * Receta guiada (EXPERIMENTAL): el curso y el maestro en la misma pantalla.
-   * Hoy solo existe una, así que la ruta apunta directo a ella.
+   * El curso gratis, el que se enseña desde la web pública.
+   *
+   * Vive DENTRO de la app (2026-08-19), así que un visitante sin cuenta que
+   * toque este enlace acaba en `/entrar`. Es coherente con el embudo nuevo
+   * —una pregunta gratis y a entrar— pero conviene mirarlo cuando se
+   * simplifique la portada (4e).
    */
-  guidedRecipe: '/curso/bondiola-curada',
+  guidedRecipe: '/cursos/bondiola-curada',
 } as const;
 
 /**

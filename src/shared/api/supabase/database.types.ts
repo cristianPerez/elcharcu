@@ -82,31 +82,43 @@ export type Database = {
       };
       courses: {
         Row: {
+          access: string;
+          cover_url: string | null;
           created_at: string;
-          description: string | null;
           id: string;
-          is_published: boolean;
-          name: string;
+          level: string;
           position: number;
-          rating: number | null;
+          slug: string;
+          status: string;
+          summary: string;
+          title: string;
+          updated_at: string;
         };
         Insert: {
+          access?: string;
+          cover_url?: string | null;
           created_at?: string;
-          description?: string | null;
-          id: string;
-          is_published?: boolean;
-          name: string;
+          id?: string;
+          level?: string;
           position?: number;
-          rating?: number | null;
+          slug: string;
+          status?: string;
+          summary?: string;
+          title: string;
+          updated_at?: string;
         };
         Update: {
+          access?: string;
+          cover_url?: string | null;
           created_at?: string;
-          description?: string | null;
           id?: string;
-          is_published?: boolean;
-          name?: string;
+          level?: string;
           position?: number;
-          rating?: number | null;
+          slug?: string;
+          status?: string;
+          summary?: string;
+          title?: string;
+          updated_at?: string;
         };
         Relationships: [];
       };
@@ -145,6 +157,129 @@ export type Database = {
           whatsapp?: string;
         };
         Relationships: [];
+      };
+      lesson_progress: {
+        Row: {
+          completed_at: string | null;
+          last_second: number;
+          lesson_id: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          completed_at?: string | null;
+          last_second?: number;
+          lesson_id: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          completed_at?: string | null;
+          last_second?: number;
+          lesson_id?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'lesson_progress_lesson_id_fkey';
+            columns: ['lesson_id'];
+            isOneToOne: false;
+            referencedRelation: 'lessons';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      lessons: {
+        Row: {
+          ask: string | null;
+          body: string | null;
+          bunny_video_id: string | null;
+          created_at: string;
+          duration_s: number | null;
+          file_url: string | null;
+          id: string;
+          kind: string;
+          module_id: string;
+          position: number;
+          poster_url: string | null;
+          summary: string;
+          title: string;
+        };
+        Insert: {
+          ask?: string | null;
+          body?: string | null;
+          bunny_video_id?: string | null;
+          created_at?: string;
+          duration_s?: number | null;
+          file_url?: string | null;
+          id?: string;
+          kind: string;
+          module_id: string;
+          position: number;
+          poster_url?: string | null;
+          summary?: string;
+          title: string;
+        };
+        Update: {
+          ask?: string | null;
+          body?: string | null;
+          bunny_video_id?: string | null;
+          created_at?: string;
+          duration_s?: number | null;
+          file_url?: string | null;
+          id?: string;
+          kind?: string;
+          module_id?: string;
+          position?: number;
+          poster_url?: string | null;
+          summary?: string;
+          title?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'lessons_module_id_fkey';
+            columns: ['module_id'];
+            isOneToOne: false;
+            referencedRelation: 'modules';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      modules: {
+        Row: {
+          course_id: string;
+          created_at: string;
+          id: string;
+          position: number;
+          summary: string;
+          title: string;
+        };
+        Insert: {
+          course_id: string;
+          created_at?: string;
+          id?: string;
+          position: number;
+          summary?: string;
+          title: string;
+        };
+        Update: {
+          course_id?: string;
+          created_at?: string;
+          id?: string;
+          position?: number;
+          summary?: string;
+          title?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'modules_course_id_fkey';
+            columns: ['course_id'];
+            isOneToOne: false;
+            referencedRelation: 'courses';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       onboarding_answers: {
         Row: {
@@ -405,21 +540,14 @@ export type Database = {
           storage_path?: string | null;
           title?: string;
         };
-        Relationships: [
-          {
-            foreignKeyName: 'videos_course_id_fkey';
-            columns: ['course_id'];
-            isOneToOne: false;
-            referencedRelation: 'courses';
-            referencedColumns: ['id'];
-          },
-        ];
+        Relationships: [];
       };
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
+      can_read_course: { Args: { p_course_id: string }; Returns: boolean };
       consume_quota: {
         Args: {
           p_images?: number;
@@ -437,6 +565,16 @@ export type Database = {
           questions_used: number;
           recipes_limit: number;
           recipes_used: number;
+        }[];
+      };
+      course_progress: {
+        Args: { p_user_id: string };
+        Returns: {
+          course_id: string;
+          done_lessons: number;
+          next_lesson_id: string;
+          percent: number;
+          total_lessons: number;
         }[];
       };
       current_period_key: { Args: never; Returns: string };
@@ -480,6 +618,10 @@ export type Database = {
         };
         Returns: undefined;
       };
+      save_lesson_progress: {
+        Args: { p_completed?: boolean; p_lesson_id: string; p_second?: number };
+        Returns: undefined;
+      };
       save_onboarding: {
         Args: {
           p_country: string;
@@ -491,23 +633,6 @@ export type Database = {
         Returns: undefined;
       };
       today_ai_spend: { Args: never; Returns: number };
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-  public: {
-    Tables: {
-      [_ in never]: never;
-    };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      [_ in never]: never;
     };
     Enums: {
       [_ in never]: never;
@@ -633,9 +758,6 @@ export type CompositeTypes<
 
 export const Constants = {
   charcu: {
-    Enums: {},
-  },
-  public: {
     Enums: {},
   },
 } as const;
