@@ -51,14 +51,32 @@ export function IconCourses(props: IconProps): ReactNode {
   );
 }
 
-/** El Charcu: el cuchillo del oficio. Es el producto, no un chat genérico. */
-export function IconCharcu(props: IconProps): ReactNode {
+/**
+ * El Charcu: la chispa, que es la marca universal de "esto lo contesta una IA".
+ *
+ * Antes era un cuchillo. Se cambió (2026-08-20) porque el cuchillo dice
+ * "charcutería" —cosa que ya dicen el nombre y el resto de la app— y no decía
+ * lo único que esta pestaña necesita distinguir: que aquí hay un asistente.
+ *
+ * Va RELLENA y no de trazo, al revés que las otras dos: una chispa dibujada a
+ * línea se lee como un asterisco. Por eso no usa el envoltorio común.
+ */
+export function IconCharcu({ size = 22, className }: IconProps): ReactNode {
   return (
-    <Svg {...props}>
-      <path d="M3 14.5 14.5 3c1.9 1.9 2.6 4.2 2.2 6.3-.3 1.5-1.1 2.8-2.2 3.9L11 16.7 3 14.5Z" />
-      <path d="m10.2 15.9 5 5" />
-      <path d="m18.4 18.3 2.4 2.4" />
-    </Svg>
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
+      <path d="M12 2.6l1.85 5.15a3 3 0 0 0 1.8 1.8L20.8 11.4l-5.15 1.85a3 3 0 0 0-1.8 1.8L12 20.2l-1.85-5.15a3 3 0 0 0-1.8-1.8L3.2 11.4l5.15-1.85a3 3 0 0 0 1.8-1.8L12 2.6z" />
+      <path
+        d="M18.9 3.1l.62 1.73 1.73.62-1.73.62-.62 1.73-.62-1.73-1.73-.62 1.73-.62.62-1.73z"
+        opacity="0.65"
+      />
+    </svg>
   );
 }
 
