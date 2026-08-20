@@ -56,12 +56,17 @@
   /**
    * Entrada de las pantallas de la app.
    *
+   * Corta y con poco retraso a propósito. Ahora que hay esqueleto, una
+   * cascada larga deja la pantalla EN BLANCO justo después de quitarlo:
+   * primero el hueco gris, luego nada, luego el contenido. Se ve peor que
+   * no animar.
+   *
    * Es CSS puro a propósito: no hay librería de animación instalada y meter
    * una (4kb + una dependencia más) para tres tarjetas que aparecen no se
    * paga. `prefers-reduced-motion` la apaga más abajo.
    */
   .reveal {
-    animation: reveal 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: reveal 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: var(--reveal-delay, 0s);
   }
 

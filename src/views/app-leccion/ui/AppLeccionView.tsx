@@ -79,7 +79,7 @@ export function AppLeccionView({
           asistente: en vez de terminar y quedarte con la pregunta, la
           pregunta es el siguiente botón. */}
       {lesson.ask === null ? null : (
-        <Reveal delay={0.12}>
+        <Reveal delay={0.1}>
           <Link
             href={`${appRoutes.appAssistant}?pregunta=${encodeURIComponent(lesson.ask)}`}
             className="mt-5 block rounded-2xl border border-terracota/30 bg-terracota/5 p-4"
@@ -94,7 +94,7 @@ export function AppLeccionView({
         </Reveal>
       )}
 
-      <Reveal delay={0.18}>
+      <Reveal delay={0.14}>
         <div className="mt-8">
           <CompleteLessonButton
             lessonId={lesson.id}

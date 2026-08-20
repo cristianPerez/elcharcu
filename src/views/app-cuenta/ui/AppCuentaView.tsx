@@ -79,7 +79,7 @@ export function AppCuentaView({ email }: AppCuentaViewProps): ReactNode {
       </Reveal>
 
       {isFree ? (
-        <Reveal delay={0.12}>
+        <Reveal delay={0.08}>
           <Link
             href={appRoutes.subscription}
             className="mt-4 flex items-center justify-between rounded-2xl bg-terracota-dark px-5 py-4 text-cream-white shadow-surface transition-transform active:scale-[0.98]"
@@ -95,7 +95,7 @@ export function AppCuentaView({ email }: AppCuentaViewProps): ReactNode {
         </Reveal>
       ) : null}
 
-      <Reveal delay={0.18}>
+      <Reveal delay={0.12}>
         <section className="mt-8">
           <h2 className="text-sm font-medium text-cocoa/65">Tus datos</h2>
           <div className="mt-3 rounded-xl border border-cocoa/10 bg-cream-white px-4 py-3.5">
@@ -109,7 +109,7 @@ export function AppCuentaView({ email }: AppCuentaViewProps): ReactNode {
         </section>
       </Reveal>
 
-      <Reveal delay={0.24}>
+      <Reveal delay={0.16}>
         <div className="mt-8">
           <SignOutButton />
         </div>

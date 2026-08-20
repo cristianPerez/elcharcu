@@ -43,7 +43,7 @@ export function AppCursosView({ courses, progress }: AppCursosViewProps): ReactN
         <ul className="mt-6 space-y-4">
           {courses.map((course, index) => (
             <li key={course.id}>
-              <Reveal delay={0.06 + index * 0.06}>
+              <Reveal delay={0.06 + Math.min(index, 3) * 0.04}>
                 <CourseRow course={course} progress={progress.get(course.id)} />
               </Reveal>
             </li>
@@ -51,7 +51,7 @@ export function AppCursosView({ courses, progress }: AppCursosViewProps): ReactN
         </ul>
       )}
 
-      <Reveal delay={0.18}>
+      <Reveal delay={0.12}>
         <p className="mt-8 text-sm leading-relaxed text-cocoa/60">
           Los videos se están grabando. Mientras tanto, cada lección lleva los pasos
           escritos y El Charcu te responde en cualquiera de ellos.
