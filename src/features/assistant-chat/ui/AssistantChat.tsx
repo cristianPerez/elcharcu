@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
 import { useAssistantChat, type AssistantChatParams } from '../model/useAssistantChat';
 
 import { ChatComposer } from './ChatComposer';
+import { ChatHistoryDrawer } from './ChatHistoryDrawer';
 import { MessageBubble } from './MessageBubble';
 import { StarterPrompts } from './StarterPrompts';
 
@@ -27,11 +28,10 @@ export function AssistantChat({
   pendingPrompt = null,
   ...params
 }: AssistantChatProps): ReactNode {
-  // `recipeTitle` no se pinta todavía: hoy el título ES la primera pregunta,
-  // así que una cabecera repetiría palabra por palabra el mensaje de abajo.
-  // Gana sentido en la lista de "Mis recetas", donde hay varias que distinguir.
-  const { messages, isThinking, error, send } = useAssistantChat(params);
+  const { messages, isThinking, error, send, recipeTitle, openRecipe, startNewRecipe } =
+    useAssistantChat(params);
   const hasStarted = messages.length > 0;
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
   // Se guarda la última pregunta que llegó de fuera para no reenviarla en cada
   // render: sin esta guarda, un re-render cualquiera gastaría otra pregunta
@@ -48,6 +48,56 @@ export function AssistantChat({
 
   return (
     <section aria-label="El Charcu, tu maestro charcutero">
+      {/*
+        La cabecera va SIEMPRE, también con el chat en blanco.
+        Estuvo escondida en el estado vacío durante medio día y era un error:
+        justo cuando no tienes nada delante es cuando quieres llegar a lo que
+        hablaste antes. Esconder la puerta al historial precisamente ahí deja
+        al usuario creyendo que perdió sus conversaciones.
+      */}
+      <header className="mb-4 flex items-center gap-2 border-b border-cocoa/10 pb-3">
+        <button
+          type="button"
+          onClick={() => {
+            setIsHistoryOpen(true);
+          }}
+          aria-label="Ver tus recetas"
+          className="flex size-9 shrink-0 flex-col items-center justify-center gap-[3px] rounded-lg transition-colors active:bg-cream"
+        >
+          <span aria-hidden="true" className="h-0.5 w-4 rounded-full bg-cocoa/60" />
+          <span aria-hidden="true" className="h-0.5 w-4 rounded-full bg-cocoa/60" />
+          <span aria-hidden="true" className="h-0.5 w-4 rounded-full bg-cocoa/60" />
+        </button>
+
+        <h2 className="min-w-0 flex-1 truncate text-sm font-medium text-cocoa/70">
+          {recipeTitle ?? (hasStarted ? 'Receta sin nombre' : 'Receta nueva')}
+        </h2>
+
+        {/* "Nueva" solo cuando hay algo que dejar atrás: en un chat en blanco
+            sería un botón que no hace nada. */}
+        {hasStarted ? (
+          <button
+            type="button"
+            onClick={startNewRecipe}
+            className="shrink-0 rounded-full border border-cocoa/15 px-3 py-1.5 text-xs font-medium text-cocoa/70 transition-colors active:bg-cream"
+          >
+            Nueva
+          </button>
+        ) : null}
+      </header>
+
+      <ChatHistoryDrawer
+        isOpen={isHistoryOpen}
+        onClose={() => {
+          setIsHistoryOpen(false);
+        }}
+        currentRecipeId={null}
+        onPick={(id) => {
+          void openRecipe(id);
+        }}
+        onNew={startNewRecipe}
+      />
+
       {hasStarted ? null : (
         <StarterPrompts
           isDisabled={isThinking}

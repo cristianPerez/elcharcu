@@ -186,6 +186,68 @@ No se empieza por el chat.
       convierte a nadie. 3. Decidir a dónde va `/` para quien ya tiene sesión: ¿la ve igual, o se le
       manda derecho a `/charcu`? Mandarlo derecho es lo cómodo, pero deja al
       usuario sin forma de volver a ver los precios para mejorar de plan.
+- [x] **4h. Historial de conversaciones y sesiones** (2026-08-20). Se puede ver y
+      retomar cualquier conversación anterior desde una hamburguesa en la
+      pestaña de El Charcu, agrupadas por Hoy · Esta semana · Antes.
+
+      **La regla de sesión** (decisión de Cristian, 2026-08-20): se empieza en
+          blanco cuando pasa CUALQUIERA de las dos cosas — **una hora sin escribir**
+          o **se cierra la pestaña**. Las dos salen de la misma línea:
+          `sessionStorage` muere al cerrar la pestaña y la marca de tiempo se
+          encarga de la inactividad, así que no hay que escuchar eventos ni
+          preguntarle nada al usuario
+          (`features/assistant-chat/lib/activeChat.ts`).
+          Una hora y no seis: una duda de charcutería se resuelve en minutos, y
+          quien vuelve al cabo de una hora casi seguro trae otra pregunta — meterla
+          en el hilo anterior ensucia las dos. Volver a lo de antes está a un toque
+          en el historial.
+
+          ⚠️ **Lo importante del cambio**: `/api/asistente` **dejó de retomar la
+          última receta abierta por su cuenta**. Ese rescate existía porque el id
+          vivía en memoria y una recarga lo perdía — pero tenía un efecto que nadie
+          había visto: era IMPOSIBLE empezar un chat nuevo, porque el servidor
+          siempre devolvía al anterior. Ahora manda el navegador y el servidor solo
+          comprueba que la receta sea suya.
+
+          **Los títulos los pone el asistente** tras la primera respuesta, con
+          `after()` de Next para no hacer esperar a nadie: se contesta primero y se
+          titula por detrás. Probado — "¿Cuánta sal de cura #1 para 1,8 kg de
+          bondiola?" quedó como **"Bondiola 1,8 kg"**. Si el titulador falla queda
+          el título provisional (la pregunta recortada): feo, no roto.
+
+          Verificado en producción local: recargar dentro de la ventana restaura la
+          conversación, pasada la hora empieza en blanco, una pregunta sin
+          `recipeId` abre receta nueva, y un id ajeno no entrega nada.
+
+- [ ] **4i. Cuándo más nace un chat nuevo** (fase 3, pedida por Cristian el
+      2026-08-20 y **no construida**). Faltan dos disparadores: 1. **Preguntar desde una lección** (`/charcu?pregunta=…`) debería abrir
+      SIEMPRE un hilo aparte. Hoy la duda cae en la conversación que
+      estuviera abierta, y mezcla el curso con lo que fuera que se estaba
+      hablando. Es un cambio pequeño: llamar a `startNewRecipe()` antes de
+      mandar la pregunta que llega por la URL. 2. **Volver del segundo plano** tras una ausencia larga: preguntar
+      "¿sigues con X o empiezas de cero?".
+      ⚠️ El segundo es el delicado: si se dispara en cada `visibilitychange`,
+      se vuelve insoportable — y acabamos de optimizar justo que cambiar de
+      pestaña no moleste. Tiene que medirse por tiempo de ausencia real, no por
+      cada vez que la pestaña recupera el foco.
+- [ ] **4g. Proyectos: varios chats sobre la misma pieza** (pedido de Cristian,
+      2026-08-20 — **anotado, sin construir**). Hoy una receta ES una
+      conversación. Pero alguien puede preguntar varias cosas del mismo jamón en
+      chats distintos —la sal el lunes, el moho a las tres semanas— y ahora mismo
+      esos dos chats no se saben hermanos.
+      La forma sería una capa por encima: un **proyecto** (la pieza) que agrupa
+      varias recetas. En la base, tabla `projects` y un `project_id` en
+      `charcu.recipes`.
+
+      ⚠️ **La trampa está en el nombre, no en el modelo.** Hoy "receta" significa
+          "una conversación sobre una pieza". El día que existan proyectos, la pieza
+          es el proyecto y "receta" pasa a significar otra cosa — o deja de tener
+          sentido. Eso arrastra renombrar tabla, entidad, rutas y copy. **Cuanto
+          antes se decida el vocabulario, más barato sale**; hacerlo con cien
+          usuarios y URLs compartidas cuesta diez veces más.
+          Mi sugerencia para cuando toque: la pieza es el **proyecto**, y cada
+          conversación es una **consulta**. Pero es decisión tuya, y no la tomo yo.
+
 - [ ] **4f. Qué hacemos con las recetas gratuitas** (pregunta abierta de Cristian,
       2026-08-19 — **decidir antes de tocar nada**). Hoy `/recetas` y `/tablas` son
       públicas y abiertas: es el contenido que trae gente por buscador, y es también
@@ -210,28 +272,28 @@ No se empieza por el chat.
       `0011_cursos.sql`, aplicada y probada contra el proyecto real.
 
       ```
-                              curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
-                              ```
+                                  curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
+                                  ```
 
-                              **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
-                              campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
-                              tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
-                              que no son videos y todo el código que las lee empezaría a mentir. Añadir
-                              un tipo nuevo es sumar un valor, no cambiar la estructura.
-                              · El **orden es un campo** (`position`) en los tres niveles, con
-                                `unique (padre, position)`. Reordenar es cambiar números.
-                              · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
-                                vigila un `check` por tipo: **una lección de PDF sin archivo no entra
-                                en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
-                                validación al TypeScript, y con la política de cero `any` eso acaba en
-                                guardas de tipo por todos lados.
-                              · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
-                                al servidor de quien no tiene suscripción. Probado — no sale en la
-                                lista y por URL directa da 404. Se contesta 404 y no "no tienes
-                                acceso" a propósito: un mensaje distinto delataría qué cursos existen.
-                              · En TypeScript la lección es una **unión discriminada por `kind`**, así
-                                que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
-                                deja de compilar hasta que alguien decida cómo se ve.
+                                  **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
+                                  campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
+                                  tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
+                                  que no son videos y todo el código que las lee empezaría a mentir. Añadir
+                                  un tipo nuevo es sumar un valor, no cambiar la estructura.
+                                  · El **orden es un campo** (`position`) en los tres niveles, con
+                                    `unique (padre, position)`. Reordenar es cambiar números.
+                                  · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
+                                    vigila un `check` por tipo: **una lección de PDF sin archivo no entra
+                                    en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
+                                    validación al TypeScript, y con la política de cero `any` eso acaba en
+                                    guardas de tipo por todos lados.
+                                  · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
+                                    al servidor de quien no tiene suscripción. Probado — no sale en la
+                                    lista y por URL directa da 404. Se contesta 404 y no "no tienes
+                                    acceso" a propósito: un mensaje distinto delataría qué cursos existen.
+                                  · En TypeScript la lección es una **unión discriminada por `kind`**, así
+                                    que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
+                                    deja de compilar hasta que alguien decida cómo se ve.
 
 - [x] **6a-bis. Progreso por usuario y por curso** (2026-08-19). Se APUNTA por
       lección (`charcu.lesson_progress`) y se MUESTRA por curso
@@ -540,24 +602,24 @@ texto pesaba igual.
       dentro quiere volver a su curso, quien está fuera quiere volver a la portada.
 
       ⚠️ **El caso que lo destapó: sin conexión a Supabase.** Hoy la pantalla de
-                  entrar dice _"Las cuentas todavía no están conectadas. Vuelve en un rato"_
-                  cuando en realidad **faltan variables de entorno** —le pasó a Cristian en
-                  QA el 2026-08-19 y costó dos rondas de adivinar—. Ese mensaje miente a
-                  medias y no hay forma de diagnosticarlo desde fuera. Hay que separar tres
-                  cosas que hoy se ven igual:
-                  1. **Falta configuración** (sin claves): es un fallo de despliegue, no del
-                     usuario. Aviso claro en el log del servidor al arrancar, y en pantalla
-                     algo que no invite a "volver en un rato", porque solo, no se arregla.
-                  2. **Supabase no responde** (caída o red): ahí sí "vuelve en un rato", con
-                     botón de reintentar.
-                  3. **El usuario no tiene permiso**: ni error ni vacío, es la puerta
-                     haciendo su trabajo.
+                      entrar dice _"Las cuentas todavía no están conectadas. Vuelve en un rato"_
+                      cuando en realidad **faltan variables de entorno** —le pasó a Cristian en
+                      QA el 2026-08-19 y costó dos rondas de adivinar—. Ese mensaje miente a
+                      medias y no hay forma de diagnosticarlo desde fuera. Hay que separar tres
+                      cosas que hoy se ven igual:
+                      1. **Falta configuración** (sin claves): es un fallo de despliegue, no del
+                         usuario. Aviso claro en el log del servidor al arrancar, y en pantalla
+                         algo que no invite a "volver en un rato", porque solo, no se arregla.
+                      2. **Supabase no responde** (caída o red): ahí sí "vuelve en un rato", con
+                         botón de reintentar.
+                      3. **El usuario no tiene permiso**: ni error ni vacío, es la puerta
+                         haciendo su trabajo.
 
-                  Ojo al hacerlo: un `error.tsx` es un componente de cliente y **no atrapa lo
-                  que falla en el servidor durante el render** más que como error genérico; el
-                  detalle no viaja al navegador a propósito. Si se quiere distinguir los tres
-                  casos de arriba, la decisión se toma en el servidor y se baja como dato, no
-                  como excepción.
+                      Ojo al hacerlo: un `error.tsx` es un componente de cliente y **no atrapa lo
+                      que falla en el servidor durante el render** más que como error genérico; el
+                      detalle no viaja al navegador a propósito. Si se quiere distinguir los tres
+                      casos de arriba, la decisión se toma en el servidor y se baja como dato, no
+                      como excepción.
 
 **El revisor visual ya existe**: `.claude/agents/revisor-visual.md`. Recibe la
 RUTA de una captura, puntúa usabilidad /40 y craft /20 contra esta paleta, y la
