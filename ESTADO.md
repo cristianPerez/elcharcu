@@ -1,7 +1,7 @@
 # ESTADO — El Charcu (plataforma)
 
 Memoria viva del proyecto. Se actualiza al cerrar cada etapa.
-Última actualización: 2026-08-18
+Última actualización: 2026-08-19
 
 ---
 
@@ -60,7 +60,8 @@ Verificado en el repo el 2026-08-04:
 - ❌ Video: **Bunny** todavía sin cuenta ni videos (paso 6).
 - ❌ Librería de animación: no hay ninguna. La capa 5 del rescate visual la necesita.
 - ❌ PWA (instalable en el celular)
-- ❌ Despliegue: **nada escucha a `develop`**. `git push` no publica.
+- ✅ Despliegue: **Vercel escucha a `develop`** y lo sirve en `qa.elcharcu.co`
+  (2026-08-19). Producción (`main` → elcharcu.co) todavía no se ha usado.
 
 ---
 
@@ -208,28 +209,28 @@ No se empieza por el chat.
       `0011_cursos.sql`, aplicada y probada contra el proyecto real.
 
       ```
-                      curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
-                      ```
+                          curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
+                          ```
 
-                      **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
-                      campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
-                      tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
-                      que no son videos y todo el código que las lee empezaría a mentir. Añadir
-                      un tipo nuevo es sumar un valor, no cambiar la estructura.
-                      · El **orden es un campo** (`position`) en los tres niveles, con
-                        `unique (padre, position)`. Reordenar es cambiar números.
-                      · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
-                        vigila un `check` por tipo: **una lección de PDF sin archivo no entra
-                        en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
-                        validación al TypeScript, y con la política de cero `any` eso acaba en
-                        guardas de tipo por todos lados.
-                      · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
-                        al servidor de quien no tiene suscripción. Probado — no sale en la
-                        lista y por URL directa da 404. Se contesta 404 y no "no tienes
-                        acceso" a propósito: un mensaje distinto delataría qué cursos existen.
-                      · En TypeScript la lección es una **unión discriminada por `kind`**, así
-                        que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
-                        deja de compilar hasta que alguien decida cómo se ve.
+                          **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
+                          campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
+                          tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
+                          que no son videos y todo el código que las lee empezaría a mentir. Añadir
+                          un tipo nuevo es sumar un valor, no cambiar la estructura.
+                          · El **orden es un campo** (`position`) en los tres niveles, con
+                            `unique (padre, position)`. Reordenar es cambiar números.
+                          · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
+                            vigila un `check` por tipo: **una lección de PDF sin archivo no entra
+                            en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
+                            validación al TypeScript, y con la política de cero `any` eso acaba en
+                            guardas de tipo por todos lados.
+                          · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
+                            al servidor de quien no tiene suscripción. Probado — no sale en la
+                            lista y por URL directa da 404. Se contesta 404 y no "no tienes
+                            acceso" a propósito: un mensaje distinto delataría qué cursos existen.
+                          · En TypeScript la lección es una **unión discriminada por `kind`**, así
+                            que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
+                            deja de compilar hasta que alguien decida cómo se ve.
 
 - [x] **6a-bis. Progreso por usuario y por curso** (2026-08-19). Se APUNTA por
       lección (`charcu.lesson_progress`) y se MUESTRA por curso
@@ -538,24 +539,24 @@ texto pesaba igual.
       dentro quiere volver a su curso, quien está fuera quiere volver a la portada.
 
       ⚠️ **El caso que lo destapó: sin conexión a Supabase.** Hoy la pantalla de
-          entrar dice _"Las cuentas todavía no están conectadas. Vuelve en un rato"_
-          cuando en realidad **faltan variables de entorno** —le pasó a Cristian en
-          QA el 2026-08-19 y costó dos rondas de adivinar—. Ese mensaje miente a
-          medias y no hay forma de diagnosticarlo desde fuera. Hay que separar tres
-          cosas que hoy se ven igual:
-          1. **Falta configuración** (sin claves): es un fallo de despliegue, no del
-             usuario. Aviso claro en el log del servidor al arrancar, y en pantalla
-             algo que no invite a "volver en un rato", porque solo, no se arregla.
-          2. **Supabase no responde** (caída o red): ahí sí "vuelve en un rato", con
-             botón de reintentar.
-          3. **El usuario no tiene permiso**: ni error ni vacío, es la puerta
-             haciendo su trabajo.
+              entrar dice _"Las cuentas todavía no están conectadas. Vuelve en un rato"_
+              cuando en realidad **faltan variables de entorno** —le pasó a Cristian en
+              QA el 2026-08-19 y costó dos rondas de adivinar—. Ese mensaje miente a
+              medias y no hay forma de diagnosticarlo desde fuera. Hay que separar tres
+              cosas que hoy se ven igual:
+              1. **Falta configuración** (sin claves): es un fallo de despliegue, no del
+                 usuario. Aviso claro en el log del servidor al arrancar, y en pantalla
+                 algo que no invite a "volver en un rato", porque solo, no se arregla.
+              2. **Supabase no responde** (caída o red): ahí sí "vuelve en un rato", con
+                 botón de reintentar.
+              3. **El usuario no tiene permiso**: ni error ni vacío, es la puerta
+                 haciendo su trabajo.
 
-          Ojo al hacerlo: un `error.tsx` es un componente de cliente y **no atrapa lo
-          que falla en el servidor durante el render** más que como error genérico; el
-          detalle no viaja al navegador a propósito. Si se quiere distinguir los tres
-          casos de arriba, la decisión se toma en el servidor y se baja como dato, no
-          como excepción.
+              Ojo al hacerlo: un `error.tsx` es un componente de cliente y **no atrapa lo
+              que falla en el servidor durante el render** más que como error genérico; el
+              detalle no viaja al navegador a propósito. Si se quiere distinguir los tres
+              casos de arriba, la decisión se toma en el servidor y se baja como dato, no
+              como excepción.
 
 **El revisor visual ya existe**: `.claude/agents/revisor-visual.md`. Recibe la
 RUTA de una captura, puntúa usabilidad /40 y craft /20 contra esta paleta, y la
@@ -649,6 +650,63 @@ Ojo con dos cosas al mirar el historial:
   datos de prueba que limpiar ni esquema que reconstruir, y el `0000_reset` hacía
   `drop schema charcu cascade` — reproducirlo convertiría cualquier `db push` en un
   borrado de la base entera.
+
+### 🚦 QA en `qa.elcharcu.co` (2026-08-19)
+
+Vercel sirve `develop` en `qa.elcharcu.co` (Domains → Preview → rama `develop`),
+con la protección de despliegue **encendida**: hay que entrar con la cuenta de
+Vercel. Se deja así a propósito — un QA abierto con el asistente dentro es
+alguien gastando el presupuesto de Gemini.
+
+En Supabase, este proyecto pasó a ser el de QA: `site_url =
+https://qa.elcharcu.co` y la lista de URLs permitidas incluye qa y
+`http://localhost:*/**` (el comodín de puerto es porque `pnpm dev` cambia de
+puerto solo cuando el 3000 está ocupado). El proyecto de producción se creará
+aparte.
+
+⚠️ **QA comparte base y clave de Gemini con producción.** Cada prueba escribe
+datos reales y gasta del mismo tope diario. La separación de verdad es un
+segundo proyecto de Supabase, no un segundo proyecto de Vercel.
+
+### 💥 La trampa que costó una mañana: `NEXT_PUBLIC_*` + "Sensitive" (2026-08-19)
+
+**Regla, para no repetirlo: en Vercel, una variable `NEXT_PUBLIC_*` NO puede
+estar marcada como _Sensitive_. Va como Config / Plain.**
+
+Por qué: Next sustituye las `NEXT_PUBLIC_*` por su valor literal **al
+compilar** —en el bundle del navegador y también en el del servidor— y las
+variables Sensitive de Vercel no existen durante la compilación. Combinadas,
+quedan vacías en los dos lados.
+
+Lo que se vio, y lo que despistó: la pantalla de entrar decía _"Las cuentas
+todavía no están conectadas. Vuelve en un rato"_ y **no salía ninguna petición
+a Supabase**, lo que hizo pensar en CORS. No lo era: `isSupabaseConfigured()`
+devuelve `false` y corta antes de cualquier `fetch`. En paralelo, `/api/cupo` y
+`/api/receta` daban 500 con "Your project's URL and Key are required" — el
+mismo hueco vacío visto desde el servidor.
+
+Y encima había un segundo problema encima del primero: **el dominio siguió
+sirviendo el mismo despliegue** (`dpl_EHs8LV…`) durante horas. Redesplegar otro
+despliegue no mueve lo que sirve el dominio; hace falta un despliegue NUEVO de
+`develop`.
+
+Lo que quedó construido a raíz de esto:
+
+- **El servidor ya no depende de una variable pública.** Si la `NEXT_PUBLIC_`
+  viene vacía, tira de `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY`, que se leen
+  al ejecutar (`shared/api/supabase/serverConfig.ts`). El navegador no tiene
+  arreglo posible —necesita la pública sí o sí— pero la app deja de caerse
+  entera. De paso se descubrió que el cliente de administración también
+  dependía de la pública: con esto mal, tampoco funcionaban el cupo ni los
+  cursos, no solo el login.
+- **Un aviso en el log que dice la verdad**: que falta configuración, que NO es
+  una caída de Supabase, y que si son `NEXT_PUBLIC_` no pueden ser Sensitive.
+- **`/api/salud`**: qué configuración ve ESTE despliegue y de qué commit y rama
+  es. Solo `true`/`false` y longitudes — ni un valor, ni siquiera los públicos,
+  para que siga siendo seguro tenerlo abierto. Es lo que cerró el diagnóstico
+  en cinco segundos después de dos horas de adivinar.
+- **`.env.example`**, que solo tenía la línea de Mixpanel, ahora lista todas
+  las variables con este aviso arriba del todo.
 
 ### 🗂️ La CLI ya aplica las migraciones (2026-08-19)
 
