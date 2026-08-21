@@ -42,6 +42,14 @@ export type Lesson =
       readonly bunnyVideoId: string | null;
       /** Segundos. Solo el video dura algo medible. */
       readonly durationSeconds: number | null;
+      /**
+       * Lo que se lee DEBAJO del reproductor.
+       *
+       * No es el guion del video ni un resumen: son las cantidades y los
+       * números que nadie va a retener de oído —835 g, 2,5 g de coriandro— y
+       * que hacen falta con las manos en la carne y el video ya terminado.
+       */
+      readonly body: string | null;
     })
   | (LessonBase & { readonly kind: 'pdf'; readonly fileUrl: string })
   | (LessonBase & { readonly kind: 'imagen'; readonly fileUrl: string })

@@ -60,7 +60,7 @@ export const appRoutes = {
    * —una pregunta gratis y a entrar— pero conviene mirarlo cuando se
    * simplifique la portada (4e).
    */
-  guidedRecipe: '/cursos/bondiola-curada',
+  guidedRecipe: '/cursos/lomo-curado',
 } as const;
 
 /**
