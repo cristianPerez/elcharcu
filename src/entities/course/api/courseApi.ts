@@ -93,6 +93,7 @@ function toLesson(row: LessonRow): Lesson | null {
         kind: 'video',
         bunnyVideoId: row.bunny_video_id,
         durationSeconds: row.duration_s,
+        body: row.body,
       };
     case 'pdf':
       return row.file_url === null

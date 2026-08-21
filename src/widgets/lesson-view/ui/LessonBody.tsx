@@ -20,7 +20,21 @@ interface LessonBodyProps {
 export function LessonBody({ lesson }: LessonBodyProps): ReactNode {
   switch (lesson.kind) {
     case 'video':
-      return <LessonVideo lesson={lesson} />;
+      return (
+        <>
+          <LessonVideo lesson={lesson} />
+          {/* Las cantidades y los números van DEBAJO del video, no dentro.
+              Nadie retiene "2,5 g de coriandro" de oído, y al llegar el momento
+              de pesarlo el video ya terminó. */}
+          {lesson.body === null || lesson.body === '' ? null : (
+            <div className="mt-4 rounded-2xl border border-cocoa/10 bg-cream-white p-5 shadow-surface">
+              <p className="whitespace-pre-line text-base leading-relaxed text-cocoa/80">
+                {lesson.body}
+              </p>
+            </div>
+          )}
+        </>
+      );
 
     case 'imagen':
       return (

@@ -53,8 +53,9 @@ export function AppCursosView({ courses, progress }: AppCursosViewProps): ReactN
 
       <Reveal delay={0.12}>
         <p className="mt-8 text-sm leading-relaxed text-cocoa/60">
-          Los videos se están grabando. Mientras tanto, cada lección lleva los pasos
-          escritos y El Charcu te responde en cualquiera de ellos.
+          Cada lección lleva su video y, debajo, las cantidades por escrito — que nadie
+          retiene «2,5 g de coriandro» de oído. Y en cualquier paso puedes preguntarle a
+          El Charcu.
         </p>
       </Reveal>
     </>
