@@ -340,7 +340,6 @@ export type Database = {
           country: string;
           created_at: string;
           experience_level: string;
-          free_recipe_used: boolean;
           id: string;
           updated_at: string;
         };
@@ -348,7 +347,6 @@ export type Database = {
           country?: string;
           created_at?: string;
           experience_level?: string;
-          free_recipe_used?: boolean;
           id: string;
           updated_at?: string;
         };
@@ -356,7 +354,6 @@ export type Database = {
           country?: string;
           created_at?: string;
           experience_level?: string;
-          free_recipe_used?: boolean;
           id?: string;
           updated_at?: string;
         };
@@ -398,39 +395,6 @@ export type Database = {
           title?: string;
           user_id?: string | null;
           visitor_id?: string;
-        };
-        Relationships: [];
-      };
-      saved_recipes: {
-        Row: {
-          corrected_body: string | null;
-          corrected_title: string | null;
-          created_at: string;
-          id: string;
-          raw_input: string | null;
-          source_kind: string | null;
-          source_url: string | null;
-          user_id: string;
-        };
-        Insert: {
-          corrected_body?: string | null;
-          corrected_title?: string | null;
-          created_at?: string;
-          id?: string;
-          raw_input?: string | null;
-          source_kind?: string | null;
-          source_url?: string | null;
-          user_id: string;
-        };
-        Update: {
-          corrected_body?: string | null;
-          corrected_title?: string | null;
-          created_at?: string;
-          id?: string;
-          raw_input?: string | null;
-          source_kind?: string | null;
-          source_url?: string | null;
-          user_id?: string;
         };
         Relationships: [];
       };
@@ -503,42 +467,6 @@ export type Database = {
           updated_at?: string;
           user_id?: string | null;
           visitor_id?: string;
-        };
-        Relationships: [];
-      };
-      videos: {
-        Row: {
-          course_id: string;
-          created_at: string;
-          description: string | null;
-          duration_seconds: number | null;
-          id: string;
-          is_free: boolean;
-          position: number;
-          storage_path: string | null;
-          title: string;
-        };
-        Insert: {
-          course_id: string;
-          created_at?: string;
-          description?: string | null;
-          duration_seconds?: number | null;
-          id?: string;
-          is_free?: boolean;
-          position?: number;
-          storage_path?: string | null;
-          title: string;
-        };
-        Update: {
-          course_id?: string;
-          created_at?: string;
-          description?: string | null;
-          duration_seconds?: number | null;
-          id?: string;
-          is_free?: boolean;
-          position?: number;
-          storage_path?: string | null;
-          title?: string;
         };
         Relationships: [];
       };
