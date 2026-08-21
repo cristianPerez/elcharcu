@@ -3,6 +3,8 @@ import { type ReactNode } from 'react';
 
 import { type Lesson } from '@/entities/course';
 
+import { LessonVideo } from './LessonVideo';
+
 interface LessonBodyProps {
   readonly lesson: Lesson;
 }
@@ -18,7 +20,7 @@ interface LessonBodyProps {
 export function LessonBody({ lesson }: LessonBodyProps): ReactNode {
   switch (lesson.kind) {
     case 'video':
-      return <VideoPending lesson={lesson} />;
+      return <LessonVideo lesson={lesson} />;
 
     case 'imagen':
       return (
@@ -60,36 +62,4 @@ export function LessonBody({ lesson }: LessonBodyProps): ReactNode {
         </div>
       );
   }
-}
-
-/**
- * El sitio del reproductor, mientras no haya videos.
- *
- * No hay cuenta de Bunny todavía (paso 6), así que se enseña la portada y se
- * dice la verdad. Cuando exista, aquí entra el reproductor con URL firmada y
- * el resto de la pantalla no se toca.
- */
-function VideoPending({
-  lesson,
-}: {
-  readonly lesson: Extract<Lesson, { kind: 'video' }>;
-}): ReactNode {
-  return (
-    <div className="relative overflow-hidden rounded-2xl border border-cocoa/10 bg-forest">
-      {lesson.posterUrl === null ? null : (
-        <Image
-          src={lesson.posterUrl}
-          alt=""
-          width={800}
-          height={450}
-          className="h-48 w-full object-cover opacity-45"
-        />
-      )}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="rounded-full bg-cocoa/70 px-4 py-2 text-sm font-medium text-cream">
-          Video en camino
-        </span>
-      </div>
-    </div>
-  );
 }
