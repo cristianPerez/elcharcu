@@ -90,6 +90,16 @@ export function IconAccount(props: IconProps): ReactNode {
   );
 }
 
+/** Candado: lo que separa un curso de pago de quien todavía no paga. */
+export function IconLock(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2.5" />
+      <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" />
+    </Svg>
+  );
+}
+
 /** Flecha de "aquí se entra", en las filas que llevan a otra pantalla. */
 export function IconChevron(props: IconProps): ReactNode {
   return (

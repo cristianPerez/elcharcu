@@ -1,5 +1,5 @@
 import { type Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { type ReactNode } from 'react';
 
 import { AppLeccionView } from '@/views/app-leccion';
@@ -8,6 +8,7 @@ import { type CourseWithModules, type Lesson } from '@/entities/course';
 import { completedLessonIds, findCourse } from '@/entities/course/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
+import { appRoutes } from '@/shared/config';
 
 interface PageProps {
   readonly params: Promise<{
@@ -44,6 +45,20 @@ export default async function LeccionPage({ params }: PageProps): Promise<ReactN
 
   if (course === null) {
     notFound();
+  }
+
+  /*
+    El índice de un curso cerrado SÍ se ve, así que desde el 2026-08-21 esta
+    página puede recibir una lección que existe pero que esta persona no tiene
+    pagada. Aquí es donde aparece el muro: se manda a la página de precios, no
+    a un 404. Decirle "no existe" a algo que acaba de ver en el índice es una
+    mentira que además no vende nada.
+
+    Esto no es LA puerta —la puerta es RLS, que no entrega ni el video ni el
+    texto—; es solo dónde aterriza quien la toca.
+  */
+  if (course.isLocked) {
+    redirect(appRoutes.subscription);
   }
 
   const lessons = flatten(course);

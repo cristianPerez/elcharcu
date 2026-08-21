@@ -15,11 +15,20 @@ interface AppCuentaViewProps {
   readonly email: string;
 }
 
-/** Nombre de cara al usuario del plan que dice la base. */
+/**
+ * Nombre de cara al usuario del plan que dice la base.
+ *
+ * Las claves son los `plan_id` REALES de `charcu.plan_quotas`
+ * (`aprendiz`, `pro-mensual`, `pro-anual`, `maestro-*`). Antes decían
+ * `charcutero` y `maestro`, que no existen en la tabla: a quien pagara le
+ * habría salido el id crudo en pantalla.
+ */
 const PLAN_LABEL: Record<string, string> = {
   aprendiz: 'Aprendiz · gratis',
-  charcutero: 'Charcutero',
-  maestro: 'Maestro',
+  'pro-mensual': 'El Charcu Pro · mensual',
+  'pro-anual': 'El Charcu Pro · anual',
+  'maestro-mensual': 'El Charcu Maestro · mensual',
+  'maestro-anual': 'El Charcu Maestro · anual',
 };
 
 /**
@@ -32,7 +41,7 @@ const PLAN_LABEL: Record<string, string> = {
 export function AppCuentaView({ email }: AppCuentaViewProps): ReactNode {
   const { quota, isKnown } = useUsageQuota();
   const planLabel = PLAN_LABEL[quota.plan] ?? quota.plan;
-  // Se espera a saber el plan de verdad: enseñarle "pasa a Charcutero" a
+  // Se espera a saber el plan de verdad: enseñarle "pasa a El Charcu Pro" a
   // alguien que ya paga, aunque sea medio segundo, es de las cosas que hacen
   // dudar de si el cobro entró.
   const isFree = isKnown && quota.plan === 'aprendiz';
@@ -85,7 +94,7 @@ export function AppCuentaView({ email }: AppCuentaViewProps): ReactNode {
             className="mt-4 flex items-center justify-between rounded-2xl bg-terracota-dark px-5 py-4 text-cream-white shadow-surface transition-transform active:scale-[0.98]"
           >
             <span>
-              <span className="block font-medium">Pasar a Charcutero</span>
+              <span className="block font-medium">Pasar a El Charcu Pro</span>
               <span className="mt-0.5 block text-sm text-cream-white/80">
                 Más preguntas y más fotos al mes
               </span>

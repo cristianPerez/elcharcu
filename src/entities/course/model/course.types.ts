@@ -72,6 +72,15 @@ export interface Course {
   readonly level: CourseLevel;
   readonly access: CourseAccess;
   readonly position: number;
+  /**
+   * `true` cuando el curso se ve en el catálogo pero su contenido está cerrado.
+   *
+   * NO se deduce de `access`: un suscriptor también tiene cursos de pago, y
+   * para él no están bloqueados. Se calcula preguntándole a la BASE qué
+   * módulos entrega — la misma RLS que protege el contenido, no una copia de
+   * la regla en TypeScript.
+   */
+  readonly isLocked: boolean;
 }
 
 /** El curso con todo lo que cuelga de él, para la pantalla del curso. */

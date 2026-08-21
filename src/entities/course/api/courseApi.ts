@@ -40,8 +40,9 @@ interface CourseRow {
   readonly position: number;
 }
 
-function toCourse(row: CourseRow): Course {
+function toCourse(row: CourseRow, isLocked = false): Course {
   return {
+    isLocked,
     id: row.id,
     slug: row.slug,
     title: row.title,
@@ -110,22 +111,98 @@ function toLesson(row: LessonRow): Lesson | null {
   }
 }
 
-/** Los cursos que esta persona puede ver, en su orden. */
+/**
+ * El catálogo entero, en su orden, marcando cuáles están bloqueados.
+ *
+ * El catálogo es público desde el 2026-08-21: se ven todos los cursos
+ * publicados, de pago incluidos. Lo que sigue cerrado es el contenido.
+ *
+ * Para saber qué está cerrado se le pregunta a la base por los MÓDULOS: esa
+ * tabla sí está protegida por RLS, así que solo devuelve los de cursos que
+ * esta persona puede abrir. Se usa eso y no `access === 'pago'` porque un
+ * suscriptor también tiene cursos de pago y para él no están bloqueados —
+ * duplicar aquí la regla de la suscripción sería tener dos verdades.
+ *
+ * Ojo con la tentación de usar el número de lecciones que devuelve
+ * `course_progress`: esa función es `security definer` y cuenta saltándose
+ * RLS, así que dice 13 aunque no puedas ver ninguna.
+ */
 export async function listCourses(): Promise<readonly Course[]> {
   const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from('courses')
-    .select('id, slug, title, summary, cover_url, level, access, position')
-    .order('position');
+
+  const [{ data, error }, { data: openModules }] = await Promise.all([
+    supabase
+      .from('courses')
+      .select('id, slug, title, summary, cover_url, level, access, position')
+      .order('position'),
+    supabase.from('modules').select('course_id'),
+  ]);
 
   if (error !== null || data === null) {
     return [];
   }
 
-  return data.map(toCourse);
+  const readable = new Set((openModules ?? []).map((row) => row.course_id));
+
+  return data.map((row) => toCourse(row, !readable.has(row.id)));
 }
 
-/** Un curso con sus módulos y lecciones, o `null` si no existe o no le toca. */
+/**
+ * El ÍNDICE de un curso cerrado: títulos y orden, sin nada que se pueda ver.
+ *
+ * Viene de `charcu.course_outline`, que es `security definer` y devuelve
+ * adrede solo lo que se pinta en el acordeón. Ni `bunny_video_id` ni `body`:
+ * los enlaces de Bunny no van firmados todavía, así que entregar el id sería
+ * entregar el video.
+ *
+ * Las lecciones que salen de aquí se marcan todas como `kind: 'video'` con las
+ * fuentes en `null`. No es una mentira que importe —lo único que se pinta es el
+ * título— y evita inventar un `fileUrl` vacío para un PDF que nadie va a abrir.
+ */
+async function courseOutline(
+  supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>,
+  slug: string,
+): Promise<readonly CourseModule[]> {
+  const { data } = await supabase.rpc('course_outline', { p_slug: slug });
+
+  if (data === null || data === undefined) {
+    return [];
+  }
+
+  const modules = new Map<
+    string,
+    { title: string; summary: string; position: number; lessons: Lesson[] }
+  >();
+
+  for (const row of data) {
+    const found = modules.get(row.module_id) ?? {
+      title: row.module_title,
+      summary: row.module_summary,
+      position: row.module_position,
+      lessons: [],
+    };
+
+    found.lessons.push({
+      kind: 'video',
+      id: row.lesson_id,
+      moduleId: row.module_id,
+      title: row.lesson_title,
+      summary: row.lesson_summary,
+      position: row.lesson_position,
+      posterUrl: null,
+      ask: null,
+      bunnyVideoId: null,
+      durationSeconds: null,
+      body: null,
+    });
+
+    modules.set(row.module_id, found);
+  }
+
+  return [...modules].map(([id, m]) => ({ id, ...m }));
+}
+
+/** Un curso con sus módulos y lecciones, o `null` si no existe. */
 export async function findCourse(slug: string): Promise<CourseWithModules | null> {
   const supabase = await createSupabaseServerClient();
 
@@ -146,18 +223,30 @@ export async function findCourse(slug: string): Promise<CourseWithModules | null
     .order('position');
 
   const modules = moduleRows ?? [];
+
+  /*
+    Sin módulos por RLS = curso cerrado para esta persona. Se enseña el índice
+    igual, que es lo que da ganas de pagar: un candado sin nada detrás no vende.
+    El muro aparece al INTENTAR ABRIR una lección, no antes.
+  */
+  if (modules.length === 0) {
+    return {
+      ...toCourse(courseRow, true),
+      modules: await courseOutline(supabase, slug),
+    };
+  }
+
   const moduleIds = modules.map((m) => m.id);
 
-  const { data: lessonRows } =
-    moduleIds.length === 0
-      ? { data: [] }
-      : await supabase
-          .from('lessons')
-          .select(
-            'id, module_id, kind, title, summary, position, duration_s, poster_url, bunny_video_id, file_url, body, ask',
-          )
-          .in('module_id', moduleIds)
-          .order('position');
+  // Sin guardia de lista vacía: si `modules` estuviera vacío ya se habría
+  // devuelto el índice más arriba.
+  const { data: lessonRows } = await supabase
+    .from('lessons')
+    .select(
+      'id, module_id, kind, title, summary, position, duration_s, poster_url, bunny_video_id, file_url, body, ask',
+    )
+    .in('module_id', moduleIds)
+    .order('position');
 
   const lessons = (lessonRows ?? [])
     .map(toLesson)
