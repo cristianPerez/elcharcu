@@ -5,7 +5,9 @@ import { useState, type ReactNode } from 'react';
 
 import { type CourseModule, type Lesson } from '@/entities/course';
 
+import { appRoutes } from '@/shared/config';
 import { cn } from '@/shared/lib';
+import { IconLock } from '@/shared/ui';
 
 interface CourseOutlineProps {
   readonly courseSlug: string;
@@ -16,6 +18,14 @@ interface CourseOutlineProps {
    * Abrir siempre el primero obliga a buscar cada vez que vuelve.
    */
   readonly openModuleId: string | null;
+  /**
+   * Curso cerrado: el índice se ve, pero cada lección lleva a la membresía.
+   *
+   * Enseñar la tabla de contenidos es lo que da ganas de pagar; un candado sin
+   * nada detrás solo frustra. La base ya no entrega ni el video ni el texto de
+   * estas lecciones —solo el título—, así que aquí no hay nada que filtrar.
+   */
+  readonly isLocked: boolean;
 }
 
 /**
@@ -31,6 +41,7 @@ export function CourseOutline({
   modules,
   completedIds,
   openModuleId,
+  isLocked,
 }: CourseOutlineProps): ReactNode {
   const [openId, setOpenId] = useState<string | null>(
     openModuleId ?? modules[0]?.id ?? null,
@@ -62,7 +73,9 @@ export function CourseOutline({
               <span className="flex-1">
                 <span className="block font-medium text-forest">{module.title}</span>
                 <span className="mt-0.5 block text-xs text-cocoa/55">
-                  {doneHere} de {module.lessons.length} lecciones
+                  {isLocked
+                    ? countLessons(module.lessons.length)
+                    : `${doneHere} de ${countLessons(module.lessons.length)}`}
                 </span>
               </span>
               <span
@@ -84,6 +97,7 @@ export function CourseOutline({
                     courseSlug={courseSlug}
                     lesson={lesson}
                     isDone={done.has(lesson.id)}
+                    isLocked={isLocked}
                   />
                 ))}
               </ul>
@@ -93,6 +107,11 @@ export function CourseOutline({
       })}
     </ul>
   );
+}
+
+/** "1 lección" / "3 lecciones". Un módulo de uno solo es un caso normal. */
+function countLessons(total: number): string {
+  return `${total} ${total === 1 ? 'lección' : 'lecciones'}`;
 }
 
 /** De qué está hecha la lección, dicho en una palabra. */
@@ -107,28 +126,44 @@ interface LessonLinkProps {
   readonly courseSlug: string;
   readonly lesson: Lesson;
   readonly isDone: boolean;
+  readonly isLocked: boolean;
 }
 
-function LessonLink({ courseSlug, lesson, isDone }: LessonLinkProps): ReactNode {
+function LessonLink({
+  courseSlug,
+  lesson,
+  isDone,
+  isLocked,
+}: LessonLinkProps): ReactNode {
   return (
     <li>
       <Link
-        href={`/cursos/${courseSlug}/${lesson.id}`}
+        href={isLocked ? appRoutes.subscription : `/cursos/${courseSlug}/${lesson.id}`}
         className="flex items-center gap-3 px-5 py-3.5 transition-colors active:bg-cream"
       >
+        {isLocked ? (
+          <IconLock size={15} className="shrink-0 text-cocoa/35" />
+        ) : (
+          <span
+            aria-hidden="true"
+            className={cn(
+              'flex size-5 shrink-0 items-center justify-center rounded-full border text-[11px]',
+              isDone
+                ? 'border-sage bg-sage text-cream-white'
+                : 'border-cocoa/20 text-transparent',
+            )}
+          >
+            ✓
+          </span>
+        )}
         <span
-          aria-hidden="true"
-          className={cn(
-            'flex size-5 shrink-0 items-center justify-center rounded-full border text-[11px]',
-            isDone
-              ? 'border-sage bg-sage text-cream-white'
-              : 'border-cocoa/20 text-transparent',
-          )}
+          className={cn('flex-1 text-base', isLocked ? 'text-cocoa/70' : 'text-cocoa')}
         >
-          ✓
+          {lesson.title}
         </span>
-        <span className="flex-1 text-base text-cocoa">{lesson.title}</span>
-        <span className="shrink-0 text-xs text-cocoa/45">{KIND_LABEL[lesson.kind]}</span>
+        <span className="shrink-0 text-xs text-cocoa/45">
+          {isLocked ? 'Pro' : KIND_LABEL[lesson.kind]}
+        </span>
       </Link>
     </li>
   );

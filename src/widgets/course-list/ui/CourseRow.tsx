@@ -4,7 +4,8 @@ import { type ReactNode } from 'react';
 
 import { type Course, type CourseProgress } from '@/entities/course';
 
-import { IconChevron } from '@/shared/ui';
+import { cn } from '@/shared/lib';
+import { IconChevron, IconLock } from '@/shared/ui';
 
 interface CourseRowProps {
   readonly course: Course;
@@ -35,6 +36,10 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
   const isStarted = done > 0;
   const isFinished = total > 0 && done === total;
 
+  // Lo decide la base, no esta pantalla: `listCourses` pregunta qué módulos
+  // entrega RLS. Un suscriptor ve los mismos cursos sin candado.
+  const isLocked = course.isLocked;
+
   return (
     <Link
       href={`/cursos/${course.slug}`}
@@ -56,7 +61,12 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
               la tabla y el cuchillo; subiéndola cae en la CARA CORTADA del
               lomo, que es lo único que vende un curso de curado.
             */
-            className="object-cover [object-position:50%_30%]"
+            className={cn(
+              'object-cover [object-position:50%_30%]',
+              // Bloqueado: la foto se ve, pero apagada. Se entiende que hay
+              // algo ahí y que todavía no es tuyo.
+              isLocked && 'saturate-[0.55]',
+            )}
             priority
           />
         )}
@@ -72,7 +82,12 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
           <span className="absolute right-3 top-3 rounded-full bg-terracota px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cream-white shadow-surface">
             Gratis
           </span>
-        ) : null}
+        ) : (
+          <span className="absolute right-3 top-3 flex items-center gap-1.5 rounded-full bg-cocoa/70 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cream-white backdrop-blur-sm">
+            <IconLock size={13} strokeWidth={2.2} />
+            El Charcu Pro
+          </span>
+        )}
 
         <div className="absolute inset-x-0 bottom-0 p-5">
           <p className="text-xs font-medium uppercase tracking-eyebrow text-cream/85">
@@ -87,7 +102,13 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
       <div className="p-5">
         <p className="text-base leading-relaxed text-cocoa/70">{course.summary}</p>
 
-        {total > 0 ? (
+        {isLocked && total > 0 ? (
+          /* Sin barra de progreso: un 0% en algo que no puedes empezar no
+             informa, desanima. Lo que sí vende es CUÁNTO hay dentro. */
+          <p className="mt-4 text-sm text-cocoa/55">{total} lecciones esperándote</p>
+        ) : null}
+
+        {!isLocked && total > 0 ? (
           <div className="mt-4">
             <div className="flex items-baseline justify-between text-sm">
               <span className="text-cocoa/55">
@@ -104,10 +125,28 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
           </div>
         ) : null}
 
-        <span className="mt-4 flex items-center gap-1 text-sm font-medium text-terracota-dark">
-          {isStarted && !isFinished ? 'Continuar' : 'Abrir el curso'}
-          <IconChevron size={16} />
-        </span>
+        {isLocked ? (
+          /*
+            Lo que se le dice a quien no paga.
+            No es "no puedes": es "esto es lo que hay dentro". El precio de la
+            frase importa — un candado seco invita a cerrar la app, y la idea
+            es justo la contraria.
+          */
+          <div className="mt-4 flex items-center gap-2 rounded-xl bg-cream px-3.5 py-3">
+            <IconLock size={16} className="shrink-0 text-terracota-dark" />
+            <span className="text-sm leading-snug text-cocoa/70">
+              Incluido en{' '}
+              <strong className="font-medium text-forest">El Charcu Pro</strong> — ábrelo
+              y mira lo que trae
+            </span>
+            <IconChevron size={16} className="ml-auto shrink-0 text-cocoa/35" />
+          </div>
+        ) : (
+          <span className="mt-4 flex items-center gap-1 text-sm font-medium text-terracota-dark">
+            {isStarted && !isFinished ? 'Continuar' : 'Abrir el curso'}
+            <IconChevron size={16} />
+          </span>
+        )}
       </div>
     </Link>
   );

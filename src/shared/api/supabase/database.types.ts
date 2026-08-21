@@ -495,6 +495,20 @@ export type Database = {
           recipes_used: number;
         }[];
       };
+      course_outline: {
+        Args: { p_slug: string };
+        Returns: {
+          lesson_id: string;
+          lesson_kind: string;
+          lesson_position: number;
+          lesson_summary: string;
+          lesson_title: string;
+          module_id: string;
+          module_position: number;
+          module_summary: string;
+          module_title: string;
+        }[];
+      };
       course_progress: {
         Args: { p_user_id: string };
         Returns: {
