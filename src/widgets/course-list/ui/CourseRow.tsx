@@ -49,7 +49,14 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
             alt=""
             fill
             sizes="(max-width: 448px) 100vw, 448px"
-            className="object-cover"
+            /*
+              El recorte se sube al 30%, no al centro.
+              La foto es vertical y la tarjeta es una franja ancha, así que
+              `object-cover` se queda con una banda. Centrada, esa banda cae en
+              la tabla y el cuchillo; subiéndola cae en la CARA CORTADA del
+              lomo, que es lo único que vende un curso de curado.
+            */
+            className="object-cover [object-position:50%_30%]"
             priority
           />
         )}
