@@ -1,0 +1,207 @@
+{
+  "slug": "queso-burrata",
+  "name": "Queso Burrata Artesanal",
+  "description": "La burrata casera de verdad — leche cruda pasteurizada en el fogón, hilada en mozzarella y rellena de stracciatella con nata, que se abre con el cuchillo y se derrama sobre el plato.",
+  "image": "/recipes/queso-burrata.jpg",
+  "tags": ["Italia", "Fresco", "Queso"],
+  "eyebrow": "Receta · Quesos artesanales",
+  "subtitle": "Mozzarella hilada rellena de stracciatella: el queso que se derrama.",
+  "intro": "La burrata nació en Puglia como una forma de aprovechar los recortes de la mozzarella: se hilaba una lámina fina, se rellenaba con las hebras sobrantes bañadas en nata y se cerraba en una bolsita atada por arriba, la testa. Ese es todo el secreto — por fuera es pasta hilada, firme y elástica; por dentro es stracciatella, hebras de queso empapadas en crema. Partimos de leche cruda, que es la que da el sabor de verdad, y la pasteurizamos nosotros mismos en el fogón: 63 °C sostenidos media hora, ni más ni menos. Hacerla en casa no requiere equipo de quesería, pero sí dos cosas que no se pueden improvisar: un termómetro y paciencia con los tiempos. El punto exacto de acidez y temperatura es lo que decide si la cuajada se estira como chicle caliente o se rompe en grumos.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "4 L de leche → 4–5 burratas de ~120 g" },
+    { "label": "Tipo", "value": "Queso fresco de pasta hilada, relleno" },
+    { "label": "Nivel", "value": "Avanzado — el hilado tiene su técnica" },
+    { "label": "Pasteurización", "value": "63 °C sostenidos 30 min, en el fogón" },
+    { "label": "Coagulación", "value": "32 °C, 10–15 min de reposo" },
+    { "label": "Cocción de cuajada", "value": "41–42 °C" },
+    { "label": "Maduración de acidez", "value": "1–3 h a temperatura ambiente" },
+    { "label": "Agua de hilado", "value": "80–82 °C, salada a 20 g/L" },
+    { "label": "Conservación", "value": "0–4 °C, en su líquido, 2–3 días" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Puglia, sur de Italia. Nació como aprovechamiento de los recortes de mozzarella, no como producto de lujo — aunque hoy lo sea."
+    },
+    {
+      "title": "Textura",
+      "description": "Doble: una funda de pasta hilada elástica y brillante, y un centro de hebras blandas empapadas en nata que se derrama al cortar."
+    },
+    {
+      "title": "Sabor",
+      "description": "Lácteo, dulce y limpio, con un punto ácido muy leve. Es un queso que sabe a leche fresca — por eso partir de leche cruda buena se nota tanto."
+    },
+    {
+      "title": "Stracciatella",
+      "description": "El relleno: tiras de pasta hilada desgarradas a mano y mezcladas con nata. Literalmente significa \"desgarradita\". Se vende sola, y es media receta."
+    }
+  ],
+  "quote": "La burrata no se inventó para presumir: se inventó para no tirar los recortes de la mozzarella. Lo mejor de la cocina italiana casi siempre empieza así.",
+  "ingredientsNote": "Partimos de leche cruda y la pasteurizamos nosotros en el fogón — es el primer paso de la receta, no un trámite opcional. La burrata es un queso fresco, húmedo y sin maduración: no hay ninguna etapa posterior que elimine patógenos, así que la pasteurización es la única barrera del proceso. La pasteurización lenta a 63 °C es suave y respeta la aptitud quesera de la leche, a diferencia de la industrial. Por eso mismo NO hace falta cloruro de calcio: eso solo se añade cuando se trabaja con leche de tienda homogeneizada. Y ojo con el agua del cuajo: debe ser sin cloro (filtrada o embotellada), porque el cloro del grifo lo inactiva.",
+  "ingredients": [
+    {
+      "name": "Leche cruda de vaca entera (la pasteurizamos en el fogón)",
+      "amount": "4 L",
+      "pct": "100%"
+    },
+    { "name": "Zumo de limón colado", "amount": "130 ml", "pct": "3.25%" },
+    { "name": "Cuajo líquido", "amount": "1.5 ml", "pct": "0.04%" },
+    {
+      "name": "Agua sin cloro (para diluir el cuajo)",
+      "amount": "50 ml",
+      "pct": "1.25%"
+    },
+    { "name": "Nata / crema de leche (mín. 35% MG)", "amount": "180 ml", "pct": "4.5%" },
+    { "name": "Sal para el agua de hilado", "amount": "40 g", "pct": "20 g por litro" },
+    { "name": "Sal fina para la stracciatella", "amount": "3 g", "pct": "0.075%" }
+  ],
+  "proportionNote": "Los 130 ml de zumo de limón — unos 4 o 5 limones medianos, siempre colado — son la medida para 4 L de leche: llevan la cuajada al punto de acidez que permite el hilado. Cuélalo sin excepción, porque la pulpa deja grumos en la cuajada. La nata al 4,5% es lo que convierte unas hebras de queso en stracciatella de verdad: por debajo de eso el relleno queda seco y deja de derramarse.",
+  "charcuteroNote": "Valores por litro de leche: zumo de limón 33 ml, cuajo líquido 0,4 ml, nata 45 ml. Rendimiento aproximado: de 4 L de leche entera salen 450–550 g de pasta hilada, de los que unos 350 g van a las fundas y 100–150 g se desgarran para la stracciatella. El agua de hilado se sala a 20 g/L. Equivalencia útil si algún día quieres repetibilidad exacta lote a lote: esos 130 ml de limón aportan aproximadamente la misma acidez que 5 g de ácido cítrico.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Higieniza a fondo todo el equipo: olla, cuchillo largo, colador, cucharón y termómetro. Escáldalos con agua hirviendo y sécalos. En un queso fresco que no madura, la limpieza del primer minuto es la que se come al final."
+    },
+    {
+      "n": "02",
+      "text": "Pasteuriza la leche cruda en el fogón: llévala a 63 °C y sostén esa temperatura 30 minutos, removiendo de vez en cuando. Usa olla de fondo grueso o baño maría, y fuego bajo — si se pega al fondo, arruina el sabor de todo el lote."
+    },
+    {
+      "n": "03",
+      "text": "Enfría la leche rápido, con la olla dentro del fregadero lleno de agua y hielo, hasta bajar de 15 °C. Cuanto antes cruce la franja templada, mejor."
+    },
+    {
+      "n": "04",
+      "text": "Con la leche ya fría, incorpora el zumo de limón colado removiendo suavemente. Añadir el ácido en frío es lo que evita que la leche se corte en grumos: nunca al revés."
+    },
+    {
+      "n": "05",
+      "text": "Calienta lentamente hasta 32 °C, removiendo de vez en cuando. Sube despacio — un calentamiento brusco arruina la textura de la cuajada."
+    },
+    {
+      "n": "06",
+      "text": "Disuelve el cuajo en los 50 ml de agua sin cloro, incorpóralo a la leche y remueve con dos o tres movimientos suaves de arriba abajo. No más: a partir de aquí la leche debe quedar completamente quieta."
+    },
+    {
+      "n": "07",
+      "text": "Retira del fuego, tapa y deja reposar 10 a 15 minutos sin tocar ni mover la olla."
+    },
+    {
+      "n": "08",
+      "text": "Comprueba el punto: introduce el cuchillo en ángulo y levanta un poco. Si la cuajada se abre en un corte limpio y suelta suero transparente, está lista. Si aún se ve lechosa, dale 5 minutos más."
+    },
+    {
+      "n": "09",
+      "text": "Corta la cuajada en cubos de unos 2 cm con el cuchillo largo, en rejilla vertical y luego en diagonal. Deja reposar 5 minutos para que suelte suero."
+    },
+    {
+      "n": "10",
+      "text": "Calienta muy despacio hasta 41–42 °C removiendo con suavidad. Los cubos se contraen, se vuelven más firmes y el suero se aclara."
+    },
+    {
+      "n": "11",
+      "text": "Escurre la cuajada en un colador, reservando el suero caliente — te servirá para el hilado y para la ricotta."
+    },
+    {
+      "n": "12",
+      "text": "Deja reposar la cuajada escurrida entre 1 y 3 horas a temperatura ambiente para que termine de acidificar. Este es el paso que más se salta la gente, y el que más fallos causa."
+    },
+    {
+      "n": "13",
+      "text": "Haz la prueba de hilado: corta un trozo pequeño y sumérgelo en agua a 80 °C un minuto. Si se estira en una lámina brillante sin romperse, está listo. Si se rompe, deja reposar otros 30 minutos y vuelve a probar — nunca hiles el lote entero sin esta prueba."
+    },
+    {
+      "n": "14",
+      "text": "Calienta agua (o el suero reservado) a 80–82 °C y sálala a razón de 20 g por litro. Ponte guantes: a esa temperatura la cuajada quema de verdad."
+    },
+    {
+      "n": "15",
+      "text": "Sumerge porciones de cuajada 2 o 3 minutos, hasta que alcancen unos 57 °C internos, y estíralas y pliégalas sobre sí mismas hasta obtener una masa lisa y brillante. No amases de más: cada pliegue extra expulsa humedad y acerca el queso a la textura de goma."
+    },
+    {
+      "n": "16",
+      "text": "Aparta un tercio de la pasta hilada para el relleno. Estíralo en un cordón fino de un centímetro, enfríalo en agua fría y desgárralo a mano en hebras muy delgadas."
+    },
+    {
+      "n": "17",
+      "text": "Mezcla las hebras con la nata y la sal fina hasta que queden bien empapadas: eso es la stracciatella. Resérvala en frío mientras formas las fundas."
+    },
+    {
+      "n": "18",
+      "text": "Con el resto de la pasta, aún caliente y maleable, forma discos de unos 15 cm, más gruesos en el centro y finos en el borde. Trabaja rápido: si se enfría, deja de estirarse."
+    },
+    {
+      "n": "19",
+      "text": "Apoya el disco sobre la palma o dentro de un cuenco pequeño para formar una bolsa, rellena con la stracciatella sin excederte y cierra los bordes hacia arriba, sellando bien con los dedos. Si no sella, moja la unión un segundo en el agua caliente."
+    },
+    {
+      "n": "20",
+      "text": "Retuerce el sobrante de arriba para formar la testa, el nudito característico de la burrata. Además de ser su firma visual, es lo que garantiza que la bolsa quede cerrada."
+    },
+    {
+      "n": "21",
+      "text": "Sumerge las burratas en agua fría con hielo entre 10 y 15 minutos, hasta que la funda quede firme y brillante."
+    },
+    {
+      "n": "22",
+      "text": "Guárdalas en refrigeración a 0–4 °C sumergidas en su propio líquido (suero ligeramente salado o agua con sal), en recipiente tapado. Sácalas 20–30 minutos antes de servir."
+    }
+  ],
+  "tips": [
+    {
+      "title": "El termómetro no es opcional",
+      "description": "Los cuatro números que deciden la receta son 63 °C para pasteurizar, 32 °C para cuajar, 41–42 °C para cocer la cuajada y 80–82 °C para hilar. A ojo no se acierta, y un error de cinco grados se nota en el resultado."
+    },
+    {
+      "title": "Pasteurizar sin quemar la leche",
+      "description": "Fuego bajo, olla de fondo grueso y removido frecuente. Si tienes dudas, hazlo a baño maría: tarda más, pero es imposible que se pegue al fondo."
+    },
+    {
+      "title": "Si no estira, no es culpa tuya: es la acidez",
+      "description": "Cuando la cuajada se rompe en vez de estirarse, casi siempre le falta reposo. Dale otros 30 minutos y vuelve a probar el trocito antes de hilar todo."
+    },
+    {
+      "title": "Amasar de más la vuelve goma",
+      "description": "La pasta hilada se trabaja solo hasta que está lisa. Cada pliegue de más expulsa grasa y humedad, y el queso pasa de tierno a chicloso sin punto de retorno."
+    },
+    {
+      "title": "El centro grueso, el borde fino",
+      "description": "Las bolsas se rompen por dos motivos: se estiran demasiado o se rellenan demasiado. Deja el centro con cuerpo y no la llenes hasta arriba."
+    },
+    {
+      "title": "No tires el suero: hazte una ricotta",
+      "description": "El suero que reservaste, calentado a 85–90 °C con un chorro de limón, suelta la ricotta que le queda dentro. Dos quesos de una misma olla de leche."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Al natural, a temperatura ambiente",
+      "description": "La forma correcta. Sácala del frío 20–30 minutos antes: en frío la grasa está cuajada y no se aprecia nada. Aceite de oliva, sal en escamas y pimienta."
+    },
+    {
+      "title": "Con tomate y albahaca",
+      "description": "El clásico de Puglia. Tomate maduro de verdad, aceite bueno y poco más — la burrata es la protagonista."
+    },
+    {
+      "title": "Sobre pizza o pasta, fuera del horno",
+      "description": "Siempre al final, con el plato ya servido. Si la horneas se derrite y pierde justo lo que la hace burrata."
+    },
+    {
+      "title": "Con embutido curado",
+      "description": "Su dulzor láctico corta la grasa y la sal de un buen curado — la razón por la que aparece en tantas tablas."
+    }
+  ],
+  "recommendations": [
+    "Pasteuriza siempre la leche cruda en el fogón antes de empezar: 63 °C sostenidos 30 minutos. Es la única barrera sanitaria que tiene este queso.",
+    "Enfría la leche por debajo de 15 °C antes de añadir el limón, y calienta después — nunca al revés.",
+    "Cuela el zumo de limón: la pulpa deja grumos en la cuajada.",
+    "Diluye el cuajo en agua sin cloro; el cloro del grifo lo inactiva.",
+    "Haz siempre la prueba de hilado con un trocito antes de comprometer todo el lote.",
+    "Trabaja el hilado con guantes: el agua va a 80 °C y la cuajada retiene el calor.",
+    "Extrema la higiene al rellenar y formar: la stracciatella se manipula a mano después del calentamiento, así que cualquier contaminación en ese punto ya no se elimina.",
+    "Consúmela en 2–3 días como máximo, siempre refrigerada y sumergida en su líquido."
+  ],
+  "resultNote": "El resultado: una bolsita blanca y brillante, rematada por su testa, que al cortarla se abre y derrama hebras de queso bañadas en nata sobre el plato. Por fuera, la elasticidad de la mozzarella; por dentro, algo que está más cerca de la crema que del queso — y que ninguna burrata de supermercado con una semana de transporte a cuestas puede igualar.",
+  "finalQuote": "De 4 litros de leche y una tarde de trabajo salen cinco burratas. La diferencia con la del súper no es el precio: es que esta se come el mismo día que se hizo.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
