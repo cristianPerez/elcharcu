@@ -70,6 +70,18 @@ interface CourseRow {
 const COURSE_COLUMNS =
   'id, slug, title, summary, cover_url, level, access, position, kind, status, waitlist_goal';
 
+/**
+ * El curso con sus módulos y lecciones dentro, en UNA consulta.
+ *
+ * PostgREST resuelve el anidado en Postgres y devuelve JSON ya armado. Lo
+ * importante: **RLS se sigue aplicando a cada tabla embebida**. Comprobado
+ * contra la base — un curso en lista de espera pedido por un anónimo devuelve
+ * `"modules": []`, y el libre devuelve los tres módulos con sus videos. Así que
+ * `modules` vacío sigue significando "cerrado para esta persona", que es la
+ * misma señal que usaba la versión de tres consultas.
+ */
+const COURSE_TREE_COLUMNS = `${COURSE_COLUMNS}, modules(id, title, summary, position, lessons(id, module_id, kind, title, summary, position, duration_s, poster_url, bunny_video_id, file_url, body, ask))`;
+
 interface WaitlistInfo {
   readonly count: number;
   readonly isIn: boolean;
@@ -203,17 +215,19 @@ export const listCourses = cache(async (): Promise<readonly Course[]> => {
 /**
  * Cuánta gente espera cada curso, y si quien mira ya se apuntó.
  *
- * El CONTADOR sale de `course_waitlist_count()`, que es `security definer` y
- * devuelve un entero pelado: la barra "18 de 30" la puede ver cualquiera —es lo
- * que empuja a apuntarse— sin que se filtre una sola identidad. Quién se apuntó
- * a un curso de embutidos es dato personal y no sale de la base.
+ * DOS consultas para todos los cursos, no dos por curso (2026-08-29). Antes
+ * esto llamaba a `course_waitlist_count()` una vez por curso en espera; con
+ * cuatro no se notaba, pero crecía con el catálogo y lo pagaba justo la
+ * pantalla que abre la app.
+ *
+ * El CONTADOR sale de `course_waitlist_totals()`, que agrega en Postgres y
+ * devuelve solo `course_id` y `total`. Es `security definer` a propósito: si
+ * respetara RLS contaría únicamente las filas propias y la barra diría siempre
+ * 0 o 1 en vez de "18 de 30". Y es segura porque `user_id` no está entre lo que
+ * devuelve — quién se apuntó a qué no sale de la base.
  *
  * Si YO estoy dentro se pregunta aparte, contra `course_waitlist`, donde RLS
- * solo entrega mis propias filas. Es una consulta y no una por curso.
- *
- * ⚠️ El contador sí es una llamada por curso, porque la función recibe un solo
- * `course_id`. Con cuatro o cinco cursos en espera da igual; el día que sean
- * treinta, la función pasa a recibir un array y esto se vuelve una sola.
+ * solo entrega mis propias filas.
  */
 async function waitlistInfo(
   supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>,
@@ -223,24 +237,24 @@ async function waitlistInfo(
     return new Map();
   }
 
-  const [counts, { data: mine }] = await Promise.all([
-    Promise.all(
-      courseIds.map(async (id) => {
-        const { data } = await supabase.rpc('course_waitlist_count', {
-          p_course_id: id,
-        });
-        return [id, data ?? 0] as const;
-      }),
-    ),
-    supabase
-      .from('course_waitlist')
-      .select('course_id')
-      .in('course_id', [...courseIds]),
+  const ids = [...courseIds];
+
+  const [{ data: totals }, { data: mine }] = await Promise.all([
+    supabase.rpc('course_waitlist_totals', { p_course_ids: ids }),
+    supabase.from('course_waitlist').select('course_id').in('course_id', ids),
   ]);
 
+  const counts = new Map<string, number>(
+    (totals ?? []).map((row) => [row.course_id, row.total]),
+  );
   const joined = new Set((mine ?? []).map((row) => row.course_id));
 
-  return new Map(counts.map(([id, count]) => [id, { count, isIn: joined.has(id) }]));
+  // Un curso sin nadie esperando no devuelve fila —`group by` no inventa
+  // ceros— así que el mapa se arma desde los ids pedidos y no desde lo que
+  // contestó Postgres. Si no, esos cursos se quedarían sin barra.
+  return new Map(
+    ids.map((id) => [id, { count: counts.get(id) ?? 0, isIn: joined.has(id) }]),
+  );
 }
 
 /**
@@ -298,66 +312,64 @@ async function courseOutline(
   return [...modules].map(([id, m]) => ({ id, ...m }));
 }
 
-/** Un curso con sus módulos y lecciones, o `null` si no existe. */
+/**
+ * Un curso con sus módulos y lecciones, o `null` si no existe.
+ *
+ * UNA consulta, no tres (2026-08-29). Antes eran curso → módulos → lecciones en
+ * cadena, y la página de una lección llamaba a esto dos veces: seis viajes a
+ * Supabase. El `cache()` quitó la duplicación; el anidado quita la cadena.
+ *
+ * Se hizo con un select anidado y NO con una vista de Postgres a propósito. Una
+ * vista habría necesitado migración, habría devuelto filas planas que hay que
+ * agrupar a mano, y —lo serio— habría que acordarse de `security_invoker = on`:
+ * sin eso corre con los permisos de su dueño, se salta RLS y entrega el
+ * `bunny_video_id` de todos los cursos de pago. Sin avisar, porque todo
+ * "funciona". El embed no tiene ese interruptor que olvidar.
+ */
 export const findCourse = cache(
   async (slug: string): Promise<CourseWithModules | null> => {
     const supabase = await createSupabaseServerClient();
 
-    const { data: courseRow } = await supabase
+    const { data: row } = await supabase
       .from('courses')
-      .select(COURSE_COLUMNS)
+      .select(COURSE_TREE_COLUMNS)
       .eq('slug', slug)
+      .order('position', { referencedTable: 'modules' })
+      .order('position', { referencedTable: 'modules.lessons' })
       .maybeSingle();
 
-    if (courseRow === null) {
+    if (row === null) {
       return null;
     }
 
-    const { data: moduleRows } = await supabase
-      .from('modules')
-      .select('id, title, summary, position')
-      .eq('course_id', courseRow.id)
-      .order('position');
-
-    const modules = moduleRows ?? [];
+    const modules = row.modules;
 
     /*
-    Sin módulos por RLS = curso cerrado para esta persona. Se enseña el índice
-    igual, que es lo que da ganas de pagar: un candado sin nada detrás no vende.
-    El muro aparece al INTENTAR ABRIR una lección, no antes.
-  */
+      Sin módulos por RLS = curso cerrado para esta persona. Se enseña el índice
+      igual, que es lo que da ganas de pagar: un candado sin nada detrás no
+      vende. El muro aparece al INTENTAR ABRIR una lección, no antes.
+    */
     if (modules.length === 0) {
       return {
-        ...toCourse(courseRow, true),
+        ...toCourse(row, true),
         modules: await courseOutline(supabase, slug),
       };
     }
-
-    const moduleIds = modules.map((m) => m.id);
-
-    // Sin guardia de lista vacía: si `modules` estuviera vacío ya se habría
-    // devuelto el índice más arriba.
-    const { data: lessonRows } = await supabase
-      .from('lessons')
-      .select(
-        'id, module_id, kind, title, summary, position, duration_s, poster_url, bunny_video_id, file_url, body, ask',
-      )
-      .in('module_id', moduleIds)
-      .order('position');
-
-    const lessons = (lessonRows ?? [])
-      .map(toLesson)
-      .filter((lesson): lesson is Lesson => lesson !== null);
 
     const withLessons: readonly CourseModule[] = modules.map((m) => ({
       id: m.id,
       title: m.title,
       summary: m.summary,
       position: m.position,
-      lessons: lessons.filter((lesson) => lesson.moduleId === m.id),
+      // `toLesson` descarta la fila que no cuadre con su propio tipo (un PDF
+      // sin archivo). La base ya lo impide con un `check`, pero una fila rota
+      // no debería tumbar la pantalla entera del curso.
+      lessons: m.lessons
+        .map(toLesson)
+        .filter((lesson): lesson is Lesson => lesson !== null),
     }));
 
-    return { ...toCourse(courseRow), modules: withLessons };
+    return { ...toCourse(row), modules: withLessons };
   },
 );
 

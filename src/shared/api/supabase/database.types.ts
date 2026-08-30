@@ -645,6 +645,13 @@ export type Database = {
         }[];
       };
       course_waitlist_count: { Args: { p_course_id: string }; Returns: number };
+      course_waitlist_totals: {
+        Args: { p_course_ids: string[] };
+        Returns: {
+          course_id: string;
+          total: number;
+        }[];
+      };
       current_period_key: { Args: never; Returns: string };
       effective_plan: { Args: { p_user_id: string }; Returns: string };
       has_active_subscription: { Args: { p_user_id: string }; Returns: boolean };
