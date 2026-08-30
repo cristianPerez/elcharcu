@@ -15,6 +15,15 @@ interface ChatComposerProps {
   readonly isThinking: boolean;
   /** `false` cuando se agotó el cupo de fotos: se puede escribir, no adjuntar. */
   readonly canSendImages: boolean;
+  /**
+   * Por qué no se puede escribir, o `null` si sí se puede.
+   *
+   * Se bloquea AQUÍ y no se deja mandar para que el servidor conteste 402: el
+   * usuario escribiría una duda entera —a veces larga, con las manos sucias— y
+   * la recibiría de vuelta como un error. Mejor que el sitio donde se escribe
+   * diga desde el principio que hoy no.
+   */
+  readonly blockedReason?: string | null;
   readonly onSend: (text: string, file: File | null) => void;
 }
 
@@ -34,6 +43,7 @@ const MAX_TEXTAREA_PX = 200;
 export function ChatComposer({
   isThinking,
   canSendImages,
+  blockedReason = null,
   onSend,
 }: ChatComposerProps): ReactNode {
   const [text, setText] = useState('');
@@ -135,8 +145,9 @@ export function ChatComposer({
             }}
             onKeyDown={handleKeyDown}
             rows={1}
-            placeholder="Escribe tu duda…"
-            className="max-h-[200px] flex-1 resize-none bg-transparent px-1 py-2.5 text-base leading-relaxed text-cocoa placeholder:text-cocoa/65 focus:outline-none"
+            disabled={blockedReason !== null}
+            placeholder={blockedReason ?? 'Escribe tu duda…'}
+            className="max-h-[200px] flex-1 resize-none bg-transparent px-1 py-2.5 text-base leading-relaxed text-cocoa placeholder:text-cocoa/65 focus:outline-none disabled:cursor-not-allowed"
           />
 
           <button

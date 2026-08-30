@@ -4,7 +4,7 @@ import { useEffect, useState, type ReactNode } from 'react';
 
 import { AssistantChat } from '@/features/assistant-chat';
 import { LeadCaptureModal, useAccountSession } from '@/features/lead-capture';
-import { QuotaWall } from '@/features/quota-wall';
+import { QuotaNotice } from '@/features/quota-wall';
 
 import { QUESTIONS_BEFORE_LEAD, useUsageQuota } from '@/entities/usage-quota';
 
@@ -18,13 +18,19 @@ import { Container } from '@/shared/ui';
  * el mismo verde y la caja de escribir —lo único que hay que hacer— era lo que
  * menos se veía.
  *
- * Dos muros, en este orden:
- *   1. Tras la primera pregunta, la cuenta — y es BLOQUEANTE (2026-08-19).
- *      La demostración es gratis; a partir de ahí hay que entrar.
- *   2. Al agotar las preguntas del mes, el muro de suscripción (9e).
+ * Dos frenos, en este orden:
+ *   1. Tras la primera pregunta, la cuenta — y ese SÍ es bloqueante
+ *      (2026-08-19). La demostración es gratis; a partir de ahí hay que entrar.
+ *   2. Al agotar las preguntas del mes, el aviso de cupo.
  *
  * Lo que decide el primero es la SESIÓN, no una marca en `localStorage`: quien
  * vuelve por el enlace del correo llega con sesión y el muro se retira solo.
+ *
+ * ⚠️ El segundo dejó de tapar el chat (2026-08-29, pedido de Cristian). Igual
+ * que en la app: `QuotaWall` sustituía la conversación entera y la portada se
+ * quedaba sin lo único que tiene que verse ahí —el asistente funcionando—, que
+ * además es el argumento de venta de toda la página (D14). Ahora sale la misma
+ * franja de la app y el chat se queda donde estaba.
  */
 export function AssistantHero(): ReactNode {
   const { quota, status, isKnown } = useUsageQuota();
@@ -52,10 +58,13 @@ export function AssistantHero(): ReactNode {
     };
   }, [needsAccount]);
 
-  // Solo se levanta el muro si SABEMOS que se acabó el cupo. Si no se pudo
-  // leer, se deja pasar: quien de verdad protege el bolsillo es el tope diario
-  // de gasto, que es global y vive en el servidor.
-  const isWalled = isKnown && status.isExhausted;
+  // Solo se avisa si SABEMOS cómo va el cupo. Si no se pudo leer, se deja
+  // pasar: quien de verdad protege el bolsillo es el tope diario de gasto, que
+  // es global y vive en el servidor.
+  const isExhausted = isKnown && status.isExhausted;
+
+  // Se avisa ANTES de que se acabe, no solo después.
+  const showNotice = isKnown && status.questionsLeft <= 2;
 
   return (
     <>
@@ -70,34 +79,35 @@ export function AssistantHero(): ReactNode {
             </p>
 
             <div className="mt-8 rounded-2xl border border-cocoa/10 bg-cream-white p-4 shadow-raised md:p-6">
-              {isWalled ? (
-                <QuotaWall
-                  questionsUsed={quota.questionsUsed}
+              {showNotice ? (
+                <QuotaNotice
+                  questionsLeft={status.questionsLeft}
                   questionsLimit={quota.questionsLimit}
                 />
-              ) : (
-                <>
-                  <AssistantChat
-                    product="consulta general"
-                    level="apasionado"
-                    country="Colombia"
-                    canSendImages={!status.areImagesExhausted}
-                  />
+              ) : null}
 
-                  {isKnown && quota.questionsUsed > 0 ? (
-                    <p className="mt-3 text-xs text-cocoa/65">
-                      Te quedan {status.questionsLeft} preguntas y {status.imagesLeft}{' '}
-                      fotos este mes.
-                    </p>
-                  ) : null}
-                </>
-              )}
+              <AssistantChat
+                product="consulta general"
+                canSendImages={!status.areImagesExhausted}
+                blockedReason={
+                  isExhausted ? 'Sin preguntas este mes. Vuelven el día 1.' : null
+                }
+              />
+
+              {/* El contador de siempre, solo mientras quede algo: a cero lo
+                  dice la franja de arriba, y repetirlo sobra. */}
+              {isKnown && !isExhausted && quota.questionsUsed > 0 ? (
+                <p className="mt-3 text-xs text-cocoa/65">
+                  Te quedan {status.questionsLeft} preguntas y {status.imagesLeft} fotos
+                  este mes.
+                </p>
+              ) : null}
             </div>
           </div>
         </Container>
       </section>
 
-      {showLeadCapture && !isWalled ? (
+      {showLeadCapture && !isExhausted ? (
         <LeadCaptureModal questionsLimit={quota.questionsLimit} />
       ) : null}
     </>

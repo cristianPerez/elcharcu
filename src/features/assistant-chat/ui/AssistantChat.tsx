@@ -14,6 +14,8 @@ import { StarterPrompts } from './StarterPrompts';
 interface AssistantChatProps extends AssistantChatParams {
   /** `false` cuando se agotó el cupo de fotos del mes. Por defecto, se puede. */
   readonly canSendImages?: boolean;
+  /** Por qué no se puede preguntar hoy. `null` = se puede. */
+  readonly blockedReason?: string | null;
   /**
    * Una pregunta que llega de fuera del chat — hoy, de los pasos de una receta
    * guiada. Se manda sola en cuanto cambia, para que tocar la duda de un paso
@@ -25,6 +27,7 @@ interface AssistantChatProps extends AssistantChatParams {
 /** El asistente de charcutería, atado a la receta que el usuario está haciendo. */
 export function AssistantChat({
   canSendImages = true,
+  blockedReason = null,
   pendingPrompt = null,
   ...params
 }: AssistantChatProps): ReactNode {
@@ -122,6 +125,7 @@ export function AssistantChat({
       <ChatComposer
         isThinking={isThinking}
         canSendImages={canSendImages}
+        blockedReason={blockedReason}
         onSend={(text, file) => {
           void send(text, file);
         }}
