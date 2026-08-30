@@ -16,9 +16,16 @@ import { recallChat, rememberChat } from '../lib/chatMemory';
 
 export interface AssistantChatParams {
   readonly product: string;
-  readonly level: string;
-  readonly country: string;
 }
+
+/*
+ * Aquí había también `level` y `country`, y los dos se fueron el 2026-08-29.
+ *
+ * El nivel porque dejó de existir: todos son charcus. El país porque el
+ * servidor lo saca de la cabecera de Vercel — mandarlo desde el navegador
+ * significaba que cualquiera podía escribir lo que quisiera y acababa dentro
+ * del prompt.
+ */
 
 export interface AssistantChatController {
   readonly messages: readonly ChatMessage[];

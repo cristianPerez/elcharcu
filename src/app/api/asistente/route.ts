@@ -17,6 +17,7 @@ import {
 import { consumeQuota, refundQuota } from '@/entities/usage-quota/server';
 
 import { generateAnswer, type GeminiTurn } from '@/shared/api/gemini';
+import { countryFromRequest } from '@/shared/api/geo';
 import { createSupabaseServerClient } from '@/shared/api/supabase/server';
 import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
 
@@ -26,8 +27,6 @@ const MAX_TURNS = 30;
 
 interface AssistantRequest {
   readonly product: string;
-  readonly level: string;
-  readonly country: string;
   readonly turns: readonly GeminiTurn[];
   /**
    * La receta a la que pertenece esta pregunta.
@@ -75,21 +74,16 @@ function parseRequest(value: unknown): AssistantRequest | null {
     return null;
   }
 
-  const { product, level, country, turns, recipeId } = value as {
+  const { product, turns, recipeId } = value as {
     product?: unknown;
-    level?: unknown;
-    country?: unknown;
     turns?: unknown;
     recipeId?: unknown;
   };
 
-  if (
-    typeof product !== 'string' ||
-    typeof level !== 'string' ||
-    typeof country !== 'string' ||
-    !Array.isArray(turns) ||
-    turns.length === 0
-  ) {
+  // `level` y `country` ya no se leen del cuerpo. El nivel no existe (todos son
+  // charcus) y el país lo pone el servidor desde la cabecera de Vercel, no
+  // quien pregunta. Si un cliente viejo los sigue mandando, se ignoran.
+  if (typeof product !== 'string' || !Array.isArray(turns) || turns.length === 0) {
     return null;
   }
 
@@ -102,8 +96,6 @@ function parseRequest(value: unknown): AssistantRequest | null {
     ? null
     : {
         product,
-        level,
-        country,
         turns: parsed,
         recipeId: typeof recipeId === 'string' && recipeId !== '' ? recipeId : null,
       };
@@ -194,8 +186,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   const systemPrompt = buildSystemPrompt({
     product: parsed.product,
-    level: parsed.level,
-    country: parsed.country,
+    country: countryFromRequest(request),
   });
 
   const result = await generateAnswer(systemPrompt, parsed.turns);
