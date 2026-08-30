@@ -18,9 +18,14 @@ import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 /**
  * El plan de pago dentro del muro, con el mismo toggle que la página de precios.
  *
- * ⚠️ Todavía no hay pasarela: el botón abre WhatsApp con el plan escrito, que
- * es por donde El Charcu ya vende hoy. Cuando entre Hotmart (D17) se cambia el
- * `href` por el checkout y el evento pasa a llevar `rail: 'hotmart'`.
+ * ⚠️ Todavía no hay pasarela, y en el lanzamiento del 2026-08-31 tampoco la hay:
+ * el botón abre WhatsApp con el plan escrito, que es por donde El Charcu ya vende
+ * hoy. Cristian manda el link de cobro y activa la cuenta a mano — el
+ * procedimiento está en ESTADO.md.
+ *
+ * Hotmart (D17) quedó superada por OnePay (D21), y OnePay está aplazada: hace
+ * falta KYC, su SDK de tokenización y 3DS. Cuando entre, aquí se cambia el
+ * `href` por el checkout y el evento pasa a llevar `rail: 'onepay'`.
  */
 function whatsappHref(price: PlanPrice): string {
   const cycle = price.cycle === 'anual' ? 'anual' : 'mensual';

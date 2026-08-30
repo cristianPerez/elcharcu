@@ -10,16 +10,16 @@ import { ButtonLink, Container } from '@/shared/ui';
 type Estado = 'comprobando' | 'con-sesion' | 'sin-sesion';
 
 /**
- * Donde aterriza quien acaba de comprar en Hotmart.
+ * Donde aterriza quien acaba de pagar.
  *
  * Existe porque hay DOS caminos hacia el pago y hay que atender los dos:
  *
  *   · Ya usó la app → tiene cuenta → aquí solo confirmamos y lo devolvemos.
- *   · Llegó directo al enlace de Hotmart (desde Instagram, un anuncio, un
+ *   · Llegó directo al enlace (desde Instagram, un anuncio, un
  *     mensaje) → NO tiene cuenta → aquí es donde la crea, y sin esa cuenta su
  *     pago no tiene a quién atarse.
  *
- * ⚠️ Ojo con el tiempo: Hotmart trae al comprador aquí en cuanto paga, pero el
+ * ⚠️ Ojo con el tiempo: el comprador puede llegar aquí en cuanto paga, pero el
  * webhook que activa la suscripción puede tardar — y con PSE el pago puede
  * quedar pendiente horas. Por eso esta pantalla NO promete acceso inmediato:
  * dice que el pago llegó y que la cuenta se activa sola. Prometer lo contrario
@@ -56,7 +56,7 @@ export function PurchaseWelcome(): ReactNode {
         </h1>
 
         <p className="mt-4 text-base leading-relaxed text-cocoa/70">
-          Gracias por confiar. Tu suscripción se activa sola en cuanto Hotmart nos
+          Gracias por confiar. Cristian activa tu suscripción a mano en cuanto nos
           confirme el pago — normalmente es cosa de un minuto, y si pagaste por PSE puede
           tardar un poco más.
         </p>

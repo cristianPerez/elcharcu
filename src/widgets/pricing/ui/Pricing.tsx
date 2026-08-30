@@ -68,8 +68,9 @@ export function Pricing(): ReactNode {
         </div>
 
         <p className="mt-8 text-sm text-cream/75">
-          Pagas con tarjeta, PSE o Nequi a través de Hotmart. El precio está en dólares y
-          se cobra al cambio del día. Cancelas cuando quieras, sin llamar a nadie.
+          Escribes por WhatsApp y Cristian te manda el link de pago —PSE, Nequi o
+          tarjeta—. Él mismo te activa la cuenta y te confirma. Sin plataformas de por
+          medio y sin renovación automática: cuando quieras seguir, lo dices.
         </p>
       </Container>
     </section>
