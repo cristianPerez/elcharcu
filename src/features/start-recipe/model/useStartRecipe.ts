@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 
-import { type CuringProductId } from '@/entities/curing-profile';
 import { loadSessions, startSession } from '@/entities/recipe-session';
 import { loadSubscription } from '@/entities/subscription';
 
@@ -13,7 +12,7 @@ import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 import { evaluateGate } from './gate';
 
 export interface StartRecipeController {
-  readonly start: (product: CuringProductId) => void;
+  readonly start: (product: string) => void;
 }
 
 /** Aplica el candado y lleva al usuario a la sesión o al muro, según toque. */
@@ -21,7 +20,7 @@ export function useStartRecipe(): StartRecipeController {
   const router = useRouter();
 
   const start = useCallback(
-    (product: CuringProductId): void => {
+    (product: string): void => {
       const sessions = loadSessions();
       const verdict = evaluateGate(product, sessions, loadSubscription());
 

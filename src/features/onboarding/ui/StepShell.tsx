@@ -2,6 +2,8 @@ import { type ReactNode } from 'react';
 
 import { Eyebrow } from '@/shared/ui';
 
+import { TOTAL_STEPS } from '../model/useOnboarding';
+
 interface StepShellProps {
   readonly stepIndex: number;
   readonly title: string;
@@ -10,8 +12,6 @@ interface StepShellProps {
   readonly onBack: (() => void) | null;
   readonly children: ReactNode;
 }
-
-const TOTAL_STEPS = 3;
 
 /** Marco común de cada pregunta: progreso, título, motivo y opciones. */
 export function StepShell({

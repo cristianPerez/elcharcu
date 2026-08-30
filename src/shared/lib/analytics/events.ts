@@ -18,6 +18,10 @@ export const ANALYTICS_EVENTS = {
   onboardingWentBack: 'onboarding_went_back',
   /** El usuario terminó el onboarding y quedó listo para su receta gratis. */
   onboardingCompleted: 'onboarding_completed',
+  /** Cambió sus intereses o su nombre desde la pantalla de cuenta. */
+  profileUpdated: 'profile_updated',
+  /** Se apuntó a la lista de espera de un curso que todavía no está grabado. */
+  waitlistJoined: 'waitlist_joined',
   /** El usuario abrió su primera sesión gratis con el asistente. */
   freeRecipeStarted: 'free_recipe_started',
   /** El usuario llevó su receta gratis hasta el final. */

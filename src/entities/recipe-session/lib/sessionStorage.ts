@@ -1,5 +1,3 @@
-import { isCuringProductId, type CuringProductId } from '@/entities/curing-profile';
-
 import { type RecipeSession } from '../model/session.types';
 
 /**
@@ -21,7 +19,8 @@ function parseSession(value: unknown): RecipeSession | null {
 
   if (
     typeof id !== 'string' ||
-    !isCuringProductId(product) ||
+    typeof product !== 'string' ||
+    product === '' ||
     typeof startedAt !== 'string' ||
     typeof isFree !== 'boolean'
   ) {
@@ -73,7 +72,7 @@ function createId(): string {
  * Abre una receta. Si esa misma receta ya estaba abierta devuelve la existente,
  * para que volver a ella nunca cuente como empezar una nueva.
  */
-export function startSession(product: CuringProductId, isFree: boolean): RecipeSession {
+export function startSession(product: string, isFree: boolean): RecipeSession {
   const sessions = loadSessions();
   const existing = sessions.find((session) => session.product === product);
 
@@ -92,6 +91,6 @@ export function startSession(product: CuringProductId, isFree: boolean): RecipeS
   return session;
 }
 
-export function findSessionByProduct(product: CuringProductId): RecipeSession | null {
+export function findSessionByProduct(product: string): RecipeSession | null {
   return loadSessions().find((session) => session.product === product) ?? null;
 }

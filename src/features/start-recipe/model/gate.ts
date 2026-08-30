@@ -1,4 +1,3 @@
-import { type CuringProductId } from '@/entities/curing-profile';
 import { type RecipeSession } from '@/entities/recipe-session';
 import { isSubscribed, type Subscription } from '@/entities/subscription';
 
@@ -16,7 +15,7 @@ export type GateVerdict =
  * semanas y sería una traición cerrarle la puerta a mitad del proceso.
  */
 export function evaluateGate(
-  product: CuringProductId,
+  product: string,
   sessions: readonly RecipeSession[],
   subscription: Subscription,
 ): GateVerdict {

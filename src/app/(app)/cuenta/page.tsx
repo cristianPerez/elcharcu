@@ -3,6 +3,8 @@ import { type ReactNode } from 'react';
 
 import { AppCuentaView } from '@/views/app-cuenta';
 
+import { readProfile } from '@/entities/curing-profile/server';
+
 import { currentUser } from '@/shared/api/supabase/server';
 
 export const metadata: Metadata = { title: 'Mi cuenta · El Charcu' };
@@ -16,6 +18,13 @@ export const metadata: Metadata = { title: 'Mi cuenta · El Charcu' };
  */
 export default async function CuentaPage(): Promise<ReactNode> {
   const user = await currentUser();
+  const profile = user === null ? null : await readProfile(user.id);
 
-  return <AppCuentaView email={user?.email ?? ''} />;
+  return (
+    <AppCuentaView
+      email={user?.email ?? ''}
+      name={profile?.fullName ?? ''}
+      interests={profile?.interests ?? []}
+    />
+  );
 }

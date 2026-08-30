@@ -4,15 +4,10 @@ import { useEffect, useState, type ReactNode } from 'react';
 
 import { AssistantChat } from '@/features/assistant-chat';
 
-import {
-  countryName,
-  curingProductName,
-  experienceLevelName,
-  loadProfile,
-  type CuringProfile,
-} from '@/entities/curing-profile';
+import { loadProfile, type CuringProfile } from '@/entities/curing-profile';
 import { useUsageQuota } from '@/entities/usage-quota';
 
+import { INTERESTS } from '@/shared/config';
 import { Container } from '@/shared/ui';
 
 import { SessionEmpty } from './SessionEmpty';
@@ -54,7 +49,13 @@ export function FreeSession(): ReactNode {
   }
 
   const { profile } = state;
-  const recipe = curingProductName(profile.freeRecipe);
+  const chips = profile.interests.map(
+    (id) => INTERESTS.find((interest) => interest.id === id)?.label ?? id,
+  );
+  // El primer interés es el tema por defecto del chat nuevo. Es un punto de
+  // partida, no una jaula: en cuanto el usuario pregunta otra cosa, la
+  // conversación manda (D19, un chat = una receta).
+  const recipe = chips[0] ?? 'consulta general';
 
   return (
     <Container className="py-16 md:py-24">
@@ -64,25 +65,18 @@ export function FreeSession(): ReactNode {
         </h1>
 
         <ul className="mt-4 flex flex-wrap gap-2">
-          {[countryName(profile.country), experienceLevelName(profile.level)].map(
-            (chip) => (
-              <li
-                key={chip}
-                className="rounded-full border border-cocoa/15 px-3 py-1 text-sm text-cocoa/65"
-              >
-                {chip}
-              </li>
-            ),
-          )}
+          {chips.map((chip) => (
+            <li
+              key={chip}
+              className="rounded-full border border-cocoa/15 px-3 py-1 text-sm text-cocoa/65"
+            >
+              {chip}
+            </li>
+          ))}
         </ul>
 
         <div className="mt-8 rounded-2xl border border-cocoa/10 bg-cream-white p-4 shadow-raised md:p-6">
-          <AssistantChat
-            product={recipe}
-            level={profile.level}
-            country={countryName(profile.country)}
-            canSendImages={!status.areImagesExhausted}
-          />
+          <AssistantChat product={recipe} canSendImages={!status.areImagesExhausted} />
 
           {isKnown && quota.questionsUsed > 0 ? (
             <p className="mt-3 text-xs text-cocoa/65">

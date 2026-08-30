@@ -4,15 +4,18 @@ import Link from 'next/link';
 import { type ReactNode } from 'react';
 
 import { SignOutButton } from '@/features/auth-by-email';
+import { EditProfile } from '@/features/edit-profile';
 
 import { useUsageQuota } from '@/entities/usage-quota';
 
-import { appRoutes } from '@/shared/config';
+import { appRoutes, type InterestId } from '@/shared/config';
 import { IconChevron, Reveal } from '@/shared/ui';
 
 interface AppCuentaViewProps {
   /** El correo con el que entró. Lo lee el servidor, no el navegador. */
   readonly email: string;
+  readonly name: string;
+  readonly interests: readonly InterestId[];
 }
 
 /**
@@ -38,7 +41,7 @@ const PLAN_LABEL: Record<string, string> = {
  * queda este mes— y solo después la cuenta y la salida. Poner "cerrar sesión"
  * arriba es invitar a irse.
  */
-export function AppCuentaView({ email }: AppCuentaViewProps): ReactNode {
+export function AppCuentaView({ email, name, interests }: AppCuentaViewProps): ReactNode {
   const { quota, isKnown } = useUsageQuota();
   const planLabel = PLAN_LABEL[quota.plan] ?? quota.plan;
   // Se espera a saber el plan de verdad: enseñarle "pasa a El Charcu Pro" a
@@ -106,7 +109,8 @@ export function AppCuentaView({ email }: AppCuentaViewProps): ReactNode {
 
       <Reveal delay={0.12}>
         <section className="mt-8">
-          <h2 className="text-sm font-medium text-cocoa/65">Tus datos</h2>
+          <EditProfile initialName={name} initialInterests={interests} />
+
           <div className="mt-3 rounded-xl border border-cocoa/10 bg-cream-white px-4 py-3.5">
             <p className="text-xs text-cocoa/50">Correo</p>
             <p className="mt-0.5 break-all text-base text-cocoa">{email}</p>

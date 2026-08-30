@@ -1,18 +1,14 @@
 import { createSupabaseBrowserClient } from '@/shared/api/supabase';
+import { parseInterests } from '@/shared/config';
 
-import { isCountryCode, isCuringProductId, isExperienceLevel } from '../model/options';
 import { type CuringProfile } from '../model/profile.types';
 
 /**
  * Guardado del perfil.
  *
- * Con cuenta, la verdad vive en `charcu.profiles` (país y nivel), que es lo
- * que sobrevive a un cambio de celular. Sin cuenta se queda en el navegador,
- * porque el asistente se usa sin registrarse (D14) y algo hay que recordar.
- *
- * `freeRecipe` sigue siendo local a propósito: era la unidad del modelo viejo
- * —una receta gratis— y ya no manda nada (D15). Se conserva solo para que la
- * pantalla de sesión siga sabiendo qué receta eligió.
+ * Con cuenta, la verdad vive en `charcu.profiles`, que es lo que sobrevive a un
+ * cambio de celular. Sin cuenta se queda en el navegador, porque el asistente
+ * se usa sin registrarse (D14) y algo hay que recordar.
  */
 const STORAGE_KEY = 'elcharcu:curing-profile';
 
@@ -22,19 +18,17 @@ function parseProfile(value: unknown): CuringProfile | null {
     return null;
   }
 
-  const candidate: Record<string, unknown> = { ...value };
-  const { country, level, freeRecipe, createdAt } = candidate;
+  const { interests, createdAt } = value as Record<string, unknown>;
+  const parsed = parseInterests(interests);
 
-  if (
-    !isCountryCode(country) ||
-    !isExperienceLevel(level) ||
-    !isCuringProductId(freeRecipe) ||
-    typeof createdAt !== 'string'
-  ) {
+  // Un perfil sin intereses no sirve para nada: ni configura el panel ni le
+  // dice al asistente de qué hablar. Vale más devolver null y que el
+  // onboarding vuelva a preguntar.
+  if (parsed.length === 0 || typeof createdAt !== 'string') {
     return null;
   }
 
-  return { country, level, freeRecipe, createdAt };
+  return { interests: parsed, createdAt };
 }
 
 export function loadProfile(): CuringProfile | null {
@@ -73,8 +67,11 @@ export function clearProfile(): void {
 }
 
 /**
- * Sube país y nivel a `charcu.profiles`. Si no hay sesión, no hace nada:
- * la fila del perfil pertenece a una cuenta y sin cuenta no hay dónde escribir.
+ * Sube los intereses a `charcu.profiles`. Si no hay sesión, no hace nada: la
+ * fila del perfil pertenece a una cuenta y sin cuenta no hay dónde escribir.
+ *
+ * El `update` directo funciona porque `profiles_update_own` existe desde la
+ * 0001 y el `grant` de la 0001 lo cubre. No hace falta una ruta de API.
  */
 export async function syncProfileToSupabase(profile: CuringProfile): Promise<void> {
   try {
@@ -88,7 +85,7 @@ export async function syncProfileToSupabase(profile: CuringProfile): Promise<voi
 
     const { error } = await supabase
       .from('profiles')
-      .update({ country: profile.country, experience_level: profile.level })
+      .update({ interests: [...profile.interests] })
       .eq('id', userId);
 
     if (error !== null) {
@@ -101,8 +98,10 @@ export async function syncProfileToSupabase(profile: CuringProfile): Promise<voi
 
 /**
  * Trae el perfil de la base y lo deja también en el navegador.
+ *
  * Se llama al entrar: es lo que hace que el perfil siga al usuario de un
- * dispositivo a otro.
+ * dispositivo a otro. La base MANDA sobre lo local — si cambió sus intereses
+ * en el celular, el portátil tiene que enterarse.
  */
 export async function hydrateProfileFromSupabase(): Promise<CuringProfile | null> {
   try {
@@ -116,7 +115,7 @@ export async function hydrateProfileFromSupabase(): Promise<CuringProfile | null
 
     const { data, error } = await supabase
       .from('profiles')
-      .select('country, experience_level')
+      .select('interests')
       .eq('id', userId)
       .maybeSingle();
 
@@ -124,17 +123,18 @@ export async function hydrateProfileFromSupabase(): Promise<CuringProfile | null
       return null;
     }
 
-    const local = loadProfile();
-    const country = isCountryCode(data.country) ? data.country : (local?.country ?? 'co');
-    const level = isExperienceLevel(data.experience_level)
-      ? data.experience_level
-      : (local?.level ?? 'curioso');
+    const remote = parseInterests(data.interests);
 
-    if (local === null) {
-      return null;
+    if (remote.length === 0) {
+      return loadProfile();
     }
 
-    const merged: CuringProfile = { ...local, country, level };
+    const local = loadProfile();
+    const merged: CuringProfile = {
+      interests: remote,
+      createdAt: local?.createdAt ?? new Date().toISOString(),
+    };
+
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
     return merged;
   } catch {

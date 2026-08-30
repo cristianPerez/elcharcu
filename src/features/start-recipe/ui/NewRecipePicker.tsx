@@ -2,9 +2,9 @@
 
 import { useEffect, useState, type ReactNode } from 'react';
 
-import { CURING_PRODUCTS } from '@/entities/curing-profile';
 import { loadSessions } from '@/entities/recipe-session';
 
+import { INTERESTS } from '@/shared/config';
 import { Eyebrow, OptionTile } from '@/shared/ui';
 
 import { useStartRecipe } from '../model/useStartRecipe';
@@ -34,15 +34,15 @@ export function NewRecipePicker(): ReactNode {
       </p>
 
       <div className="mt-8 flex flex-col gap-3">
-        {CURING_PRODUCTS.map((product) => (
+        {INTERESTS.map((interest) => (
           <OptionTile
-            key={product.id}
-            label={product.name}
+            key={interest.id}
+            label={interest.label}
             description={
-              openProducts.includes(product.id) ? 'Ya la tienes abierta' : undefined
+              openProducts.includes(interest.label) ? 'Ya la tienes abierta' : undefined
             }
             onSelect={() => {
-              start(product.id);
+              start(interest.label);
             }}
           />
         ))}

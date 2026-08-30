@@ -1,94 +1,45 @@
 'use client';
 
-import { type ReactNode } from 'react';
-
-import { COUNTRIES, CURING_PRODUCTS, EXPERIENCE_LEVELS } from '@/entities/curing-profile';
-
-import { OptionTile } from '@/shared/ui';
+import { useRouter } from 'next/navigation';
+import { useCallback, type ReactNode } from 'react';
 
 import { useOnboarding } from '../model/useOnboarding';
 
-import { DoneStep } from './DoneStep';
-import { StepShell } from './StepShell';
+import { ContactStep } from './ContactStep';
+import { InterestsStep } from './InterestsStep';
 
-/** Las tres preguntas del arranque. Cada respuesta avanza sola. */
+/**
+ * Las dos preguntas del arranque: intereses y contacto.
+ *
+ * Al terminar hace `router.refresh()` y NO una navegación: el flag que decide
+ * si esta pantalla se enseña vive en el servidor, así que hay que volver a
+ * pedir el layout para que se entere de que ya está en 'listo'. Con un
+ * `push` a otra ruta, el layout seguiría leyendo el flag viejo de su caché y
+ * el formulario reaparecería.
+ */
 export function OnboardingFlow(): ReactNode {
-  const {
-    step,
-    stepIndex,
-    profile,
-    selectCountry,
-    selectLevel,
-    selectProduct,
-    goBack,
-    canGoBack,
-  } = useOnboarding();
+  const router = useRouter();
 
-  if (step === 'listo' && profile !== null) {
-    return <DoneStep profile={profile} />;
-  }
+  const onDone = useCallback((): void => {
+    router.refresh();
+  }, [router]);
 
-  const onBack = canGoBack ? goBack : null;
+  const { step, stepIndex, isSaving, error, submitInterests, submitContact, goBack } =
+    useOnboarding(onDone);
 
-  if (step === 'nivel') {
+  if (step === 'contacto') {
     return (
-      <StepShell
+      <ContactStep
         stepIndex={stepIndex}
-        title="¿Qué tanto has curado?"
-        why="Para saber cuánto explicarte. A un curioso le explico el porqué de cada paso; a un avanzado no le hago perder el tiempo."
-        onBack={onBack}
-      >
-        {EXPERIENCE_LEVELS.map((level) => (
-          <OptionTile
-            key={level.id}
-            label={level.name}
-            description={level.description}
-            onSelect={() => {
-              selectLevel(level.id);
-            }}
-          />
-        ))}
-      </StepShell>
+        isSaving={isSaving}
+        error={error}
+        onSubmit={(name, phone, consent) => {
+          void submitContact(name, phone, consent);
+        }}
+        onBack={goBack}
+      />
     );
   }
 
-  if (step === 'producto') {
-    return (
-      <StepShell
-        stepIndex={stepIndex}
-        title="¿Qué vas a hacer ahora?"
-        why="Esta es la receta que te llevas gratis, completa. Elige la que de verdad vas a preparar."
-        onBack={onBack}
-      >
-        {CURING_PRODUCTS.map((product) => (
-          <OptionTile
-            key={product.id}
-            label={product.name}
-            onSelect={() => {
-              selectProduct(product.id);
-            }}
-          />
-        ))}
-      </StepShell>
-    );
-  }
-
-  return (
-    <StepShell
-      stepIndex={stepIndex}
-      title="¿Dónde estás curando?"
-      why="El clima manda: no se cura igual en Manizales que en Buenos Aires. También define con qué vas a poder pagar si algún día te suscribes."
-      onBack={null}
-    >
-      {COUNTRIES.map((country) => (
-        <OptionTile
-          key={country.id}
-          label={country.name}
-          onSelect={() => {
-            selectCountry(country.id);
-          }}
-        />
-      ))}
-    </StepShell>
-  );
+  return <InterestsStep stepIndex={stepIndex} onSubmit={submitInterests} />;
 }
