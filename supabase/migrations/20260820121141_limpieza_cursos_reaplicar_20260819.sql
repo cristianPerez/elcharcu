@@ -1,16 +1,38 @@
 -- ============================================================================
 -- Limpieza para reaplicar los cursos (2026-08-19)
 --
--- SIN SQL A PROPÓSITO.
+-- ⚠️ ESTE ARCHIVO ESTUVO VACÍO Y ESO ERA UN BUG. Corregido el 2026-08-30, al
+-- levantar la base de PRODUCCIÓN y ver que `db push` se caía aquí:
 --
--- Esta migración existe en el historial de la base real, pero nunca tuvo
--- archivo: fue el borrado de lo que dejó a medias un primer intento fallido de
--- `0011_cursos`, para poder aplicarla entera.
+--     ERROR: relation "courses" already exists (SQLSTATE 42P07)
 --
--- El archivo se crea aquí solo para que el historial local y el remoto
--- coincidan. Sin él, la CLI ve una versión remota que no reconoce y se niega
--- a hacer `db push`.
+-- La migración existe en el historial de la base de QA pero nunca tuvo archivo:
+-- fue el borrado de lo que dejó a medias un primer intento de `0011_cursos`.
+-- Cuando se rehízo el archivo para que el historial local y el remoto
+-- coincidieran, se dejó SIN SQL con este razonamiento: "sobre una base nueva no
+-- hay datos de prueba que limpiar ni esquema que reconstruir".
 --
--- Va vacía porque sobre una base NUEVA no hay nada que hacer: no hay datos de
--- prueba que limpiar ni esquema que reconstruir.
+-- El razonamiento valía para las otras limpiezas y NO para esta. Sobre una base
+-- nueva sí hay algo que hacer, y es justo lo que rompía:
+--
+--   · La `0001` crea una `charcu.courses` de la VERSIÓN 1 —`id text`, `name`,
+--     `rating`, `is_published`— pensada para un catálogo de videos sueltos.
+--   · La `0011` crea la de AHORA —`uuid`, `slug`, `level`, `access`, `status`—
+--     con módulos y lecciones colgando.
+--
+-- Son dos tablas distintas con el mismo nombre. Sin este borrado en medio, la
+-- 0011 choca con la que dejó la 0001 y el `db push` se queda a mitad. En QA no
+-- se notó nunca porque allí el borrado sí se ejecutó, en su día y a mano.
+--
+-- La lección, que vale para todo lo que venga: **una migración vaciada "porque
+-- sobre una base nueva no hace falta" hay que comprobarla contra una base
+-- nueva de verdad.** Aquí se descubrió el día antes del lanzamiento y por
+-- suerte sin datos que perder.
+--
+-- `cascade` se lleva por delante `charcu.videos`, que tiene una clave foránea
+-- contra la `courses` vieja. Es correcto: `videos` la jubiló `lessons` en la
+-- 0011, y la migración `20260821062225` la borra formalmente más adelante.
 -- ============================================================================
+
+drop table if exists charcu.videos cascade;
+drop table if exists charcu.courses cascade;
