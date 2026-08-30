@@ -6,7 +6,13 @@ import { type ReactNode } from 'react';
 
 import { appRoutes } from '@/shared/config';
 import { cn } from '@/shared/lib';
-import { IconAccount, IconCharcu, IconCourses, type IconProps } from '@/shared/ui';
+import {
+  IconAccount,
+  IconCharcu,
+  IconCourses,
+  NavPending,
+  type IconProps,
+} from '@/shared/ui';
 
 interface Tab {
   readonly href: string;
@@ -31,6 +37,10 @@ const TABS: readonly Tab[] = [
  * Va pegada al borde inferior (`sticky`) y respeta la franja del iPhone con
  * `env(safe-area-inset-bottom)`: sin eso, en un iPhone con barra de gestos el
  * último botón queda debajo de la raya y no se puede tocar.
+ *
+ * Cada pestaña lleva su `NavPending`: la marca de arriba se pinta en el mismo
+ * toque, sin esperar al servidor. Antes, entre el toque y el esqueleto había un
+ * hueco mudo y la gente tocaba dos veces.
  */
 export function BottomNav(): ReactNode {
   const pathname = usePathname();
@@ -62,7 +72,13 @@ export function BottomNav(): ReactNode {
                   aria-hidden="true"
                   className="absolute top-0 h-0.5 w-8 rounded-full bg-terracota"
                 />
-              ) : null}
+              ) : (
+                /* La misma marca de la pestaña activa, pero latiendo: al tocar,
+                   el destino se señala ANTES de que llegue nada del servidor. */
+                <NavPending className="absolute top-0">
+                  <span className="h-0.5 w-8 animate-pulse rounded-full bg-terracota" />
+                </NavPending>
+              )}
               <Icon size={22} strokeWidth={isActive ? 2.1 : 1.8} />
               <span className="text-[11px] font-medium">{label}</span>
             </Link>

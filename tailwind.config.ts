@@ -43,6 +43,19 @@ const config: Config = {
       letterSpacing: {
         eyebrow: '0.28em',
       },
+      /**
+       * La barrita que corre por el borde de una tarjeta recién tocada.
+       *
+       * Va de -100% a 400% y no de 0 a 100: así entra desde fuera y sale por
+       * el otro lado, que es lo que hace que se lea como "está pasando algo"
+       * en vez de como una barra de progreso que miente sobre cuánto falta.
+       */
+      keyframes: {
+        'nav-sweep': {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(400%)' },
+        },
+      },
     },
   },
   plugins: [],

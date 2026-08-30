@@ -60,7 +60,20 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 
 export const config = {
   matcher: [
-    // Todo menos estáticos, imágenes y el favicon.
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    /*
+      Todo menos lo interno de Next, los iconos y las imágenes.
+
+      ⚠️ Antes solo se excluían `_next/static` y `_next/image`, y eso dejaba
+      dentro el resto de `_next/*` — sobre todo `_next/webpack-hmr`, que en
+      desarrollo se pide constantemente. Cada una de esas peticiones se comía
+      un `getUser()`, o sea un viaje de ida y vuelta a Supabase, para refrescar
+      la sesión de algo que no es una página. Medido: un 404 de `webpack-hmr`
+      tardaba 5,8 s.
+
+      Nada de `_next/*` necesita sesión: son recursos que sirve el propio Next.
+      Y `_next/data` tampoco, porque las páginas que sí la necesitan ya la
+      comprueban en el layout con `currentUser()`.
+    */
+    '/((?!_next/|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff2?)$).*)',
   ],
 };
