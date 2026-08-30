@@ -1,9 +1,13 @@
+import { cache } from 'react';
+
 import { createSupabaseServerClient } from '@/shared/api/supabase/server';
 
 import {
   type Course,
   type CourseAccess,
+  type CourseKind,
   type CourseLevel,
+  type CourseStatus,
   type CourseModule,
   type CourseProgress,
   type CourseWithModules,
@@ -12,6 +16,17 @@ import {
 
 /**
  * Los cursos, leídos desde el SERVIDOR con la sesión del usuario.
+ *
+ * ⚠️ TODO LO QUE LEE VA ENVUELTO EN `cache()` de React, y no es un adorno.
+ *
+ * `cache()` no guarda nada entre peticiones: deduplica dentro de la MISMA. Y
+ * hacía falta porque la página de una lección pedía el curso DOS veces —una en
+ * `generateMetadata` y otra al pintar— y cada `findCourse` son tres consultas
+ * en cadena (curso → módulos → lecciones). Seis viajes a Supabase para
+ * responder tres veces lo mismo, en cada toque de "siguiente lección".
+ *
+ * Es el mismo arreglo que ya se le hizo a `currentUser()` el 2026-08-19, por
+ * el mismo motivo: el dato no estaba mal, se pedía de más.
  *
  * Ojo con esto: se usa el cliente de sesión y NO el de administración, a
  * propósito. Es lo que hace que RLS decida qué se entrega — el curso de pago
@@ -29,6 +44,14 @@ function toAccess(value: string): CourseAccess {
   return value === 'libre' ? 'libre' : 'pago';
 }
 
+function toKind(value: string): CourseKind {
+  return value === 'capsula' ? 'capsula' : 'curso';
+}
+
+function toStatus(value: string): CourseStatus {
+  return value === 'lista-de-espera' || value === 'publicado' ? value : 'borrador';
+}
+
 interface CourseRow {
   readonly id: string;
   readonly slug: string;
@@ -38,9 +61,25 @@ interface CourseRow {
   readonly level: string;
   readonly access: string;
   readonly position: number;
+  readonly kind: string;
+  readonly status: string;
+  readonly waitlist_goal: number | null;
 }
 
-function toCourse(row: CourseRow, isLocked = false): Course {
+/** Las columnas que pide toda consulta de curso. En un sitio, no en cuatro. */
+const COURSE_COLUMNS =
+  'id, slug, title, summary, cover_url, level, access, position, kind, status, waitlist_goal';
+
+interface WaitlistInfo {
+  readonly count: number;
+  readonly isIn: boolean;
+}
+
+function toCourse(
+  row: CourseRow,
+  isLocked = false,
+  waitlist: WaitlistInfo = { count: 0, isIn: false },
+): Course {
   return {
     isLocked,
     id: row.id,
@@ -51,6 +90,11 @@ function toCourse(row: CourseRow, isLocked = false): Course {
     level: toLevel(row.level),
     access: toAccess(row.access),
     position: row.position,
+    kind: toKind(row.kind),
+    status: toStatus(row.status),
+    waitlistGoal: row.waitlist_goal,
+    waitlistCount: waitlist.count,
+    isInWaitlist: waitlist.isIn,
   };
 }
 
@@ -127,14 +171,11 @@ function toLesson(row: LessonRow): Lesson | null {
  * `course_progress`: esa función es `security definer` y cuenta saltándose
  * RLS, así que dice 13 aunque no puedas ver ninguna.
  */
-export async function listCourses(): Promise<readonly Course[]> {
+export const listCourses = cache(async (): Promise<readonly Course[]> => {
   const supabase = await createSupabaseServerClient();
 
   const [{ data, error }, { data: openModules }] = await Promise.all([
-    supabase
-      .from('courses')
-      .select('id, slug, title, summary, cover_url, level, access, position')
-      .order('position'),
+    supabase.from('courses').select(COURSE_COLUMNS).order('position'),
     supabase.from('modules').select('course_id'),
   ]);
 
@@ -144,7 +185,62 @@ export async function listCourses(): Promise<readonly Course[]> {
 
   const readable = new Set((openModules ?? []).map((row) => row.course_id));
 
-  return data.map((row) => toCourse(row, !readable.has(row.id)));
+  const waiting = data.filter((row) => row.status === 'lista-de-espera');
+  const waitlist = await waitlistInfo(
+    supabase,
+    waiting.map((row) => row.id),
+  );
+
+  return data.map((row) =>
+    toCourse(
+      row,
+      !readable.has(row.id),
+      waitlist.get(row.id) ?? { count: 0, isIn: false },
+    ),
+  );
+});
+
+/**
+ * Cuánta gente espera cada curso, y si quien mira ya se apuntó.
+ *
+ * El CONTADOR sale de `course_waitlist_count()`, que es `security definer` y
+ * devuelve un entero pelado: la barra "18 de 30" la puede ver cualquiera —es lo
+ * que empuja a apuntarse— sin que se filtre una sola identidad. Quién se apuntó
+ * a un curso de embutidos es dato personal y no sale de la base.
+ *
+ * Si YO estoy dentro se pregunta aparte, contra `course_waitlist`, donde RLS
+ * solo entrega mis propias filas. Es una consulta y no una por curso.
+ *
+ * ⚠️ El contador sí es una llamada por curso, porque la función recibe un solo
+ * `course_id`. Con cuatro o cinco cursos en espera da igual; el día que sean
+ * treinta, la función pasa a recibir un array y esto se vuelve una sola.
+ */
+async function waitlistInfo(
+  supabase: Awaited<ReturnType<typeof createSupabaseServerClient>>,
+  courseIds: readonly string[],
+): Promise<ReadonlyMap<string, WaitlistInfo>> {
+  if (courseIds.length === 0) {
+    return new Map();
+  }
+
+  const [counts, { data: mine }] = await Promise.all([
+    Promise.all(
+      courseIds.map(async (id) => {
+        const { data } = await supabase.rpc('course_waitlist_count', {
+          p_course_id: id,
+        });
+        return [id, data ?? 0] as const;
+      }),
+    ),
+    supabase
+      .from('course_waitlist')
+      .select('course_id')
+      .in('course_id', [...courseIds]),
+  ]);
+
+  const joined = new Set((mine ?? []).map((row) => row.course_id));
+
+  return new Map(counts.map(([id, count]) => [id, { count, isIn: joined.has(id) }]));
 }
 
 /**
@@ -203,65 +299,67 @@ async function courseOutline(
 }
 
 /** Un curso con sus módulos y lecciones, o `null` si no existe. */
-export async function findCourse(slug: string): Promise<CourseWithModules | null> {
-  const supabase = await createSupabaseServerClient();
+export const findCourse = cache(
+  async (slug: string): Promise<CourseWithModules | null> => {
+    const supabase = await createSupabaseServerClient();
 
-  const { data: courseRow } = await supabase
-    .from('courses')
-    .select('id, slug, title, summary, cover_url, level, access, position')
-    .eq('slug', slug)
-    .maybeSingle();
+    const { data: courseRow } = await supabase
+      .from('courses')
+      .select(COURSE_COLUMNS)
+      .eq('slug', slug)
+      .maybeSingle();
 
-  if (courseRow === null) {
-    return null;
-  }
+    if (courseRow === null) {
+      return null;
+    }
 
-  const { data: moduleRows } = await supabase
-    .from('modules')
-    .select('id, title, summary, position')
-    .eq('course_id', courseRow.id)
-    .order('position');
+    const { data: moduleRows } = await supabase
+      .from('modules')
+      .select('id, title, summary, position')
+      .eq('course_id', courseRow.id)
+      .order('position');
 
-  const modules = moduleRows ?? [];
+    const modules = moduleRows ?? [];
 
-  /*
+    /*
     Sin módulos por RLS = curso cerrado para esta persona. Se enseña el índice
     igual, que es lo que da ganas de pagar: un candado sin nada detrás no vende.
     El muro aparece al INTENTAR ABRIR una lección, no antes.
   */
-  if (modules.length === 0) {
-    return {
-      ...toCourse(courseRow, true),
-      modules: await courseOutline(supabase, slug),
-    };
-  }
+    if (modules.length === 0) {
+      return {
+        ...toCourse(courseRow, true),
+        modules: await courseOutline(supabase, slug),
+      };
+    }
 
-  const moduleIds = modules.map((m) => m.id);
+    const moduleIds = modules.map((m) => m.id);
 
-  // Sin guardia de lista vacía: si `modules` estuviera vacío ya se habría
-  // devuelto el índice más arriba.
-  const { data: lessonRows } = await supabase
-    .from('lessons')
-    .select(
-      'id, module_id, kind, title, summary, position, duration_s, poster_url, bunny_video_id, file_url, body, ask',
-    )
-    .in('module_id', moduleIds)
-    .order('position');
+    // Sin guardia de lista vacía: si `modules` estuviera vacío ya se habría
+    // devuelto el índice más arriba.
+    const { data: lessonRows } = await supabase
+      .from('lessons')
+      .select(
+        'id, module_id, kind, title, summary, position, duration_s, poster_url, bunny_video_id, file_url, body, ask',
+      )
+      .in('module_id', moduleIds)
+      .order('position');
 
-  const lessons = (lessonRows ?? [])
-    .map(toLesson)
-    .filter((lesson): lesson is Lesson => lesson !== null);
+    const lessons = (lessonRows ?? [])
+      .map(toLesson)
+      .filter((lesson): lesson is Lesson => lesson !== null);
 
-  const withLessons: readonly CourseModule[] = modules.map((m) => ({
-    id: m.id,
-    title: m.title,
-    summary: m.summary,
-    position: m.position,
-    lessons: lessons.filter((lesson) => lesson.moduleId === m.id),
-  }));
+    const withLessons: readonly CourseModule[] = modules.map((m) => ({
+      id: m.id,
+      title: m.title,
+      summary: m.summary,
+      position: m.position,
+      lessons: lessons.filter((lesson) => lesson.moduleId === m.id),
+    }));
 
-  return { ...toCourse(courseRow), modules: withLessons };
-}
+    return { ...toCourse(courseRow), modules: withLessons };
+  },
+);
 
 /**
  * Cuánto lleva esta persona de cada curso.
@@ -270,38 +368,40 @@ export async function findCourse(slug: string): Promise<CourseWithModules | null
  * pantalla de "Mis cursos" pinta una barra por fila, y hacer una consulta por
  * curso sería una petición por tarjeta.
  */
-export async function progressByCourse(
-  userId: string,
-): Promise<ReadonlyMap<string, CourseProgress>> {
-  const supabase = await createSupabaseServerClient();
-  const { data, error } = await supabase.rpc('course_progress', { p_user_id: userId });
+export const progressByCourse = cache(
+  async (userId: string): Promise<ReadonlyMap<string, CourseProgress>> => {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase.rpc('course_progress', { p_user_id: userId });
 
-  if (error !== null || data === null) {
-    return new Map();
-  }
+    if (error !== null || data === null) {
+      return new Map();
+    }
 
-  return new Map(
-    data.map((row) => [
-      row.course_id,
-      {
-        courseId: row.course_id,
-        totalLessons: row.total_lessons,
-        doneLessons: row.done_lessons,
-        percent: row.percent,
-        nextLessonId: row.next_lesson_id,
-      },
-    ]),
-  );
-}
+    return new Map(
+      data.map((row) => [
+        row.course_id,
+        {
+          courseId: row.course_id,
+          totalLessons: row.total_lessons,
+          doneLessons: row.done_lessons,
+          percent: row.percent,
+          nextLessonId: row.next_lesson_id,
+        },
+      ]),
+    );
+  },
+);
 
 /** Qué lecciones tiene terminadas, para pintar las palomitas del acordeón. */
-export async function completedLessonIds(userId: string): Promise<ReadonlySet<string>> {
-  const supabase = await createSupabaseServerClient();
-  const { data } = await supabase
-    .from('lesson_progress')
-    .select('lesson_id, completed_at')
-    .eq('user_id', userId)
-    .not('completed_at', 'is', null);
+export const completedLessonIds = cache(
+  async (userId: string): Promise<ReadonlySet<string>> => {
+    const supabase = await createSupabaseServerClient();
+    const { data } = await supabase
+      .from('lesson_progress')
+      .select('lesson_id, completed_at')
+      .eq('user_id', userId)
+      .not('completed_at', 'is', null);
 
-  return new Set((data ?? []).map((row) => row.lesson_id));
-}
+    return new Set((data ?? []).map((row) => row.lesson_id));
+  },
+);

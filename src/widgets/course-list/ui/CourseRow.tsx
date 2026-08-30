@@ -2,10 +2,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { type ReactNode } from 'react';
 
+import { WaitlistButton } from '@/features/join-waitlist';
+
 import { type Course, type CourseProgress } from '@/entities/course';
 
 import { cn } from '@/shared/lib';
-import { IconChevron, IconLock } from '@/shared/ui';
+import { IconChevron, IconLock, NavPendingBar } from '@/shared/ui';
 
 interface CourseRowProps {
   readonly course: Course;
@@ -40,11 +42,17 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
   // entrega RLS. Un suscriptor ve los mismos cursos sin candado.
   const isLocked = course.isLocked;
 
+  // En lista de espera todavía no está grabado. Es un estado distinto de
+  // "bloqueado": ahí el contenido existe y te falta pagarlo; aquí no existe
+  // para nadie, ni para quien paga. Decir lo contrario sería mentir.
+  const isWaiting = course.status === 'lista-de-espera';
+
   return (
     <Link
       href={`/cursos/${course.slug}`}
-      className="block overflow-hidden rounded-2xl border border-cocoa/10 bg-cream-white shadow-raised transition-transform active:scale-[0.98]"
+      className="relative block overflow-hidden rounded-2xl border border-cocoa/10 bg-cream-white shadow-raised transition-transform active:scale-[0.98]"
     >
+      <NavPendingBar />
       <div className="relative h-44 w-full">
         {course.coverUrl === null ? (
           <div className="absolute inset-0 bg-forest" />
@@ -78,7 +86,11 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
           className="absolute inset-0 bg-gradient-to-t from-cocoa/85 via-cocoa/45 to-cocoa/20"
         />
 
-        {course.access === 'libre' ? (
+        {isWaiting ? (
+          <span className="absolute right-3 top-3 rounded-full bg-cream-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cocoa/75 backdrop-blur-sm">
+            En preparación
+          </span>
+        ) : course.access === 'libre' ? (
           <span className="absolute right-3 top-3 rounded-full bg-terracota px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cream-white shadow-surface">
             Gratis
           </span>
@@ -91,7 +103,13 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
 
         <div className="absolute inset-x-0 bottom-0 p-5">
           <p className="text-xs font-medium uppercase tracking-eyebrow text-cream/85">
-            {isFinished ? 'Terminado' : isStarted ? 'Sigue donde ibas' : 'Empieza aquí'}
+            {isWaiting
+              ? 'Todavía no está grabado'
+              : isFinished
+                ? 'Terminado'
+                : isStarted
+                  ? 'Sigue donde ibas'
+                  : 'Empieza aquí'}
           </p>
           <h2 className="mt-1.5 font-serif text-2xl font-semibold leading-tight text-cream-white">
             {course.title}
@@ -102,13 +120,23 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
       <div className="p-5">
         <p className="text-base leading-relaxed text-cocoa/70">{course.summary}</p>
 
-        {isLocked && total > 0 ? (
+        {isWaiting ? (
+          <WaitlistButton
+            courseId={course.id}
+            courseSlug={course.slug}
+            initialCount={course.waitlistCount}
+            goal={course.waitlistGoal ?? 30}
+            initiallyJoined={course.isInWaitlist}
+          />
+        ) : null}
+
+        {!isWaiting && isLocked && total > 0 ? (
           /* Sin barra de progreso: un 0% en algo que no puedes empezar no
              informa, desanima. Lo que sí vende es CUÁNTO hay dentro. */
           <p className="mt-4 text-sm text-cocoa/55">{total} lecciones esperándote</p>
         ) : null}
 
-        {!isLocked && total > 0 ? (
+        {!isWaiting && !isLocked && total > 0 ? (
           <div className="mt-4">
             <div className="flex items-baseline justify-between text-sm">
               <span className="text-cocoa/55">
@@ -125,7 +153,12 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
           </div>
         ) : null}
 
-        {isLocked ? (
+        {isWaiting ? (
+          <span className="mt-4 flex items-center gap-1 text-sm font-medium text-cocoa/55">
+            Mira el temario
+            <IconChevron size={16} />
+          </span>
+        ) : isLocked ? (
           /*
             Lo que se le dice a quien no paga.
             No es "no puedes": es "esto es lo que hay dentro". El precio de la

@@ -5,6 +5,27 @@ export type CourseLevel = 'para-empezar' | 'intermedio' | 'avanzado';
 export type CourseAccess = 'libre' | 'pago';
 
 /**
+ * Qué PROMETE, que no es lo mismo que de qué está hecho.
+ *
+ *   capsula → resuelve UNA duda     ("cómo bridar un jamón")
+ *   curso   → acompaña un PROCESO   ("lomo curado de principio a fin")
+ *
+ * No describe el formato: eso es `LessonKind`. Una cápsula puede ser texto, un
+ * PDF o un video, igual que un curso.
+ */
+export type CourseKind = 'capsula' | 'curso';
+
+/**
+ * En qué punto está.
+ *
+ * `lista-de-espera` es el que hace trabajo de verdad: el curso todavía no está
+ * grabado, y en vez de esconderlo se enseña con su temario y con cuánta gente
+ * lo espera. Un curso invisible no se vende, y además no nos dice nada sobre
+ * qué grabar primero.
+ */
+export type CourseStatus = 'borrador' | 'lista-de-espera' | 'publicado';
+
+/**
  * De qué está hecha una lección.
  *
  * La tabla se llama `lessons` y no `videos` a propósito: un curso no es solo
@@ -81,6 +102,14 @@ export interface Course {
    * la regla en TypeScript.
    */
   readonly isLocked: boolean;
+  readonly kind: CourseKind;
+  readonly status: CourseStatus;
+  /** Cuánta gente hace falta para que se grabe. `null` si no aplica. */
+  readonly waitlistGoal: number | null;
+  /** Cuánta gente lo espera ya. Es un número público; la lista, nunca. */
+  readonly waitlistCount: number;
+  /** Si QUIEN MIRA ya se apuntó, para que el botón no le invite otra vez. */
+  readonly isInWaitlist: boolean;
 }
 
 /** El curso con todo lo que cuelga de él, para la pantalla del curso. */
