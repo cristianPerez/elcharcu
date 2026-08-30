@@ -5,7 +5,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: '14.15';
+    PostgrestVersion: '14.5';
   };
   charcu: {
     Tables: {
@@ -80,47 +80,135 @@ export type Database = {
           },
         ];
       };
+      course_waitlist: {
+        Row: {
+          course_id: string;
+          created_at: string;
+          user_id: string;
+        };
+        Insert: {
+          course_id: string;
+          created_at?: string;
+          user_id: string;
+        };
+        Update: {
+          course_id?: string;
+          created_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'course_waitlist_course_id_fkey';
+            columns: ['course_id'];
+            isOneToOne: false;
+            referencedRelation: 'courses';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       courses: {
         Row: {
           access: string;
           cover_url: string | null;
           created_at: string;
           id: string;
+          kind: string;
           level: string;
           position: number;
           slug: string;
           status: string;
           summary: string;
           title: string;
+          unlock_mode: string;
           updated_at: string;
+          waitlist_goal: number | null;
         };
         Insert: {
           access?: string;
           cover_url?: string | null;
           created_at?: string;
           id?: string;
+          kind?: string;
           level?: string;
           position?: number;
           slug: string;
           status?: string;
           summary?: string;
           title: string;
+          unlock_mode?: string;
           updated_at?: string;
+          waitlist_goal?: number | null;
         };
         Update: {
           access?: string;
           cover_url?: string | null;
           created_at?: string;
           id?: string;
+          kind?: string;
           level?: string;
           position?: number;
           slug?: string;
           status?: string;
           summary?: string;
           title?: string;
+          unlock_mode?: string;
           updated_at?: string;
+          waitlist_goal?: number | null;
         };
         Relationships: [];
+      };
+      knowledge: {
+        Row: {
+          body: string;
+          course_id: string | null;
+          created_at: string;
+          id: string;
+          kind: string;
+          slug: string;
+          source: string | null;
+          status: string;
+          summary: string;
+          tags: string[];
+          title: string;
+          updated_at: string;
+        };
+        Insert: {
+          body: string;
+          course_id?: string | null;
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          slug: string;
+          source?: string | null;
+          status?: string;
+          summary?: string;
+          tags?: string[];
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          body?: string;
+          course_id?: string | null;
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          slug?: string;
+          source?: string | null;
+          status?: string;
+          summary?: string;
+          tags?: string[];
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'knowledge_course_id_fkey';
+            columns: ['course_id'];
+            isOneToOne: false;
+            referencedRelation: 'courses';
+            referencedColumns: ['id'];
+          },
+        ];
       };
       leads: {
         Row: {
@@ -283,34 +371,46 @@ export type Database = {
       };
       onboarding_answers: {
         Row: {
+          consent_at: string | null;
           country: string | null;
           created_at: string;
+          full_name: string | null;
           id: string;
+          interests: string[];
           level: string | null;
           product: string | null;
           updated_at: string;
           user_id: string | null;
           visitor_id: string;
+          whatsapp: string | null;
         };
         Insert: {
+          consent_at?: string | null;
           country?: string | null;
           created_at?: string;
+          full_name?: string | null;
           id?: string;
+          interests?: string[];
           level?: string | null;
           product?: string | null;
           updated_at?: string;
           user_id?: string | null;
           visitor_id: string;
+          whatsapp?: string | null;
         };
         Update: {
+          consent_at?: string | null;
           country?: string | null;
           created_at?: string;
+          full_name?: string | null;
           id?: string;
+          interests?: string[];
           level?: string | null;
           product?: string | null;
           updated_at?: string;
           user_id?: string | null;
           visitor_id?: string;
+          whatsapp?: string | null;
         };
         Relationships: [];
       };
@@ -340,22 +440,37 @@ export type Database = {
           country: string;
           created_at: string;
           experience_level: string;
+          full_name: string | null;
           id: string;
+          interests: string[];
+          onboarding_status: string;
           updated_at: string;
+          whatsapp: string | null;
+          whatsapp_consent_at: string | null;
         };
         Insert: {
           country?: string;
           created_at?: string;
           experience_level?: string;
+          full_name?: string | null;
           id: string;
+          interests?: string[];
+          onboarding_status?: string;
           updated_at?: string;
+          whatsapp?: string | null;
+          whatsapp_consent_at?: string | null;
         };
         Update: {
           country?: string;
           created_at?: string;
           experience_level?: string;
+          full_name?: string | null;
           id?: string;
+          interests?: string[];
+          onboarding_status?: string;
           updated_at?: string;
+          whatsapp?: string | null;
+          whatsapp_consent_at?: string | null;
         };
         Relationships: [];
       };
@@ -475,7 +590,17 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      can_open_lesson: { Args: { p_lesson_id: string }; Returns: boolean };
       can_read_course: { Args: { p_course_id: string }; Returns: boolean };
+      complete_onboarding: {
+        Args: {
+          p_consent: boolean;
+          p_full_name: string;
+          p_interests: string[];
+          p_whatsapp: string;
+        };
+        Returns: undefined;
+      };
       consume_quota: {
         Args: {
           p_images?: number;
@@ -519,9 +644,12 @@ export type Database = {
           total_lessons: number;
         }[];
       };
+      course_waitlist_count: { Args: { p_course_id: string }; Returns: number };
       current_period_key: { Args: never; Returns: string };
       effective_plan: { Args: { p_user_id: string }; Returns: string };
       has_active_subscription: { Args: { p_user_id: string }; Returns: boolean };
+      is_in_waitlist: { Args: { p_course_id: string }; Returns: boolean };
+      join_waitlist: { Args: { p_course_id: string }; Returns: number };
       link_onboarding_to_user: {
         Args: { p_user_id: string; p_visitor_id: string };
         Returns: undefined;
@@ -566,13 +694,31 @@ export type Database = {
       };
       save_onboarding: {
         Args: {
+          p_consent_at: string;
           p_country: string;
+          p_full_name: string;
+          p_interests: string[];
           p_level: string;
           p_product: string;
           p_user_id: string;
           p_visitor_id: string;
+          p_whatsapp: string;
         };
         Returns: undefined;
+      };
+      search_knowledge: {
+        Args: { p_limit?: number; p_query: string; p_tags?: string[] };
+        Returns: {
+          body: string;
+          course_id: string;
+          id: string;
+          kind: string;
+          score: number;
+          slug: string;
+          summary: string;
+          tags: string[];
+          title: string;
+        }[];
       };
       today_ai_spend: { Args: never; Returns: number };
     };
