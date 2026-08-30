@@ -1,7 +1,7 @@
 # ESTADO — El Charcu (plataforma)
 
 Memoria viva del proyecto. Se actualiza al cerrar cada etapa.
-Última actualización: 2026-08-19
+Última actualización: 2026-08-29 — ver el **PLAN MAESTRO DE LANZAMIENTO** al final
 
 ---
 
@@ -191,96 +191,96 @@ No se empieza por el chat.
       pestaña de El Charcu, agrupadas por Hoy · Esta semana · Antes.
 
       **La regla de sesión** (decisión de Cristian, 2026-08-20): se empieza en
-                              blanco cuando pasa CUALQUIERA de las dos cosas — **una hora sin escribir**
-                              o **se cierra la pestaña**. Las dos salen de la misma línea:
-                              `sessionStorage` muere al cerrar la pestaña y la marca de tiempo se
-                              encarga de la inactividad, así que no hay que escuchar eventos ni
-                              preguntarle nada al usuario
-                              (`features/assistant-chat/lib/activeChat.ts`).
-                              Una hora y no seis: una duda de charcutería se resuelve en minutos, y
-                              quien vuelve al cabo de una hora casi seguro trae otra pregunta — meterla
-                              en el hilo anterior ensucia las dos. Volver a lo de antes está a un toque
-                              en el historial.
+                                  blanco cuando pasa CUALQUIERA de las dos cosas — **una hora sin escribir**
+                                  o **se cierra la pestaña**. Las dos salen de la misma línea:
+                                  `sessionStorage` muere al cerrar la pestaña y la marca de tiempo se
+                                  encarga de la inactividad, así que no hay que escuchar eventos ni
+                                  preguntarle nada al usuario
+                                  (`features/assistant-chat/lib/activeChat.ts`).
+                                  Una hora y no seis: una duda de charcutería se resuelve en minutos, y
+                                  quien vuelve al cabo de una hora casi seguro trae otra pregunta — meterla
+                                  en el hilo anterior ensucia las dos. Volver a lo de antes está a un toque
+                                  en el historial.
 
-                              ⚠️ **Lo importante del cambio**: `/api/asistente` **dejó de retomar la
-                              última receta abierta por su cuenta**. Ese rescate existía porque el id
-                              vivía en memoria y una recarga lo perdía — pero tenía un efecto que nadie
-                              había visto: era IMPOSIBLE empezar un chat nuevo, porque el servidor
-                              siempre devolvía al anterior. Ahora manda el navegador y el servidor solo
-                              comprueba que la receta sea suya.
+                                  ⚠️ **Lo importante del cambio**: `/api/asistente` **dejó de retomar la
+                                  última receta abierta por su cuenta**. Ese rescate existía porque el id
+                                  vivía en memoria y una recarga lo perdía — pero tenía un efecto que nadie
+                                  había visto: era IMPOSIBLE empezar un chat nuevo, porque el servidor
+                                  siempre devolvía al anterior. Ahora manda el navegador y el servidor solo
+                                  comprueba que la receta sea suya.
 
-                              **Los títulos los pone el asistente** tras la primera respuesta, con
-                              `after()` de Next para no hacer esperar a nadie: se contesta primero y se
-                              titula por detrás. Probado — "¿Cuánta sal de cura #1 para 1,8 kg de
-                              bondiola?" quedó como **"Bondiola 1,8 kg"**. Si el titulador falla queda
-                              el título provisional (la pregunta recortada): feo, no roto.
+                                  **Los títulos los pone el asistente** tras la primera respuesta, con
+                                  `after()` de Next para no hacer esperar a nadie: se contesta primero y se
+                                  titula por detrás. Probado — "¿Cuánta sal de cura #1 para 1,8 kg de
+                                  bondiola?" quedó como **"Bondiola 1,8 kg"**. Si el titulador falla queda
+                                  el título provisional (la pregunta recortada): feo, no roto.
 
-                              Verificado en producción local: recargar dentro de la ventana restaura la
-                              conversación, pasada la hora empieza en blanco, una pregunta sin
-                              `recipeId` abre receta nueva, y un id ajeno no entrega nada.
+                                  Verificado en producción local: recargar dentro de la ventana restaura la
+                                  conversación, pasada la hora empieza en blanco, una pregunta sin
+                                  `recipeId` abre receta nueva, y un id ajeno no entrega nada.
 
 - [x] **4h-bis. Dos fallos del cupo, encontrados probando en el celular**
       (2026-08-20). El síntoma: la hamburguesa mostraba 5 conversaciones y la
       cuenta decía "3 de 8 preguntas". Eran dos cosas distintas.
 
       **1. El cupo se le cobraba a la primera cuenta que usó ese navegador.**
-                          Las recetas de hoy tenían `user_id` de la cuenta personal, pero el
-                          contador del mismo `visitor_id` seguía atado a la cuenta de trabajo, de
-                          días antes. Dos `coalesce` preferían al dueño viejo:
-                          `consume_quota` hacía `coalesce(c.user_id, excluded.user_id)` y
-                          `link_visitor_to_user` solo escribía `where user_id is null`. Entre los
-                          dos, un navegador no cambiaba de cuenta nunca.
-                          Ahora manda quien está usando la app AHORA.
-                          ⚠️ Las RECETAS siguen adoptándose solo si no tienen dueño: reasignarlas
-                          le entregaría las conversaciones de una persona a otra por compartir un
-                          teléfono.
+                              Las recetas de hoy tenían `user_id` de la cuenta personal, pero el
+                              contador del mismo `visitor_id` seguía atado a la cuenta de trabajo, de
+                              días antes. Dos `coalesce` preferían al dueño viejo:
+                              `consume_quota` hacía `coalesce(c.user_id, excluded.user_id)` y
+                              `link_visitor_to_user` solo escribía `where user_id is null`. Entre los
+                              dos, un navegador no cambiaba de cuenta nunca.
+                              Ahora manda quien está usando la app AHORA.
+                              ⚠️ Las RECETAS siguen adoptándose solo si no tienen dueño: reasignarlas
+                              le entregaría las conversaciones de una persona a otra por compartir un
+                              teléfono.
 
-                          **2. La pregunta de una lección se reenviaba en cada montaje.** Viajaba
-                          en la URL (`/charcu?pregunta=…`) y el parámetro se quedaba ahí, así que
-                          cada vuelta a esa pantalla la mandaba otra vez: quedaron **tres recetas
-                          idénticas** ("Especias para bondiola") y tres preguntas del cupo gastadas
-                          sin que nadie preguntara nada. Ahora el parámetro se borra de la URL en
-                          cuanto se recoge, y la duda de una lección abre hilo aparte de forma
-                          determinista — antes lo hacía por accidente, ganándole una carrera al
-                          efecto que restaura la conversación.
-                          De paso, `send` dejó de leer los mensajes del estado y los lee de una
-                          ref: empezar hilo nuevo y mandar en el mismo tirón le colaba al modelo la
-                          conversación anterior.
+                              **2. La pregunta de una lección se reenviaba en cada montaje.** Viajaba
+                              en la URL (`/charcu?pregunta=…`) y el parámetro se quedaba ahí, así que
+                              cada vuelta a esa pantalla la mandaba otra vez: quedaron **tres recetas
+                              idénticas** ("Especias para bondiola") y tres preguntas del cupo gastadas
+                              sin que nadie preguntara nada. Ahora el parámetro se borra de la URL en
+                              cuanto se recoge, y la duda de una lección abre hilo aparte de forma
+                              determinista — antes lo hacía por accidente, ganándole una carrera al
+                              efecto que restaura la conversación.
+                              De paso, `send` dejó de leer los mensajes del estado y los lee de una
+                              ref: empezar hilo nuevo y mandar en el mismo tirón le colaba al modelo la
+                              conversación anterior.
 
-                          Verificado en producción local: rebotar tres veces a `/charcu` ya no crea
-                          ni una receta, y un contador de la cuenta A pasa a la cuenta B en cuanto
-                          B pregunta.
+                              Verificado en producción local: rebotar tres veces a `/charcu` ya no crea
+                              ni una receta, y un contador de la cuenta A pasa a la cuenta B en cuanto
+                              B pregunta.
 
 - [ ] **4j. La pregunta se cobra ANTES de crear la receta** (la causa raíz que
       queda viva — anotado el 2026-08-20 para arreglar mañana).
 
       En `/api/asistente` el orden es: se descuenta el cupo → se llama a Gemini
-                      → **se crea la receta**. Y `refundQuota` solo se dispara si falla Gemini.
-                      Si lo que falla es la escritura en la base, **la pregunta se cobró y no
-                      hay nada detrás**.
+                          → **se crea la receta**. Y `refundQuota` solo se dispara si falla Gemini.
+                          Si lo que falla es la escritura en la base, **la pregunta se cobró y no
+                          hay nada detrás**.
 
-                      No es teórico: es lo que infló los contadores durante las horas en que QA
-                      estuvo sin credenciales — `createRecipe` devolvía `null` en silencio
-                      mientras el cobro entraba igual. Acabó en un contador que decía 3 con una
-                      sola receta, y en una limpieza a mano
-                      (`20260820210148_limpieza_duplicados_y_contadores`).
+                          No es teórico: es lo que infló los contadores durante las horas en que QA
+                          estuvo sin credenciales — `createRecipe` devolvía `null` en silencio
+                          mientras el cobro entraba igual. Acabó en un contador que decía 3 con una
+                          sola receta, y en una limpieza a mano
+                          (`20260820210148_limpieza_duplicados_y_contadores`).
 
-                      **Mientras esto siga así, cualquier caída de Supabase vuelve a descuadrar
-                      los números.** Y el usuario paga el error: pierde una pregunta de su cupo
-                      por un fallo nuestro.
+                          **Mientras esto siga así, cualquier caída de Supabase vuelve a descuadrar
+                          los números.** Y el usuario paga el error: pierde una pregunta de su cupo
+                          por un fallo nuestro.
 
-                      El arreglo es corto: que el `refundQuota` cubra también el fallo al
-                      escribir, no solo el de Gemini. Ojo al hacerlo con qué se le contesta al
-                      usuario — la respuesta del modelo SÍ llegó y estaría mal tirarla; lo que
-                      falló es guardarla. Probablemente haya que devolverle el texto y avisarle
-                      de que esa conversación no se guardó, en vez de fingir un error entero.
+                          El arreglo es corto: que el `refundQuota` cubra también el fallo al
+                          escribir, no solo el de Gemini. Ojo al hacerlo con qué se le contesta al
+                          usuario — la respuesta del modelo SÍ llegó y estaría mal tirarla; lo que
+                          falló es guardarla. Probablemente haya que devolverle el texto y avisarle
+                          de que esa conversación no se guardó, en vez de fingir un error entero.
 
-                      ⚠️ Y de fondo hay algo más grande, para pensar sin prisa: el contador y la
-                      realidad pueden separarse sin que nada avise. Hoy se descubrió mirando la
-                      pantalla y sospechando. **Los cuatro fallos de cupo de hoy salen de ahí.**
-                      Un chequeo que compare contadores contra recetas —el mismo que se acaba de
-                      escribir a mano para la limpieza— convertido en algo que se pueda correr
-                      cuando se quiera, avisaría antes de que lo note un cliente.
+                          ⚠️ Y de fondo hay algo más grande, para pensar sin prisa: el contador y la
+                          realidad pueden separarse sin que nada avise. Hoy se descubrió mirando la
+                          pantalla y sospechando. **Los cuatro fallos de cupo de hoy salen de ahí.**
+                          Un chequeo que compare contadores contra recetas —el mismo que se acaba de
+                          escribir a mano para la limpieza— convertido en algo que se pueda correr
+                          cuando se quiera, avisaría antes de que lo note un cliente.
 
 - [ ] **4i. Cuándo más nace un chat nuevo** (fase 3, pedida por Cristian el
       2026-08-20 y **no construida**). Faltan dos disparadores: 1. **Preguntar desde una lección** (`/charcu?pregunta=…`) debería abrir
@@ -303,13 +303,13 @@ No se empieza por el chat.
       `charcu.recipes`.
 
       ⚠️ **La trampa está en el nombre, no en el modelo.** Hoy "receta" significa
-                              "una conversación sobre una pieza". El día que existan proyectos, la pieza
-                              es el proyecto y "receta" pasa a significar otra cosa — o deja de tener
-                              sentido. Eso arrastra renombrar tabla, entidad, rutas y copy. **Cuanto
-                              antes se decida el vocabulario, más barato sale**; hacerlo con cien
-                              usuarios y URLs compartidas cuesta diez veces más.
-                              Mi sugerencia para cuando toque: la pieza es el **proyecto**, y cada
-                              conversación es una **consulta**. Pero es decisión tuya, y no la tomo yo.
+                                  "una conversación sobre una pieza". El día que existan proyectos, la pieza
+                                  es el proyecto y "receta" pasa a significar otra cosa — o deja de tener
+                                  sentido. Eso arrastra renombrar tabla, entidad, rutas y copy. **Cuanto
+                                  antes se decida el vocabulario, más barato sale**; hacerlo con cien
+                                  usuarios y URLs compartidas cuesta diez veces más.
+                                  Mi sugerencia para cuando toque: la pieza es el **proyecto**, y cada
+                                  conversación es una **consulta**. Pero es decisión tuya, y no la tomo yo.
 
 - [ ] **4f. Qué hacemos con las recetas gratuitas** (pregunta abierta de Cristian,
       2026-08-19 — **decidir antes de tocar nada**). Hoy `/recetas` y `/tablas` son
@@ -335,28 +335,28 @@ No se empieza por el chat.
       `0011_cursos.sql`, aplicada y probada contra el proyecto real.
 
       ```
-                                                      curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
-                                                      ```
+                                                          curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
+                                                          ```
 
-                                                      **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
-                                                      campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
-                                                      tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
-                                                      que no son videos y todo el código que las lee empezaría a mentir. Añadir
-                                                      un tipo nuevo es sumar un valor, no cambiar la estructura.
-                                                      · El **orden es un campo** (`position`) en los tres niveles, con
-                                                        `unique (padre, position)`. Reordenar es cambiar números.
-                                                      · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
-                                                        vigila un `check` por tipo: **una lección de PDF sin archivo no entra
-                                                        en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
-                                                        validación al TypeScript, y con la política de cero `any` eso acaba en
-                                                        guardas de tipo por todos lados.
-                                                      · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
-                                                        al servidor de quien no tiene suscripción. Probado — no sale en la
-                                                        lista y por URL directa da 404. Se contesta 404 y no "no tienes
-                                                        acceso" a propósito: un mensaje distinto delataría qué cursos existen.
-                                                      · En TypeScript la lección es una **unión discriminada por `kind`**, así
-                                                        que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
-                                                        deja de compilar hasta que alguien decida cómo se ve.
+                                                          **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
+                                                          campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
+                                                          tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
+                                                          que no son videos y todo el código que las lee empezaría a mentir. Añadir
+                                                          un tipo nuevo es sumar un valor, no cambiar la estructura.
+                                                          · El **orden es un campo** (`position`) en los tres niveles, con
+                                                            `unique (padre, position)`. Reordenar es cambiar números.
+                                                          · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
+                                                            vigila un `check` por tipo: **una lección de PDF sin archivo no entra
+                                                            en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
+                                                            validación al TypeScript, y con la política de cero `any` eso acaba en
+                                                            guardas de tipo por todos lados.
+                                                          · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
+                                                            al servidor de quien no tiene suscripción. Probado — no sale en la
+                                                            lista y por URL directa da 404. Se contesta 404 y no "no tienes
+                                                            acceso" a propósito: un mensaje distinto delataría qué cursos existen.
+                                                          · En TypeScript la lección es una **unión discriminada por `kind`**, así
+                                                            que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
+                                                            deja de compilar hasta que alguien decida cómo se ve.
 
 - [x] **6a-bis. Progreso por usuario y por curso** (2026-08-19). Se APUNTA por
       lección (`charcu.lesson_progress`) y se MUESTRA por curso
@@ -403,31 +403,31 @@ No se empieza por el chat.
       chorizo de ajo, los cuatro de **pago**. 23 módulos y 60 lecciones.
 
       ⚠️ **EL CAMBIO IMPORTANTE ES DE POLÍTICA, no de contenido.** Hasta hoy
-          `courses_select_visible` usaba `can_read_course()`, que exige suscripción
-          para los cursos de pago: eso no los bloqueaba, los hacía **invisibles**.
-          Y un curso que nadie ve no se vende.
-          Ahora el CATÁLOGO es público —título, resumen y portada de lo publicado—
-          y lo cerrado es el CONTENIDO: `modules` y `lessons` conservan
-          `can_read_course()` sin tocar. Se ve el escaparate, no se saca la
-          mercancía. D12 sigue en pie.
+              `courses_select_visible` usaba `can_read_course()`, que exige suscripción
+              para los cursos de pago: eso no los bloqueaba, los hacía **invisibles**.
+              Y un curso que nadie ve no se vende.
+              Ahora el CATÁLOGO es público —título, resumen y portada de lo publicado—
+              y lo cerrado es el CONTENIDO: `modules` y `lessons` conservan
+              `can_read_course()` sin tocar. Se ve el escaparate, no se saca la
+              mercancía. D12 sigue en pie.
 
-          ⚠️ **Cómo se sabe que un curso está bloqueado, y cómo NO.** `listCourses`
-          se lo pregunta a la base: pide los `modules` con la sesión del usuario y
-          RLS solo devuelve los de cursos que puede abrir. NO se usa
-          `access === 'pago'`, porque un suscriptor también tiene cursos de pago y
-          para él no están bloqueados — sería duplicar la regla de la suscripción
-          en TypeScript y acabar con dos verdades.
+              ⚠️ **Cómo se sabe que un curso está bloqueado, y cómo NO.** `listCourses`
+              se lo pregunta a la base: pide los `modules` con la sesión del usuario y
+              RLS solo devuelve los de cursos que puede abrir. NO se usa
+              `access === 'pago'`, porque un suscriptor también tiene cursos de pago y
+              para él no están bloqueados — sería duplicar la regla de la suscripción
+              en TypeScript y acabar con dos verdades.
 
-          ⚠️ **Y ojo con `course_progress`**: es `security definer` y cuenta las
-          lecciones saltándose RLS, así que dice "13 lecciones" aunque no puedas
-          ver ninguna. Sirve para enseñar cuánto hay dentro; NO sirve para saber si
-          tienes acceso. Confundirlo dejó un botón de "Empezar el curso" que
-          llevaba a una lección que la base nunca iba a entregar.
+              ⚠️ **Y ojo con `course_progress`**: es `security definer` y cuenta las
+              lecciones saltándose RLS, así que dice "13 lecciones" aunque no puedas
+              ver ninguna. Sirve para enseñar cuánto hay dentro; NO sirve para saber si
+              tienes acceso. Confundirlo dejó un botón de "Empezar el curso" que
+              llevaba a una lección que la base nunca iba a entregar.
 
-          Lo visual: en la lista, insignia de candado "El Charcu Pro", foto
-          atenuada, "13 lecciones esperándote" en vez de una barra al 0% —un 0% en
-          algo que no puedes empezar desanima; el número de lecciones vende— y el
-          pie dice "Incluido en El Charcu Pro, ábrelo y mira lo que trae".
+              Lo visual: en la lista, insignia de candado "El Charcu Pro", foto
+              atenuada, "13 lecciones esperándote" en vez de una barra al 0% —un 0% en
+              algo que no puedes empezar desanima; el número de lecciones vende— y el
+              pie dice "Incluido en El Charcu Pro, ábrelo y mira lo que trae".
 
 - [x] **6e. El índice de un curso de pago SE VE; el muro está en la lección**
       (2026-08-21).
@@ -437,37 +437,37 @@ No se empieza por el chat.
       con sus lecciones, y el muro aparece **al tocar una lección**.
 
       ⚠️ **Por qué una función y no abrir la RLS de `lessons`.** Si se relajara
-          la política, cualquiera podría leer `bunny_video_id` por la API — y los
-          enlaces de Bunny **no van firmados todavía**, así que con ese id se ve el
-          video sin pagar. Se regalaría el producto por enseñar el índice.
-          `charcu.course_outline(slug)` es `security definer` y devuelve SOLO
-          títulos, resúmenes y orden. Nunca `bunny_video_id`, ni `body`, ni
-          `file_url`, ni `ask`. Comprobado en el HTML servido: las 14 lecciones
-          viajan con `bunnyVideoId: null` y sin un solo `href` a una lección.
-          `modules` y `lessons` siguen cerradas con `can_read_course()` — la puerta
-          de verdad no se tocó.
+              la política, cualquiera podría leer `bunny_video_id` por la API — y los
+              enlaces de Bunny **no van firmados todavía**, así que con ese id se ve el
+              video sin pagar. Se regalaría el producto por enseñar el índice.
+              `charcu.course_outline(slug)` es `security definer` y devuelve SOLO
+              títulos, resúmenes y orden. Nunca `bunny_video_id`, ni `body`, ni
+              `file_url`, ni `ask`. Comprobado en el HTML servido: las 14 lecciones
+              viajan con `bunnyVideoId: null` y sin un solo `href` a una lección.
+              `modules` y `lessons` siguen cerradas con `can_read_course()` — la puerta
+              de verdad no se tocó.
 
-          El guardia de `/cursos/[curso]/[leccion]` redirige a la página de precios,
-          **no a un 404**: decirle "no existe" a algo que el usuario acaba de ver en
-          el índice es una mentira que además no vende nada.
+              El guardia de `/cursos/[curso]/[leccion]` redirige a la página de precios,
+              **no a un 404**: decirle "no existe" a algo que el usuario acaba de ver en
+              el índice es una mentira que además no vende nada.
 
-          ⚠️ **De paso, un bug que estaba vivo:** `PLAN_LABEL` en "Mi cuenta" usaba
-          las claves `charcutero` y `maestro`, que **no existen** en
-          `charcu.plan_quotas` (son `aprendiz`, `pro-mensual`, `pro-anual`,
-          `maestro-mensual`, `maestro-anual`). Al primer suscriptor le habría salido
-          el id crudo en pantalla. El tier de cara al usuario es **El Charcu Pro**;
-          "Charcutero" no existe en ninguna parte y ya no se nombra en el código.
+              ⚠️ **De paso, un bug que estaba vivo:** `PLAN_LABEL` en "Mi cuenta" usaba
+              las claves `charcutero` y `maestro`, que **no existen** en
+              `charcu.plan_quotas` (son `aprendiz`, `pro-mensual`, `pro-anual`,
+              `maestro-mensual`, `maestro-anual`). Al primer suscriptor le habría salido
+              el id crudo en pantalla. El tier de cara al usuario es **El Charcu Pro**;
+              "Charcutero" no existe en ninguna parte y ya no se nombra en el código.
 
-          ⚠️ **Todos los videos de los 4 cursos nuevos son el MISMO placeholder**
-          (el corte del lomo), a propósito, para ver la estructura antes de grabar.
-          El "Ahumado al barril (opcional)" es compartido por los cuatro y se
-          cambia de una vez:
-          `update charcu.lessons set bunny_video_id = '<real>' where title = 'Ahumado al barril (opcional)';`
+              ⚠️ **Todos los videos de los 4 cursos nuevos son el MISMO placeholder**
+              (el corte del lomo), a propósito, para ver la estructura antes de grabar.
+              El "Ahumado al barril (opcional)" es compartido por los cuatro y se
+              cambia de una vez:
+              `update charcu.lessons set bunny_video_id = '<real>' where title = 'Ahumado al barril (opcional)';`
 
-          ⚠️ **`chorizo-paisa` no tiene portada**: no hay foto suya en el repo ni
-          receta pública. Se ve con el fondo verde de respaldo hasta que haya una.
-          Y **`chorizo-de-ajo` es una elección mía**: el brief pedía 3 chorizos y
-          hacían falta 4. Se cambia por otro con un `update` al slug y al título.
+              ⚠️ **`chorizo-paisa` no tiene portada**: no hay foto suya en el repo ni
+              receta pública. Se ve con el fondo verde de respaldo hasta que haya una.
+              Y **`chorizo-de-ajo` es una elección mía**: el brief pedía 3 chorizos y
+              hacían falta 4. Se cambia por otro con un `update` al slug y al título.
 
 - [ ] **7. Pagos reales** (Hotmart + webhook, D17). Tres cosas que hay que resolver sí o
       sí: emparejar la compra con el usuario de Supabase, atender el reembolso/chargeback
@@ -515,6 +515,48 @@ quedó en memoria del anterior.
 ⚠️ **La regla para lo que venga**: la base se toca cuando algo CAMBIA (terminar
 una lección, mandar una pregunta), no cuando algo se mira. Después de un cambio,
 `router.refresh()` invalida el caché y trae los datos de verdad.
+
+### ⚡ El hueco mudo entre el toque y el esqueleto (2026-08-29)
+
+El `loading.tsx` de las cinco rutas ya existía y estaba bien. Pero llega TARDE:
+se pinta cuando la navegación ya empezó, y antes de eso hay un tramo en el que
+el navegador espera al servidor y en pantalla no se mueve nada. En ese tramo
+caben el middleware, la sesión de Supabase y —en desarrollo— la compilación de
+la ruta. El usuario toca, no pasa nada, y vuelve a tocar.
+
+`useLinkStatus` (Next 15.3+) vive DENTRO del `<Link>` y se pone en `pending` en
+el mismo clic, sin esperar a nadie. De ahí salen `NavPending` y `NavPendingBar`
+en `shared/ui`, enchufados en las tres pestañas, las cápsulas y los cursos.
+
+**Medido:** 250 ms después del clic, `location.pathname` todavía es el viejo —o
+sea, seguimos dentro del hueco— y la barra ya está en el DOM. Antes de tocar no
+había nada.
+
+Y tres arreglos de fondo el mismo día, que reducen el hueco en vez de taparlo:
+
+1. **`findCourse` no estaba deduplicado.** La página de una lección lo llamaba
+   en `generateMetadata` y otra vez al pintar, y cada llamada son tres consultas
+   en cadena: seis viajes a Supabase para responder tres veces lo mismo. Ahora
+   va con `cache()` de React, igual que `currentUser()`. También `listCourses`,
+   `progressByCourse` y `completedLessonIds`.
+2. **El layout tenía una consulta en serie de más**, metida al añadir la puerta
+   del onboarding: `readProfile` iba antes de `readQuota` sin depender de ella.
+   Ahora van en paralelo.
+3. **El middleware corría en `_next/*`.** El `matcher` excluía `_next/static` y
+   `_next/image` pero dejaba dentro `_next/webpack-hmr`, que en desarrollo se
+   pide sin parar; cada petición se comía un `getUser()` contra Supabase.
+   **Medido: de 5,8 s a 1,0 s.**
+
+⚠️ **Lo que NO es arreglable y conviene recordar antes de volver a optimizar:**
+en `next dev` el primer golpe a cada ruta compila —`/cursos` tardó 15 s la
+primera vez y 1,2 s después— y el prefetch de `<Link>` está desactivado. Casi
+todo lo que se siente lento navegando por primera vez en desarrollo no existe en
+producción. Medir ahí antes de tocar nada.
+
+**Queda sobre la mesa:** `findCourse` sigue haciendo 3 consultas en cadena. Se
+bajan a 1 con un select anidado de PostgREST (`courses` con `modules` y
+`lessons` embebidos). No se hizo porque toca el camino que decide si un curso
+está bloqueado, que es seguridad (D12), y no se pudo probar con una sesión real.
 
 ### 🩻 El esqueleto, y por qué hay que medir en producción
 
@@ -752,24 +794,24 @@ texto pesaba igual.
       dentro quiere volver a su curso, quien está fuera quiere volver a la portada.
 
       ⚠️ **El caso que lo destapó: sin conexión a Supabase.** Hoy la pantalla de
-                                          entrar dice _"Las cuentas todavía no están conectadas. Vuelve en un rato"_
-                                          cuando en realidad **faltan variables de entorno** —le pasó a Cristian en
-                                          QA el 2026-08-19 y costó dos rondas de adivinar—. Ese mensaje miente a
-                                          medias y no hay forma de diagnosticarlo desde fuera. Hay que separar tres
-                                          cosas que hoy se ven igual:
-                                          1. **Falta configuración** (sin claves): es un fallo de despliegue, no del
-                                             usuario. Aviso claro en el log del servidor al arrancar, y en pantalla
-                                             algo que no invite a "volver en un rato", porque solo, no se arregla.
-                                          2. **Supabase no responde** (caída o red): ahí sí "vuelve en un rato", con
-                                             botón de reintentar.
-                                          3. **El usuario no tiene permiso**: ni error ni vacío, es la puerta
-                                             haciendo su trabajo.
+                                              entrar dice _"Las cuentas todavía no están conectadas. Vuelve en un rato"_
+                                              cuando en realidad **faltan variables de entorno** —le pasó a Cristian en
+                                              QA el 2026-08-19 y costó dos rondas de adivinar—. Ese mensaje miente a
+                                              medias y no hay forma de diagnosticarlo desde fuera. Hay que separar tres
+                                              cosas que hoy se ven igual:
+                                              1. **Falta configuración** (sin claves): es un fallo de despliegue, no del
+                                                 usuario. Aviso claro en el log del servidor al arrancar, y en pantalla
+                                                 algo que no invite a "volver en un rato", porque solo, no se arregla.
+                                              2. **Supabase no responde** (caída o red): ahí sí "vuelve en un rato", con
+                                                 botón de reintentar.
+                                              3. **El usuario no tiene permiso**: ni error ni vacío, es la puerta
+                                                 haciendo su trabajo.
 
-                                          Ojo al hacerlo: un `error.tsx` es un componente de cliente y **no atrapa lo
-                                          que falla en el servidor durante el render** más que como error genérico; el
-                                          detalle no viaja al navegador a propósito. Si se quiere distinguir los tres
-                                          casos de arriba, la decisión se toma en el servidor y se baja como dato, no
-                                          como excepción.
+                                              Ojo al hacerlo: un `error.tsx` es un componente de cliente y **no atrapa lo
+                                              que falla en el servidor durante el render** más que como error genérico; el
+                                              detalle no viaja al navegador a propósito. Si se quiere distinguir los tres
+                                              casos de arriba, la decisión se toma en el servidor y se baja como dato, no
+                                              como excepción.
 
 **El revisor visual ya existe**: `.claude/agents/revisor-visual.md`. Recibe la
 RUTA de una captura, puntúa usabilidad /40 y craft /20 contra esta paleta, y la
@@ -956,19 +998,21 @@ Viven en `auth.users`, que es de Supabase y no se toca nunca. Todo lo de aquí
 abajo cuelga de ellos con `user_id references auth.users (id)`. Borrar cualquier
 tabla de `charcu` no borra ni una cuenta.
 
-| Tabla                             | Para qué sirve                                                               |
-| --------------------------------- | ---------------------------------------------------------------------------- |
-| `chat_messages`                   | Cada pregunta y cada respuesta. Es lo que hace que recargar no sea amnesia   |
-| `usage_counters`                  | El cupo por (navegador, mes). Ojo: la clave es el NAVEGADOR, no la cuenta    |
-| `recipes`                         | Una conversación = una receta. Alimenta el historial de la hamburguesa       |
-| `ai_spend`                        | El gasto diario en IA. Global, no por usuario (ver el pendiente más abajo)   |
-| `plan_quotas`                     | Cuánto da cada plan. La pantalla promete y esto cumple                       |
-| `courses` · `modules` · `lessons` | La estructura del curso. `lessons` admite video, PDF, imagen y texto         |
-| `lesson_progress`                 | Por dónde va cada quien. Se apunta por lección y se suma por curso           |
-| `profiles`                        | País y nivel. Se crea sola con cada cuenta nueva (trigger `handle_new_user`) |
-| `leads`                           | Los correos del muro                                                         |
-| `onboarding_answers`              | Lo que contestó antes de tener cuenta                                        |
-| `subscriptions`                   | **Vacía, y es la más importante** — ver abajo                                |
+| Tabla                             | Para qué sirve                                                                                 |
+| --------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `chat_messages`                   | Cada pregunta y cada respuesta. Es lo que hace que recargar no sea amnesia                     |
+| `usage_counters`                  | El cupo por (navegador, mes). Ojo: la clave es el NAVEGADOR, no la cuenta                      |
+| `recipes`                         | Una conversación = una receta. Alimenta el historial de la hamburguesa                         |
+| `ai_spend`                        | El gasto diario en IA. Global, no por usuario (ver el pendiente más abajo)                     |
+| `plan_quotas`                     | Cuánto da cada plan. La pantalla promete y esto cumple                                         |
+| `courses` · `modules` · `lessons` | La estructura del curso. `lessons` admite video, PDF, imagen y texto                           |
+| `lesson_progress`                 | Por dónde va cada quien. Se apunta por lección y se suma por curso                             |
+| `profiles`                        | País y nivel. Se crea sola con cada cuenta nueva (trigger `handle_new_user`)                   |
+| `leads`                           | Los correos del muro                                                                           |
+| `onboarding_answers`              | Lo que contestó antes de tener cuenta                                                          |
+| `course_waitlist`                 | Quién espera qué curso. El número es público; la lista, nunca (2026-08-29)                     |
+| `knowledge`                       | Las recetas y técnicas de la casa, para el Charcu AI. **Solo la lee el servidor** (2026-08-29) |
+| `subscriptions`                   | **Vacía, y es la más importante** — ver abajo                                                  |
 
 **`subscriptions` es el interruptor del negocio.** Solo la escribe el webhook de
 pagos, que todavía no existe (paso 7). Y `has_active_subscription` y
@@ -992,7 +1036,23 @@ un solo lector en código, funciones ni políticas:
 
 ### ✅ Base de datos conectada y verificada (2026-08-05)
 
-Proyecto: **`lcvmsbfnnpviumsqcxip`**. El esquema `charcu` está aplicado y probado
+**⚠️ `lcvmsbfnnpviumsqcxip` NO es la base de producción** (Cristian, 2026-08-29).
+Producción va a tener **otra cuenta de Supabase y otra base**. Esta —la que se
+llama "elcharcu qa"— es solo de trabajo.
+
+Tres consecuencias que hay que tener presentes:
+
+- Los datos de prueba de aquí **no llegan a producción**. La suscripción manual
+  de la cuenta de Cristian, los ocho usuarios `prueba.*@elcharcu.co` y el
+  historial de chat de las pruebas se quedan en esta base.
+- El día del despliegue hay que **correr todas las migraciones desde cero**
+  contra la base nueva. Por eso importa tanto que cada una aguante un
+  `db push` sobre una base vacía — es lo que se comprobó al poner el
+  `where exists` en la suscripción de prueba.
+- Y hay que rehacer allá lo que no vive en el repo: `site_url`, las plantillas
+  de correo, las claves en Vercel y el `supabase link`.
+
+Proyecto de trabajo: **`lcvmsbfnnpviumsqcxip`**. El esquema `charcu` está aplicado y probado
 contra la base real (usuario de prueba creado, usado y borrado; base en cero):
 
 - El perfil se crea solo al registrarse.
@@ -1075,3 +1135,582 @@ desde la base real en `src/shared/api/supabase/database.types.ts`.
   que no se sube a git. Si alguna vez pegas una clave en el chat, hay que rotarla.
 - ⚠️ La clave de Anthropic y la de Supabase **nunca** se exponen en el navegador:
   todo lo que las use corre en el servidor.
+
+---
+
+# 🚀 PLAN MAESTRO DE LANZAMIENTO — lunes 2026-08-31
+
+Escrito el 2026-08-29 (sábado). **Quedan 2 días.** Este plan cubre cinco frentes
+que trajo Cristian: pagos con OnePay, cursos dinámicos con lista de espera,
+onboarding con intereses y WhatsApp, gamificación secuencial y el Charcu AI con
+base de recetas.
+
+**La regla que ordena todo:** el valor agregado del lanzamiento es **la IA**.
+Todo lo demás existe para que la plataforma no se vea vacía alrededor de la IA.
+Nada que ponga en riesgo que la IA funcione el lunes entra en estos dos días.
+
+## 📊 Ranking: importancia vs. hacerlo AHORA
+
+| #   | Frente                                         | Importancia (1-5) | Hacerlo ahora (1-5) | Veredicto para el lunes                                                                                                                                                                 |
+| --- | ---------------------------------------------- | ----------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 3   | **Onboarding** (intereses + nombre + WhatsApp) | 5                 | **5**               | ✅ ENTRA COMPLETO. Es lo más barato y lo que más rinde: alimenta la IA, alimenta el canal de venta y hace que la app se sienta personal desde el minuto uno.                            |
+| 2   | **Cursos dinámicos + lista de espera**         | 5                 | **5**               | ✅ ENTRA COMPLETO. Es la solución real al bloqueo de grabar video: convierte "no tengo cursos" en "hay cola para entrar".                                                               |
+| 5   | **Charcu AI con base de recetas**              | 5                 | **4**               | ⚠️ ENTRA A MEDIAS. Entra el contexto explícito (que se vea de qué curso/receta habla) y una tabla `knowledge` curada. NO entra RAG con embeddings.                                      |
+| 1   | **Pagos con OnePay**                           | 5                 | **2**               | ❌ NO ENTRA COMO INTEGRACIÓN. El lunes se cobra con link manual + activación a mano. La integración va la semana 2. Explicación abajo, es la decisión más importante de este documento. |
+| 4   | **Gamificación secuencial**                    | 3                 | **3**               | ⚠️ ENTRA LA VERSIÓN BARATA. Desbloqueo secuencial solo dentro de la ruta de las 5 cápsulas gratis. Sin rachas, sin puntos, sin insignias.                                               |
+
+**Traducción:** el lunes se lanza con 3, 2, media 5 y un cuarto de 4. El 1 se
+lanza **manual**, que es distinto de no lanzarlo.
+
+---
+
+## 1. Pagos — OnePay (D21)
+
+### D21 — Se cambia Hotmart por OnePay, pero NO para el lunes
+
+Cristian decide (2026-08-29) mover el cobro a **OnePay** (`api.onepay.la`), una
+pasarela colombiana. Sustituye a D17 (Hotmart). Tiene sentido: comisión local,
+cobro en pesos, PSE y Bre-B — que ataca de frente la objeción nº1 documentada
+en el spec (desconfianza a las suscripciones en dólares). Ojo con D18: los
+precios están hoy en **US$ 9,99 / US$ 89,90** y OnePay **solo soporta COP**.
+Hay que fijar precio en pesos antes de crear el plan.
+
+### Lo que dice la documentación (leída el 2026-08-29)
+
+- **Autenticación:** `Authorization: Bearer sk_test_xxx` / `sk_live_xxx`. Un
+  solo dominio, `https://api.onepay.la/v1`; el entorno lo decide **la clave**,
+  no la URL. Esto es una trampa esperando: una clave `sk_live` en QA cobra de
+  verdad. La clave se elige por variable de entorno y nunca se hardcodea.
+- **Modelo:** `plan` (plantilla: monto + frecuencia) → `subscription`
+  (instancia: cliente + plan + método de pago). Antes hay que crear el
+  **cliente** (`/customers`) y tener una **tarjeta tokenizada** (`card_id`) o
+  una **cuenta bancaria** (`account_id`). Solo uno de los dos.
+- **`POST /plans`** — `name`, `amount`, `currency: "COP"`, `cycle_frequency`,
+  `cycle_type` (`monthly` | `annual`).
+- **`POST /subscriptions`** — requiere `x-idempotency` (header obligatorio),
+  `customer_id`, `plan_id`, `card_id` o `account_id`.
+  ⚠️ **La página "Crear suscripción" de OnePay está desactualizada y ellos
+  mismos lo advierten**: el cuerpo largo que muestra (`amount_in_cents`,
+  `cicle_frequency`, `cicles`, `trial`, `complex_payments`) **ya no se acepta**
+  y devuelve 422 pidiendo `plan_id`. El monto y la periodicidad se definen al
+  crear el plan. Antes de integrar hay que **confirmar el cuerpo con soporte de
+  OnePay** — lo dice el propio doc.
+- **Estados:** `CREATED` · `ACTIVE` · `UNPAID` (falló el último pago, reintenta)
+  · `PASS_DUE` (fallaron todos los reintentos) · `FROZEN` (pausada) ·
+  `CANCELED` · `FINISHED`.
+- **Cancelar:** `DELETE /subscriptions/{id}`.
+- **Webhooks** — esto es lo que de verdad hay que implementar:
+  - Headers: `x-webhook-token` (siempre), `x-webhook-event` (siempre) y
+    `Signature` (HMAC-SHA256 hex del cuerpo crudo, **solo si** configuraste
+    secret).
+  - ⚠️ **La firma va en `Signature`, NO en `x-onepay-signature`.** Versiones
+    viejas del doc decían lo otro; si lo implementamos contra el header viejo,
+    el endpoint procesa eventos sin autenticar y nunca nos enteramos.
+  - El cuerpo hay que verificarlo **sin parsear** (`rawBody`). Si Next
+    reserializa el JSON, la firma no cuadra jamás.
+  - Comparación en **tiempo constante** (`timingSafeEqual`).
+  - Eventos que nos importan: `subscription.active`, `subscription.paid`,
+    `subscription.unpaid`, `subscription.pass_due`, `subscription.canceled`,
+    `subscription.frozen`, `subscription.finished`. Para el curso suelto:
+    `charge.paid`, `charge.failed`, `charge.refunded`, `payment.approved`.
+  - Entrega: hay que responder **2xx/3xx en menos de 10 segundos**. 6 intentos
+    (10 s, 30 s, 1 min, 2 min, 5 min). Un 4xx nuestro NO cancela los reintentos.
+    Hay reconciliación cada 10 minutos, y ahí **un 4xx sí cuenta como rechazo
+    definitivo**. Conclusión de diseño: el webhook **encola y contesta 200**, no
+    hace trabajo pesado en línea. Y como reintenta 6 veces con el mismo cuerpo,
+    **tiene que ser idempotente** — misma entrega dos veces, mismo resultado.
+  - El `secret` **solo se ve una vez** al crear el webhook. Si se pierde, se
+    borra y se crea otro.
+
+### 🔴 Por qué OnePay NO entra el lunes
+
+Tres bloqueos, ninguno de código:
+
+1. **El cliente tiene que meter la tarjeta.** OnePay no tiene checkout alojado
+   para suscripciones: el `card_id` sale de tokenizar con su **SDK Elements** en
+   nuestro frontend (`POST /cards/tokenized` recibe el `card_token` que devuelve
+   `tokenize()`), más 3D Secure. Eso es integrar un SDK que no hemos visto, en
+   producción, con dinero real, en 48 horas. Es exactamente el tipo de cosa que
+   se lanza rota.
+2. **KYC.** Habilitar métodos de pago depende de la configuración de la cuenta —
+   "comunícate con soporte para habilitar métodos adicionales". No es algo que
+   se apruebe un domingo.
+3. **El doc está en obras.** El propio OnePay pide confirmar el cuerpo de
+   `POST /subscriptions` con soporte. Integrar contra un contrato que la casa
+   marca como incierto, dos días antes de lanzar, es regalarle el lanzamiento al
+   azar.
+
+### ✅ Lo que SÍ se hace el lunes: cobro manual, activación real
+
+El interruptor del negocio ya existe: `charcu.subscriptions` con
+`has_active_subscription()` y `effective_plan()` leyendo de ahí. **No hay que
+construir nada del lado de la app** — hay que llenar esa tabla.
+
+- El botón "Suscribirme" abre **WhatsApp** con un mensaje prellenado (WhatsApp
+  ya es el canal real de venta, D16). Cristian manda un link de cobro de OnePay
+  o de Bre-B/Nequi.
+- Cuando el pago entra, se activa con **un `UPDATE`**: `status = 'active'`,
+  `rail = 'whatsapp'` (el `check` de la columna ya lo permite),
+  `current_period_end = now() + interval '1 month'`.
+- Se hace una **página mínima de admin** o, si no da el tiempo, un SQL guardado.
+  Con 10 o 20 suscriptores esto sobra; el día que estorbe, es que el negocio
+  funcionó.
+- ⚠️ **Cristian nunca pide ni recibe datos de tarjeta por WhatsApp.** Link de
+  pago o transferencia. Nada más.
+
+### Semana 2 — la integración de verdad, en orden
+
+1. Cuenta OnePay, KYC, claves `sk_test` y `sk_live`. Confirmar con soporte el
+   cuerpo real de `POST /subscriptions`.
+2. Fijar precios **en COP** (revisar D18 — no hay multimoneda).
+3. `src/shared/api/onepay/` — cliente tipado, cero `any`. `x-idempotency` en
+   todo POST.
+4. Crear los dos planes (mensual y anual) **una sola vez** y guardar los
+   `plan_id` en variables de entorno. No se crean planes en caliente.
+5. `charcu.subscriptions`: añadir `provider_customer_id`,
+   `provider_subscription_id` y `provider` (`'onepay'`). El `rail` ya existe.
+6. `POST /api/pagos/onepay/webhook` — `rawBody`, verificar `x-webhook-token`
+   siempre y `Signature` si hay secret, en tiempo constante. Guardar el evento
+   crudo en una tabla `payment_events` con clave única por id de evento
+   (idempotencia), contestar 200, procesar aparte.
+7. Mapa de estados OnePay → nuestra columna: `ACTIVE`/`paid` → `active`;
+   `UNPAID` → `past_due`; `PASS_DUE`/`CANCELED`/`FINISHED` → `canceled`;
+   `FROZEN` → `past_due` (no le quitamos el acceso a alguien que solo pausó).
+8. Checkout con Elements + 3DS. **Primero en staging con `sk_test`.**
+9. Alternativa que puede saltarse el paso 8: **PSE** vía
+   `POST /charges/pse`, que sí devuelve un link (`https://s.onepay.la/short/...`).
+   No es recurrente — sirve para el **curso suelto**, no para la suscripción.
+   Ojo: hay antiduplicados de 2 minutos por (`customer_id`, `bank_id`, `amount`)
+   que devuelve 429; variar `external_id` no lo esquiva.
+
+---
+
+## 2. Cursos — el catálogo dinámico y la lista de espera
+
+El problema real que resuelve: **grabar y editar video tiene bloqueado a
+Cristian**, y la plataforma se ve vacía. La salida no es grabar más rápido, es
+que la escasez juegue a favor.
+
+### Dos tipos de contenido, no uno
+
+- **Cápsulas** (`kind = 'capsula'`) — 3 a 6 minutos, una técnica: cómo bridar un
+  jamón, cómo embutir un chorizo sin bolsas de aire, qué es de verdad la sal de
+  cura y por qué la dosis importa, cómo leer un moho. **Esto es lo que la gente
+  quiere aprender**, más que la receta. Son baratas de grabar: una toma, un
+  plano, sin guion largo.
+- **Cursos** (`kind = 'curso'`) — la receta completa de punta a punta. Caros.
+  Casi todos empiezan **en lista de espera**.
+
+Esto se implementa como una columna en `charcu.courses`, no como tabla nueva:
+la estructura curso ▸ módulo ▸ lección ya aguanta ambos.
+
+### La lista de espera (el corazón del asunto)
+
+Regla, en una frase: **un curso que no está grabado no se esconde — se abre a
+lista de espera y muestra cuánta gente lo espera.**
+
+1. El curso vive en la base con `status = 'lista-de-espera'` (nuevo valor del
+   `check`, junto a `borrador` y `publicado`).
+2. Cada curso lleva `waitlist_goal` (ej. 30). La ficha muestra la barra:
+   _"18 de 30 personas esperando. Cuando lleguemos a 30, lo grabo."_
+3. **Solo se apunta quien esté suscrito.** Es la promesa de valor de la
+   suscripción hecha visible, y filtra ruido.
+4. Al llegar a la meta, Cristian graba y cambia el estado a `publicado`. Se
+   avisa por correo (Resend ya está conectado) y por WhatsApp.
+5. Tabla nueva `charcu.course_waitlist (course_id, user_id, created_at)`, clave
+   única `(course_id, user_id)`, RLS: cada quien ve y escribe lo suyo. El
+   contador público sale de una vista o una función `security definer` que
+   devuelva **solo el número** — nunca la lista de quién se apuntó.
+
+### 🔜 PENDIENTE: el carrusel de imágenes (aplazado el 2026-08-29)
+
+`lessons.kind` acepta hoy `video`, `pdf`, `imagen` y `texto`. **Falta
+`carrusel`** — una lección de varias láminas, que es el formato en el que está
+buena parte del archivo de recetas de Instagram.
+
+Decisión de Cristian (2026-08-29): **se aplaza**, no entra en el lanzamiento.
+Cuando toque, hay dos caminos:
+
+1. **`kind = 'carrusel'` + columna `file_urls text[]`** en `lessons`, sumándolo
+   al `check` de `lessons_source_matches_kind`. Es una migración corta.
+2. **Tabla hija de láminas** (`lesson_slides`: `lesson_id`, `position`,
+   `file_url`, `caption`). Más correcta —permite pie de foto y reordenar sin
+   reescribir un array— y es a donde hay que ir si el carrusel se vuelve un
+   formato de primera.
+
+Mientras tanto, un carrusel de Instagram entra como **varias lecciones
+`imagen`** seguidas dentro de un módulo, o como una sola `imagen` con la lámina
+principal. Feo pero funciona, y no bloquea el lanzamiento.
+
+### Reusar el contenido de Instagram (decidido el 2026-08-29)
+
+Los videos ya están grabados **en vertical**, que es justo el reproductor que ya
+existe. Es la vía más rápida para que el catálogo no se vea vacío.
+
+- **Se descargan y se suben a Bunny. NO se incrustan los posts.** Un embed manda
+  al estudiante fuera de la plataforma por la que paga, se queda en blanco si el
+  post se archiva, carga el JS de Meta dentro de la app, y —lo que lo mata— no
+  da señal de "terminó", que es la que necesita `lesson_progress` para el
+  desbloqueo secuencial.
+- **Doble uso:** cada receta de Instagram entra **dos veces** — como lección y
+  como fila en `charcu.knowledge`. El mismo trabajo alimenta el catálogo y la
+  base con la que responde el Charcu AI.
+- ⚠️ **El tono de Instagram no es el tono de un curso.** Un reel está hecho para
+  retener 30 segundos: gancho, corte rápido, pocas cifras. Volcar 20 reels tal
+  cual convierte la pestaña de cursos en un feed, que es lo contrario de lo que
+  vende esta plataforma. La cura: cada cápsula que venga de Instagram lleva al
+  lado una lección de **`texto`** con los números que en el reel no caben —
+  dosis, temperaturas, tiempos, humedad. Ahí está lo que no está gratis.
+- **Curar, no volcar.** Mejor 8 cápsulas escogidas que 30 recicladas. Y usar el
+  campo `ask` de cada lección, que es lo que empuja del video al asistente.
+
+### Por qué esto es honesto y no un truco
+
+Porque el compromiso es real y verificable: la barra sube sola, Cristian graba
+cuando llega a la meta, y la gente ve la fecha. Lo que **no** se puede hacer es
+inflar el contador. Si eso se hace una vez, el mecanismo entero queda muerto —
+y esta plataforma se vende sobre la confianza en una persona real.
+
+### El día del lanzamiento
+
+- **5 cápsulas gratis** publicadas (las que se puedan grabar hoy y mañana).
+- Los 5 cursos que ya están en la base pasan a `lista-de-espera`, con su
+  portada, su temario visible (el índice ya se muestra, migración
+  `20260821202602`) y su barra.
+- La pestaña de cursos se reorganiza tipo Platzi: **fila de cápsulas arriba**
+  (lo que se puede ver ya), **cuadrícula de cursos abajo** con su estado.
+
+---
+
+## 3. Onboarding — intereses, nombre y WhatsApp
+
+Ya existe (`features/onboarding`: país → nivel → producto, guardando paso a
+paso en `charcu.onboarding_answers`). **No se reescribe, se amplía.** El patrón
+bueno que ya tiene —una pregunta por pantalla, guardado en cada paso, sin botón
+de siguiente— se respeta.
+
+### Lo que se agrega
+
+1. **Nombre** — primera pantalla. Una sola línea. Se usa en todas partes
+   ("Hola, Cristian") y hace que la app deje de sentirse anónima.
+2. **Intereses (varios)** — sustituye a la pregunta de un solo `product`.
+   Categorías: **Quesos · Jamones cocidos · Jamones curados · Chacinados ·
+   Chorizos · Embutidos frescos · Ahumados · Sal de cura y seguridad**. Selección
+   múltiple. Esto configura el panel Y el Charcu AI.
+3. **WhatsApp** — última pantalla, con el indicativo del país que ya contestó
+   (Colombia por defecto). **Se pide, no se exige**: un botón "Ahora no" visible.
+   Pedirlo a la fuerza aquí mata la conversión — el momento de máximo interés
+   para pedirlo es después de la primera respuesta buena de la IA (D16), no
+   antes de haber visto nada.
+
+### Base de datos
+
+- `onboarding_answers`: agregar `full_name text`, `whatsapp text`,
+  `interests text[]`. Actualizar `charcu.save_onboarding` (sube de 5 a 8
+  parámetros; se crea la función nueva y se revoca la vieja).
+- `profiles`: agregar `full_name` y `interests text[]`, que es de donde leerá la
+  app día a día. `onboarding_answers` guarda lo del anónimo;
+  `link_onboarding_to_user` ya lo ata al registrarse, y se amplía para que
+  además copie nombre e intereses al perfil.
+- ⚠️ **El WhatsApp es dato personal sensible (Ley 1581 de 2012).** Hace falta la
+  casilla de autorización con enlace a la política de tratamiento, y guardar
+  **cuándo** la aceptó. Sin eso no se puede usar para vender.
+
+### Cuándo se dispara
+
+Primera vez que alguien entra a la app con cuenta y `profiles.interests` está
+vacío. **Se puede saltar entero.** Un onboarding obligatorio de 4 pantallas
+delante de un producto que la gente todavía no sabe si quiere es un muro.
+
+---
+
+## 4. Gamificación — el desbloqueo secuencial
+
+La idea de Cristian: hay que ver una lección para desbloquear la siguiente, y
+así 5 cápsulas rinden como plataforma mientras él publica una nueva cada semana.
+
+### Lo que entra el lunes (barato y honesto)
+
+- **Ruta secuencial solo en las 5 cápsulas gratis.** La cápsula 2 se abre al
+  terminar la 1. Ya existe `lesson_progress` y `/api/progreso`: es una columna
+  `unlock_mode` en `courses` y una comprobación en la vista.
+- **Al terminar la ruta**, la pantalla final ofrece **apuntarse a la lista de
+  espera** de los cursos que le calzan con sus `interests`. Aquí se cierra el
+  círculo: onboarding → contenido → lista de espera → suscripción.
+- **Un curso nuevo por semana**, anunciado con fecha. El compromiso público es
+  la mitad del valor.
+
+### Lo que NO entra, y por qué
+
+- Puntos, insignias, rachas, ranking. Son semanas de trabajo y este público —
+  gente adulta curando carne en su casa— no responde a eso. Responde a **no
+  enfermar a la familia** y a **que le quede bien**.
+- **Bloquear contenido de pago detrás de progreso.** Alguien que paga y no puede
+  ver lo que pagó pide reembolso, y tiene razón. El secuencial es para la ruta
+  **gratis**, que es donde sirve de guía; en lo pagado, se sugiere el orden, no
+  se impone.
+- ⚠️ **El riesgo real de esta idea:** si el desbloqueo se siente como un peaje en
+  vez de una guía, la gente se va. Se mitiga con dos cosas: cápsulas de 3-6
+  minutos (nadie protesta por esperar 4 minutos) y un contador visible de "vas
+  2 de 5".
+
+---
+
+## 5. El Charcu AI — la base de recetas y el contexto visible
+
+Hoy el asistente responde con el conocimiento del modelo y el historial del
+chat. Lo que pide Cristian es que responda **desde nuestro conocimiento** —
+"basado en la receta del chorizo santarrosano"— y que se **vea** de qué está
+hablando.
+
+Son dos problemas distintos y solo uno es urgente.
+
+### 5a. Que se vea de qué habla (ENTRA EL LUNES — es lo más barato y lo que más se nota)
+
+- Cabecera pegajosa en el chat: **"Hablando de: Chorizo santarrosano"** con el
+  enlace al curso o la receta, y un botón para cambiar de tema. La base ya
+  soporta esto: una conversación **es** una receta (D19), y `recipes` ya existe.
+- Desde una lección, el botón "Pregúntale al Charcu" abre el chat **ya atado a
+  esa lección**, y la primera línea lo dice.
+- Las burbujas que se apoyan en una receta nuestra llevan una marca discreta:
+  _"según la receta de El Charcu"_. Distinguir lo nuestro de lo que sabe el
+  modelo es una promesa de marca, no un adorno — el contra-argumento nº1 del
+  spec es literalmente "no son recetas de IA".
+
+### 5b. La base de conocimiento (ENTRA UNA VERSIÓN SIMPLE)
+
+- Tabla `charcu.knowledge`: `slug`, `title`, `kind` (`receta` | `tecnica` |
+  `seguridad`), `body` (markdown), `tags text[]`, `course_id` opcional.
+- Se llena a mano con lo que Cristian ya tiene escrito: los tres guiones que ya
+  están en `docs/` (chorizo de ajo, chorizo paisa, longaniza colombiana), la
+  tabla de sal de cura y 5-10 recetas más.
+- **Recuperación por palabras clave y tags, NO por embeddings.** Con 20 o 50
+  documentos, buscar por `tags` y por texto (`websearch_to_tsquery` de Postgres)
+  acierta igual que pgvector y se hace en una tarde en vez de una semana. El día
+  que haya 300 documentos se cambia la recuperación sin tocar nada más — por eso
+  el `body` va en la tabla y no en el prompt.
+- El texto recuperado se inyecta en el prompt de `/api/asistente` con la
+  instrucción explícita: **si la receta de El Charcu contradice lo que sabes,
+  manda la receta de El Charcu**; y si no hay documento, decirlo en vez de
+  inventar.
+- ⚠️ **Ojo con el tope de gasto.** Meter 3 documentos en cada pregunta multiplica
+  los tokens de entrada. `AI_DAILY_BUDGET_USD` ya frena el desastre, pero hay que
+  **medir el costo por pregunta antes y después** del cambio. Se recortan los
+  documentos a un máximo de caracteres y solo entran cuando el tema calza.
+- ⚠️ **Y con la seguridad.** Las dosis de sal de cura ahora salen de nuestra
+  tabla. Una cifra mal escrita en `knowledge` es una cifra que el asistente
+  repite con total seguridad a alguien que va a dárselo de comer a su familia.
+  **Cristian revisa a mano cada fila de seguridad antes de publicarla.**
+
+### Lo que NO entra: RAG con embeddings
+
+pgvector, generación de embeddings, reindexado, umbrales de similitud. Es la
+solución correcta para dentro de tres meses y la equivocada para el lunes.
+
+---
+
+## 🗓️ Los dos días, hora por hora
+
+### ✅ Bloque 1 HECHO — migraciones 0013, 0014 y 0015 (2026-08-29)
+
+Aplicadas con `db push` y verificadas contra la base real. `migration list`
+muestra las 35 alineadas, local = remoto.
+
+| Migración                           | Qué trajo                                                                                                                                                                                            |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0013_capsulas_y_lista_de_espera`   | `courses.kind` · `waitlist_goal` · `unlock_mode` · `status = 'lista-de-espera'` · tabla `course_waitlist` · `join_waitlist()` · `course_waitlist_count()` · `is_in_waitlist()` · `can_open_lesson()` |
+| `0014_perfil_y_onboarding_ampliado` | `profiles.full_name` e `interests` · `onboarding_answers.full_name/whatsapp/interests/consent_at` · `save_onboarding` de 8 parámetros                                                                |
+| `0015_base_de_conocimiento`         | tabla `knowledge` · `search_knowledge()`                                                                                                                                                             |
+
+**⚠️ El link con Supabase se había perdido.** `supabase/.temp/project-ref` ya no
+estaba y `db push` contestaba "Cannot find project ref". Se recuperó **sin la
+contraseña de la base**: el `SUPABASE_ACCESS_TOKEN` de `.env.local` basta para
+`npx supabase link --project-ref lcvmsbfnnpviumsqcxip`. Anotado porque va a
+volver a pasar, y el reflejo equivocado es pedirle la contraseña a Cristian.
+
+**Tres cosas que se aprendieron aplicándolas:**
+
+1. **`profiles_update_own` ya existía desde la 0001**, letra por letra. La 0014
+   la traía otra vez y el `db push` se cayó (`42710`). El usuario SIEMPRE pudo
+   editar su perfil; el `grant select, insert, update on all tables` de la 0001
+   ya le daba el permiso. La sección se dejó escrita en el archivo, vacía y con
+   la explicación, porque la pregunta se va a repetir.
+2. **Ese `grant ... on all tables` solo alcanzó a las tablas que existían ese
+   día.** `course_waitlist` y `knowledge` nacen sin permiso para
+   `authenticated` — deseado en `knowledge`, y explícito en `course_waitlist`.
+3. **`&` no existe para `text[]`.** Es de la extensión `intarray` y solo sirve
+   con enteros. La intersección de tags en `search_knowledge` va con
+   `intersect` dentro de un subselect.
+
+**Verificado en la base:** las 5 filas de `courses` quedaron en `kind = 'curso'`,
+`unlock_mode = 'libre'` y posiciones 10-50 sin choque; `knowledge` tiene RLS
+encendida y **cero políticas** —llamar a `search_knowledge` desde un rol que no
+sea el de servicio devuelve `permission denied`, que es exactamente el
+comportamiento que se buscaba—; y de `save_onboarding` queda **una sola
+versión**, así que nadie puede llamar por error a la vieja de 5 parámetros y
+perder el nombre y el teléfono en silencio.
+
+**Del lado de TypeScript:** tipos regenerados desde la base. El `type-check`
+cazó al vuelo que `/api/onboarding` llamaba a la firma vieja; la ruta ya acepta
+`fullName`, `whatsapp`, `interests` y `consent`, y las categorías canónicas
+viven en `shared/config/interests.ts` — una sola lista para la pantalla, la ruta
+y (mañana) el prompt. **El teléfono no se guarda sin la casilla marcada**: un
+número sin permiso no se puede usar para nada, así que guardarlo sería quedarse
+el riesgo sin el beneficio.
+
+### ✅ Bloque 2 HECHO — el onboarding, y lo que se llevó por delante (2026-08-29)
+
+**Migración `0016_onboarding_obligatorio`** aplicada: `profiles.onboarding_status`
+(`pendiente` | `listo`), `whatsapp`, `whatsapp_consent_at` y la función
+`complete_onboarding()`, que hace las cinco escrituras juntas o ninguna. Si el
+flag se pusiera en `listo` por su cuenta y el resto fallara, esa persona
+entraría a una app configurada con nada y sin forma de que se le vuelva a
+preguntar.
+
+**El onboarding se mudó DETRÁS del login.** Ya no es la pantalla anónima de
+`/bienvenido`: se lanza cuando alguien vuelve del enlace del correo y entra por
+primera vez. Ahí ya hay cuenta —así que las respuestas viven en `profiles` y no
+colgando de una cookie— y ahí sí se puede exigir. Antes de tener cuenta, un
+formulario obligatorio es el muro que quitó D14.
+
+**La puerta vive en `src/app/(app)/layout.tsx`,** al lado de la del login.
+⚠️ Se **renderiza** el formulario en vez de `children`; NO se redirige. Con un
+`redirect` el formulario sería una ruta más y bastaría escribir `/charcu` en la
+barra para saltárselo. Va además sin `AppFrame`: la barra de abajo invita a
+irse a otra pestaña, y de aquí no se sale hasta completarlo.
+
+**Dos pasos, en este orden:** (1) intereses, (2) nombre + WhatsApp en un solo
+formulario. Los intereses van primeros porque son la pregunta agradable —se
+contesta tocando y no pide un dato personal—; abrir pidiendo nombre y teléfono
+es abrir pidiendo. El **nombre es obligatorio y el WhatsApp no**: es la única
+forma honesta de hacer obligatorio el formulario entero. Si el teléfono fuera
+obligatorio, el número que dejaría la gente sería falso.
+
+⚠️ **El WhatsApp NO se verifica.** Pedido explícito de Cristian: el flujo de
+código por WhatsApp queda fuera del lanzamiento. Consecuencia asumida: habrá
+números mal escritos en la base.
+
+**Lo que se cayó por el camino, y por qué:**
+
+| Se fue                                              | Por qué                                                                                                                                                                                                                                                                      |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| La pregunta de **país**                             | Mixpanel da la analítica y el prompt saca el país de `x-vercel-ip-country`. Un dato que llega solo no se pregunta — y de paso se tapó un agujero: venía en el cuerpo de la petición, o sea que se podía escribir cualquier cosa desde la consola y acababa dentro del prompt |
+| La pregunta de **nivel**                            | "Todos son charcus" (Cristian). `LEVEL_GUIDANCE` fuera del prompt: el oficio se explica igual para todos                                                                                                                                                                     |
+| La pregunta de **producto**                         | Era casi la misma lista que intereses, dos pantallas antes                                                                                                                                                                                                                   |
+| `COUNTRIES`, `EXPERIENCE_LEVELS`, `CURING_PRODUCTS` | Una sola lista ahora, `shared/config/interests.ts`. Eso desenganchó `recipe-session` de `curing-profile`: un import entre entidades menos                                                                                                                                    |
+| El copy _"X es tu receta gratis"_ de `DoneStep`     | Prometía un tope que la base no aplica desde D20                                                                                                                                                                                                                             |
+| `saveAnswers` y el guardado paso a paso             | Existía para aprender de quien abandona, y de este formulario no se puede abandonar                                                                                                                                                                                          |
+
+**Editar desde la cuenta:** `features/edit-profile` enchufado en la pestaña de
+cuenta, con `PATCH /api/perfil`. Existe porque los gustos cambian: alguien entra
+queriendo chorizos y a los dos meses está con quesos. Sin esa pantalla, el panel
+y el Charcu AI se quedarían configurados con lo del primer día.
+
+⚠️ **Las 9 cuentas que ya existían quedaron en `pendiente`.** Ninguna tenía
+intereses, así que ninguna se dio por hecha. La próxima vez que entren verán el
+formulario una vez. Es deseado: a cambio dejan de ser cuentas de las que no
+sabemos nada.
+
+**Verificado:** `type-check` y `lint` en verde; `/charcu` compila y devuelve 307
+a `/entrar` sin sesión. ⚠️ **Las dos pantallas del onboarding NO se han visto
+renderizadas** — hacen falta una cuenta y un enlace de correo, y eso solo lo
+puede probar Cristian.
+
+### ✅ Bloque 3 HECHO — la pestaña de cursos (2026-08-29)
+
+**`0017_capsulas_gratis_y_cursos_en_espera`** y
+**`0018_lista_de_espera_sin_suscripcion`** aplicadas.
+
+**Cinco cápsulas gratis**, en ruta secuencial: sal de cura (3 lecciones),
+calcular con El Charcu (2), bridar un jamón (2), embutir un chorizo (2),
+amarrar chorizos (2). Once lecciones en total.
+
+⚠️ **NACEN EN TEXTO, NO EN VIDEO, Y ES A PROPÓSITO.** No hay video grabado y no
+se finge. La 0012 y la del catálogo ya metieron el mismo placeholder del corte
+del lomo en 13 lecciones; repetirlo en lo ÚNICO gratis del lanzamiento sería que
+el primer contacto de todo visitante nuevo fuera un video que no habla de lo que
+promete el título. Una lección de `texto` con las cantidades por escrito es
+contenido de verdad, y el video se añade encima cuando exista sin tocar nada.
+
+⚠️⚠️ **CRISTIAN TIENE QUE LEER LAS CÁPSULAS ANTES DE PUBLICAR.** El texto lo
+redactó Claude. Las cifras de seguridad salen de sitios ya verificados en este
+repo —`entities/cure-safety` y el prompt del asistente: 2,5 g/kg de cura #1,
+156 ppm, #1 contra #2, pieza entera contra picado, 30-40 % de merma— y no de
+ninguna parte nueva. Pero la VOZ y el CRITERIO del oficio son suyos, y la
+cápsula de sal de cura es exactamente la fila donde una palabra mal puesta llega
+a alguien que va a darle eso de comer a su familia.
+
+**Los cuatro cursos con video de relleno pasaron a `lista-de-espera`** con meta
+de 30. `lomo-curado` se queda publicado: es el único con videos reales.
+Publicados prometían algo que no está detrás; en lista de espera dicen la verdad
+y además nos dicen a cuánta gente le interesa cada uno, que es lo que decide qué
+se graba primero.
+
+**La 0018 quitó la exigencia de suscripción para apuntarse.** La 0013 la pedía, y
+el razonamiento era bueno — pero daba por hecho que habría cómo suscribirse. Con
+OnePay aplazado, `subscriptions` está vacía y el botón le habría contestado
+`necesita-suscripcion` a todo el mundo: un botón muerto en la única pantalla que
+tiene que demostrar que aquí pasan cosas. **La cuenta sí se sigue exigiendo**: sin
+`user_id` no hay a quién avisar, y una lista anónima se infla desde una pestaña
+de incógnito. Se revierte volviendo a poner tres líneas.
+
+**En la app:** `CapsuleRow` (fila corta, numerada, con candado secuencial),
+`CourseRow` con estado de lista de espera y barra, `WaitlistButton` que sube el
+contador sin recargar, y `POST /api/lista-de-espera`.
+
+⚠️ **El contador NUNCA se infla.** Si son 3, dice 3. Falsearlo una vez mata el
+mecanismo entero: esto se vende sobre la confianza en una persona real.
+
+**Verificado** en pantalla de celular con datos que replican los de la base: la
+ruta de cápsulas con sus tres estados (terminada, abierta, cerrada) y las dos
+variantes de la lista de espera (sin apuntarse y ya dentro). `type-check` y
+`lint` en verde.
+
+**Sábado 29 (hoy)**
+
+1. Base de datos, todo en una tanda de migraciones (es lo que bloquea al resto):
+   `courses.kind` y `status = 'lista-de-espera'` y `waitlist_goal`;
+   `course_waitlist`; `knowledge`; `profiles.full_name/interests`;
+   `onboarding_answers.full_name/whatsapp/interests` y `save_onboarding` nueva.
+2. Regenerar los tipos de TypeScript desde la base real.
+3. Onboarding ampliado (nombre, intereses múltiples, WhatsApp opcional con
+   autorización).
+4. Cabecera de contexto del chat (5a). Es media tarde y se nota muchísimo.
+
+**Domingo 30**
+
+5. Pestaña de cursos rehecha: cápsulas arriba, cuadrícula con barra de lista de
+   espera abajo. Botón de apuntarse.
+6. Desbloqueo secuencial en la ruta gratis + pantalla final que ofrece la lista
+   de espera.
+7. `knowledge` cargada con los tres guiones de `docs/` + sal de cura, e
+   inyección en `/api/asistente`. **Medir el costo por pregunta.**
+8. Botón de suscripción → WhatsApp. SQL de activación manual, guardado y probado
+   de punta a punta con una cuenta de verdad.
+
+**Lunes 31 — antes de publicar (esto no es opcional)**
+
+9. `site_url` de Supabase al dominio real. **Sigue en `localhost:3000`** y si no
+   se cambia, cada enlace de correo lleva al vacío. Es el pendiente que hunde el
+   lanzamiento solo.
+10. Plantillas de correo pegadas en el panel de Supabase — sobre todo **Confirm
+    signup**, que es la que recibe la gente nueva.
+11. Fusionar `develop` en `main` y conectar `main` a elcharcu.co. Producción
+    nunca se ha usado: probarlo el lunes por primera vez es el segundo riesgo
+    más grande del plan. **Hay que probar el despliegue a producción el
+    domingo**, no el lunes.
+12. Prueba de humo en celular real: registrarse con un correo nuevo, hacer el
+    onboarding, preguntarle algo al asistente, ver una cápsula, apuntarse a una
+    lista de espera, tocar suscribirse.
+
+## ⚠️ Lo que puede salir mal
+
+- **Producción nunca se ha estrenado.** El dominio, los correos y las variables
+  de entorno de producción son tres cosas distintas de las de QA, y las tres
+  fallan la primera vez. Por eso el punto 11 se adelanta al domingo.
+- **`NEXT_PUBLIC_*` marcadas como "Sensitive" en Vercel** ya costó una mañana
+  entera (está documentado más arriba). Revisar eso ANTES de tocar producción.
+- **Cobrar a mano no escala, y está bien.** Si el lunes entran 30 suscriptores,
+  son 30 `UPDATE` y un problema precioso de tener.
+- **Cinco cápsulas es poco contenido.** Lo que sostiene el lanzamiento es la IA
+  y el compromiso semanal, no el catálogo. Si el copy promete un catálogo, miente.
