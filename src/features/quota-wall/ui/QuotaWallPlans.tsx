@@ -6,13 +6,12 @@ import {
   BillingToggle,
   DEFAULT_BILLING_CYCLE,
   formatUsd,
+  planWhatsappHref,
   priceFor,
   proPlan,
   type BillingCycle,
-  type PlanPrice,
 } from '@/entities/plan';
 
-import { site } from '@/shared/config';
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
 /**
@@ -27,12 +26,6 @@ import { ANALYTICS_EVENTS, track } from '@/shared/lib';
  * falta KYC, su SDK de tokenización y 3DS. Cuando entre, aquí se cambia el
  * `href` por el checkout y el evento pasa a llevar `rail: 'onepay'`.
  */
-function whatsappHref(price: PlanPrice): string {
-  const cycle = price.cycle === 'anual' ? 'anual' : 'mensual';
-  const message = `Hola El Charcu, quiero el plan ${proPlan.name} ${cycle} (${formatUsd(price.priceUsd)}) del asistente 🥩`;
-  return `${site.whatsappUrl.split('?')[0] ?? site.whatsappUrl}?text=${encodeURIComponent(message)}`;
-}
-
 export function QuotaWallPlans(): ReactNode {
   const [cycle, setCycle] = useState<BillingCycle>(DEFAULT_BILLING_CYCLE);
   const price = priceFor(proPlan, cycle);
@@ -72,7 +65,7 @@ export function QuotaWallPlans(): ReactNode {
         </p>
 
         <a
-          href={whatsappHref(price)}
+          href={planWhatsappHref(proPlan, price)}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {

@@ -38,7 +38,21 @@ export const site = {
  */
 export const appRoutes = {
   sales: '/asistente',
-  start: '/asistente/nuevo',
+  /*
+    Dónde entra alguien que todavía no tiene cuenta.
+
+    ⚠️ Apuntaba a `/asistente/nuevo`, el onboarding anónimo. Ese onboarding se
+    mudó DETRÁS del login el 2026-08-29 y ahora escribe en `/api/perfil`, que
+    exige sesión: sin cuenta contestaba 401 y la pantalla decía "No pudimos
+    guardar tus datos, revisa la conexión" —un mensaje que además señalaba al
+    sitio equivocado—. Seis botones de la web llevaban ahí, incluidos los de
+    precios.
+
+    Ahora lleva a la PORTADA, que es donde vive el asistente y donde se puede
+    preguntar sin registrarse (D14). El producto es el argumento de venta: la
+    forma de "empezar" es usarlo, no rellenar un formulario.
+  */
+  start: '/',
   session: '/asistente/sesion',
   newRecipe: '/asistente/nueva-receta',
   subscription: '/asistente/suscripcion',

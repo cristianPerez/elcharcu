@@ -8,6 +8,7 @@ import {
   PlanCard,
   formatCop,
   oneTimeCourseCop,
+  planWhatsappHref,
   plans,
   priceFor,
   proPlan,
@@ -48,7 +49,25 @@ export function Pricing(): ReactNode {
 
         <div className="mt-8 grid items-start gap-6 md:grid-cols-3">
           {plans.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} cycle={cycle} href={appRoutes.start} />
+            <PlanCard
+              key={plan.id}
+              plan={plan}
+              cycle={cycle}
+              /*
+                El gratis lleva a PROBAR; los de pago, a WhatsApp.
+
+                Los tres apuntaban a `appRoutes.start`, que era el onboarding
+                anónimo — y ese onboarding se mudó detrás del login el
+                2026-08-29, así que a quien no tiene cuenta le contestaba
+                "No pudimos guardar tus datos". El botón de precios llevaba a
+                un formulario roto.
+              */
+              href={
+                plan.id === 'aprendiz'
+                  ? appRoutes.start
+                  : planWhatsappHref(plan, priceFor(plan, cycle))
+              }
+            />
           ))}
         </div>
 
