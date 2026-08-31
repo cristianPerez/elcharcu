@@ -9,6 +9,14 @@ import { Reveal } from '@/shared/ui';
 interface AppCursosViewProps {
   readonly courses: readonly Course[];
   readonly progress: ReadonlyMap<string, CourseProgress>;
+  /**
+   * Si quien mira paga. Decide si ve la lista de espera o solo el temario.
+   *
+   * Viaja como prop desde el servidor en vez de leerse aquí: esta vista es un
+   * componente de servidor y preguntarlo dentro la volvería cliente, o
+   * añadiría un viaje a Supabase por tarjeta.
+   */
+  readonly isSubscribed: boolean;
 }
 
 /**
@@ -29,7 +37,11 @@ interface AppCursosViewProps {
  * La lista sigue saliendo de la base y RLS decide qué entra, así que aquí no
  * hay ni un `if` de permisos: no le toca decidir a la pantalla (D12).
  */
-export function AppCursosView({ courses, progress }: AppCursosViewProps): ReactNode {
+export function AppCursosView({
+  courses,
+  progress,
+  isSubscribed,
+}: AppCursosViewProps): ReactNode {
   const capsules = courses.filter((course) => course.kind === 'capsula');
   const rest = courses.filter((course) => course.kind === 'curso');
 
@@ -109,8 +121,11 @@ export function AppCursosView({ courses, progress }: AppCursosViewProps): ReactN
               Los cursos completos
             </h2>
             <p className="mt-1 text-sm leading-relaxed text-cocoa/60">
-              Una receta de principio a fin. Los que todavía no están grabados abren
-              cuando haya gente suficiente esperándolos.
+              {/* Al gratis no se le menciona la lista de espera: es una función
+                  de suscriptor, y nombrarla sin poder usarla solo frustra. */}
+              {isSubscribed
+                ? 'Una receta de principio a fin. Los que todavía no están grabados abren cuando haya gente suficiente esperándolos.'
+                : 'Una receta de principio a fin. Mira el temario de cada uno para saber qué trae.'}
             </p>
           </Reveal>
 
@@ -118,7 +133,11 @@ export function AppCursosView({ courses, progress }: AppCursosViewProps): ReactN
             {rest.map((course, index) => (
               <li key={course.id}>
                 <Reveal delay={0.1 + Math.min(index, 3) * 0.04}>
-                  <CourseRow course={course} progress={progress.get(course.id)} />
+                  <CourseRow
+                    course={course}
+                    progress={progress.get(course.id)}
+                    isSubscribed={isSubscribed}
+                  />
                 </Reveal>
               </li>
             ))}

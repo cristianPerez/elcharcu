@@ -12,6 +12,8 @@ import { IconChevron, IconLock, NavPendingBar } from '@/shared/ui';
 interface CourseRowProps {
   readonly course: Course;
   readonly progress: CourseProgress | undefined;
+  /** Si quien mira paga. Solo el suscrito ve la lista de espera. */
+  readonly isSubscribed: boolean;
 }
 
 /**
@@ -31,7 +33,7 @@ interface CourseRowProps {
  * Va en degradado —más oscuro abajo, donde está el texto— para que la foto se
  * siga viendo arriba.
  */
-export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
+export function CourseRow({ course, progress, isSubscribed }: CourseRowProps): ReactNode {
   const done = progress?.doneLessons ?? 0;
   const total = progress?.totalLessons ?? 0;
   const percent = progress?.percent ?? 0;
@@ -46,6 +48,20 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
   // "bloqueado": ahí el contenido existe y te falta pagarlo; aquí no existe
   // para nadie, ni para quien paga. Decir lo contrario sería mentir.
   const isWaiting = course.status === 'lista-de-espera';
+
+  /*
+    Apuntarse es cosa de suscriptores (2026-08-31).
+
+    Al usuario gratis se le enseña el curso y su temario, y nada más: ni barra
+    ni botón ni mención. Nombrar una función que no puede usar solo frustra, y
+    además la lista existe para saber QUÉ GRABAR PRIMERO — para esa pregunta la
+    señal de quien ya paga vale más.
+
+    ⚠️ Esconder el botón NO es lo que lo cierra. Quien cierra es
+    `join_waitlist()` en Postgres, que exige suscripción desde la 0021. Esto
+    solo evita enseñar una puerta que la base va a rechazar.
+  */
+  const canJoinWaitlist = isWaiting && isSubscribed;
 
   return (
     <Link
@@ -120,7 +136,7 @@ export function CourseRow({ course, progress }: CourseRowProps): ReactNode {
       <div className="p-5">
         <p className="text-base leading-relaxed text-cocoa/70">{course.summary}</p>
 
-        {isWaiting ? (
+        {canJoinWaitlist ? (
           <WaitlistButton
             courseId={course.id}
             courseSlug={course.slug}

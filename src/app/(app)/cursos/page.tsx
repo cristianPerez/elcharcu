@@ -5,6 +5,7 @@ import { AppCursosView } from '@/views/app-cursos';
 
 import { type CourseProgress } from '@/entities/course';
 import { listCourses, progressByCourse } from '@/entities/course/server';
+import { hasActiveSubscription } from '@/entities/subscription/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
 
@@ -17,10 +18,13 @@ export default async function CursosPage(): Promise<ReactNode> {
 
   // Las dos consultas a la vez: son independientes y encadenarlas solo suma
   // espera en un celular con mala señal.
-  const [courses, progress] = await Promise.all([
+  const [courses, progress, isSubscribed] = await Promise.all([
     listCourses(),
     userId === null ? new Map<string, CourseProgress>() : progressByCourse(userId),
+    userId === null ? false : hasActiveSubscription(userId),
   ]);
 
-  return <AppCursosView courses={courses} progress={progress} />;
+  return (
+    <AppCursosView courses={courses} progress={progress} isSubscribed={isSubscribed} />
+  );
 }
