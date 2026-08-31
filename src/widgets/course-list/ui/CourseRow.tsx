@@ -50,18 +50,21 @@ export function CourseRow({ course, progress, isSubscribed }: CourseRowProps): R
   const isWaiting = course.status === 'lista-de-espera';
 
   /*
-    Apuntarse es cosa de suscriptores (2026-08-31).
+    Un curso sin grabar se le cuenta DISTINTO a cada uno (2026-08-31).
 
-    Al usuario gratis se le enseña el curso y su temario, y nada más: ni barra
-    ni botón ni mención. Nombrar una función que no puede usar solo frustra, y
-    además la lista existe para saber QUÉ GRABAR PRIMERO — para esa pregunta la
-    señal de quien ya paga vale más.
+    · Al SUSCRITO: la verdad. "En preparación", "todavía no está grabado" y la
+      barra para apuntarse. Ya pagó, así que lo que necesita es saber por qué
+      no se abre y poder pedir que se grabe primero.
+    · Al GRATIS: un curso de pago normal. Insignia de Pro, candado y "incluido
+      en El Charcu Pro". Para él eso es exactamente lo que es —algo que se abre
+      pagando— y contarle además que no está grabado le quita una razón para
+      suscribirse sin darle ninguna. El temario, que es lo que vende, lo ve
+      igual.
 
-    ⚠️ Esconder el botón NO es lo que lo cierra. Quien cierra es
-    `join_waitlist()` en Postgres, que exige suscripción desde la 0021. Esto
-    solo evita enseñar una puerta que la base va a rechazar.
+    ⚠️ Esconder la barra NO es lo que cierra la lista de espera. Quien cierra
+    es `join_waitlist()` en Postgres, que exige suscripción desde la 0021 (D12).
   */
-  const canJoinWaitlist = isWaiting && isSubscribed;
+  const isWaitingForSubscriber = isWaiting && isSubscribed;
 
   return (
     <Link
@@ -102,7 +105,7 @@ export function CourseRow({ course, progress, isSubscribed }: CourseRowProps): R
           className="absolute inset-0 bg-gradient-to-t from-cocoa/85 via-cocoa/45 to-cocoa/20"
         />
 
-        {isWaiting ? (
+        {isWaitingForSubscriber ? (
           <span className="absolute right-3 top-3 rounded-full bg-cream-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cocoa/75 backdrop-blur-sm">
             En preparación
           </span>
@@ -119,7 +122,7 @@ export function CourseRow({ course, progress, isSubscribed }: CourseRowProps): R
 
         <div className="absolute inset-x-0 bottom-0 p-5">
           <p className="text-xs font-medium uppercase tracking-eyebrow text-cream/85">
-            {isWaiting
+            {isWaitingForSubscriber
               ? 'Todavía no está grabado'
               : isFinished
                 ? 'Terminado'
@@ -136,7 +139,7 @@ export function CourseRow({ course, progress, isSubscribed }: CourseRowProps): R
       <div className="p-5">
         <p className="text-base leading-relaxed text-cocoa/70">{course.summary}</p>
 
-        {canJoinWaitlist ? (
+        {isWaitingForSubscriber ? (
           <WaitlistButton
             courseId={course.id}
             courseSlug={course.slug}
@@ -146,13 +149,13 @@ export function CourseRow({ course, progress, isSubscribed }: CourseRowProps): R
           />
         ) : null}
 
-        {!isWaiting && isLocked && total > 0 ? (
+        {!isWaitingForSubscriber && isLocked && total > 0 ? (
           /* Sin barra de progreso: un 0% en algo que no puedes empezar no
              informa, desanima. Lo que sí vende es CUÁNTO hay dentro. */
           <p className="mt-4 text-sm text-cocoa/55">{total} lecciones esperándote</p>
         ) : null}
 
-        {!isWaiting && !isLocked && total > 0 ? (
+        {!isWaitingForSubscriber && !isLocked && total > 0 ? (
           <div className="mt-4">
             <div className="flex items-baseline justify-between text-sm">
               <span className="text-cocoa/55">
@@ -169,7 +172,7 @@ export function CourseRow({ course, progress, isSubscribed }: CourseRowProps): R
           </div>
         ) : null}
 
-        {isWaiting ? (
+        {isWaitingForSubscriber ? (
           <span className="mt-4 flex items-center gap-1 text-sm font-medium text-cocoa/55">
             Mira el temario
             <IconChevron size={16} />

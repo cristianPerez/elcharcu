@@ -23,6 +23,17 @@ interface AppCursoViewProps {
    * completar algo y está dispuesto a seguir.
    */
   readonly nextCapsule: { readonly slug: string; readonly title: string } | null;
+  /**
+   * Si quien mira paga. Decide QUÉ SE LE CUENTA de un curso sin grabar.
+   *
+   * Al suscrito se le dice la verdad —"todavía no está grabado"— porque ya
+   * pagó y lo que necesita es saber por qué no se abre. Al gratis eso no le
+   * sirve de nada: lo que le falta es la suscripción, y anunciarle que además
+   * el curso no está listo solo le quita una razón para pagar sin darle
+   * ninguna. Él ve el curso como lo que es para él: uno de pago, con su
+   * temario a la vista.
+   */
+  readonly isSubscribed: boolean;
 }
 
 /**
@@ -38,6 +49,7 @@ export function AppCursoView({
   completedIds,
   openModuleId,
   nextCapsule,
+  isSubscribed,
 }: AppCursoViewProps): ReactNode {
   const done = progress?.doneLessons ?? 0;
   const total = progress?.totalLessons ?? 0;
@@ -67,7 +79,17 @@ export function AppCursoView({
     `CourseRow` ya separaba los dos estados en el listado; esta pantalla no.
   */
   const isWaiting = course.status === 'lista-de-espera';
-  const needsSubscription = isLocked && !isWaiting;
+
+  /*
+    "Todavía no está grabado" es información de SUSCRIPTOR (2026-08-31).
+
+    A quien ya pagó hay que decirle por qué no se abre. A quien no ha pagado,
+    ese cartel le resta: le anuncia que el curso ni siquiera está listo, lo que
+    quita una razón para suscribirse sin dar ninguna. Para él es simplemente un
+    curso de pago más, con su temario a la vista — que es lo que vende.
+  */
+  const showNotRecorded = isWaiting && isSubscribed;
+  const needsSubscription = isLocked && !showNotRecorded;
 
   return (
     <>
@@ -86,7 +108,7 @@ export function AppCursoView({
         </header>
       </Reveal>
 
-      {isWaiting ? (
+      {showNotRecorded ? (
         <Reveal delay={0.06}>
           {/* Sin candado ni botón de pagar: no hay nada que comprar todavía.
               Se dice la verdad y se enseña el temario, que es lo que hay. */}
@@ -205,7 +227,7 @@ export function AppCursoView({
             completedIds={completedIds}
             openModuleId={openModuleId}
             isLocked={isLocked}
-            isWaiting={isWaiting}
+            isWaiting={showNotRecorded}
           />
         </section>
       </Reveal>
