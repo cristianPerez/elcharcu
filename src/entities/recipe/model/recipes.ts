@@ -37,6 +37,7 @@ import mortadelaDePolloCasera from '../recipes/mortadela-de-pollo-casera.json';
 import pancetaAhumada from '../recipes/panceta-ahumada.json';
 import pastrami from '../recipes/pastrami.json';
 import quesoBurrata from '../recipes/queso-burrata.json';
+import salamiDeRes from '../recipes/salami-de-res.json';
 import salchichonIberico from '../recipes/salchichon-iberico.json';
 import salchichon from '../recipes/salchichon.json';
 import sobrasada from '../recipes/sobrasada.json';
@@ -71,6 +72,7 @@ const recipes: readonly Recipe[] = [
   linguicaCalabresa,
   sobrasada,
   fuet,
+  salamiDeRes,
   longanizaFilipina,
   longanizaDominicana,
   loukaniko,
