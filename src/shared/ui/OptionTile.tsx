@@ -18,7 +18,7 @@ export function OptionTile({ label, description, onSelect }: OptionTileProps): R
     <button
       type="button"
       onClick={onSelect}
-      className="border-cocoa/12 group flex w-full items-center justify-between gap-4 rounded-2xl border bg-cream-white px-5 py-4 text-left shadow-surface transition-colors duration-200 hover:border-terracota hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota active:scale-[0.99]"
+      className="group flex w-full items-center justify-between gap-4 rounded-2xl border border-cocoa/[0.12] bg-cream-white px-5 py-4 text-left shadow-surface transition-colors duration-200 hover:border-terracota hover:bg-cream focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota active:scale-[0.99]"
     >
       <span>
         <span className="block font-serif text-lg font-medium text-forest">{label}</span>

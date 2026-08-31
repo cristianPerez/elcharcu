@@ -130,7 +130,7 @@ export function ChatComposer({
           ) : (
             <span
               title="Se acabaron tus fotos del mes"
-              className="border-cocoa/12 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-xl leading-none text-cocoa/25"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-cocoa/[0.12] text-xl leading-none text-cocoa/25"
             >
               <span aria-hidden>+</span>
               <span className="sr-only">Se acabaron tus fotos del mes</span>

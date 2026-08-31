@@ -80,7 +80,7 @@ export function AppCursoView({
         <Reveal delay={0.06}>
           {/* Sin candado ni botón de pagar: no hay nada que comprar todavía.
               Se dice la verdad y se enseña el temario, que es lo que hay. */}
-          <section className="border-cocoa/12 mt-6 rounded-2xl border bg-cream p-5">
+          <section className="mt-6 rounded-2xl border border-cocoa/[0.12] bg-cream p-5">
             <h2 className="font-medium text-forest">Todavía no está grabado</h2>
             <p className="mt-2 text-base leading-relaxed text-cocoa/70">
               Este es el temario que va a tener. Se está preparando; cuando esté listo

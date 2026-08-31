@@ -53,7 +53,9 @@ export function QuotaNotice({
     <div
       role="status"
       className={`mb-4 rounded-xl border px-4 py-3 ${
-        isExhausted ? 'border-terracota/35 bg-terracota/10' : 'border-cocoa/12 bg-cream'
+        isExhausted
+          ? 'border-terracota/35 bg-terracota/10'
+          : 'border-cocoa/[0.12] bg-cream'
       }`}
     >
       <div className="flex items-start justify-between gap-3">
