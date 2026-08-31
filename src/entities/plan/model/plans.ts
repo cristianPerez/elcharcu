@@ -129,5 +129,16 @@ export function priceFor(plan: Plan, cycle: BillingCycle): PlanPrice | null {
  */
 export const DEFAULT_BILLING_CYCLE: BillingCycle = 'anual';
 
-/** Compra por una sola vez, para quien no quiere suscripción. */
-export const oneTimeCourseCop = 89000;
+/*
+  Aquí vivía `oneTimeCourseCop`: la compra de un curso suelto por $89.000 COP.
+
+  Se retira el 2026-08-31 y con ella la decisión D5 ("vender también el curso
+  suelto"). El motivo lo dio Cristian y es de producto, no de precio: lo que hay
+  son MINI TUTORIALES. Vender de a uno un contenido de tres minutos no tiene
+  sentido para nadie —ni para quien paga ni para quien cobra— y además chocaba
+  con el modelo que sí se está construyendo, que es la ruta de cápsulas gratis
+  llevando a la suscripción.
+
+  La sección decía además "Disponible al lanzar", y ya se lanzó sin ella: era
+  una promesa vencida en las dos pantallas de venta.
+*/

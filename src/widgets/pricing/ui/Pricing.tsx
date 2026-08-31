@@ -6,8 +6,6 @@ import {
   BillingToggle,
   DEFAULT_BILLING_CYCLE,
   PlanCard,
-  formatCop,
-  oneTimeCourseCop,
   planWhatsappHref,
   plans,
   priceFor,
@@ -69,21 +67,6 @@ export function Pricing(): ReactNode {
               }
             />
           ))}
-        </div>
-
-        <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl border border-cream/15 p-6 md:flex-row md:items-center">
-          <div>
-            <p className="font-serif text-lg text-cream">
-              ¿No quieres suscripción? Compra el curso suelto.
-            </p>
-            <p className="mt-1 text-sm text-cream/75">
-              Un curso completo, pago único, tuyo para siempre —{' '}
-              {formatCop(oneTimeCourseCop)} COP.
-            </p>
-          </div>
-          <span className="text-xs uppercase tracking-eyebrow text-cream/75">
-            Disponible al lanzar
-          </span>
         </div>
 
         <div className="mt-8 flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
