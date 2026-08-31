@@ -11,6 +11,7 @@ import {
   listCourses,
   progressByCourse,
 } from '@/entities/course/server';
+import { hasActiveSubscription } from '@/entities/subscription/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
 
@@ -40,9 +41,10 @@ export default async function CursoPage({ params }: PageProps): Promise<ReactNod
 
   const userId = (await currentUser())?.id ?? null;
 
-  const [progressMap, completed] = await Promise.all([
+  const [progressMap, completed, isSubscribed] = await Promise.all([
     userId === null ? new Map<string, CourseProgress>() : progressByCourse(userId),
     userId === null ? new Set<string>() : completedLessonIds(userId),
+    userId === null ? false : hasActiveSubscription(userId),
   ]);
 
   const progress = progressMap.get(course.id);
@@ -80,6 +82,7 @@ export default async function CursoPage({ params }: PageProps): Promise<ReactNod
       progress={progress}
       completedIds={[...completed]}
       openModuleId={openModuleId}
+      isSubscribed={isSubscribed}
       nextCapsule={
         nextCapsule === null ? null : { slug: nextCapsule.slug, title: nextCapsule.title }
       }
