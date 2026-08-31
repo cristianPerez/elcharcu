@@ -3,13 +3,44 @@
 import Link from 'next/link';
 import { type ReactNode, useState } from 'react';
 
+import { useAccountSession } from '@/features/lead-capture';
+
 import { appRoutes, navItems } from '@/shared/config';
 import { cn } from '@/shared/lib';
 import { ButtonLink, Container, Logo } from '@/shared/ui';
 
-/** Barra de navegación fija con logo, enlaces de ancla y CTA de WhatsApp. */
+/**
+ * Barra de navegación fija con logo, enlaces de ancla y el CTA principal.
+ *
+ * El CTA cambia según haya sesión o no (2026-08-31):
+ *
+ *   sin cuenta  →  "Probar ahora"  →  /entrar
+ *   con cuenta  →  "Ir a la app"   →  /charcu
+ *
+ * A quien ya entró, ofrecerle "Probar ahora" y mandarlo a un formulario de
+ * login es hacerle repetir algo que ya hizo. Y el ítem "Entrar" del menú
+ * desaparece por lo mismo.
+ *
+ * ⚠️ La sesión se mira en el CLIENTE y no en el servidor a propósito. Este
+ * encabezado va en páginas que se generan estáticas —`/recetas/[slug]` son 44—
+ * y leer la sesión al renderizar las volvería dinámicas a todas. El precio es
+ * un parpadeo: durante un tick se ve el estado sin cuenta. Se asume, porque la
+ * inmensa mayoría de quien llega a la web pública no tiene sesión.
+ */
 export function SiteHeader(): ReactNode {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isSignedIn, isReady } = useAccountSession();
+
+  // Hasta que Supabase contesta se pinta el estado SIN cuenta: es el de la
+  // mayoría, así que el parpadeo le toca a los menos.
+  const hasSession = isReady && isSignedIn;
+  const ctaHref = hasSession ? appRoutes.appAssistant : appRoutes.start;
+  const ctaLabel = hasSession ? 'Ir a la app' : 'Probar ahora';
+
+  // Con sesión, "Entrar" sobra: al lado hay un botón que lleva más lejos.
+  const visibleNavItems = hasSession
+    ? navItems.filter((item) => item.href !== appRoutes.login)
+    : navItems;
 
   const closeMenu = (): void => {
     setIsMenuOpen(false);
@@ -23,7 +54,7 @@ export function SiteHeader(): ReactNode {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Principal">
-          {navItems.map((item) => (
+          {visibleNavItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
@@ -35,8 +66,8 @@ export function SiteHeader(): ReactNode {
         </nav>
 
         <div className="hidden md:block">
-          <ButtonLink href={appRoutes.start} variant="primary">
-            Probar ahora
+          <ButtonLink href={ctaHref} variant="primary">
+            {ctaLabel}
           </ButtonLink>
         </div>
 
@@ -74,7 +105,7 @@ export function SiteHeader(): ReactNode {
           aria-label="Móvil"
         >
           <Container className="flex flex-col gap-1 py-4">
-            {navItems.map((item) => (
+            {visibleNavItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -84,8 +115,8 @@ export function SiteHeader(): ReactNode {
                 {item.label}
               </a>
             ))}
-            <ButtonLink href={appRoutes.start} variant="primary" className="mt-2">
-              Probar ahora
+            <ButtonLink href={ctaHref} variant="primary" className="mt-2">
+              {ctaLabel}
             </ButtonLink>
           </Container>
         </nav>

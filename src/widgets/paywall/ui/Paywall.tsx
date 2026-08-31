@@ -2,8 +2,6 @@ import { type ReactNode } from 'react';
 
 import { QuotaWallPlans, UpsellTracker } from '@/features/quota-wall';
 
-import { formatCop, oneTimeCourseCop } from '@/entities/plan';
-
 import { site } from '@/shared/config';
 import { Container, Eyebrow } from '@/shared/ui';
 
@@ -38,21 +36,6 @@ export function Paywall({ source }: PaywallProps): ReactNode {
         </p>
 
         <QuotaWallPlans />
-      </div>
-
-      <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl border border-cocoa/10 p-6 md:flex-row md:items-center">
-        <div>
-          <p className="font-serif text-lg text-forest">
-            ¿No quieres suscripción? Compra el curso suelto.
-          </p>
-          <p className="mt-1 text-sm text-cocoa/65">
-            Un curso completo, pago único, tuyo para siempre —{' '}
-            {formatCop(oneTimeCourseCop)} COP.
-          </p>
-        </div>
-        <span className="text-xs uppercase tracking-eyebrow text-cream/75">
-          Disponible al lanzar
-        </span>
       </div>
 
       <p className="mt-8 text-sm leading-relaxed text-cocoa/65">

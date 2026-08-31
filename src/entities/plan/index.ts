@@ -5,7 +5,6 @@ export {
   maestroPlan,
   priceFor,
   DEFAULT_BILLING_CYCLE,
-  oneTimeCourseCop,
 } from './model/plans';
 export type {
   Plan,
