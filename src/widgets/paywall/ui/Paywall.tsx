@@ -4,6 +4,7 @@ import { QuotaWallPlans, UpsellTracker } from '@/features/quota-wall';
 
 import { formatCop, oneTimeCourseCop } from '@/entities/plan';
 
+import { site } from '@/shared/config';
 import { Container, Eyebrow } from '@/shared/ui';
 
 /**
@@ -55,10 +56,21 @@ export function Paywall({ source }: PaywallProps): ReactNode {
       </div>
 
       <p className="mt-8 text-sm leading-relaxed text-cocoa/65">
-        Escribes por WhatsApp y Cristian te manda el link de pago —PSE, Nequi o tarjeta—.
-        Él mismo te activa la cuenta y te confirma. Sin plataformas de por medio y sin
+        Escribes por WhatsApp y El Charcu te manda el link de pago —PSE, Nequi o tarjeta—.
+        Te activamos la cuenta y te confirmamos. Sin plataformas de por medio y sin
         renovación automática: cuando quieras seguir, lo dices.
       </p>
+
+      {/* Botón directo, además del de cada plan: quien llegó hasta aquí abajo
+          ya leyó los precios y puede tener una duda antes de elegir. */}
+      <a
+        href={site.whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-5 inline-flex items-center justify-center rounded-full bg-forest px-6 py-3 text-sm font-medium tracking-wide text-cream-white shadow-surface transition-shadow hover:shadow-raised active:scale-[0.97]"
+      >
+        Escribir por WhatsApp
+      </a>
     </Container>
   );
 }

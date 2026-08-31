@@ -15,7 +15,7 @@ import {
   type BillingCycle,
 } from '@/entities/plan';
 
-import { appRoutes } from '@/shared/config';
+import { appRoutes, site } from '@/shared/config';
 import { Container, Eyebrow } from '@/shared/ui';
 
 /** Dos planes —gratis y de pago— y un toggle para elegir mes o año. */
@@ -86,11 +86,25 @@ export function Pricing(): ReactNode {
           </span>
         </div>
 
-        <p className="mt-8 text-sm text-cream/75">
-          Escribes por WhatsApp y Cristian te manda el link de pago —PSE, Nequi o
-          tarjeta—. Él mismo te activa la cuenta y te confirma. Sin plataformas de por
-          medio y sin renovación automática: cuando quieras seguir, lo dices.
-        </p>
+        <div className="mt-8 flex flex-col items-start gap-4 md:flex-row md:items-center md:justify-between">
+          <p className="max-w-2xl text-sm text-cream/75">
+            Escribes por WhatsApp y El Charcu te manda el link de pago —PSE, Nequi o
+            tarjeta—. Te activamos la cuenta y te confirmamos. Sin plataformas de por
+            medio y sin renovación automática: cuando quieras seguir, lo dices.
+          </p>
+
+          {/* Un botón directo, además del de cada plan: quien llegó hasta aquí
+              abajo ya leyó los precios y puede tener una duda antes de elegir.
+              Obligarle a subir a una tarjeta para poder preguntar es fricción. */}
+          <a
+            href={site.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center justify-center rounded-full bg-cream px-6 py-3 text-sm font-medium tracking-wide text-forest transition-transform active:scale-[0.97]"
+          >
+            Escribir por WhatsApp
+          </a>
+        </div>
       </Container>
     </section>
   );

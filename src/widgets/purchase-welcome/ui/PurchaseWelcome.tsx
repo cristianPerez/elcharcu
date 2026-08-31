@@ -56,8 +56,8 @@ export function PurchaseWelcome(): ReactNode {
         </h1>
 
         <p className="mt-4 text-base leading-relaxed text-cocoa/70">
-          Gracias por confiar. Cristian activa tu suscripción a mano en cuanto nos
-          confirme el pago — normalmente es cosa de un minuto, y si pagaste por PSE puede
+          Gracias por confiar. En El Charcu activamos tu suscripción a mano en cuanto se
+          confirma el pago — normalmente es cosa de un minuto, y si pagaste por PSE puede
           tardar un poco más.
         </p>
 

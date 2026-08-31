@@ -39,20 +39,23 @@ export const site = {
 export const appRoutes = {
   sales: '/asistente',
   /*
-    Dónde entra alguien que todavía no tiene cuenta.
+    Dónde entra alguien que todavía no tiene cuenta: a CREAR LA CUENTA.
 
-    ⚠️ Apuntaba a `/asistente/nuevo`, el onboarding anónimo. Ese onboarding se
-    mudó DETRÁS del login el 2026-08-29 y ahora escribe en `/api/perfil`, que
-    exige sesión: sin cuenta contestaba 401 y la pantalla decía "No pudimos
-    guardar tus datos, revisa la conexión" —un mensaje que además señalaba al
-    sitio equivocado—. Seis botones de la web llevaban ahí, incluidos los de
-    precios.
+    Ha cambiado dos veces en dos días y las dos por buen motivo:
 
-    Ahora lleva a la PORTADA, que es donde vive el asistente y donde se puede
-    preguntar sin registrarse (D14). El producto es el argumento de venta: la
-    forma de "empezar" es usarlo, no rellenar un formulario.
+    · Apuntaba a `/asistente/nuevo`, el onboarding anónimo. Ese formulario se
+      mudó detrás del login (0016) y sin sesión contestaba 401, así que los
+      botones de la web llevaban a un formulario que no podía guardar nada.
+    · Se movió entonces a la PORTADA, razonando que ahí vive el asistente y se
+      prueba sin registrarse (D14). Pero el botón principal está EN la portada:
+      "Probar ahora" enlazaba a la página donde ya estabas y no pasaba nada.
+
+    Ahora lleva a `/entrar` (Cristian, 2026-08-31). D14 sigue en pie —el
+    asistente de la portada se usa sin cuenta y esa demostración no se toca—;
+    lo que cambia es a dónde apunta el BOTÓN, que es lo que se toca cuando uno
+    ya se convenció y quiere quedarse.
   */
-  start: '/',
+  start: '/entrar',
   session: '/asistente/sesion',
   newRecipe: '/asistente/nueva-receta',
   subscription: '/asistente/suscripcion',
@@ -82,14 +85,30 @@ export const appRoutes = {
  * charcutería física vive en `/tienda`. Por eso `Productos`, `Proceso` y
  * `Contacto` ya no son anclas del home — apuntan a la tienda.
  */
+/*
+  El menú, simplificado el 2026-08-31 con la app ya en producción.
+
+  Tres entradas se fueron y cada una por su motivo:
+
+  · **Asistente** llevaba a `/`, o sea a la página donde el visitante ya
+    está. Un enlace a la pantalla actual no navega a ningún sitio; solo
+    gasta un hueco del menú y hace dudar de si funcionó.
+  · **Tablas** tenía una sola tabla —la de quesos— y un ítem de menú para
+    un elemento es prometer una sección. Ahora se llega desde `/recetas`,
+    que es donde alguien la busca de verdad. La ruta `/tablas` sigue viva:
+    puede estar compartida por WhatsApp.
+  · **Tienda** se esconde por ahora. La ruta sigue existiendo, solo deja de
+    anunciarse.
+
+  ⚠️ `Contacto` apuntaba a `/tienda#contacto`. Al esconder Tienda del menú,
+  ese enlace seguiría llevando a una página que ya no se anuncia — así que
+  pasa a WhatsApp, que es por donde El Charcu responde de verdad.
+*/
 export const navItems: readonly NavItem[] = [
-  { label: 'Asistente', href: '/' },
   { label: 'Cursos', href: '/#cursos' },
   { label: 'Precios', href: '/#precios' },
   { label: 'Recetas', href: '/recetas' },
-  { label: 'Tablas', href: '/tablas' },
-  { label: 'Tienda', href: '/tienda' },
-  { label: 'Contacto', href: '/tienda#contacto' },
+  { label: 'Contacto', href: site.whatsappUrl },
   { label: 'Entrar', href: appRoutes.login },
 ];
 
