@@ -23,8 +23,17 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files
+#
+# ⚠️ El patrón tiene que cubrir CUALQUIER `.env.*`, no solo `.env.local`.
+# El 2026-08-30 apareció un `.env.prod` con las claves de producción dentro que
+# NO encajaba con `.env` ni con `.env*.local`, así que git lo veía como un
+# archivo normal y un `git add -A` lo habría subido. No llegó a pasar por poco.
+#
+# `.env.example` se salva con la negación de abajo: ese sí va al repo, porque
+# documenta qué variables hacen falta sin traer ni un valor.
 .env
-.env*.local
+.env.*
+!.env.example
 
 # typescript
 *.tsbuildinfo

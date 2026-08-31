@@ -7,7 +7,7 @@ import { stats } from '../model/stats';
 /** Historia de marca: qué es El Charcu, de dónde surge, y cifras clave. */
 export function BrandStory(): ReactNode {
   return (
-    <section id="historia" className="bg-cream py-20 text-cocoa md:py-28">
+    <section id="historia" className="bg-cream py-16 text-cocoa md:py-24">
       <Container>
         <div className="grid gap-14 md:grid-cols-[1fr_1fr] md:gap-20">
           <div>
@@ -35,13 +35,13 @@ export function BrandStory(): ReactNode {
           </div>
         </div>
 
-        <dl className="mt-16 grid grid-cols-2 gap-8 border-t border-cocoa/10 pt-12 md:grid-cols-4">
+        <dl className="mt-8 grid grid-cols-2 gap-8 border-t border-cocoa/10 pt-12 md:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label}>
               <dt className="font-serif text-4xl font-semibold text-forest md:text-5xl">
                 {stat.value}
               </dt>
-              <dd className="mt-2 text-sm text-cocoa/60">{stat.label}</dd>
+              <dd className="mt-2 text-sm text-cocoa/65">{stat.label}</dd>
             </div>
           ))}
         </dl>

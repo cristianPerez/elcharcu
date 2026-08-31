@@ -12,7 +12,7 @@ interface TablaHeroProps {
 /** Cabecera de la tabla: volver a Tablas, eyebrow, título y subtítulo. */
 export function TablaHero({ eyebrow, name, subtitle }: TablaHeroProps): ReactNode {
   return (
-    <section className="bg-grain bg-forest py-12 text-cream md:py-20">
+    <section className="bg-grain bg-forest py-12 text-cream md:py-24">
       <Container>
         <Link
           href="/tablas"

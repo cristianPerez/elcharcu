@@ -1,3 +1,11 @@
 export { cn } from './cn';
-export { initMixpanel, track, attachButtonClickTracking } from './analytics';
-export type { AnalyticsProperties } from './analytics';
+export {
+  initMixpanel,
+  track,
+  attachButtonClickTracking,
+  adoptVisitorId,
+  rememberedVisitorId,
+  identifyAccount,
+  ANALYTICS_EVENTS,
+} from './analytics';
+export type { AnalyticsProperties, AnalyticsEvent } from './analytics';

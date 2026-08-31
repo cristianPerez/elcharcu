@@ -1,0 +1,153 @@
+/** Para quién es el curso. Coincide con el `check` de `charcu.courses.level`. */
+export type CourseLevel = 'para-empezar' | 'intermedio' | 'avanzado';
+
+/** La puerta. Quien la vigila de verdad es RLS, no la pantalla (D12). */
+export type CourseAccess = 'libre' | 'pago';
+
+/**
+ * Qué PROMETE, que no es lo mismo que de qué está hecho.
+ *
+ *   capsula → resuelve UNA duda     ("cómo bridar un jamón")
+ *   curso   → acompaña un PROCESO   ("lomo curado de principio a fin")
+ *
+ * No describe el formato: eso es `LessonKind`. Una cápsula puede ser texto, un
+ * PDF o un video, igual que un curso.
+ */
+export type CourseKind = 'capsula' | 'curso';
+
+/**
+ * En qué punto está.
+ *
+ * `lista-de-espera` es el que hace trabajo de verdad: el curso todavía no está
+ * grabado, y en vez de esconderlo se enseña con su temario y con cuánta gente
+ * lo espera. Un curso invisible no se vende, y además no nos dice nada sobre
+ * qué grabar primero.
+ */
+export type CourseStatus = 'borrador' | 'lista-de-espera' | 'publicado';
+
+/**
+ * De qué está hecha una lección.
+ *
+ * La tabla se llama `lessons` y no `videos` a propósito: un curso no es solo
+ * video —hay tablas de dosis en PDF, fotos de moho para comparar y pasos que
+ * se leen— y una tabla llamada `videos` llena de cosas que no son videos hace
+ * mentir a todo el código que la lee.
+ */
+export type LessonKind = 'video' | 'pdf' | 'imagen' | 'texto';
+
+/** Lo común a toda lección, sea del tipo que sea. */
+interface LessonBase {
+  readonly id: string;
+  readonly moduleId: string;
+  readonly title: string;
+  readonly summary: string;
+  readonly position: number;
+  readonly posterUrl: string | null;
+  /**
+   * La duda que casi todo el mundo tiene justo aquí, ya escrita.
+   * Es lo que une el curso con el asistente: la pregunta es el siguiente botón.
+   */
+  readonly ask: string | null;
+}
+
+/**
+ * La lección, según de qué esté hecha.
+ *
+ * Es una unión discriminada por `kind` y no un objeto con todo opcional: así
+ * el compilador obliga a mirar el tipo antes de tocar la fuente, y no hace
+ * falta ni un `any` ni un `!` para leer el video de un video.
+ */
+export type Lesson =
+  | (LessonBase & {
+      readonly kind: 'video';
+      readonly bunnyVideoId: string | null;
+      /** Segundos. Solo el video dura algo medible. */
+      readonly durationSeconds: number | null;
+      /**
+       * Lo que se lee DEBAJO del reproductor.
+       *
+       * No es el guion del video ni un resumen: son las cantidades y los
+       * números que nadie va a retener de oído —835 g, 2,5 g de coriandro— y
+       * que hacen falta con las manos en la carne y el video ya terminado.
+       */
+      readonly body: string | null;
+    })
+  | (LessonBase & { readonly kind: 'pdf'; readonly fileUrl: string })
+  | (LessonBase & { readonly kind: 'imagen'; readonly fileUrl: string })
+  | (LessonBase & { readonly kind: 'texto'; readonly body: string });
+
+export interface CourseModule {
+  readonly id: string;
+  readonly title: string;
+  readonly summary: string;
+  readonly position: number;
+  readonly lessons: readonly Lesson[];
+}
+
+export interface Course {
+  readonly id: string;
+  readonly slug: string;
+  readonly title: string;
+  readonly summary: string;
+  readonly coverUrl: string | null;
+  readonly level: CourseLevel;
+  readonly access: CourseAccess;
+  readonly position: number;
+  /**
+   * `true` cuando el curso se ve en el catálogo pero su contenido está cerrado.
+   *
+   * NO se deduce de `access`: un suscriptor también tiene cursos de pago, y
+   * para él no están bloqueados. Se calcula preguntándole a la BASE qué
+   * módulos entrega — la misma RLS que protege el contenido, no una copia de
+   * la regla en TypeScript.
+   */
+  readonly isLocked: boolean;
+  readonly kind: CourseKind;
+  readonly status: CourseStatus;
+  /** Cuánta gente hace falta para que se grabe. `null` si no aplica. */
+  readonly waitlistGoal: number | null;
+  /** Cuánta gente lo espera ya. Es un número público; la lista, nunca. */
+  readonly waitlistCount: number;
+  /** Si QUIEN MIRA ya se apuntó, para que el botón no le invite otra vez. */
+  readonly isInWaitlist: boolean;
+}
+
+/** El curso con todo lo que cuelga de él, para la pantalla del curso. */
+export interface CourseWithModules extends Course {
+  readonly modules: readonly CourseModule[];
+}
+
+/**
+ * Cuánto lleva alguien de un curso.
+ *
+ * Sale de `charcu.course_progress`, que lo CALCULA contando lecciones. Nunca
+ * se guarda un porcentaje: si el curso pasa de 10 a 12 lecciones, quien iba al
+ * 100% bajaría al 83% y creería que perdió algo.
+ */
+export interface CourseProgress {
+  readonly courseId: string;
+  readonly totalLessons: number;
+  readonly doneLessons: number;
+  readonly percent: number;
+  /** La primera sin terminar. `null` cuando ya se acabó el curso. */
+  readonly nextLessonId: string | null;
+}
+
+/** Progreso vacío, para un curso que todavía no ha empezado. */
+export function emptyProgress(courseId: string, totalLessons: number): CourseProgress {
+  return {
+    courseId,
+    totalLessons,
+    doneLessons: 0,
+    percent: 0,
+    nextLessonId: null,
+  };
+}
+
+/**
+ * A partir de qué punto se da una lección por vista.
+ *
+ * 90% y no 100% porque nadie se ve los créditos: exigir el final entero deja a
+ * medio mundo con el curso "sin terminar" habiéndolo visto todo.
+ */
+export const LESSON_COMPLETE_RATIO = 0.9;

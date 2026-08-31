@@ -1,0 +1,19 @@
+-- ============================================================================
+-- Reset del esquema para reaplicarlo desde los archivos (2026-08-14)
+--
+-- SIN SQL A PROPÓSITO.
+--
+-- Esta migración existe en el historial de la base real, pero nunca tuvo
+-- archivo: fue el borrado del esquema `charcu` que se hizo a mano el 2026-08-14 para
+-- reconstruirlo ejecutando 0001…0007 en orden y dejarlos registrados.
+--
+-- ⚠️ El SQL original hacía `drop schema charcu cascade`. Reproducirlo aquí
+-- convertiría cualquier `db push` futuro en un borrado de la base entera.
+--
+-- El archivo se crea aquí solo para que el historial local y el remoto
+-- coincidan. Sin él, la CLI ve una versión remota que no reconoce y se niega
+-- a hacer `db push`.
+--
+-- Va vacía porque sobre una base NUEVA no hay nada que hacer: no hay datos de
+-- prueba que limpiar ni esquema que reconstruir.
+-- ============================================================================

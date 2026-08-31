@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { type ReactNode, useState } from 'react';
 
-import { navItems, site } from '@/shared/config';
+import { appRoutes, navItems } from '@/shared/config';
 import { cn } from '@/shared/lib';
 import { ButtonLink, Container, Logo } from '@/shared/ui';
 
@@ -35,8 +35,8 @@ export function SiteHeader(): ReactNode {
         </nav>
 
         <div className="hidden md:block">
-          <ButtonLink href={site.whatsappUrl} external variant="primary">
-            Pedir ahora
+          <ButtonLink href={appRoutes.start} variant="primary">
+            Probar ahora
           </ButtonLink>
         </div>
 
@@ -84,13 +84,8 @@ export function SiteHeader(): ReactNode {
                 {item.label}
               </a>
             ))}
-            <ButtonLink
-              href={site.whatsappUrl}
-              external
-              variant="primary"
-              className="mt-2"
-            >
-              Pedir ahora
+            <ButtonLink href={appRoutes.start} variant="primary" className="mt-2">
+              Probar ahora
             </ButtonLink>
           </Container>
         </nav>

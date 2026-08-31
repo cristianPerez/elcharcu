@@ -17,7 +17,11 @@ interface TagFacetDropdownProps {
 }
 
 /** Pill con contador de activos que abre un popover de checkboxes por faceta. */
-export function TagFacetDropdown({ label, options, onToggle }: TagFacetDropdownProps): ReactNode {
+export function TagFacetDropdown({
+  label,
+  options,
+  onToggle,
+}: TagFacetDropdownProps): ReactNode {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const activeCount = options.filter((option) => option.active).length;
@@ -54,7 +58,9 @@ export function TagFacetDropdown({ label, options, onToggle }: TagFacetDropdownP
       >
         {label}
         {activeCount > 0 ? (
-          <span className="rounded-full bg-cream/25 px-1.5 text-[11px]">{activeCount}</span>
+          <span className="rounded-full bg-cream/25 px-1.5 text-[11px]">
+            {activeCount}
+          </span>
         ) : null}
         <span aria-hidden className="text-[10px]">
           ▾
@@ -75,7 +81,7 @@ export function TagFacetDropdown({ label, options, onToggle }: TagFacetDropdownP
                 className="accent-terracota"
               />
               <span className="flex-1">{option.tag}</span>
-              <span className="text-cocoa/40">{option.count}</span>
+              <span className="text-cocoa/65">{option.count}</span>
             </label>
           ))}
         </div>
