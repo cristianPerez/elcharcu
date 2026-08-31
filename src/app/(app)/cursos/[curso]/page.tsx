@@ -8,6 +8,7 @@ import { type CourseProgress } from '@/entities/course';
 import {
   completedLessonIds,
   findCourse,
+  listCourses,
   progressByCourse,
 } from '@/entities/course/server';
 
@@ -47,6 +48,27 @@ export default async function CursoPage({ params }: PageProps): Promise<ReactNod
   const progress = progressMap.get(course.id);
   const nextLessonId = progress?.nextLessonId ?? null;
 
+  /*
+    La siguiente cápsula de la ruta, para ofrecerla al terminar esta.
+
+    Terminar una cápsula dejaba un "Terminaste el curso. Ahora toca curar." y
+    nada más: un callejón sin salida justo en el momento de más impulso. La
+    ruta es secuencial, así que la siguiente es la del `position` que sigue.
+
+    Solo aplica a CÁPSULAS. Un curso completo no forma parte de una ruta, y
+    encadenarlo con otro sería inventarse un orden que no existe.
+
+    `listCourses()` va con `cache()`, así que esto no añade un viaje si algo
+    más de la misma petición ya lo pidió.
+  */
+  const nextCapsule =
+    course.kind !== 'capsula'
+      ? null
+      : ((await listCourses())
+          .filter((c) => c.kind === 'capsula')
+          .sort((a, b) => a.position - b.position)
+          .find((c) => c.position > course.position) ?? null);
+
   // El acordeón abre el módulo donde quedó, no el primero: abrir siempre el
   // primero obliga a buscar su sitio cada vez que vuelve.
   const openModuleId =
@@ -58,6 +80,9 @@ export default async function CursoPage({ params }: PageProps): Promise<ReactNod
       progress={progress}
       completedIds={[...completed]}
       openModuleId={openModuleId}
+      nextCapsule={
+        nextCapsule === null ? null : { slug: nextCapsule.slug, title: nextCapsule.title }
+      }
     />
   );
 }

@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 
-import { CapsuleRow, CourseRow } from '@/widgets/course-list';
+import { CapsuleTrack, CourseRow } from '@/widgets/course-list';
 
 import { type Course, type CourseProgress } from '@/entities/course';
 
@@ -9,6 +9,14 @@ import { Reveal } from '@/shared/ui';
 interface AppCursosViewProps {
   readonly courses: readonly Course[];
   readonly progress: ReadonlyMap<string, CourseProgress>;
+  /**
+   * Si quien mira paga. Decide si ve la lista de espera o solo el temario.
+   *
+   * Viaja como prop desde el servidor en vez de leerse aquí: esta vista es un
+   * componente de servidor y preguntarlo dentro la volvería cliente, o
+   * añadiría un viaje a Supabase por tarjeta.
+   */
+  readonly isSubscribed: boolean;
 }
 
 /**
@@ -29,25 +37,17 @@ interface AppCursosViewProps {
  * La lista sigue saliendo de la base y RLS decide qué entra, así que aquí no
  * hay ni un `if` de permisos: no le toca decidir a la pantalla (D12).
  */
-export function AppCursosView({ courses, progress }: AppCursosViewProps): ReactNode {
+export function AppCursosView({
+  courses,
+  progress,
+  isSubscribed,
+}: AppCursosViewProps): ReactNode {
   const capsules = courses.filter((course) => course.kind === 'capsula');
   const rest = courses.filter((course) => course.kind === 'curso');
 
-  /*
-    Hasta dónde llega la ruta secuencial.
-
-    Se abre la siguiente a la primera sin terminar. No se pregunta a la base
-    lección por lección: `course_progress` ya trae cuántas van hechas de cada
-    cápsula, y la regla de la ruta es la misma contada a nivel de cápsula.
-    Quien de verdad aplica el candado es `can_open_lesson()` en Postgres — esto
-    solo pinta lo que allá ya se decidió.
-  */
-  const firstUnfinished = capsules.findIndex((course) => {
-    const p = progress.get(course.id);
-    return p === undefined || p.totalLessons === 0 || p.doneLessons < p.totalLessons;
-  });
-  const openUntil = firstUnfinished === -1 ? capsules.length - 1 : firstUnfinished;
-
+  // Cuántas lleva hechas, para el "2 de 5" de la cabecera. El resto del
+  // cálculo —cuál es la actual, cuáles están cerradas— vive en `CapsuleTrack`,
+  // que es quien lo necesita para dibujar la ruta.
   const doneCount = capsules.filter((course) => {
     const p = progress.get(course.id);
     return p !== undefined && p.totalLessons > 0 && p.doneLessons === p.totalLessons;
@@ -80,25 +80,14 @@ export function AppCursosView({ courses, progress }: AppCursosViewProps): ReactN
               </span>
             </div>
             <p className="mt-1 text-sm leading-relaxed text-cocoa/60">
-              Cápsulas cortas y gratis. Se abren en orden.
+              {/* La regla del desbloqueo, dicha UNA vez. Estaba repetida en
+                  cada cápsula cerrada —"se abre cuando termines la 2 de 5", "la
+                  3 de 5"…— y algo repetido cuatro veces se lee como relleno. */}
+              Cápsulas cortas y gratis. Termina una y se abre la siguiente.
             </p>
           </Reveal>
 
-          <ul className="mt-4 space-y-2.5">
-            {capsules.map((course, index) => (
-              <li key={course.id}>
-                <Reveal delay={0.06 + Math.min(index, 3) * 0.03}>
-                  <CapsuleRow
-                    course={course}
-                    progress={progress.get(course.id)}
-                    index={index + 1}
-                    total={capsules.length}
-                    isOpen={index <= openUntil}
-                  />
-                </Reveal>
-              </li>
-            ))}
-          </ul>
+          <CapsuleTrack capsules={capsules} progress={progress} />
         </section>
       ) : null}
 
@@ -109,8 +98,11 @@ export function AppCursosView({ courses, progress }: AppCursosViewProps): ReactN
               Los cursos completos
             </h2>
             <p className="mt-1 text-sm leading-relaxed text-cocoa/60">
-              Una receta de principio a fin. Los que todavía no están grabados abren
-              cuando haya gente suficiente esperándolos.
+              {/* Al gratis no se le menciona la lista de espera: es una función
+                  de suscriptor, y nombrarla sin poder usarla solo frustra. */}
+              {isSubscribed
+                ? 'Una receta de principio a fin. Los que todavía no están grabados abren cuando haya gente suficiente esperándolos.'
+                : 'Una receta de principio a fin. Mira el temario de cada uno para saber qué trae.'}
             </p>
           </Reveal>
 
@@ -118,7 +110,11 @@ export function AppCursosView({ courses, progress }: AppCursosViewProps): ReactN
             {rest.map((course, index) => (
               <li key={course.id}>
                 <Reveal delay={0.1 + Math.min(index, 3) * 0.04}>
-                  <CourseRow course={course} progress={progress.get(course.id)} />
+                  <CourseRow
+                    course={course}
+                    progress={progress.get(course.id)}
+                    isSubscribed={isSubscribed}
+                  />
                 </Reveal>
               </li>
             ))}

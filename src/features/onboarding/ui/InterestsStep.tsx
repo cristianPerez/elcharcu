@@ -64,7 +64,7 @@ export function InterestsStep({ stepIndex, onSubmit }: InterestsStepProps): Reac
                 className={`flex h-full w-full items-center justify-between gap-2 rounded-2xl border px-4 py-3.5 text-left transition-colors active:scale-[0.99] disabled:opacity-35 ${
                   isChosen
                     ? 'border-terracota bg-terracota/10 text-forest'
-                    : 'border-cocoa/12 bg-cream-white text-cocoa/80 hover:border-terracota/50'
+                    : 'border-cocoa/[0.12] bg-cream-white text-cocoa/80 hover:border-terracota/50'
                 }`}
               >
                 <span className="font-serif text-base font-medium leading-snug">

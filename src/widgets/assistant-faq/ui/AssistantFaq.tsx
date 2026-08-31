@@ -20,7 +20,7 @@ export function AssistantFaq(): ReactNode {
           {faqItems.map((item) => (
             <details
               key={item.question}
-              className="border-cocoa/12 group border-b py-5 last:border-b-0"
+              className="group border-b border-cocoa/[0.12] py-5 last:border-b-0"
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-6 font-serif text-lg font-medium text-forest marker:content-none">
                 {item.question}

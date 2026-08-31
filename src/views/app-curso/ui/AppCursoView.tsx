@@ -14,6 +14,15 @@ interface AppCursoViewProps {
   readonly completedIds: readonly string[];
   /** El módulo que se abre solo: el de la lección por la que iba. */
   readonly openModuleId: string | null;
+  /**
+   * La siguiente cápsula de la ruta, o `null` si esta es la última —o si esto
+   * no es una cápsula—.
+   *
+   * Terminar dejaba un "Terminaste el curso" y nada más: un callejón sin
+   * salida justo en el momento de más impulso, que es cuando alguien acaba de
+   * completar algo y está dispuesto a seguir.
+   */
+  readonly nextCapsule: { readonly slug: string; readonly title: string } | null;
 }
 
 /**
@@ -28,6 +37,7 @@ export function AppCursoView({
   progress,
   completedIds,
   openModuleId,
+  nextCapsule,
 }: AppCursoViewProps): ReactNode {
   const done = progress?.doneLessons ?? 0;
   const total = progress?.totalLessons ?? 0;
@@ -42,6 +52,22 @@ export function AppCursoView({
     pagar; un candado sin nada detrás solo frustra.
   */
   const isLocked = course.isLocked;
+
+  /*
+    ⚠️ CERRADO NO ES LO MISMO QUE NO GRABADO, y confundirlos le decía a un
+    suscriptor que pagara.
+
+    `isLocked` sale de RLS y es `true` en los DOS casos: cuando falta pagar y
+    cuando el curso está en lista de espera —ahí `can_read_course()` exige
+    `status = 'publicado'`, así que no se abre para nadie, ni para quien paga—.
+    La ficha pintaba el mismo cartel para ambos: "Con El Charcu Pro se te abre
+    este curso". A un Pro mirando un curso sin grabar eso es doblemente falso:
+    ya pagó, y pagar no lo abriría.
+
+    `CourseRow` ya separaba los dos estados en el listado; esta pantalla no.
+  */
+  const isWaiting = course.status === 'lista-de-espera';
+  const needsSubscription = isLocked && !isWaiting;
 
   return (
     <>
@@ -60,7 +86,21 @@ export function AppCursoView({
         </header>
       </Reveal>
 
-      {isLocked ? (
+      {isWaiting ? (
+        <Reveal delay={0.06}>
+          {/* Sin candado ni botón de pagar: no hay nada que comprar todavía.
+              Se dice la verdad y se enseña el temario, que es lo que hay. */}
+          <section className="mt-6 rounded-2xl border border-cocoa/[0.12] bg-cream p-5">
+            <h2 className="font-medium text-forest">Todavía no está grabado</h2>
+            <p className="mt-2 text-base leading-relaxed text-cocoa/70">
+              Este es el temario que va a tener. Se está preparando; cuando esté listo
+              aparece aquí completo.
+            </p>
+          </section>
+        </Reveal>
+      ) : null}
+
+      {needsSubscription ? (
         <Reveal delay={0.06}>
           <section className="mt-6 rounded-2xl border border-terracota/25 bg-terracota/5 p-5">
             <div className="flex items-center gap-2">
@@ -105,10 +145,44 @@ export function AppCursoView({
               />
             </div>
 
-            {nextLessonId === null ? (
-              <p className="mt-4 text-sm font-medium text-forest">
-                Terminaste el curso. Ahora toca curar.
-              </p>
+            {nextLessonId === null && nextCapsule !== null ? (
+              /* Terminada y hay más ruta: se ofrece la siguiente en el mismo
+                 sitio donde estaba el botón de continuar, porque es donde el
+                 dedo ya está. */
+              <>
+                <p className="mt-4 text-sm font-medium text-forest">
+                  Terminaste esta cápsula.
+                </p>
+                <Link
+                  href={`/cursos/${nextCapsule.slug}`}
+                  className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-terracota-dark px-5 py-4 text-cream-white shadow-surface transition-transform active:scale-[0.98]"
+                >
+                  <span className="min-w-0">
+                    <span className="block text-xs uppercase tracking-eyebrow text-cream-white/70">
+                      Sigue con
+                    </span>
+                    <span className="mt-0.5 block font-medium leading-snug">
+                      {nextCapsule.title}
+                    </span>
+                  </span>
+                  <IconChevron size={18} className="shrink-0" />
+                </Link>
+              </>
+            ) : nextLessonId === null ? (
+              /* Última de la ruta: no hay a dónde saltar, así que se devuelve
+                 al índice en vez de dejarlo mirando una pantalla terminada. */
+              <>
+                <p className="mt-4 text-sm font-medium text-forest">
+                  Terminaste la ruta completa. Ahora toca curar.
+                </p>
+                <Link
+                  href="/cursos"
+                  className="mt-3 flex items-center justify-center gap-1 rounded-full border border-cocoa/15 px-6 py-3 font-medium text-forest transition-colors active:bg-cream"
+                >
+                  Ver los cursos
+                  <IconChevron size={16} />
+                </Link>
+              </>
             ) : (
               <Link
                 href={`/cursos/${course.slug}/${nextLessonId}`}
@@ -131,6 +205,7 @@ export function AppCursoView({
             completedIds={completedIds}
             openModuleId={openModuleId}
             isLocked={isLocked}
+            isWaiting={isWaiting}
           />
         </section>
       </Reveal>

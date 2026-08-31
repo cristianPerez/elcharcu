@@ -31,13 +31,13 @@ export function AssistantCourses(): ReactNode {
           {appCourses.map((course) => (
             <article
               key={course.id}
-              className="border-cocoa/12 border-b py-6 last:border-b-0"
+              className="border-b border-cocoa/[0.12] py-6 last:border-b-0"
             >
               <div className="flex items-start justify-between gap-6">
                 <h3 className="font-serif text-xl font-semibold text-forest">
                   {course.name}
                 </h3>
-                <div className="bg-forest/8 flex shrink-0 items-center gap-1 rounded-full px-3 py-1.5">
+                <div className="flex shrink-0 items-center gap-1 rounded-full bg-forest/[0.08] px-3 py-1.5">
                   <span aria-hidden className="text-terracota">
                     ★
                   </span>
