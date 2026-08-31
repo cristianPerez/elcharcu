@@ -53,7 +53,7 @@ export function ContactStep({
     <StepShell
       stepIndex={stepIndex}
       title="¿Cómo te llamas?"
-      why="Para hablarte por tu nombre y no como a un usuario. El WhatsApp es opcional: es por donde Cristian avisa cuando se abre un curso que estabas esperando."
+      why="Para hablarte por tu nombre y no como a un usuario. El WhatsApp es opcional: es por donde El Charcu avisa cuando se abre un curso que estabas esperando."
       onBack={onBack}
     >
       <form onSubmit={handleSubmit}>
@@ -67,7 +67,7 @@ export function ContactStep({
           onChange={(event) => {
             setName(event.target.value);
           }}
-          placeholder="Cristian"
+          placeholder="Tu nombre"
           autoComplete="given-name"
           maxLength={80}
           autoFocus

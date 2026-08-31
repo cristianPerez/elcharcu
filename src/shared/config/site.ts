@@ -16,7 +16,18 @@ export interface ContactChannel {
 }
 
 const WHATSAPP_NUMBER = '573003526578';
-const WHATSAPP_MESSAGE = encodeURIComponent('Hola El Charcu, quiero hacer un pedido 🧀');
+/*
+  El mensaje que va prellenado en el WhatsApp genérico.
+
+  Decía "quiero hacer un pedido 🧀", de cuando el menú tenía Tienda y ese
+  enlace era para comprar embutidos. Con la tienda escondida (2026-08-31), el
+  mismo enlace lo usa ahora `Contacto` y el pie de página, así que alguien con
+  una duda de suscripción abría WhatsApp con un pedido escrito.
+
+  Neutro a propósito: quien escribe completa la frase. Los enlaces que SÍ saben
+  a qué vienen —los de cada plan— traen su propio texto (`planWhatsappHref`).
+*/
+const WHATSAPP_MESSAGE = encodeURIComponent('Hola El Charcu, tengo una pregunta 🥩');
 
 export const site = {
   name: 'El Charcu',
