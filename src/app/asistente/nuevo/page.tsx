@@ -1,15 +1,20 @@
-import { type Metadata } from 'next';
+import { permanentRedirect } from 'next/navigation';
 import { type ReactNode } from 'react';
 
-import { OnboardingPage } from '@/views/onboarding';
+import { appRoutes } from '@/shared/config';
 
-export const metadata: Metadata = {
-  title: 'Empezar tu receta gratis · El Charcu',
-  description:
-    'Tres preguntas cortas y arrancas: tu país, tu experiencia y qué vas a curar. Sin tarjeta.',
-  robots: { index: false, follow: false },
-};
-
+/**
+ * Ruta jubilada (2026-08-30).
+ *
+ * Aquí vivía el onboarding anónimo: tres preguntas antes de tener cuenta. Se
+ * mudó detrás del login con la migración 0016, así que este formulario ya no
+ * podía guardar nada —`/api/perfil` exige sesión— y le contestaba 401 a todo el
+ * que llegara desde los precios.
+ *
+ * Se deja como redirección permanente y no se borra: la URL lleva meses en la
+ * web, en el historial de la gente y quizá en algún enlace compartido. Un 404
+ * ahí es perder a alguien que venía a empezar.
+ */
 export default function Page(): ReactNode {
-  return <OnboardingPage />;
+  permanentRedirect(appRoutes.start);
 }
