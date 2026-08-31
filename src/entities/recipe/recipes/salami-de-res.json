@@ -1,0 +1,146 @@
+{
+  "slug": "salami-de-res",
+  "name": "Salami de Res",
+  "description": "Fermentado y curado en seco — 100% res, con cultivo iniciador, dextrosa y una merma del 35% que lo cambia todo.",
+  "image": "/recipes/salami-de-res.jpg",
+  "tags": ["Colombia", "Curado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Estilo europeo, con lo que se consigue en Colombia.",
+  "intro": "El salami de res es el curado más exigente de esta casa, y también el que más enseña. No basta con salar y colgar: aquí entra un cultivo iniciador que se come la dextrosa y acidifica la masa, bajando el pH hasta 5,3 o menos. Esa acidez es la primera barrera de seguridad; la segunda es la sal de cura #2, y la tercera es la merma. Se hace 100% res —brisket con su grasa, o magro más grasa de res— y eso cambia el resultado: la grasa de res funde más alto que la de cerdo, es más firme y de sabor más marcado. El salami sale menos untuoso y más profundo que uno italiano de cerdo.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Fermentado y curado en seco" },
+    { "label": "Nivel", "value": "Avanzado" },
+    { "label": "Tiempo de preparación", "value": "90 min" },
+    { "label": "Fermentación", "value": "18–24 h a 22–24 °C" },
+    { "label": "Curado", "value": "4–10 semanas, hasta 35% de merma" },
+    { "label": "Tipo de tripa", "value": "Colágeno o natural de res, cal. 55–60 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Res magra con grasa de res, molida en grano medio y fermentada antes de curar."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme y compacta. La grasa de res funde más alto: se nota en grano, no untuosa."
+    },
+    {
+      "title": "Sabor",
+      "description": "Profundo y ligeramente ácido. La fermentación aporta el punto láctico que distingue un salami de un embutido salado."
+    }
+  ],
+  "quote": "En un salami, la seguridad no la da un solo ingrediente: la dan tres barreras juntas — la acidez, el nitrito y la merma. Saltarse una es saltárselas todas.",
+  "ingredientsNote": "Aquí la sal de cura NO es opcional ni negociable: es carne PICADA en curado LARGO. Va la #2, que además de nitrito lleva nitrato y lo va soltando durante semanas. Y el cultivo iniciador no es un lujo de purista: sin él no baja el pH, y sin acidez falta una de las tres barreras.",
+  "ingredients": [
+    {
+      "name": "Carne de res magra (bola, chuck o pulpa)",
+      "amount": "800 g",
+      "pct": "80%"
+    },
+    { "name": "Grasa de res (brisket o cobertura)", "amount": "200 g", "pct": "20%" },
+    { "name": "Sal", "amount": "28 g", "pct": "2.8%" },
+    {
+      "name": "Sal de cura #2 (nitrificante de curado largo)",
+      "amount": "2.5 g",
+      "pct": "0.25%"
+    },
+    { "name": "Dextrosa (alimento del cultivo)", "amount": "5 g", "pct": "0.5%" },
+    {
+      "name": "Cultivo iniciador de fermentación lenta (T-SPX)",
+      "amount": "0.25 g",
+      "pct": "0.025%"
+    },
+    { "name": "Pimienta negra molida", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Pimienta negra en grano", "amount": "3 g", "pct": "0.3%" },
+    { "name": "Ajo en polvo", "amount": "2 g", "pct": "0.2%" },
+    { "name": "Vino tinto seco", "amount": "20 ml", "pct": "2%" },
+    {
+      "name": "Agua sin cloro (para hidratar el cultivo)",
+      "amount": "20 ml",
+      "pct": "2%"
+    }
+  ],
+  "proportionNote": "80% magro y 20% grasa. Con menos grasa el salami queda seco y quebradizo; con más, la grasa de res —que funde alto— se siente cerosa al paladar. Si consigues brisket con su grasa, sale la proporción sola.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. La sal sube a 2.8% —más que en un curado de cerdo— porque la res lo pide y porque durante la fermentación la sal también frena lo que no queremos. La sal de cura al 0.25% es el estándar seguro y el techo: nunca más.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Hidrata el cultivo iniciador en 20 ml de agua SIN cloro y déjalo reposar 20–30 min. El cloro del agua de la llave lo mata."
+    },
+    {
+      "n": "02",
+      "text": "Corta magro y grasa en cubos y llévalos al congelador hasta que estén a −2/0 °C, casi cristalizados."
+    },
+    {
+      "n": "03",
+      "text": "Muele con disco de 6–8 mm. Si la grasa se empieza a untar, para y vuelve a enfriar."
+    },
+    {
+      "n": "04",
+      "text": "Mezcla los secos aparte: sal, sal de cura #2, dextrosa, pimientas y ajo. Pesa en balanza de gramos, nunca con cucharas."
+    },
+    {
+      "n": "05",
+      "text": "Integra los secos, el vino y el cultivo hidratado. Amasa hasta que la masa quede pegajosa y ligada."
+    },
+    {
+      "n": "06",
+      "text": "Embute firme en tripa de 55–60 mm, sin bolsas de aire. Pincha las que veas a contraluz."
+    },
+    {
+      "n": "07",
+      "text": "PESA cada pieza y apunta el peso. Sin ese número no hay forma de saber cuándo está listo."
+    },
+    {
+      "n": "08",
+      "text": "Fermenta 18–24 h a 22–24 °C y 85–90% de humedad, hasta pH 5,3 o menos."
+    },
+    {
+      "n": "09",
+      "text": "Pasa a curado: 12–14 °C y 75–80% de humedad, 4–10 semanas."
+    },
+    {
+      "n": "10",
+      "text": "Está listo cuando perdió el 35% de su peso inicial. Se pesa; no se cuentan días."
+    }
+  ],
+  "tips": [
+    {
+      "title": "El pH manda",
+      "description": "Baja a 5,3 o menos durante la fermentación. Un medidor de pH cuesta poco y es la única forma de saberlo. Si a las 24 h no bajó, algo falló con el cultivo o con la temperatura."
+    },
+    {
+      "title": "La grasa de res no es la de cerdo",
+      "description": "Funde más alto, es más firme, tira a amarilla y su sabor es fuerte. Es lo que hace distinto a este salami. Si quieres algo más suave y untuoso, cambia la grasa por tocino de cerdo."
+    },
+    {
+      "title": "Se pesa, no se cuenta",
+      "description": "35% de merma. En las primeras semanas solo pierde un 10–20%; el resto llega despacio. Un calendario miente, la balanza no."
+    },
+    {
+      "title": "Moho blanco sí, el resto no",
+      "description": "El blanco aterciopelado y parejo es noble y se limpia. Verde, negro, gris peludo, viscoso o con mal olor: se descarta la pieza entera."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En lonchas finas",
+      "description": "Curado, cortado casi transparente. Es como se come: en frío, sin cocinar."
+    },
+    {
+      "title": "En tabla",
+      "description": "Con queso curado y pan. La res pide un tinto con cuerpo."
+    }
+  ],
+  "recommendations": [
+    "No omitas la sal de cura #2: es carne picada en curado largo.",
+    "Hidrata el cultivo en agua sin cloro, o no fermenta.",
+    "Pesa la pieza al embutir y apunta el número.",
+    "Fermenta hasta pH 5,3 o menos antes de pasar a curado.",
+    "Da el salami por terminado por merma (35%), nunca por calendario."
+  ],
+  "resultNote": "El resultado: un salami firme, de corte marmoleado, ligeramente ácido y de sabor a res profundo. Menos untuoso que uno de cerdo y con más carácter.",
+  "finalQuote": "Un salami no se cura: se fermenta primero y se cura después. Ese orden es toda la diferencia entre un embutido seguro y una apuesta.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
