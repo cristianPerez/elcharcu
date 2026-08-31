@@ -26,6 +26,16 @@ interface CourseOutlineProps {
    * estas lecciones —solo el título—, así que aquí no hay nada que filtrar.
    */
   readonly isLocked: boolean;
+  /**
+   * El curso todavía no está grabado.
+   *
+   * ⚠️ Es distinto de `isLocked` y hay que pasarlo aparte. Un curso en lista de
+   * espera también viene cerrado por RLS, pero la razón no es que falte pagar:
+   * no existe para nadie, ni para quien paga. Con solo `isLocked`, cada lección
+   * salía marcada "Pro" y enlazaba a la membresía — o sea, le vendía Pro a un
+   * suscriptor por un contenido que Pro tampoco abre.
+   */
+  readonly isWaiting?: boolean;
 }
 
 /**
@@ -42,6 +52,7 @@ export function CourseOutline({
   completedIds,
   openModuleId,
   isLocked,
+  isWaiting = false,
 }: CourseOutlineProps): ReactNode {
   const [openId, setOpenId] = useState<string | null>(
     openModuleId ?? modules[0]?.id ?? null,
@@ -98,6 +109,7 @@ export function CourseOutline({
                     lesson={lesson}
                     isDone={done.has(lesson.id)}
                     isLocked={isLocked}
+                    isWaiting={isWaiting}
                   />
                 ))}
               </ul>
@@ -127,6 +139,7 @@ interface LessonLinkProps {
   readonly lesson: Lesson;
   readonly isDone: boolean;
   readonly isLocked: boolean;
+  readonly isWaiting: boolean;
 }
 
 function LessonLink({
@@ -134,7 +147,25 @@ function LessonLink({
   lesson,
   isDone,
   isLocked,
+  isWaiting,
 }: LessonLinkProps): ReactNode {
+  /*
+    Sin grabar no hay enlace: no hay membresía que vender ni lección que abrir.
+    Un enlace que lleva a pagar por algo que no existe es peor que no tenerlo.
+  */
+  if (isWaiting) {
+    return (
+      <li className="flex items-center gap-3 px-5 py-3.5">
+        <span
+          aria-hidden="true"
+          className="size-5 shrink-0 rounded-full border border-cocoa/15"
+        />
+        <span className="flex-1 text-base text-cocoa/55">{lesson.title}</span>
+        <span className="shrink-0 text-xs text-cocoa/40">Pronto</span>
+      </li>
+    );
+  }
+
   return (
     <li>
       <Link

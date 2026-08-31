@@ -43,6 +43,22 @@ export function AppCursoView({
   */
   const isLocked = course.isLocked;
 
+  /*
+    ⚠️ CERRADO NO ES LO MISMO QUE NO GRABADO, y confundirlos le decía a un
+    suscriptor que pagara.
+
+    `isLocked` sale de RLS y es `true` en los DOS casos: cuando falta pagar y
+    cuando el curso está en lista de espera —ahí `can_read_course()` exige
+    `status = 'publicado'`, así que no se abre para nadie, ni para quien paga—.
+    La ficha pintaba el mismo cartel para ambos: "Con El Charcu Pro se te abre
+    este curso". A un Pro mirando un curso sin grabar eso es doblemente falso:
+    ya pagó, y pagar no lo abriría.
+
+    `CourseRow` ya separaba los dos estados en el listado; esta pantalla no.
+  */
+  const isWaiting = course.status === 'lista-de-espera';
+  const needsSubscription = isLocked && !isWaiting;
+
   return (
     <>
       <Reveal>
@@ -60,7 +76,21 @@ export function AppCursoView({
         </header>
       </Reveal>
 
-      {isLocked ? (
+      {isWaiting ? (
+        <Reveal delay={0.06}>
+          {/* Sin candado ni botón de pagar: no hay nada que comprar todavía.
+              Se dice la verdad y se enseña el temario, que es lo que hay. */}
+          <section className="border-cocoa/12 mt-6 rounded-2xl border bg-cream p-5">
+            <h2 className="font-medium text-forest">Todavía no está grabado</h2>
+            <p className="mt-2 text-base leading-relaxed text-cocoa/70">
+              Este es el temario que va a tener. Se está preparando; cuando esté listo
+              aparece aquí completo.
+            </p>
+          </section>
+        </Reveal>
+      ) : null}
+
+      {needsSubscription ? (
         <Reveal delay={0.06}>
           <section className="mt-6 rounded-2xl border border-terracota/25 bg-terracota/5 p-5">
             <div className="flex items-center gap-2">
@@ -131,6 +161,7 @@ export function AppCursoView({
             completedIds={completedIds}
             openModuleId={openModuleId}
             isLocked={isLocked}
+            isWaiting={isWaiting}
           />
         </section>
       </Reveal>
