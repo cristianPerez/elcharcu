@@ -14,6 +14,15 @@ interface AppCursoViewProps {
   readonly completedIds: readonly string[];
   /** El módulo que se abre solo: el de la lección por la que iba. */
   readonly openModuleId: string | null;
+  /**
+   * La siguiente cápsula de la ruta, o `null` si esta es la última —o si esto
+   * no es una cápsula—.
+   *
+   * Terminar dejaba un "Terminaste el curso" y nada más: un callejón sin
+   * salida justo en el momento de más impulso, que es cuando alguien acaba de
+   * completar algo y está dispuesto a seguir.
+   */
+  readonly nextCapsule: { readonly slug: string; readonly title: string } | null;
 }
 
 /**
@@ -28,6 +37,7 @@ export function AppCursoView({
   progress,
   completedIds,
   openModuleId,
+  nextCapsule,
 }: AppCursoViewProps): ReactNode {
   const done = progress?.doneLessons ?? 0;
   const total = progress?.totalLessons ?? 0;
@@ -135,10 +145,44 @@ export function AppCursoView({
               />
             </div>
 
-            {nextLessonId === null ? (
-              <p className="mt-4 text-sm font-medium text-forest">
-                Terminaste el curso. Ahora toca curar.
-              </p>
+            {nextLessonId === null && nextCapsule !== null ? (
+              /* Terminada y hay más ruta: se ofrece la siguiente en el mismo
+                 sitio donde estaba el botón de continuar, porque es donde el
+                 dedo ya está. */
+              <>
+                <p className="mt-4 text-sm font-medium text-forest">
+                  Terminaste esta cápsula.
+                </p>
+                <Link
+                  href={`/cursos/${nextCapsule.slug}`}
+                  className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-terracota-dark px-5 py-4 text-cream-white shadow-surface transition-transform active:scale-[0.98]"
+                >
+                  <span className="min-w-0">
+                    <span className="block text-xs uppercase tracking-eyebrow text-cream-white/70">
+                      Sigue con
+                    </span>
+                    <span className="mt-0.5 block font-medium leading-snug">
+                      {nextCapsule.title}
+                    </span>
+                  </span>
+                  <IconChevron size={18} className="shrink-0" />
+                </Link>
+              </>
+            ) : nextLessonId === null ? (
+              /* Última de la ruta: no hay a dónde saltar, así que se devuelve
+                 al índice en vez de dejarlo mirando una pantalla terminada. */
+              <>
+                <p className="mt-4 text-sm font-medium text-forest">
+                  Terminaste la ruta completa. Ahora toca curar.
+                </p>
+                <Link
+                  href="/cursos"
+                  className="mt-3 flex items-center justify-center gap-1 rounded-full border border-cocoa/15 px-6 py-3 font-medium text-forest transition-colors active:bg-cream"
+                >
+                  Ver los cursos
+                  <IconChevron size={16} />
+                </Link>
+              </>
             ) : (
               <Link
                 href={`/cursos/${course.slug}/${nextLessonId}`}
