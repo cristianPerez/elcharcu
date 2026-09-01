@@ -14,7 +14,8 @@ import { type NextRequest } from 'next/server';
  * quien pregunta.
  *
  * En local no existe la cabecera y cae en Colombia, que es el mercado primero
- * (D8) y el default de `charcu.profiles.country`.
+ * (D8). Ojo: ya NO hay `charcu.profiles.country` — esa columna se quitó en la
+ * 0023 justo porque este encabezado la dejó sin trabajo.
  */
 
 const COUNTRY_NAMES: Record<string, string> = {

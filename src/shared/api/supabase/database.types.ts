@@ -356,9 +356,7 @@ export type Database = {
       };
       profiles: {
         Row: {
-          country: string;
           created_at: string;
-          experience_level: string;
           full_name: string | null;
           id: string;
           interests: string[];
@@ -368,9 +366,7 @@ export type Database = {
           whatsapp_consent_at: string | null;
         };
         Insert: {
-          country?: string;
           created_at?: string;
-          experience_level?: string;
           full_name?: string | null;
           id: string;
           interests?: string[];
@@ -380,9 +376,7 @@ export type Database = {
           whatsapp_consent_at?: string | null;
         };
         Update: {
-          country?: string;
           created_at?: string;
-          experience_level?: string;
           full_name?: string | null;
           id?: string;
           interests?: string[];
