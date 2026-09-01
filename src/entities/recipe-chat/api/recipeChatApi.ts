@@ -259,10 +259,32 @@ export async function listRecipes(
     .order('last_message_at', { ascending: false })
     .limit(50);
 
-  // Con cuenta se listan las de la cuenta; sin cuenta, las de este navegador.
+  /*
+    ⚠️ SIN CUENTA SOLO SE LISTA LO QUE NO TIENE DUEÑO (2026-09-01).
+
+    Antes esto era `.eq('visitor_id', visitorId)` a secas, sin mirar de quién
+    eran las conversaciones — y con la clave de servicio, que salta RLS. La
+    cookie del navegador sobrevive al cierre de sesión, así que quien entraba
+    con su cuenta en un computador prestado dejaba los TÍTULOS de sus
+    conversaciones a la vista del siguiente que lo usara sin sesión.
+    Comprobado en QA con `curl`: tres títulos de una cuenta devueltos a una
+    petición anónima.
+
+    El contenido nunca se escapó —`ownsRecipe` sí compara el dueño y devolvía
+    vacío—, pero un título como "Bondiola 1,8 kg" ya dice qué cura esa persona
+    y cuánto. Y de paso el panel listaba tres cosas que al tocarlas no abrían
+    nada.
+
+    Esto contradecía una decisión que ya estaba escrita en la migración
+    20260820205053: "las recetas no se reasignan, reasignarlas le entregaría
+    las conversaciones de una persona a otra por compartir un teléfono". La
+    escritura estaba protegida; la lectura no.
+
+    Ahora la lista dice exactamente lo mismo que `ownsRecipe` deja abrir.
+  */
   const { data, error } =
     userId === null
-      ? await query.eq('visitor_id', visitorId)
+      ? await query.eq('visitor_id', visitorId).is('user_id', null)
       : await query.eq('user_id', userId);
 
   if (error !== null || data === null) {
@@ -274,6 +296,32 @@ export async function listRecipes(
     title: row.title,
     lastMessageAt: row.last_message_at,
   }));
+}
+
+/**
+ * ¿Hay en ESTE navegador conversaciones de una cuenta que ahora no se listan?
+ *
+ * Sirve para poder decir "entra con tu cuenta para ver tus recetas" en vez de
+ * enseñar un historial vacío a alguien que sabe que tenía cosas ahí. Sin esto,
+ * cerrar la fuga se sentiría como haber perdido las conversaciones.
+ *
+ * ⚠️ Devuelve un SÍ o un NO, nunca títulos ni cuántas ni de quién. Lo único que
+ * revela es que alguien entró con cuenta en este navegador — que es lo mínimo
+ * que hace falta para poder dar el aviso.
+ */
+export async function hasSignedInHistory(visitorId: string): Promise<boolean> {
+  if (!isSupabaseAdminConfigured()) {
+    return false;
+  }
+
+  const { count, error } = await createSupabaseAdminClient()
+    .from('recipes')
+    .select('id', { count: 'exact', head: true })
+    .eq('visitor_id', visitorId)
+    .not('user_id', 'is', null)
+    .neq('status', 'descartada');
+
+  return error === null && (count ?? 0) > 0;
 }
 
 /**

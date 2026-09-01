@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { listRecipes } from '@/entities/recipe-chat/server';
+import { hasSignedInHistory, listRecipes } from '@/entities/recipe-chat/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
 import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
@@ -18,5 +18,12 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   const recipes = await listRecipes(visitorId, user?.id ?? null);
 
-  return attachVisitorCookie(NextResponse.json({ recipes }), visitorId);
+  // Solo se mira estando sin sesión: con la cuenta abierta ya se ve todo lo
+  // suyo y no hay nada escondido de lo que avisar.
+  const hayEnLaCuenta = user === null ? await hasSignedInHistory(visitorId) : false;
+
+  return attachVisitorCookie(
+    NextResponse.json({ recipes, hasSignedInHistory: hayEnLaCuenta }),
+    visitorId,
+  );
 }
