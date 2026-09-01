@@ -113,8 +113,17 @@ sobre la receta, anclado a ella.
     que ya existía. ⚠️ **Falta confirmarlo en Mixpanel Live View sobre QA**: se
     comprobó que tocar una duda dispara una petición a Mixpanel, pero desde el
     navegador no se pudo leer el cuerpo para verificar las propiedades.
-- **Fase 4 · el cierre al final de la receta.** La cápsula relacionada o el plan.
-  La duda es _ayuda_; esto es _oferta_. Van separadas a propósito.
+- ~~**Fase 4 · el cierre al final de la receta.**~~ Hecha el 2026-09-01. Ofrece
+  la CUENTA gratis, no el plan: pedir dinero a quien no ha dejado ni un correo
+  se salta D16, y mientras OnePay no esté conectado cada interesado es una
+  conversación de WhatsApp a mano. Enlaza el curso en video solo cuando existe y
+  está grabado — hoy únicamente `lomo-curado`.
+
+  ⚠️ Qué cursos están publicados se lee al COMPILAR (cliente admin, sin
+  cookies, para no volver dinámicas las 45 recetas). **Publicar un curso no se
+  refleja en las recetas hasta el siguiente despliegue.** Falla del lado seguro:
+  deja de ofrecer algo que existe, nunca ofrece algo que no.
+
 - **Fase 5 · el tope de gasto, a conciencia.** `checkBudget()` se comprueba
   ANTES de mirar la sesión, así que al agotarse el presupuesto diario se agota
   **para todos, incluido quien paga**. Con 45 recetas indexadas empujando
