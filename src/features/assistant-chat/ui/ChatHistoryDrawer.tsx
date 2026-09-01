@@ -1,10 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState, type ReactNode } from 'react';
 
+import { appRoutes } from '@/shared/config';
 import { cn } from '@/shared/lib';
 
-import { fetchRecipes, groupByDate, type RecipeSummary } from '../lib/recipeHistory';
+import { fetchRecipes, groupByDate, type RecipeHistory } from '../lib/recipeHistory';
 
 interface ChatHistoryDrawerProps {
   readonly isOpen: boolean;
@@ -33,7 +35,7 @@ export function ChatHistoryDrawer({
   onPick,
   onNew,
 }: ChatHistoryDrawerProps): ReactNode {
-  const [recipes, setRecipes] = useState<readonly RecipeSummary[] | null>(null);
+  const [history, setHistory] = useState<RecipeHistory | null>(null);
 
   useEffect(() => {
     if (!isOpen) {
@@ -43,7 +45,7 @@ export function ChatHistoryDrawer({
     let vivo = true;
     void fetchRecipes().then((lista) => {
       if (vivo) {
-        setRecipes(lista);
+        setHistory(lista);
       }
     });
 
@@ -72,6 +74,7 @@ export function ChatHistoryDrawer({
     return null;
   }
 
+  const recipes = history?.recipes ?? null;
   const grupos = recipes === null ? [] : groupByDate(recipes);
 
   return (
@@ -116,9 +119,34 @@ export function ChatHistoryDrawer({
           {recipes === null ? (
             <p className="px-1 py-6 text-sm text-cocoa/55">Buscando tus recetas…</p>
           ) : recipes.length === 0 ? (
-            <p className="px-1 py-6 text-sm leading-relaxed text-cocoa/60">
-              Todavía no tienes ninguna. La primera pregunta que hagas abre una.
-            </p>
+            /*
+              ⚠️ Dos vacíos distintos, y decir el equivocado hace daño.
+
+              Si en este navegador hay conversaciones de una cuenta, no es que
+              no tengas ninguna: es que no estás dentro. Enseñar "todavía no
+              tienes ninguna" a alguien que sabe que sí las tenía parece que se
+              perdieron, y esa fue la razón de que el historial se listara por
+              navegador y acabara enseñando los títulos de una cuenta a quien
+              no había entrado (2026-09-01).
+            */
+            history?.hasSignedInHistory === true ? (
+              <div className="px-1 py-6">
+                <p className="text-sm leading-relaxed text-cocoa/60">
+                  Tus recetas están guardadas en tu cuenta. Entra con tu correo para
+                  verlas.
+                </p>
+                <Link
+                  href={appRoutes.login}
+                  className="mt-3 inline-block rounded-full border border-cocoa/15 px-4 py-2 text-sm font-medium text-cocoa/80 transition-colors active:bg-cream"
+                >
+                  Entrar
+                </Link>
+              </div>
+            ) : (
+              <p className="px-1 py-6 text-sm leading-relaxed text-cocoa/60">
+                Todavía no tienes ninguna. La primera pregunta que hagas abre una.
+              </p>
+            )
           ) : (
             grupos.map(({ label, items }) => (
               <section key={label} className="mb-4">

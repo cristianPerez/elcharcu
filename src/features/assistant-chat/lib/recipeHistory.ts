@@ -6,6 +6,19 @@ export interface RecipeSummary {
 
 interface RecipesResponse {
   readonly recipes?: unknown;
+  readonly hasSignedInHistory?: unknown;
+}
+
+export interface RecipeHistory {
+  readonly recipes: readonly RecipeSummary[];
+  /**
+   * `true` cuando en este navegador hay conversaciones de una cuenta que aquí
+   * NO se listan, porque quien mira no tiene la sesión abierta.
+   *
+   * Sirve para decir "entra con tu cuenta" en vez de enseñar un historial
+   * vacío a alguien que sabe que tenía cosas ahí.
+   */
+  readonly hasSignedInHistory: boolean;
 }
 
 /** Nunca se cree lo que llega: se comprueba fila por fila. */
@@ -30,17 +43,22 @@ function parse(value: unknown): readonly RecipeSummary[] {
   });
 }
 
-/** Las conversaciones de quien pregunta. Lista vacía si algo falla. */
-export async function fetchRecipes(): Promise<readonly RecipeSummary[]> {
+const VACIO: RecipeHistory = { recipes: [], hasSignedInHistory: false };
+
+/** Las conversaciones de quien pregunta. Vacío si algo falla. */
+export async function fetchRecipes(): Promise<RecipeHistory> {
   try {
     const response = await fetch('/api/recetas', { cache: 'no-store' });
     if (!response.ok) {
-      return [];
+      return VACIO;
     }
     const payload = (await response.json()) as RecipesResponse;
-    return parse(payload.recipes);
+    return {
+      recipes: parse(payload.recipes),
+      hasSignedInHistory: payload.hasSignedInHistory === true,
+    };
   } catch {
-    return [];
+    return VACIO;
   }
 }
 

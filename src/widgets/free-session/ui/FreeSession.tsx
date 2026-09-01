@@ -76,7 +76,13 @@ export function FreeSession(): ReactNode {
         </ul>
 
         <div className="mt-8 rounded-2xl border border-cocoa/10 bg-cream-white p-4 shadow-raised md:p-6">
-          <AssistantChat product={recipe} canSendImages={!status.areImagesExhausted} />
+          {/* ⚠️ Aquí iba `product={recipe}`, y `recipe` es `chips[0]`: texto
+              sacado del perfil de curado que acababa DENTRO del prompt del
+              sistema (2026-09-01). Se va con el resto de `product`. Lo que el
+              asistente reconoce ahora es el slug de una de las 45 recetas del
+              repo, y un chip del onboarding no lo es. La pantalla sigue
+              mostrando el chip arriba, así que la persona no pierde nada. */}
+          <AssistantChat canSendImages={!status.areImagesExhausted} />
 
           {isKnown && quota.questionsUsed > 0 ? (
             <p className="mt-3 text-xs text-cocoa/65">

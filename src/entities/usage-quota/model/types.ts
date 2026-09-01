@@ -37,13 +37,22 @@ export interface QuotaStatus {
 }
 
 /**
- * Cuántas preguntas se contestan antes de pedir nombre, correo y WhatsApp (D16).
+ * Cuántas preguntas se contestan antes de pedir el correo (D16).
  *
  * Esto NO vive en la base: no es un tope de gasto sino una regla del embudo.
- * La primera pregunta es la demostración; el muro blando viene justo después,
- * en el momento de máximo interés.
+ *
+ * ⚠️ Pasó de 1 a DOS el 2026-09-01 (Cristian). Con una sola, el muro caía
+ * cuando la persona apenas había visto que el asistente contesta — y una
+ * respuesta no demuestra una conversación. Con dos, ya tuvo un ida y vuelta:
+ * preguntó, leyó, repreguntó. Ahí el correo se pide sobre algo que de verdad
+ * probó.
+ *
+ * ⚠️ Y cuesta el doble. El visitante anónimo pasa a gastar hasta dos preguntas
+ * por navegador, y borrar las cookies sigue regalándolas — ahora de dos en dos
+ * (~0,011 USD la tanda). Lo frena el tope diario de gasto, que es global. Si
+ * este número sube más, hay que medir antes.
  */
-export const QUESTIONS_BEFORE_LEAD = 1;
+export const QUESTIONS_BEFORE_LEAD = 2;
 
 /** Cupo vacío, para el primer render antes de que conteste el servidor. */
 export const EMPTY_QUOTA: QuotaSnapshot = {

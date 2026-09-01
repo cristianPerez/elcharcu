@@ -90,7 +90,6 @@ export function AppAssistant(): ReactNode {
           ) : null}
 
           <AssistantChat
-            product="consulta general"
             canSendImages={!status.areImagesExhausted}
             blockedReason={
               isExhausted ? 'Sin preguntas este mes. Vuelven el día 1.' : null

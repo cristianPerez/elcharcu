@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
@@ -10,6 +10,8 @@ import { sendAccountLink } from '../lib/sendAccountLink';
 interface LeadCaptureModalProps {
   /** Preguntas que gana al dejar el correo. Lo dice la base, no la pantalla. */
   readonly questionsLimit: number;
+  /** Cerrarlo sin dejar el correo. Devuelve la página, no el cupo. */
+  readonly onClose: () => void;
 }
 
 /**
@@ -23,23 +25,47 @@ interface LeadCaptureModalProps {
  * crea la cuenta: guarda el lead y manda el enlace de entrada. Nombre y
  * WhatsApp se piden después, cuando haya algo que dar a cambio.
  *
- * ⚠️ BLOQUEA: hay que abrir el enlace del correo para seguir preguntando
- * (decisión de Cristian, 2026-08-19). No se cierra solo — lo retira la sesión
- * cuando aparece, que es lo único que prueba que la cuenta existe. Antes se
- * cerraba en cuanto se enviaba el correo, así que ni siquiera se llegaba a ver
- * el aviso de "míralo en spam".
+ * ⚠️ SE PUEDE CERRAR (2026-09-01, pedido de Cristian). Hasta hoy no tenía
+ * salida: se abría encima de la receta y ahí se quedaba, así que quien no
+ * quisiera dejar su correo tampoco podía seguir LEYENDO. En una página a la que
+ * se llega desde Google eso no convence a nadie — solo hace que se vaya.
+ *
+ * Cerrarlo devuelve la PÁGINA, no el cupo: sin cuenta sigue sin poder
+ * preguntar, y el muro vuelve en cuanto lo intente. El correo se pide, no se
+ * cobra.
+ *
+ * Lo que NO se cierra solo es el aviso de "te mandamos un enlace": eso lo
+ * retira la sesión al aparecer, que es lo único que prueba que la cuenta
+ * existe. Antes se cerraba en cuanto se enviaba el correo, así que ni siquiera
+ * se llegaba a leer el "míralo en spam".
  *
  * La conversación anterior NO se recupera si abre el enlace en otro
  * dispositivo: la receta anónima cuelga de la cookie de este navegador. Es
  * consciente y aceptado para el lanzamiento — se entra a un chat limpio.
  */
-export function LeadCaptureModal({ questionsLimit }: LeadCaptureModalProps): ReactNode {
+export function LeadCaptureModal({
+  questionsLimit,
+  onClose,
+}: LeadCaptureModalProps): ReactNode {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [phase, setPhase] = useState<'form' | 'sending' | 'sent'>('form');
 
   const isSending = phase === 'sending';
   const wasSent = phase === 'sent';
+
+  // Escape cierra. Es lo primero que se intenta antes de buscar la X.
+  useEffect(() => {
+    const alPulsar = (event: KeyboardEvent): void => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', alPulsar);
+    return () => {
+      window.removeEventListener('keydown', alPulsar);
+    };
+  }, [onClose]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
@@ -79,8 +105,29 @@ export function LeadCaptureModal({ questionsLimit }: LeadCaptureModalProps): Rea
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-cocoa/60 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-cocoa/10 bg-cream-white p-6 shadow-raised md:p-8">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Deja tu correo para seguir preguntando"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+    >
+      <button
+        type="button"
+        aria-label="Cerrar y seguir leyendo"
+        onClick={onClose}
+        className="absolute inset-0 bg-cocoa/60 backdrop-blur-sm"
+      />
+
+      <div className="relative w-full max-w-md rounded-2xl border border-cocoa/10 bg-cream-white p-6 shadow-raised md:p-8">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Cerrar"
+          className="absolute right-3 top-3 flex size-9 items-center justify-center rounded-lg text-2xl leading-none text-cocoa/45 transition-colors hover:bg-cream hover:text-cocoa/70"
+        >
+          ×
+        </button>
+
         {wasSent ? (
           <>
             <h2 className="font-serif text-2xl font-semibold text-forest md:text-3xl">
@@ -150,6 +197,16 @@ export function LeadCaptureModal({ questionsLimit }: LeadCaptureModalProps): Rea
                 className="mt-4 w-full rounded-full bg-terracota-dark px-6 py-3 font-medium text-cream-white shadow-surface transition-shadow hover:shadow-raised focus:outline-none focus:ring-2 focus:ring-terracota focus:ring-offset-2 active:scale-[0.97] disabled:opacity-50"
               >
                 {isSending ? 'Enviando…' : 'Mandarme el enlace'}
+              </button>
+
+              {/* La salida dicha con palabras. La X de la esquina la ve quien
+                  la busca; esto lo lee quien se siente acorralado. */}
+              <button
+                type="button"
+                onClick={onClose}
+                className="mt-4 w-full text-sm font-medium text-cocoa/65 underline underline-offset-4 hover:text-cocoa"
+              >
+                Ahora no, sigo leyendo la receta
               </button>
 
               <p className="mt-4 text-xs leading-relaxed text-cocoa/65">

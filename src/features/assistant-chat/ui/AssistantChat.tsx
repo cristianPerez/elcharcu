@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from 'react';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
+import { FitText } from '@/shared/ui';
 
 import { useAssistantChat, type AssistantChatParams } from '../model/useAssistantChat';
 
@@ -34,6 +35,16 @@ interface AssistantChatProps extends AssistantChatParams {
    * lleve directo a la respuesta sin escribir nada.
    */
   readonly pendingPrompt?: string | null;
+  /**
+   * Qué se lee en la cabecera. Por defecto, el nombre de la conversación.
+   *
+   * El panel de una receta manda aquí el nombre de la receta: así la
+   * hamburguesa y el título van en la MISMA línea y no hacen falta dos
+   * cabeceras pegadas diciendo cosas distintas.
+   */
+  readonly title?: string | null;
+  /** Lo que va al final de la cabecera. El panel mete ahí su botón de cerrar. */
+  readonly headerAction?: ReactNode;
 }
 
 /** El asistente de charcutería, atado a la receta que el usuario está haciendo. */
@@ -42,6 +53,8 @@ export function AssistantChat({
   blockedReason = null,
   onBeforeSend,
   pendingPrompt = null,
+  title = null,
+  headerAction = null,
   ...params
 }: AssistantChatProps): ReactNode {
   const { messages, isThinking, error, send, recipeTitle, openRecipe, startNewRecipe } =
@@ -72,8 +85,17 @@ export function AssistantChat({
           <span aria-hidden="true" className="h-0.5 w-4 rounded-full bg-cocoa/60" />
         </button>
 
-        <h2 className="min-w-0 flex-1 truncate text-sm font-medium text-cocoa/70">
-          {recipeTitle ?? (hasStarted ? 'Receta sin nombre' : 'Receta nueva')}
+        {/*
+          El título se ENCOGE hasta caber en vez de cortarse (Cristian,
+          2026-09-01). Los nombres de receta van de "Merguez" a "Chorizos
+          Picantes de Jalapeño y Queso Cheddar" —de 7 a 45 caracteres—, y un
+          nombre cortado a la mitad es justo el dato que estaba ahí para decir
+          "sé qué receta estás leyendo".
+        */}
+        <h2 className="min-w-0 flex-1 font-medium text-cocoa/70">
+          <FitText>
+            {title ?? recipeTitle ?? (hasStarted ? 'Receta sin nombre' : 'Receta nueva')}
+          </FitText>
         </h2>
 
         {/* "Nueva" solo cuando hay algo que dejar atrás: en un chat en blanco
@@ -87,6 +109,8 @@ export function AssistantChat({
             Nueva
           </button>
         ) : null}
+
+        {headerAction}
       </header>
 
       <ChatHistoryDrawer

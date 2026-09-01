@@ -29,7 +29,7 @@ export function NoteBox({ title, children, tone = 'light' }: NoteBoxProps): Reac
       </div>
       <p
         className={cn(
-          'text-sm leading-relaxed',
+          'text-[15px] leading-relaxed md:text-base',
           isDark ? 'text-cream/75' : 'text-cocoa/70',
         )}
       >

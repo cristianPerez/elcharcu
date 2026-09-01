@@ -19,6 +19,14 @@ export interface Step {
   readonly text: string;
 }
 
+/** Una duda escrita a mano para una receta concreta. Todas son opcionales. */
+export interface RecipeDoubtOverride {
+  /** Lo que se lee en el botón. */
+  readonly label: string;
+  /** Lo que se le manda a El Charcu al tocarlo. */
+  readonly prompt: string;
+}
+
 export interface Recipe {
   readonly slug: string;
   readonly name: string;
@@ -42,6 +50,20 @@ export interface Recipe {
   readonly resultNote: string;
   readonly finalQuote: string;
   readonly finalQuoteCaption: string;
+  /**
+   * Dudas escritas a mano, que ganan a las que se generan solas.
+   *
+   * Las cuatro se generan desde los datos de la receta y salen específicas
+   * —usan su rendimiento, su sal de cura, sus semanas de curado—, así que esto
+   * es para cuando una merezca estar MEJOR escrita, no para rellenar las 45.
+   * Se pone solo la que se quiera cambiar; el resto siguen generándose.
+   */
+  readonly doubts?: {
+    readonly onIntro?: RecipeDoubtOverride;
+    readonly onIngredients?: RecipeDoubtOverride;
+    readonly onProcess?: RecipeDoubtOverride;
+    readonly onServing?: RecipeDoubtOverride;
+  };
 }
 
 /** Subconjunto que necesita la tarjeta de listado (Interface Segregation). */

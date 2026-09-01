@@ -36,8 +36,34 @@ export function publishQuotaFrom(value: unknown): void {
   }
 }
 
+/**
+ * La petición que ya va en camino, si la hay.
+ *
+ * ⚠️ Sin esto, cada consumidor pregunta por su cuenta y la misma pantalla pide
+ * el mismo número varias veces. En una receta eran CUATRO peticiones a
+ * `/api/cupo` en el mismo render (medido el 2026-08-31): dos dudas, y cada una
+ * preguntando dos veces —la suya y la de `useLeadWall`—.
+ *
+ * Dentro de la app esto no pasa porque `QuotaProvider` lo resuelve en el
+ * servidor y lo reparte; pero las recetas son estáticas, ahí no hay servidor
+ * que preguntar en el primer render, y el proveedor no llega.
+ *
+ * Compartir la promesa es la respuesta correcta y no una caché: son peticiones
+ * simultáneas a lo mismo, así que la respuesta es literalmente la misma. Se
+ * suelta al terminar, de modo que la siguiente vez se vuelve a preguntar de
+ * verdad y nadie se queda con un número viejo.
+ */
+let inFlight: Promise<QuotaSnapshot | null> | null = null;
+
 /** Pregunta al servidor por el cupo actual. */
 export async function fetchQuota(): Promise<QuotaSnapshot | null> {
+  inFlight ??= requestQuota().finally(() => {
+    inFlight = null;
+  });
+  return inFlight;
+}
+
+async function requestQuota(): Promise<QuotaSnapshot | null> {
   try {
     const response = await fetch('/api/cupo', { cache: 'no-store' });
     if (!response.ok) {

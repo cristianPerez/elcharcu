@@ -12,6 +12,7 @@ export {
   recipeMessages,
   recipeHeader,
   listRecipes,
+  hasSignedInHistory,
   renameRecipe,
 } from './api/recipeChatApi';
 export type { StoredMessage, RecipeSummary } from './api/recipeChatApi';

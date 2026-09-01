@@ -7,6 +7,7 @@ import {
   TITLE_SYSTEM_PROMPT,
 } from '@/entities/charcu-assistant';
 import { auditCureDoses, MAX_CURE_1_G_PER_KG } from '@/entities/cure-safety';
+import { getRecipeBySlug, recipeBrief } from '@/entities/recipe';
 import {
   createRecipe,
   ownsRecipe,
@@ -26,7 +27,16 @@ const MAX_IMAGE_CHARS = 4_000_000;
 const MAX_TURNS = 30;
 
 interface AssistantRequest {
-  readonly product: string;
+  /**
+   * El slug de la receta que tiene abierta, si viene de una.
+   *
+   * ⚠️ Aquí había `product`: texto libre del navegador que entraba TAL CUAL en
+   * el prompt del sistema, sin lista blanca ni tope de longitud. Ahora viaja un
+   * slug y el servidor busca la receta él mismo (`getRecipeBySlug`), así que lo
+   * único que puede llegar al modelo es una de las 45 recetas del repo. Un slug
+   * que no existe es `null`, no texto.
+   */
+  readonly recipeSlug: string | null;
   readonly turns: readonly GeminiTurn[];
   /**
    * La receta a la que pertenece esta pregunta.
@@ -74,16 +84,17 @@ function parseRequest(value: unknown): AssistantRequest | null {
     return null;
   }
 
-  const { product, turns, recipeId } = value as {
-    product?: unknown;
+  const { recipeSlug, turns, recipeId } = value as {
+    recipeSlug?: unknown;
     turns?: unknown;
     recipeId?: unknown;
   };
 
-  // `level` y `country` ya no se leen del cuerpo. El nivel no existe (todos son
-  // charcus) y el país lo pone el servidor desde la cabecera de Vercel, no
-  // quien pregunta. Si un cliente viejo los sigue mandando, se ignoran.
-  if (typeof product !== 'string' || !Array.isArray(turns) || turns.length === 0) {
+  // `level`, `country` y `product` ya no se leen del cuerpo. El nivel no existe
+  // (todos son charcus); el país lo pone el servidor desde la cabecera de
+  // Vercel; y `product` era texto libre que acababa dentro del prompt. Si un
+  // cliente viejo los sigue mandando, se ignoran.
+  if (!Array.isArray(turns) || turns.length === 0) {
     return null;
   }
 
@@ -95,7 +106,8 @@ function parseRequest(value: unknown): AssistantRequest | null {
   return parsed.length === 0
     ? null
     : {
-        product,
+        recipeSlug:
+          typeof recipeSlug === 'string' && recipeSlug !== '' ? recipeSlug : null,
         turns: parsed,
         recipeId: typeof recipeId === 'string' && recipeId !== '' ? recipeId : null,
       };
@@ -184,9 +196,18 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
+  // La receta la resuelve el SERVIDOR a partir del slug. Lo que no esté entre
+  // las 45 del repo no existe: `getRecipeBySlug` devuelve `undefined` y la
+  // conversación sigue como asistente general.
+  const openRecipe =
+    parsed.recipeSlug === null ? undefined : getRecipeBySlug(parsed.recipeSlug);
+
   const systemPrompt = buildSystemPrompt({
-    product: parsed.product,
     country: countryFromRequest(request),
+    recipe:
+      openRecipe === undefined
+        ? null
+        : { name: openRecipe.name, brief: recipeBrief(openRecipe) },
   });
 
   const result = await generateAnswer(systemPrompt, parsed.turns);
