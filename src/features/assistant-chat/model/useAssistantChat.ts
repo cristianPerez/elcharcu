@@ -15,16 +15,24 @@ import {
 import { recallChat, rememberChat } from '../lib/chatMemory';
 
 export interface AssistantChatParams {
-  readonly product: string;
+  /**
+   * El slug de la receta abierta, si esta conversación nace dentro de una.
+   * `null` en el asistente general.
+   */
+  readonly recipeSlug?: string | null;
 }
 
 /*
- * Aquí había también `level` y `country`, y los dos se fueron el 2026-08-29.
+ * Aquí había también `level`, `country` y `product`, y los tres se fueron.
  *
- * El nivel porque dejó de existir: todos son charcus. El país porque el
- * servidor lo saca de la cabecera de Vercel — mandarlo desde el navegador
- * significaba que cualquiera podía escribir lo que quisiera y acababa dentro
- * del prompt.
+ * El nivel porque dejó de existir: todos son charcus (2026-08-29). El país
+ * porque el servidor lo saca de la cabecera de Vercel — mandarlo desde el
+ * navegador significaba que cualquiera podía escribir lo que quisiera y acababa
+ * dentro del prompt.
+ *
+ * `product` se fue por lo mismo, y tardó más en verse porque parecía inofensivo
+ * (2026-09-01): era texto libre que entraba tal cual en las instrucciones del
+ * sistema. Ahora viaja un SLUG y la receta la busca el servidor.
  */
 
 export interface AssistantChatController {
@@ -268,7 +276,7 @@ export function useAssistantChat(
       replaceMessages(history);
 
       track(ANALYTICS_EVENTS.assistantMessageSent, {
-        recipe: params.product,
+        recipe: params.recipeSlug ?? 'general',
         with_photo: file !== null,
         // Cuántos turnos lleva la conversación: mide si de verdad conversan
         // o si preguntan una vez y se van.
@@ -278,7 +286,7 @@ export function useAssistantChat(
 
       if (file !== null) {
         track(ANALYTICS_EVENTS.assistantPhotoAttached, {
-          recipe: params.product,
+          recipe: params.recipeSlug ?? 'general',
           size_kb: Math.round(file.size / 1024),
         });
       }
@@ -322,7 +330,7 @@ export function useAssistantChat(
             track(ANALYTICS_EVENTS.assistantFailed, {
               reason: 'sin-cupo',
               denied_by: motivo,
-              recipe: params.product,
+              recipe: params.recipeSlug ?? 'general',
             });
             return;
           }
@@ -331,10 +339,12 @@ export function useAssistantChat(
             setError(
               'El asistente descansa hasta mañana: hoy ya atendió a mucha gente. Escríbenos por WhatsApp si es urgente.',
             );
-            track(ANALYTICS_EVENTS.aiBudgetExhausted, { recipe: params.product });
+            track(ANALYTICS_EVENTS.aiBudgetExhausted, {
+              recipe: params.recipeSlug ?? 'general',
+            });
             track(ANALYTICS_EVENTS.assistantFailed, {
               reason: 'sin-presupuesto',
-              recipe: params.product,
+              recipe: params.recipeSlug ?? 'general',
             });
             return;
           }
@@ -346,7 +356,7 @@ export function useAssistantChat(
           );
           track(ANALYTICS_EVENTS.assistantFailed, {
             reason: String(response.status),
-            recipe: params.product,
+            recipe: params.recipeSlug ?? 'general',
           });
           return;
         }
@@ -365,7 +375,7 @@ export function useAssistantChat(
           setError('Me llegó una respuesta vacía. Vuelve a preguntarme.');
           track(ANALYTICS_EVENTS.assistantFailed, {
             reason: 'respuesta-vacia',
-            recipe: params.product,
+            recipe: params.recipeSlug ?? 'general',
           });
           return;
         }
@@ -373,7 +383,7 @@ export function useAssistantChat(
         // El tiempo de respuesta es la métrica de producto que más importa
         // aquí: si sube, la gente deja de preguntar aunque conteste bien.
         track(ANALYTICS_EVENTS.assistantAnswerReceived, {
-          recipe: params.product,
+          recipe: params.recipeSlug ?? 'general',
           with_photo: file !== null,
           seconds: Math.round((Date.now() - startedAt) / 100) / 10,
           was_blocked: answer.wasBlocked === true,
@@ -399,13 +409,15 @@ export function useAssistantChat(
         });
 
         if (answer.wasBlocked === true) {
-          track(ANALYTICS_EVENTS.unsafeDoseBlocked, { recipe: params.product });
+          track(ANALYTICS_EVENTS.unsafeDoseBlocked, {
+            recipe: params.recipeSlug ?? 'general',
+          });
         }
       } catch {
         setError('Se cayó la conexión. Inténtalo otra vez.');
         track(ANALYTICS_EVENTS.assistantFailed, {
           reason: 'conexion',
-          recipe: params.product,
+          recipe: params.recipeSlug ?? 'general',
         });
       } finally {
         setIsThinking(false);

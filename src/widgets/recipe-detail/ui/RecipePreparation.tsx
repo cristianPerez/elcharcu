@@ -4,16 +4,24 @@ import { type Step, type TitleDescription } from '@/entities/recipe';
 
 import { Container, Eyebrow } from '@/shared/ui';
 
+import { type RecipeDoubt as Doubt } from '../lib/recipeDoubts';
+
 import { NoteBox } from './NoteBox';
+import { RecipeDoubt } from './RecipeDoubt';
 import { StepRow } from './StepRow';
 
 interface RecipePreparationProps {
   readonly steps: readonly Step[];
   readonly tips: readonly TitleDescription[];
+  readonly doubt: Doubt;
 }
 
 /** Sección de preparación: pasos numerados y consejos de técnica. */
-export function RecipePreparation({ steps, tips }: RecipePreparationProps): ReactNode {
+export function RecipePreparation({
+  steps,
+  tips,
+  doubt,
+}: RecipePreparationProps): ReactNode {
   return (
     <section className="bg-cream py-16 text-cocoa md:py-24">
       <Container>
@@ -34,6 +42,12 @@ export function RecipePreparation({ steps, tips }: RecipePreparationProps): Reac
               {tip.description}
             </NoteBox>
           ))}
+        </div>
+
+        {/* Cerrando los pasos: aquí es donde empieza la espera de semanas sin
+            que nadie te diga si va bien. */}
+        <div className="mt-8">
+          <RecipeDoubt doubt={doubt} />
         </div>
       </Container>
     </section>

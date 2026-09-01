@@ -4,14 +4,18 @@ import { type Ingredient } from '@/entities/recipe';
 
 import { Container, Eyebrow } from '@/shared/ui';
 
+import { type RecipeDoubt as Doubt } from '../lib/recipeDoubts';
+
 import { IngredientRow } from './IngredientRow';
 import { NoteBox } from './NoteBox';
+import { RecipeDoubt } from './RecipeDoubt';
 
 interface RecipeIngredientsProps {
   readonly note: string;
   readonly ingredients: readonly Ingredient[];
   readonly proportionNote: string;
   readonly charcuteroNote: string;
+  readonly doubt: Doubt;
 }
 
 /** Sección de ingredientes (fondo verde oscuro) con tabla y notas de proporción. */
@@ -20,6 +24,7 @@ export function RecipeIngredients({
   ingredients,
   proportionNote,
   charcuteroNote,
+  doubt,
 }: RecipeIngredientsProps): ReactNode {
   return (
     <section className="bg-grain bg-forest-dark py-16 text-cream md:py-24">
@@ -43,6 +48,11 @@ export function RecipeIngredients({
             <NoteBox title="Nota del charcutero" tone="dark">
               {charcuteroNote}
             </NoteBox>
+
+            {/* Junto a la nota del charcutero, y no al final de la página: la
+                duda de las cantidades se tiene MIRANDO la tabla, no después de
+                haberla dejado atrás. */}
+            <RecipeDoubt doubt={doubt} tone="dark" />
           </div>
         </div>
       </Container>

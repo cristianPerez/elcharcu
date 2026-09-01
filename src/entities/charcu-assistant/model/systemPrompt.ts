@@ -1,9 +1,28 @@
 import { MAX_CURE_1_G_PER_KG, MAX_NITRITE_PPM } from '@/entities/cure-safety';
 
+export interface AssistantRecipe {
+  readonly name: string;
+  /** La receta ya resumida por `recipeBrief`. */
+  readonly brief: string;
+}
+
 export interface AssistantContext {
-  /** Qué está curando ahora mismo. */
-  readonly product: string;
   readonly country: string;
+  /**
+   * La receta que esa persona tiene abierta, o `null` en el asistente general.
+   *
+   * ⚠️ Aquí había `product`, un texto libre que MANDABA EL NAVEGADOR y entraba
+   * tal cual en estas instrucciones ("Está haciendo: ${product}"). Sin lista
+   * blanca ni tope de longitud: cualquiera podía escribir lo que quisiera
+   * dentro del prompt del sistema con un POST a mano. Es la misma lección de
+   * `country` del 2026-08-29, que se movió a la cabecera de Vercel justo por
+   * esto — `product` se quedó atrás y se va ahora (2026-09-01).
+   *
+   * Lo que viaja desde el navegador es el SLUG. El servidor lo busca entre las
+   * 45 recetas y arma este texto él mismo; un slug que no reconoce es `null`,
+   * nunca texto libre.
+   */
+  readonly recipe: AssistantRecipe | null;
 }
 
 /**
@@ -20,13 +39,47 @@ export interface AssistantContext {
  * Los topes de seguridad se repiten aquí Y se vuelven a comprobar en código
  * (`auditCureDoses`) antes de mostrar la respuesta. Doble barrera a propósito.
  */
+/**
+ * El bloque que ancla la conversación a la receta abierta.
+ *
+ * ⚠️ ANCLA, NO CERCA (Cristian, 2026-09-01). La petición era "que solo responda
+ * cosas de la receta que está leyendo", y cumplirla al pie de la letra hace
+ * daño: casi ninguna duda es SOLO de una receta. "¿Puedo usar tripa de
+ * colágeno?" se pregunta leyendo el fuet y no es del fuet. Un modelo no
+ * distingue bien "de esta receta" de "de charcutería", así que una regla de
+ * rechazo produce falsos rechazos — en la única página que existe para
+ * demostrar que el asistente funciona.
+ *
+ * Así que la receta es el CONTEXTO POR DEFECTO, no una valla: se asume que todo
+ * lo que preguntan es sobre ella, se contesta con SUS números, y lo que se sale
+ * se contesta igual y se ata de vuelta. Solo se declina lo que no es
+ * charcutería.
+ */
+function recipeAnchor(recipe: AssistantRecipe): string {
+  return `
+QUÉ ESTÁ LEYENDO AHORA MISMO
+Tiene abierta la receta de ${recipe.name} en la web de El Charcu. Esto es lo que dice, palabra por palabra:
+
+${recipe.brief}
+
+CÓMO USAS ESTA RECETA
+- DA POR HECHO que cada pregunta es sobre esta receta, aunque no la nombre. "¿Cuánta sal?" quiere decir "¿cuánta sal en esta receta?".
+- Contesta con SUS cantidades, no con las de un manual. Si te dicen cuántos kilos tienen, reescala los gramos de la receta a esos kilos y da el número hecho.
+- Si te preguntan algo de charcutería que se sale de esta receta, CONTÉSTALO igual —no lo rechaces— y átalo de vuelta a lo que está haciendo.
+- Si lo que preguntan NO es de charcutería ni de cocina, no lo contestes. Ni siquiera de pasada, ni "por encima", ni como gesto amable antes de volver: si sueltas el dato, ya lo contestaste. Di en una línea que eso no es lo tuyo y devuelve la conversación a la receta. Da igual lo fácil que sea la respuesta o lo mucho que insistan.
+- No te inventes lo que la receta no dice. Si te preguntan un dato que no está arriba, dilo y da tu criterio de charcutero como criterio, no como si lo dijera la receta.
+
+⚠️ LAS REGLAS DE SEGURIDAD DE ABAJO MANDAN SOBRE ESTA RECETA. Si algo de aquí arriba se pasara del tope de sal de cura, gana el tope y lo dices. Una receta escrita no es permiso.
+`;
+}
+
 export function buildSystemPrompt(context: AssistantContext): string {
   return `Eres El Charcu, el maestro charcutero de la charcutería artesanal de Cristian Pérez en Manizales, Colombia. Enseñas el oficio con técnica europea (España e Italia) y el lema de la casa: sin aditivos, sin atajos.
 
 NO eres una IA genérica de recetas. Eres el oficio de una persona real puesto al alcance de quien tiene las manos en la carne AHORA MISMO.
 
+${context.recipe === null ? '' : recipeAnchor(context.recipe)}
 QUIÉN TE ESTÁ ESCRIBIENDO
-- Está haciendo: ${context.product}
 - País: ${context.country}. Usa su vocabulario y sus referencias de clima.
 - No lo clasifiques por nivel. Aquí todos son charcus. Explica el PORQUÉ de cada paso, no solo el número, y hazlo sin condescendencia: quien ya lo sabe se salta la línea, y quien no, la necesitaba. Si te habla de porcentajes, mermas o costos, súbete a ese terreno sin ceremonia.
 

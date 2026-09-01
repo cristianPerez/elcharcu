@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import { AssistantChat } from '@/features/assistant-chat';
-import { LeadCaptureModal, useAccountSession } from '@/features/lead-capture';
+import { LeadCaptureModal, useLeadWall } from '@/features/lead-capture';
 import { QuotaNotice } from '@/features/quota-wall';
 
-import { QUESTIONS_BEFORE_LEAD, useUsageQuota } from '@/entities/usage-quota';
+import { useUsageQuota } from '@/entities/usage-quota';
 
 import { Container } from '@/shared/ui';
 
@@ -34,8 +34,7 @@ import { Container } from '@/shared/ui';
  */
 export function AssistantHero(): ReactNode {
   const { quota, status, isKnown } = useUsageQuota();
-  const { isSignedIn, isReady: isSessionReady } = useAccountSession();
-  const [showLeadCapture, setShowLeadCapture] = useState(false);
+  const wall = useLeadWall();
 
   /*
     ⚠️ EL MURO YA NO SALTA SOLO (2026-08-31, pedido de Cristian).
@@ -52,28 +51,12 @@ export function AssistantHero(): ReactNode {
 
     La primera sigue siendo gratis y sin pedir nada: es la demostración, y el
     producto es el argumento de venta (D14).
+
+    ⚠️ La regla vive ahora en `useLeadWall`, dentro de la feature dueña del
+    muro. Estaba escrita a mano aquí, y con el asistente saliendo también en las
+    recetas la necesitaban dos widgets: una regla de negocio copiada en dos
+    sitios es una regla que en un mes dice dos cosas distintas.
   */
-  const needsAccount =
-    isKnown &&
-    isSessionReady &&
-    !isSignedIn &&
-    quota.questionsUsed >= QUESTIONS_BEFORE_LEAD;
-
-  // Si entra con su cuenta desde otra pestaña, el muro se retira solo.
-  useEffect(() => {
-    if (!needsAccount) {
-      setShowLeadCapture(false);
-    }
-  }, [needsAccount]);
-
-  /** La puerta: para la segunda pregunta y abre el muro en su lugar. */
-  const blockSecondQuestion = (): boolean => {
-    if (!needsAccount) {
-      return false;
-    }
-    setShowLeadCapture(true);
-    return true;
-  };
 
   // Solo se avisa si SABEMOS cómo va el cupo. Si no se pudo leer, se deja
   // pasar: quien de verdad protege el bolsillo es el tope diario de gasto, que
@@ -104,12 +87,11 @@ export function AssistantHero(): ReactNode {
               ) : null}
 
               <AssistantChat
-                product="consulta general"
                 canSendImages={!status.areImagesExhausted}
                 blockedReason={
                   isExhausted ? 'Sin preguntas este mes. Vuelven el día 1.' : null
                 }
-                onBeforeSend={blockSecondQuestion}
+                onBeforeSend={wall.block}
               />
 
               {/* El contador de siempre, solo mientras quede algo: a cero lo
@@ -125,7 +107,7 @@ export function AssistantHero(): ReactNode {
         </Container>
       </section>
 
-      {showLeadCapture && !isExhausted ? (
+      {wall.isOpen && !isExhausted ? (
         <LeadCaptureModal questionsLimit={quota.questionsLimit} />
       ) : null}
     </>
