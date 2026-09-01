@@ -71,8 +71,31 @@ export const ANALYTICS_EVENTS = {
   assistantFailed: 'assistant_failed',
   /** Desplegó el aviso de cómo funciona la seguridad. */
   assistantSafetyOpened: 'assistant_safety_opened',
-  /** Dejó su correo en el muro blando. */
+  /**
+   * Mandó su correo desde el muro.
+   *
+   * ⚠️ NO significa "contacto nuevo", y confundirlo infla la cifra. El muro le
+   * sale a cualquiera sin sesión, así que un usuario de siempre que vuelve
+   * después de cerrar sesión pasa por aquí igual y queda contado (lo vio
+   * Cristian probando el 2026-09-01). Quién es nuevo de verdad lo dicen
+   * `account_created` / `account_signed_in`, que se disparan al abrir el
+   * enlace, que es el único momento en que se sabe.
+   *
+   * Sigue valiendo, y mucho: es el paso del embudo "se le pidió el correo → lo
+   * dio", contra `lead_wall_shown`.
+   */
   leadCaptured: 'lead_captured',
+  /**
+   * Entró por el enlace del correo y la cuenta ACABA de nacer.
+   *
+   * ⚠️ No se puede saber al pedir el correo: preguntarle al servidor si un
+   * correo existe es exactamente lo que permite enumerar usuarios, y Supabase
+   * no lo contesta a propósito. Al abrir el enlace ya demostró que la cuenta es
+   * suya, así que ahí sí se puede decir sin abrirle la puerta a nadie.
+   */
+  accountCreated: 'account_created',
+  /** Entró por el enlace del correo, pero la cuenta ya existía. */
+  accountSignedIn: 'account_signed_in',
   /** Se le mandó el enlace de entrada tras dejar el correo. */
   accountLinkSent: 'account_link_sent',
   /** Vio la página de upsell (se llega por el muro o por enlace directo). */

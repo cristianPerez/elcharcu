@@ -5,9 +5,11 @@ import { type ReactNode, useEffect } from 'react';
 import { createSupabaseBrowserClient, isSupabaseConfigured } from '@/shared/api/supabase';
 import {
   adoptVisitorId,
+  ANALYTICS_EVENTS,
   attachButtonClickTracking,
   identifyAccount,
   initMixpanel,
+  track,
 } from '@/shared/lib';
 
 interface AppProvidersProps {
@@ -27,6 +29,34 @@ interface AppProvidersProps {
  * (analítica, theme, query-client, i18n, store, etc.). Mantener este árbol plano.
  */
 export function AppProviders({ children, visitorId }: AppProvidersProps): ReactNode {
+  /*
+    Si viene de abrir el enlace del correo, el servidor dejó dicho en la URL si
+    la cuenta acaba de nacer o si es alguien que vuelve. Se cuenta aquí y el
+    parámetro se BORRA en el acto.
+
+    ⚠️ Borrarlo no es limpieza estética. Mientras siga en la dirección, cada
+    recarga —y cada vez que alguien comparta ese enlace— vuelve a contar una
+    cuenta nueva que no lo es. Es el mismo fallo que dejó tres recetas idénticas
+    con `?pregunta` en agosto.
+  */
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const entrada = url.searchParams.get('entrada');
+    if (entrada !== 'nueva' && entrada !== 'vuelve') {
+      return;
+    }
+
+    track(
+      entrada === 'nueva'
+        ? ANALYTICS_EVENTS.accountCreated
+        : ANALYTICS_EVENTS.accountSignedIn,
+      { landing: url.pathname },
+    );
+
+    url.searchParams.delete('entrada');
+    window.history.replaceState(null, '', `${url.pathname}${url.search}`);
+  }, []);
+
   useEffect(() => {
     initMixpanel();
     // El orden importa: primero arranca Mixpanel, luego se le dice quién es.

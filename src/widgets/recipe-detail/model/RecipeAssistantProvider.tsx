@@ -70,7 +70,20 @@ export function RecipeAssistantProvider({
   const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
 
   const isExhausted = isKnown && status.isExhausted;
-  const showNotice = isKnown && status.questionsLeft <= 2;
+  /*
+    ⚠️ El aviso de cupo NO se le enseña a quien todavía está detrás del muro
+    (Cristian, 2026-09-01, visto en QA).
+
+    Sin sesión, el límite que manda son las DOS preguntas del muro, no las 8 del
+    plan del mes. Así que a alguien sin cuenta le salía "te quedan 2 preguntas
+    este mes" cuando en realidad no podía hacer ninguna más sin dejar su correo:
+    la franja contradecía al muro que tenía justo debajo.
+
+    Y encima ofrecía "Ver planes" a quien ni siquiera ha dado un correo, que es
+    saltarse un paso entero del embudo — primero el correo, después el plan
+    (D16).
+  */
+  const showNotice = isKnown && !wall.needsAccount && status.questionsLeft <= 2;
 
   /*
     El freno se pone al TOCAR, no al escribir.

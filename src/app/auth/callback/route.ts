@@ -60,7 +60,7 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       return NextResponse.redirect(`${origin}/entrar?error=enlace-vencido`);
     }
     await adoptAnonymousTrail(request, data.user?.id ?? null);
-    return NextResponse.redirect(`${origin}${next}`);
+    return NextResponse.redirect(`${origin}${conEntrada(next, data.user)}`);
   }
 
   if (tokenHash !== null && isEmailOtpType(type)) {
@@ -72,10 +72,39 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       return NextResponse.redirect(`${origin}/entrar?error=enlace-vencido`);
     }
     await adoptAnonymousTrail(request, data.user?.id ?? null);
-    return NextResponse.redirect(`${origin}${next}`);
+    return NextResponse.redirect(`${origin}${conEntrada(next, data.user)}`);
   }
 
   return NextResponse.redirect(`${origin}/entrar?error=sin-codigo`);
+}
+
+/**
+ * Marca en la URL si esta entrada estrena cuenta o es alguien que vuelve.
+ *
+ * ⚠️ ESTE ES EL ÚNICO MOMENTO EN QUE SE PUEDE SABER, y es a propósito.
+ * Preguntarle al servidor "¿existe este correo?" mientras se escribe en el muro
+ * es justo lo que permite enumerar los usuarios de un sitio, y Supabase se
+ * niega a contestarlo. Aquí ya abrió el enlace que le llegó a su buzón: la
+ * cuenta es demostrablemente suya y decirlo no le abre la puerta a nadie.
+ *
+ * Cómo se distingue: `created_at` es cuando se pidió el enlace por primera vez
+ * y `last_sign_in_at` es ahora mismo. En una cuenta recién nacida esos dos
+ * momentos están a segundos; en alguien que vuelve, el alta es de días o
+ * semanas atrás. El enlace caduca en una hora, así que no hay zona gris — para
+ * caer del lado equivocado habría que haberse dado de alta hace menos de una
+ * hora, que es precisamente ser nuevo.
+ */
+function conEntrada(next: string, user: { created_at?: string } | null): string {
+  if (user?.created_at === undefined) {
+    return next;
+  }
+
+  const nacio = new Date(user.created_at).getTime();
+  const esNueva = Number.isFinite(nacio) && Date.now() - nacio < 60 * 60 * 1000;
+
+  const url = new URL(next, 'https://x.invalid');
+  url.searchParams.set('entrada', esNueva ? 'nueva' : 'vuelve');
+  return `${url.pathname}${url.search}`;
 }
 
 /**
