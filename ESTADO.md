@@ -99,41 +99,34 @@ leyendo (se le inyecta desde el slug), lo cual cubre buena parte de lo que
 `knowledge` iba a resolver. Habría que decidir si sigue teniendo sentido o si lo
 que hace falta es otra cosa.
 
-### 🟡 Los CTA dentro de las recetas — fases pendientes
+### 🟡 Las dudas de las recetas, escritas a mano
 
-La fase 1 y la 1.1 están hechas: dos dudas por receta y El Charcu en un panel
-sobre la receta, anclado a ella.
+Las cinco fases de los CTA están hechas. Lo único que quedó abierto es una
+decisión: hoy las cuatro preguntas de cada receta se generan de sus datos
+—rendimiento, tipo de sal de cura, semanas de curado— y salen específicas sin
+escribir nada. El campo `doubts` del JSON permite escribir a mano la que se
+quiera y esa gana.
 
-- **Fase 2 · decisión de Cristian.** Hoy las frases de las dudas salen solas del
-  contenido, sin escribir nada a mano. Falta decidir si redacta a mano las de sus
-  recetas con más tráfico (campo opcional que sobrescribe; unas cinco, no 45).
-- ~~**Fase 3 · medir.**~~ Hecha el 2026-09-01. `recipe_doubt_tapped` (con el
-  hueco), `recipe_assistant_opened` (con el `via`), `lead_wall_shown`, y `place`
-  - `recipe_slug` en `lead_captured`. El denominador es `recipe_detail_view`,
-    que ya existía. ⚠️ **Falta confirmarlo en Mixpanel Live View sobre QA**: se
-    comprobó que tocar una duda dispara una petición a Mixpanel, pero desde el
-    navegador no se pudo leer el cuerpo para verificar las propiedades.
-- ~~**Fase 4 · el cierre al final de la receta.**~~ Hecha el 2026-09-01. Ofrece
-  la CUENTA gratis, no el plan: pedir dinero a quien no ha dejado ni un correo
-  se salta D16, y mientras OnePay no esté conectado cada interesado es una
-  conversación de WhatsApp a mano. Enlaza el curso en video solo cuando existe y
-  está grabado — hoy únicamente `lomo-curado`.
+**Falta decidir si merece la pena** redactar a mano las de las recetas con más
+tráfico. Unas cinco, no 45. Y para saber cuáles son hace falta que corra la
+medición unos días.
 
-  ⚠️ Qué cursos están publicados se lee al COMPILAR (cliente admin, sin
-  cookies, para no volver dinámicas las 45 recetas). **Publicar un curso no se
-  refleja en las recetas hasta el siguiente despliegue.** Falla del lado seguro:
-  deja de ofrecer algo que existe, nunca ofrece algo que no.
+### ⚠️ Tres cosas que el sistema hace y conviene no olvidar
 
-- ~~**Fase 5 · el tope de gasto.**~~ Hecha el 2026-09-01. Dos bolsillos por día
-  (`AI_DAILY_BUDGET_LEADS_USD`, `AI_DAILY_BUDGET_PRO_USD`), y `checkBudget()`
-  se comprueba DESPUÉS de saber el plan. Que los anónimos se coman su
-  presupuesto ya no deja mudo al que paga. En QA, `AI_SIMULAR_IA=1` contesta
-  sin llamar a Gemini — ignorado por código en producción.
+Salen de las fases 3, 4 y 5. No son pendientes: son cómo se comporta.
 
-  ⚠️ Los dos bolsillos son globales POR PÚBLICO, no por persona: un solo
-  suscriptor puede agotar el de `pro` para los demás. Hoy da igual porque
+- **Publicar un curso no se refleja en las recetas hasta el siguiente
+  despliegue.** Qué cursos están grabados se lee al COMPILAR, para no volver
+  dinámicas las 45 recetas. Falla del lado seguro —deja de ofrecer algo que
+  existe, nunca ofrece algo que no— pero grabar la longaniza y publicarla **no
+  basta**: hay que redesplegar.
+- **Los dos presupuestos de IA son globales POR PÚBLICO, no por persona.** Un
+  solo suscriptor puede agotar el de `pro` para los demás. Hoy da igual porque
   `subscriptions` está vacía; cuando haya varios pagando hay que decidir si el
   tope pasa a ser por cuenta.
+- **`lead_captured` no es "contacto nuevo".** El muro le sale a cualquiera sin
+  sesión, así que quien vuelve tras cerrar sesión queda contado. Los contactos
+  nuevos de verdad son `account_created`.
 
 ### 🟡 Responder desde `chat_messages` sin ir a Gemini — descartado por ahora
 
@@ -215,10 +208,11 @@ altavoz a un número sin revisar.
 
 ### 🟢 Sueltos
 
-- **Borrar las cookies sigue regalando una pregunta gratis** (~0,0055 USD cada
-  vez). No es un fallo: es el precio de que la demostración no pida cuenta
-  (D14). **Antes de gastar trabajo en taparlo hay que medir si alguien lo hace
-  de verdad** — hoy no hay ninguna medición.
+- **Borrar las cookies regala DOS preguntas gratis** (~0,011 USD la tanda,
+  desde que el muro pasó de 1 a 2 el 2026-09-01). No es un fallo: es el precio
+  de que la demostración no pida cuenta (D14), y ahora lo acota el presupuesto
+  diario de `lead`. **Antes de gastar trabajo en taparlo hay que medir si
+  alguien lo hace de verdad** — hoy no hay ninguna medición.
 - **`QuotaWall` quedó sin usar** y sigue exportado. Lo sustituyó `QuotaNotice`.
 - **`FreeSession` es una pantalla de transición** que sobrevive a su modelo. Se
   va cuando exista "Mis recetas" de verdad.
