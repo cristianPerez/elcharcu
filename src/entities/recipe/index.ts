@@ -8,6 +8,7 @@ export { recipeBrief } from './lib/recipeBrief';
 export { RecipeCard } from './ui/RecipeCard';
 export type {
   Recipe,
+  RecipeDoubtOverride,
   RecipeSummary,
   Ingredient,
   Step,

@@ -10,10 +10,10 @@ interface StatChipProps {
 export function StatChip({ stat }: StatChipProps): ReactNode {
   return (
     <div className="rounded-xl border border-cocoa/10 bg-white p-4 md:p-5">
-      <div className="text-[11px] uppercase tracking-eyebrow text-cocoa/65">
+      <div className="text-[11px] uppercase tracking-eyebrow text-cocoa/70">
         {stat.label}
       </div>
-      <div className="mt-2 font-serif text-[17px] font-semibold text-forest md:text-[19px]">
+      <div className="mt-1.5 font-serif text-[19px] font-semibold text-forest md:text-[21px]">
         {stat.value}
       </div>
     </div>

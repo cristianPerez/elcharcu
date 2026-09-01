@@ -2,8 +2,6 @@ import { type ReactNode } from 'react';
 
 import { type Recipe } from '@/entities/recipe';
 
-import { Container } from '@/shared/ui';
-
 import { recipeDoubts } from '../lib/recipeDoubts';
 import { RecipeAssistantProvider } from '../model/RecipeAssistantProvider';
 
@@ -13,6 +11,7 @@ import { RecipeIngredients } from './RecipeIngredients';
 import { RecipeOverview } from './RecipeOverview';
 import { RecipePreparation } from './RecipePreparation';
 import { RecipeQuote } from './RecipeQuote';
+import { RecipeSection } from './RecipeSection';
 import { RecipeViewTracker } from './RecipeViewTracker';
 
 interface RecipeDetailProps {
@@ -24,7 +23,7 @@ export function RecipeDetail({ recipe }: RecipeDetailProps): ReactNode {
   // Se calculan aquí, en el servidor, y bajan ya resueltas: las dos secciones
   // solo reciben la frase que les toca y no tienen que saber nada de cómo se
   // decide (Interface Segregation).
-  const doubts = recipeDoubts(recipe);
+  const doubts = recipeDoubts({ ...recipe, doubts: recipe.doubts });
 
   return (
     <RecipeAssistantProvider slug={recipe.slug} name={recipe.name}>
@@ -41,13 +40,12 @@ export function RecipeDetail({ recipe }: RecipeDetailProps): ReactNode {
           intro={recipe.intro}
           stats={recipe.stats}
           details={recipe.details}
+          doubt={doubts.onIntro}
         />
 
-        <section className="bg-cream pb-16 text-cocoa md:pb-24">
-          <Container>
-            <RecipeQuote quote={recipe.quote} size="lg" />
-          </Container>
-        </section>
+        <RecipeSection tight>
+          <RecipeQuote quote={recipe.quote} size="lg" />
+        </RecipeSection>
 
         <RecipeIngredients
           note={recipe.ingredientsNote}
@@ -65,17 +63,16 @@ export function RecipeDetail({ recipe }: RecipeDetailProps): ReactNode {
           cookMethods={recipe.cookMethods}
           recommendations={recipe.recommendations}
           resultNote={recipe.resultNote}
+          doubt={doubts.onServing}
         />
 
-        <section className="bg-cream py-16 text-cocoa md:py-24">
-          <Container>
-            <RecipeQuote
-              quote={recipe.finalQuote}
-              caption={recipe.finalQuoteCaption}
-              size="md"
-            />
-          </Container>
-        </section>
+        <RecipeSection>
+          <RecipeQuote
+            quote={recipe.finalQuote}
+            caption={recipe.finalQuoteCaption}
+            size="md"
+          />
+        </RecipeSection>
       </article>
     </RecipeAssistantProvider>
   );

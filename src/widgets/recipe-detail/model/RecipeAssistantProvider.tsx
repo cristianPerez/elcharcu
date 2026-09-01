@@ -103,6 +103,11 @@ export function RecipeAssistantProvider({
     <RecipeAssistantContext.Provider value={{ ask, canAsk: !isExhausted }}>
       {children}
 
+      {/* Aire al final para que el botón flotante no se coma la última línea
+          de la receta. A media página tapar algo es normal en un botón así
+          —se sigue bajando—; al final del todo no habría cómo apartarlo. */}
+      <div aria-hidden="true" className="h-16 bg-cream md:h-0" />
+
       {/* El botón de siempre. Se esconde con el panel abierto: ya está ahí. */}
       <button
         type="button"
@@ -111,7 +116,7 @@ export function RecipeAssistantProvider({
         }}
         aria-label={`Pregúntale a El Charcu sobre ${name}`}
         className={cn(
-          'fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-forest px-5 py-3.5 text-sm font-medium text-cream shadow-raised transition hover:bg-forest-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-95',
+          'fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full bg-forest px-4 py-3 text-[13px] font-medium text-cream shadow-raised transition hover:bg-forest-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-95 md:bottom-5 md:right-5 md:px-5 md:py-3.5 md:text-sm',
           isOpen && 'pointer-events-none opacity-0',
         )}
       >

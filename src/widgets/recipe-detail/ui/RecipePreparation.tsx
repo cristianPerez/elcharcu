@@ -2,12 +2,13 @@ import { type ReactNode } from 'react';
 
 import { type Step, type TitleDescription } from '@/entities/recipe';
 
-import { Container, Eyebrow } from '@/shared/ui';
+import { Eyebrow } from '@/shared/ui';
 
 import { type RecipeDoubt as Doubt } from '../lib/recipeDoubts';
 
 import { NoteBox } from './NoteBox';
 import { RecipeDoubt } from './RecipeDoubt';
+import { RecipeSection } from './RecipeSection';
 import { StepRow } from './StepRow';
 
 interface RecipePreparationProps {
@@ -23,33 +24,31 @@ export function RecipePreparation({
   doubt,
 }: RecipePreparationProps): ReactNode {
   return (
-    <section className="bg-cream py-16 text-cocoa md:py-24">
-      <Container>
-        <Eyebrow className="text-terracota">Manos a la obra</Eyebrow>
-        <h2 className="mt-4 font-serif text-2xl font-semibold text-cocoa md:text-4xl">
-          Preparación
-        </h2>
+    <RecipeSection>
+      <Eyebrow className="text-terracota">Manos a la obra</Eyebrow>
+      <h2 className="mt-4 font-serif text-2xl font-semibold text-cocoa md:text-4xl">
+        Preparación
+      </h2>
 
-        <ol className="mt-6 list-none p-0">
-          {steps.map((step) => (
-            <StepRow key={step.n} step={step} />
-          ))}
-        </ol>
+      <ol className="mt-6 list-none p-0">
+        {steps.map((step) => (
+          <StepRow key={step.n} step={step} />
+        ))}
+      </ol>
 
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {tips.map((tip) => (
-            <NoteBox key={tip.title} title={tip.title}>
-              {tip.description}
-            </NoteBox>
-          ))}
-        </div>
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
+        {tips.map((tip) => (
+          <NoteBox key={tip.title} title={tip.title}>
+            {tip.description}
+          </NoteBox>
+        ))}
+      </div>
 
-        {/* Cerrando los pasos: aquí es donde empieza la espera de semanas sin
+      {/* Cerrando los pasos: aquí es donde empieza la espera de semanas sin
             que nadie te diga si va bien. */}
-        <div className="mt-8">
-          <RecipeDoubt doubt={doubt} />
-        </div>
-      </Container>
-    </section>
+      <div className="mt-8">
+        <RecipeDoubt doubt={doubt} />
+      </div>
+    </RecipeSection>
   );
 }
