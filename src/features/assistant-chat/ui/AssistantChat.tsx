@@ -17,6 +17,18 @@ interface AssistantChatProps extends AssistantChatParams {
   /** Por qué no se puede preguntar hoy. `null` = se puede. */
   readonly blockedReason?: string | null;
   /**
+   * Puerta que se consulta ANTES de mandar una pregunta.
+   *
+   * Si devuelve `true`, la pregunta NO se manda y quien la pasó se encarga de
+   * lo que toque —hoy, abrir el muro de la cuenta—.
+   *
+   * Existe para poder parar a alguien en el momento en que va a preguntar, y no
+   * dos segundos después de que le contestaron. Lo segundo es una emboscada
+   * mientras lee; lo primero llega justo cuando acaba de expresar que quiere
+   * más, que es el mejor momento posible para pedirle el correo (D16).
+   */
+  readonly onBeforeSend?: ((text: string) => boolean) | undefined;
+  /**
    * Una pregunta que llega de fuera del chat — hoy, de los pasos de una receta
    * guiada. Se manda sola en cuanto cambia, para que tocar la duda de un paso
    * lleve directo a la respuesta sin escribir nada.
@@ -28,6 +40,7 @@ interface AssistantChatProps extends AssistantChatParams {
 export function AssistantChat({
   canSendImages = true,
   blockedReason = null,
+  onBeforeSend,
   pendingPrompt = null,
   ...params
 }: AssistantChatProps): ReactNode {
@@ -127,7 +140,13 @@ export function AssistantChat({
         canSendImages={canSendImages}
         blockedReason={blockedReason}
         onSend={(text, file) => {
+          // La puerta va antes del envío. Al devolver `false` la caja no se
+          // vacía, así que lo que escribió sigue ahí cuando vuelva del muro.
+          if (onBeforeSend?.(text) === true) {
+            return false;
+          }
           void send(text, file);
+          return true;
         }}
       />
 
