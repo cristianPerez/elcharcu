@@ -6,7 +6,6 @@ import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
 import { markLeadCaptured } from '../lib/leadFlag';
 import { sendAccountLink } from '../lib/sendAccountLink';
-import { submitLead } from '../lib/submitLead';
 
 interface LeadCaptureModalProps {
   /** Preguntas que gana al dejar el correo. Lo dice la base, no la pantalla. */
@@ -52,29 +51,29 @@ export function LeadCaptureModal({ questionsLimit }: LeadCaptureModalProps): Rea
     setPhase('sending');
     const clean = email.trim();
 
-    // El lead se guarda ANTES de mandar el enlace: si el correo falla, al menos
-    // tenemos el contacto. Al revés perderíamos las dos cosas.
-    const saved = await submitLead({ email: clean });
-    if (!saved.ok) {
-      setError(saved.error ?? 'No pudimos guardar tu correo.');
+    /*
+      Mandar el enlace ES guardar el contacto (2026-08-31).
+
+      Antes esto escribía primero en `charcu.leads` y después pedía el enlace,
+      con el argumento de que si el correo fallaba al menos quedaba el contacto.
+      El argumento era falso: `signInWithOtp` crea la fila en `auth.users` en
+      cuanto se pide el enlace, confirmen o no. Comprobado en producción, hay un
+      correo mal escrito ahí sin confirmar y sin perfil.
+
+      Así que `leads` guardaba una copia del correo que Supabase ya tenía. Se
+      borró la tabla y con ella este paso.
+    */
+    const sent = await sendAccountLink(clean);
+    track(ANALYTICS_EVENTS.accountLinkSent, { delivered: sent });
+
+    if (!sent) {
+      setError('No pudimos mandarte el enlace. Revisa el correo e inténtalo otra vez.');
       setPhase('form');
       return;
     }
 
     markLeadCaptured();
     track(ANALYTICS_EVENTS.leadCaptured, { step: 'correo' });
-
-    const sent = await sendAccountLink(clean);
-    track(ANALYTICS_EVENTS.accountLinkSent, { delivered: sent });
-
-    if (!sent) {
-      // El lead ya está guardado, así que el contacto no se pierde; lo que
-      // falta es el enlace. Decirlo, en vez de dejarlo esperando un correo que
-      // no va a llegar nunca.
-      setError('No pudimos mandarte el enlace. Revisa el correo e inténtalo otra vez.');
-      setPhase('form');
-      return;
-    }
 
     setPhase('sent');
   };

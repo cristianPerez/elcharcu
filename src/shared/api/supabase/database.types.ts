@@ -210,42 +210,6 @@ export type Database = {
           },
         ];
       };
-      leads: {
-        Row: {
-          created_at: string;
-          email: string;
-          id: string;
-          images_used: number;
-          name: string;
-          questions_used: number;
-          user_id: string | null;
-          visitor_id: string | null;
-          whatsapp: string;
-        };
-        Insert: {
-          created_at?: string;
-          email: string;
-          id?: string;
-          images_used?: number;
-          name: string;
-          questions_used?: number;
-          user_id?: string | null;
-          visitor_id?: string | null;
-          whatsapp: string;
-        };
-        Update: {
-          created_at?: string;
-          email?: string;
-          id?: string;
-          images_used?: number;
-          name?: string;
-          questions_used?: number;
-          user_id?: string | null;
-          visitor_id?: string | null;
-          whatsapp?: string;
-        };
-        Relationships: [];
-      };
       lesson_progress: {
         Row: {
           completed_at: string | null;
@@ -368,51 +332,6 @@ export type Database = {
             referencedColumns: ['id'];
           },
         ];
-      };
-      onboarding_answers: {
-        Row: {
-          consent_at: string | null;
-          country: string | null;
-          created_at: string;
-          full_name: string | null;
-          id: string;
-          interests: string[];
-          level: string | null;
-          product: string | null;
-          updated_at: string;
-          user_id: string | null;
-          visitor_id: string;
-          whatsapp: string | null;
-        };
-        Insert: {
-          consent_at?: string | null;
-          country?: string | null;
-          created_at?: string;
-          full_name?: string | null;
-          id?: string;
-          interests?: string[];
-          level?: string | null;
-          product?: string | null;
-          updated_at?: string;
-          user_id?: string | null;
-          visitor_id: string;
-          whatsapp?: string | null;
-        };
-        Update: {
-          consent_at?: string | null;
-          country?: string | null;
-          created_at?: string;
-          full_name?: string | null;
-          id?: string;
-          interests?: string[];
-          level?: string | null;
-          product?: string | null;
-          updated_at?: string;
-          user_id?: string | null;
-          visitor_id?: string;
-          whatsapp?: string | null;
-        };
-        Relationships: [];
       };
       plan_quotas: {
         Row: {
@@ -657,10 +576,6 @@ export type Database = {
       has_active_subscription: { Args: { p_user_id: string }; Returns: boolean };
       is_in_waitlist: { Args: { p_course_id: string }; Returns: boolean };
       join_waitlist: { Args: { p_course_id: string }; Returns: number };
-      link_onboarding_to_user: {
-        Args: { p_user_id: string; p_visitor_id: string };
-        Returns: undefined;
-      };
       link_visitor_to_user: {
         Args: { p_user_id: string; p_visitor_id: string };
         Returns: undefined;
@@ -697,20 +612,6 @@ export type Database = {
       };
       save_lesson_progress: {
         Args: { p_completed?: boolean; p_lesson_id: string; p_second?: number };
-        Returns: undefined;
-      };
-      save_onboarding: {
-        Args: {
-          p_consent_at: string;
-          p_country: string;
-          p_full_name: string;
-          p_interests: string[];
-          p_level: string;
-          p_product: string;
-          p_user_id: string;
-          p_visitor_id: string;
-          p_whatsapp: string;
-        };
         Returns: undefined;
       };
       search_knowledge: {
