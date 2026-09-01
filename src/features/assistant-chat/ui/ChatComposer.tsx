@@ -24,7 +24,15 @@ interface ChatComposerProps {
    * diga desde el principio que hoy no.
    */
   readonly blockedReason?: string | null;
-  readonly onSend: (text: string, file: File | null) => void;
+  /**
+   * Manda la pregunta. Devuelve `true` si se aceptó.
+   *
+   * Devuelve booleano y no `void` porque la caja solo debe VACIARSE cuando la
+   * pregunta salió de verdad. Si algo la para —el muro de la cuenta—, lo que
+   * escribió se queda escrito: se le pide el correo y al volver sigue ahí.
+   * Borrarlo sería cobrarle el trámite con su propia pregunta.
+   */
+  readonly onSend: (text: string, file: File | null) => boolean;
 }
 
 /** Hasta dónde crece la caja antes de hacer scroll por dentro. */
@@ -74,7 +82,9 @@ export function ChatComposer({
     if (isThinking || isEmpty) {
       return;
     }
-    onSend(text, file);
+    if (!onSend(text, file)) {
+      return;
+    }
     setText('');
     clearFile();
   };

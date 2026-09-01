@@ -3,11 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 import { linkVisitorToUser } from '@/entities/usage-quota/server';
 
-import {
-  createSupabaseAdminClient,
-  createSupabaseServerClient,
-  isSupabaseAdminConfigured,
-} from '@/shared/api/supabase/server';
+import { createSupabaseServerClient } from '@/shared/api/supabase/server';
 import { readVisitorId } from '@/shared/api/visitor';
 import { appRoutes } from '@/shared/config';
 
@@ -107,18 +103,11 @@ async function adoptAnonymousTrail(
     return;
   }
 
+  /*
+    Solo queda atar el rastro del cupo. El `link_onboarding_to_user` que iba
+    aquí se fue con `charcu.onboarding_answers` (2026-08-31): esa tabla existía
+    para guardar respuestas de alguien SIN cuenta, y el onboarding se mudó
+    detrás del login en la 0016. Desde entonces no la escribía nadie.
+  */
   await linkVisitorToUser(visitorId, userId);
-
-  if (!isSupabaseAdminConfigured()) {
-    return;
-  }
-
-  const { error } = await createSupabaseAdminClient().rpc('link_onboarding_to_user', {
-    p_visitor_id: visitorId,
-    p_user_id: userId,
-  });
-
-  if (error !== null) {
-    console.error('[entrar] no se pudo atar el onboarding a la cuenta:', error.message);
-  }
 }

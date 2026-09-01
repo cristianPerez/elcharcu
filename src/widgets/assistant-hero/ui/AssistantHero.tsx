@@ -37,26 +37,43 @@ export function AssistantHero(): ReactNode {
   const { isSignedIn, isReady: isSessionReady } = useAccountSession();
   const [showLeadCapture, setShowLeadCapture] = useState(false);
 
+  /*
+    ⚠️ EL MURO YA NO SALTA SOLO (2026-08-31, pedido de Cristian).
+
+    Antes se disparaba dos segundos después de contestar la primera pregunta:
+    el visitante estaba leyendo la respuesta y le caía un formulario encima. Eso
+    es una emboscada, y además pide el correo por algo que aún no ha demostrado
+    querer.
+
+    Ahora para en el momento en que VA A HACER LA SEGUNDA. Escribe su pregunta,
+    toca enviar, y ahí aparece el muro — con la intención ya expresada, que es
+    el mejor instante posible para pedir el contacto (D16). Y su pregunta no se
+    pierde: la caja no se vacía si no se envió, así que al volver sigue escrita.
+
+    La primera sigue siendo gratis y sin pedir nada: es la demostración, y el
+    producto es el argumento de venta (D14).
+  */
   const needsAccount =
     isKnown &&
     isSessionReady &&
     !isSignedIn &&
     quota.questionsUsed >= QUESTIONS_BEFORE_LEAD;
 
+  // Si entra con su cuenta desde otra pestaña, el muro se retira solo.
   useEffect(() => {
     if (!needsAccount) {
       setShowLeadCapture(false);
-      return undefined;
     }
-
-    // Un respiro para que alcance a leer la respuesta antes del formulario.
-    const timer = setTimeout(() => {
-      setShowLeadCapture(true);
-    }, 2000);
-    return () => {
-      clearTimeout(timer);
-    };
   }, [needsAccount]);
+
+  /** La puerta: para la segunda pregunta y abre el muro en su lugar. */
+  const blockSecondQuestion = (): boolean => {
+    if (!needsAccount) {
+      return false;
+    }
+    setShowLeadCapture(true);
+    return true;
+  };
 
   // Solo se avisa si SABEMOS cómo va el cupo. Si no se pudo leer, se deja
   // pasar: quien de verdad protege el bolsillo es el tope diario de gasto, que
@@ -92,6 +109,7 @@ export function AssistantHero(): ReactNode {
                 blockedReason={
                   isExhausted ? 'Sin preguntas este mes. Vuelven el día 1.' : null
                 }
+                onBeforeSend={blockSecondQuestion}
               />
 
               {/* El contador de siempre, solo mientras quede algo: a cero lo
