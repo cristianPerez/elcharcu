@@ -128,6 +128,26 @@ Salen de las fases 3, 4 y 5. No son pendientes: son cómo se comporta.
   sesión, así que quien vuelve tras cerrar sesión queda contado. Los contactos
   nuevos de verdad son `account_created`.
 
+### 🔴 Borrar el puente de la 0026 en cuanto despliegue
+
+La migración `0026` devolvió temporalmente las firmas VIEJAS de
+`today_ai_spend` y `record_ai_spend`, para que el código que está sirviendo
+ahora siguiera contando el gasto mientras se despliega el nuevo. Sin ellas, la
+ventana entre la migración y el despliegue deja a producción **sin tope y sin
+contabilidad** — no caída, pero sin freno.
+
+⚠️ **Mientras existan son una trampa**, y es la misma que la 0025 quitó a
+propósito: una llamada futura que se olvide del público compila igual y suma a
+`lead` sin decir nada. Un fallo silencioso en la contabilidad del dinero.
+
+**Cuando `/api/salud` de www.elcharcu.co devuelva el commit con los dos
+presupuestos, se borran:**
+
+```sql
+drop function if exists charcu.today_ai_spend();
+drop function if exists charcu.record_ai_spend(bigint, bigint, bigint, numeric);
+```
+
 ### 🟡 Responder desde `chat_messages` sin ir a Gemini — descartado por ahora
 
 Cristian lo propuso el 2026-09-01 para ahorrar. Medido antes de construirlo:
