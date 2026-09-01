@@ -19,6 +19,14 @@ export interface LeadWallController {
    */
   readonly block: () => boolean;
   /**
+   * Lo cierra sin dejar el correo.
+   *
+   * ⚠️ Cerrarlo NO da más preguntas: `needsAccount` sigue en `true` y el muro
+   * vuelve en cuanto intente preguntar otra vez. Lo único que se recupera es la
+   * PÁGINA — poder seguir leyendo la receta sin un formulario encima.
+   */
+  readonly close: () => void;
+  /**
    * Abre el muro a propósito, sin que haya una pregunta escrita.
    *
    * Lo necesita quien manda la pregunta por su cuenta en vez de por la caja de
@@ -69,5 +77,20 @@ export function useLeadWall(): LeadWallController {
     setIsOpen(true);
   };
 
-  return { needsAccount, isOpen, block, open };
+  /*
+    ⚠️ EL MURO SE PUEDE CERRAR (2026-09-01, pedido de Cristian).
+
+    Hasta hoy no tenía salida: se abría encima de la receta y ahí se quedaba.
+    Quien no quisiera dejar su correo se encontraba con que tampoco podía
+    seguir LEYENDO — y en una página a la que se llega desde Google, eso no
+    convence a nadie, solo hace que se vaya y no vuelva.
+
+    Lo que se recupera al cerrar es la página, no el cupo: sin cuenta sigue sin
+    poder preguntar. El correo se pide, no se cobra.
+  */
+  const close = (): void => {
+    setIsOpen(false);
+  };
+
+  return { needsAccount, isOpen, block, open, close };
 }

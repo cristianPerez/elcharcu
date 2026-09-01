@@ -14,8 +14,8 @@ export function AssistantCta(): ReactNode {
           no tiene por qué salir mal.
         </h2>
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-cream/75">
-          Empieza una receta hoy y llévala hasta el final con el asistente al lado. La
-          primera va por cuenta de la casa.
+          Empieza una receta hoy y llévala hasta el final con el asistente al lado. La dos
+          primeras van por cuenta de la casa.
         </p>
         <div className="mt-9 flex justify-center">
           <ButtonLink href={appRoutes.start} variant="primary">

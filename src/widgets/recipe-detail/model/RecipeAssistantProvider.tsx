@@ -202,7 +202,7 @@ export function RecipeAssistantProvider({
       </div>
 
       {wall.isOpen && !isExhausted ? (
-        <LeadCaptureModal questionsLimit={quota.questionsLimit} />
+        <LeadCaptureModal questionsLimit={quota.questionsLimit} onClose={wall.close} />
       ) : null}
     </RecipeAssistantContext.Provider>
   );
