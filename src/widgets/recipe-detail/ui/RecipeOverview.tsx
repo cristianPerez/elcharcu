@@ -48,7 +48,7 @@ export function RecipeOverview({
             dice una cantidad y su carne pesa otra. Va COMPACTA: aquí todavía
             está leyendo de qué va la receta, no metido en harina. */}
       <div className="mt-6 max-w-[52ch]">
-        <RecipeDoubt doubt={doubt} variant="compact" />
+        <RecipeDoubt doubt={doubt} variant="compact" slot="intro" />
       </div>
 
       <div className="mt-7 grid gap-4 md:mt-8 md:grid-cols-3">

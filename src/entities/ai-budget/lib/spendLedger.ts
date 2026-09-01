@@ -3,7 +3,12 @@ import {
   isSupabaseAdminConfigured,
 } from '@/shared/api/supabase/server';
 
-import { dailyBudgetUsd, estimateCostUsd, type TokenUsage } from '../model/pricing';
+import {
+  dailyBudgetUsd,
+  estimateCostUsd,
+  type Audience,
+  type TokenUsage,
+} from '../model/pricing';
 
 /** Postgres devuelve `numeric` como texto para no perder precisión. */
 function toNumber(value: unknown): number {
@@ -30,15 +35,17 @@ export interface BudgetStatus {
  * quedarse sin base de datos un momento no debería dejar mudo al asistente, y
  * el gasto de unas pocas llamadas es mucho menor que el daño de una caída total.
  */
-export async function checkBudget(): Promise<BudgetStatus> {
-  const budgetUsd = dailyBudgetUsd();
+export async function checkBudget(audience: Audience): Promise<BudgetStatus> {
+  const budgetUsd = dailyBudgetUsd(audience);
 
   if (budgetUsd === 0 || !isSupabaseAdminConfigured()) {
     return { spentUsd: 0, budgetUsd, isExhausted: budgetUsd === 0 };
   }
 
   const supabase = createSupabaseAdminClient();
-  const { data, error } = await supabase.rpc('today_ai_spend');
+  const { data, error } = await supabase.rpc('today_ai_spend', {
+    p_audience: audience,
+  });
 
   if (error) {
     console.error('[presupuesto] no se pudo leer el gasto de hoy:', error.message);
@@ -50,7 +57,10 @@ export async function checkBudget(): Promise<BudgetStatus> {
 }
 
 /** Apunta lo que costó una llamada. Devuelve el total del día. */
-export async function recordSpend(usage: TokenUsage): Promise<number> {
+export async function recordSpend(
+  usage: TokenUsage,
+  audience: Audience,
+): Promise<number> {
   if (!isSupabaseAdminConfigured()) {
     return 0;
   }
@@ -61,6 +71,7 @@ export async function recordSpend(usage: TokenUsage): Promise<number> {
     p_thought_tokens: usage.thoughtTokens,
     p_answer_tokens: usage.answerTokens,
     p_cost_usd: estimateCostUsd(usage),
+    p_audience: audience,
   });
 
   if (error) {

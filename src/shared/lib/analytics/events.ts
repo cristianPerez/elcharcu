@@ -28,6 +28,31 @@ export const ANALYTICS_EVENTS = {
   freeRecipeCompleted: 'free_recipe_completed',
   /** El usuario abrió una receta cualquiera (gratis o de pago). */
   recipeStarted: 'recipe_started',
+  /**
+   * Abrió la página de una receta del sitio público.
+   *
+   * ⚠️ Es EL DENOMINADOR de todo el embudo de las recetas: cuántas veces se vio
+   * una receta contra cuántas veces alguien tocó una duda. Por eso no hacen
+   * falta eventos de impresión por cada CTA — serían cuatro por visita, y la
+   * pregunta que responderían ya la responde este.
+   *
+   * El nombre estaba escrito a mano en `RecipeViewTracker`, que es justo lo que
+   * este catálogo existe para evitar (2026-09-01).
+   */
+  recipeDetailViewed: 'recipe_detail_view',
+  /**
+   * Tocó una de las cuatro dudas de una receta. Lleva CUÁL: sin el hueco
+   * (`onIntro`, `onIngredients`…) no se puede saber si convierte la sal de cura
+   * o el secado, que es lo que decide dónde poner la quinta.
+   */
+  recipeDoubtTapped: 'recipe_doubt_tapped',
+  /** Abrió El Charcu desde una receta. `via` dice si por el botón o por una duda. */
+  recipeAssistantOpened: 'recipe_assistant_opened',
+  /**
+   * Se le pintó el muro del correo. Es el denominador de `leadCaptured`: sin
+   * esto solo se sabe cuántos lo dejaron, nunca a cuántos se les pidió.
+   */
+  leadWallShown: 'lead_wall_shown',
   /** El usuario intentó una SEGUNDA receta y chocó con el muro de suscripción. */
   paywallHit: 'paywall_hit',
   /** Se le acabaron las preguntas gratis del mes y vio el muro de cupo. */
@@ -46,8 +71,31 @@ export const ANALYTICS_EVENTS = {
   assistantFailed: 'assistant_failed',
   /** Desplegó el aviso de cómo funciona la seguridad. */
   assistantSafetyOpened: 'assistant_safety_opened',
-  /** Dejó su correo en el muro blando. */
+  /**
+   * Mandó su correo desde el muro.
+   *
+   * ⚠️ NO significa "contacto nuevo", y confundirlo infla la cifra. El muro le
+   * sale a cualquiera sin sesión, así que un usuario de siempre que vuelve
+   * después de cerrar sesión pasa por aquí igual y queda contado (lo vio
+   * Cristian probando el 2026-09-01). Quién es nuevo de verdad lo dicen
+   * `account_created` / `account_signed_in`, que se disparan al abrir el
+   * enlace, que es el único momento en que se sabe.
+   *
+   * Sigue valiendo, y mucho: es el paso del embudo "se le pidió el correo → lo
+   * dio", contra `lead_wall_shown`.
+   */
   leadCaptured: 'lead_captured',
+  /**
+   * Entró por el enlace del correo y la cuenta ACABA de nacer.
+   *
+   * ⚠️ No se puede saber al pedir el correo: preguntarle al servidor si un
+   * correo existe es exactamente lo que permite enumerar usuarios, y Supabase
+   * no lo contesta a propósito. Al abrir el enlace ya demostró que la cuenta es
+   * suya, así que ahí sí se puede decir sin abrirle la puerta a nadie.
+   */
+  accountCreated: 'account_created',
+  /** Entró por el enlace del correo, pero la cuenta ya existía. */
+  accountSignedIn: 'account_signed_in',
   /** Se le mandó el enlace de entrada tras dejar el correo. */
   accountLinkSent: 'account_link_sent',
   /** Vio la página de upsell (se llega por el muro o por enlace directo). */

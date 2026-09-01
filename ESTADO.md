@@ -99,23 +99,115 @@ leyendo (se le inyecta desde el slug), lo cual cubre buena parte de lo que
 `knowledge` iba a resolver. Habría que decidir si sigue teniendo sentido o si lo
 que hace falta es otra cosa.
 
-### 🟡 Los CTA dentro de las recetas — fases pendientes
+### 🟡 Las dudas de las recetas, escritas a mano
 
-La fase 1 y la 1.1 están hechas: dos dudas por receta y El Charcu en un panel
-sobre la receta, anclado a ella.
+Las cinco fases de los CTA están hechas. Lo único que quedó abierto es una
+decisión: hoy las cuatro preguntas de cada receta se generan de sus datos
+—rendimiento, tipo de sal de cura, semanas de curado— y salen específicas sin
+escribir nada. El campo `doubts` del JSON permite escribir a mano la que se
+quiera y esa gana.
 
-- **Fase 2 · decisión de Cristian.** Hoy las frases de las dudas salen solas del
-  contenido, sin escribir nada a mano. Falta decidir si redacta a mano las de sus
-  recetas con más tráfico (campo opcional que sobrescribe; unas cinco, no 45).
-- **Fase 3 · medir.** No hay forma de saber de qué receta salió un correo.
-  Faltan tres eventos y una propiedad `source` en `leadCaptured`. **Sin esto la
-  fase 1 es una corazonada.** Es lo siguiente que haría.
-- **Fase 4 · el cierre al final de la receta.** La cápsula relacionada o el plan.
-  La duda es _ayuda_; esto es _oferta_. Van separadas a propósito.
-- **Fase 5 · el tope de gasto, a conciencia.** `checkBudget()` se comprueba
-  ANTES de mirar la sesión, así que al agotarse el presupuesto diario se agota
-  **para todos, incluido quien paga**. Con 45 recetas indexadas empujando
-  preguntas gratis, esto pasa de teórico a probable. Va después de medir.
+**Falta decidir si merece la pena** redactar a mano las de las recetas con más
+tráfico. Unas cinco, no 45. Y para saber cuáles son hace falta que corra la
+medición unos días.
+
+### ⚠️ Tres cosas que el sistema hace y conviene no olvidar
+
+Salen de las fases 3, 4 y 5. No son pendientes: son cómo se comporta.
+
+- **Publicar un curso no se refleja en las recetas hasta el siguiente
+  despliegue.** Qué cursos están grabados se lee al COMPILAR, para no volver
+  dinámicas las 45 recetas. Falla del lado seguro —deja de ofrecer algo que
+  existe, nunca ofrece algo que no— pero grabar la longaniza y publicarla **no
+  basta**: hay que redesplegar.
+- **Los dos presupuestos de IA son globales POR PÚBLICO, no por persona.** Un
+  solo suscriptor puede agotar el de `pro` para los demás. Hoy da igual porque
+  `subscriptions` está vacía; cuando haya varios pagando hay que decidir si el
+  tope pasa a ser por cuenta.
+- **`lead_captured` no es "contacto nuevo".** El muro le sale a cualquiera sin
+  sesión, así que quien vuelve tras cerrar sesión queda contado. Los contactos
+  nuevos de verdad son `account_created`.
+
+### 🔴 Borrar el puente de la 0026 en cuanto despliegue
+
+La migración `0026` devolvió temporalmente las firmas VIEJAS de
+`today_ai_spend` y `record_ai_spend`, para que el código que está sirviendo
+ahora siguiera contando el gasto mientras se despliega el nuevo. Sin ellas, la
+ventana entre la migración y el despliegue deja a producción **sin tope y sin
+contabilidad** — no caída, pero sin freno.
+
+⚠️ **Mientras existan son una trampa**, y es la misma que la 0025 quitó a
+propósito: una llamada futura que se olvide del público compila igual y suma a
+`lead` sin decir nada. Un fallo silencioso en la contabilidad del dinero.
+
+**Cuando `/api/salud` de www.elcharcu.co devuelva el commit con los dos
+presupuestos, se borran:**
+
+```sql
+drop function if exists charcu.today_ai_spend();
+drop function if exists charcu.record_ai_spend(bigint, bigint, bigint, numeric);
+```
+
+### 🟡 Responder desde `chat_messages` sin ir a Gemini — descartado por ahora
+
+Cristian lo propuso el 2026-09-01 para ahorrar. Medido antes de construirlo:
+**producción tiene 4 preguntas y 0 repetidas**; QA tiene 32 con 4 repetidas, y
+esas 4 son pruebas repetidas a mano. Hoy no ahorraría nada.
+
+⚠️ Y el problema no es solo que no sirva. Estas tres son la MISMA duda escrita
+distinto: _"¿cuánta sal de cura por kilo?"_, _"¿cuántos gramos de sal de cura #2
+por kilo?"_, _"¿cuánta sal de cura #2 uso para 2 kg de bondiola?"_. Una caché
+exacta no atrapa ninguna —son cadenas distintas— y una difusa las atrapa todas,
+pudiendo contestar una pregunta de **#2 con la respuesta de #1**, que es
+justamente la distinción de la que depende la seguridad. **La caché es o inútil
+o peligrosa.**
+
+Además el 47% de las preguntas llevan números (_"mi bondiola pesa 1,8 kg"_) y la
+respuesta se calcula para ESOS kilos. Servirla a otro es un error de dosis.
+
+Se revisa si algún día el gasto duele y hay repeticiones reales medidas. La
+condición mínima para volver a mirarlo: misma receta, sin foto, sin números,
+primer turno de la conversación, y la respuesta sin ninguna dosis dentro.
+
+### 🟡 Volver a la receta desde el enlace del correo
+
+Hoy el enlace del correo siempre cae en `/charcu`, así que quien deja su correo
+leyendo una receta entra a la app y **pierde de vista lo que estaba haciendo**.
+Debería volver a esa receta.
+
+⚠️ **El mecanismo ya existe, solo está fijo.** `sendAccountLink` escribe
+`emailRedirectTo: …/auth/callback?next=%2Fcharcu` a pelo, y `/auth/callback` ya
+lee `next` y lo pasa por `safeNext`, que es la guarda contra el redirect abierto
+—un `next` que llega por correo y se pega detrás del origen convierte
+`//otro-sitio.co` en una redirección a otra casa—. Falta pasar la ruta actual en
+vez de la constante.
+
+Dos cosas a decidir al hacerlo:
+
+- **Qué pasa con la conversación anónima.** Cuelga de la cookie de ese
+  navegador: si abre el enlace en el teléfono habiendo preguntado en el
+  computador, vuelve a la receta pero sin el hilo. Ya está aceptado, pero al
+  volver a la receta se va a notar más.
+- **`safeNext` tiene que seguir mandando.** La ruta viaja por correo, así que es
+  entrada de fuera aunque la escribamos nosotros.
+
+### 🟡 Los cursos en la portada no invitan a nada
+
+La sección de cursos del home debería invitar a entrar y enseñar el curso
+gratuito, en vez de quedarse en catálogo.
+
+⚠️ **Y hay que aclarar cuál.** Cristian lo pidió como "el curso gratuito de
+**Jamón curado**" (2026-09-01) y ese curso NO existe. Comprobado en producción:
+
+| lo que hay                                     | qué es                                                         |
+| ---------------------------------------------- | -------------------------------------------------------------- |
+| `lomo-curado` · "Lomo de cerdo curado"         | el ÚNICO curso publicado, 7 lecciones, el único con video real |
+| `bridar-un-jamon` · "Cómo bridar un jamón"     | una CÁPSULA de 2 lecciones, no un curso                        |
+| longaniza, santarrosano, paisa, chorizo de ajo | los cuatro en lista de espera, sin grabar                      |
+
+Lo más probable es que se refiera al **lomo curado**, que es el que está
+publicado y grabado. Pero "jamón" aparece en la cápsula de bridar, así que no se
+adivina: hay que preguntarle antes de construirlo.
 
 ### 🟡 Contenido, que solo puede dar Cristian
 
@@ -136,10 +228,11 @@ altavoz a un número sin revisar.
 
 ### 🟢 Sueltos
 
-- **Borrar las cookies sigue regalando una pregunta gratis** (~0,0055 USD cada
-  vez). No es un fallo: es el precio de que la demostración no pida cuenta
-  (D14). **Antes de gastar trabajo en taparlo hay que medir si alguien lo hace
-  de verdad** — hoy no hay ninguna medición.
+- **Borrar las cookies regala DOS preguntas gratis** (~0,011 USD la tanda,
+  desde que el muro pasó de 1 a 2 el 2026-09-01). No es un fallo: es el precio
+  de que la demostración no pida cuenta (D14), y ahora lo acota el presupuesto
+  diario de `lead`. **Antes de gastar trabajo en taparlo hay que medir si
+  alguien lo hace de verdad** — hoy no hay ninguna medición.
 - **`QuotaWall` quedó sin usar** y sigue exportado. Lo sustituyó `QuotaNotice`.
 - **`FreeSession` es una pantalla de transición** que sobrevive a su modelo. Se
   va cuando exista "Mis recetas" de verdad.

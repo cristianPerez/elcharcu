@@ -60,7 +60,8 @@ function toDeniedBy(value: string | null): QuotaDeniedBy | null {
  *
  * Si Supabase no responde se deja pasar, igual que con el tope de gasto: una
  * caída de la base no debería dejar mudo al asistente. El freno de verdad
- * contra una factura desbocada es `AI_DAILY_BUDGET_USD`, que es global.
+ * contra una factura desbocada son los topes diarios por público
+ * (`AI_DAILY_BUDGET_LEADS_USD` y `AI_DAILY_BUDGET_PRO_USD`).
  */
 export async function consumeQuota(
   visitorId: string,

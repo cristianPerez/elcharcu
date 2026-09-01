@@ -1,6 +1,10 @@
 import { cache } from 'react';
 
-import { createSupabaseServerClient } from '@/shared/api/supabase/server';
+import {
+  createSupabaseAdminClient,
+  createSupabaseServerClient,
+  isSupabaseAdminConfigured,
+} from '@/shared/api/supabase/server';
 
 import {
   type Course,
@@ -183,6 +187,43 @@ function toLesson(row: LessonRow): Lesson | null {
  * `course_progress`: esa función es `security definer` y cuenta saltándose
  * RLS, así que dice 13 aunque no puedas ver ninguna.
  */
+/**
+ * Los slugs de los cursos que ya están GRABADOS y publicados.
+ *
+ * ⚠️ Lee con el cliente de ADMINISTRACIÓN a propósito, y no con el de sesión
+ * como el resto de este archivo. `createSupabaseServerClient` lee cookies, y
+ * una página estática que lee cookies deja de ser estática — las 45 recetas
+ * pasarían a renderizarse en cada visita y se perdería justo lo que hace que
+ * funcionen. El cliente admin no toca cookies, así que esto se resuelve al
+ * COMPILAR y se queda horneado en el HTML.
+ *
+ * Solo salen `slug` y `status`, que es lo mismo que ya enseña la lista pública
+ * de cursos: saltarse RLS aquí no revela nada que no estuviera a la vista.
+ *
+ * ⚠️ Y por lo tanto ENVEJECE: si se publica un curso, las recetas no lo
+ * enlazarán hasta el siguiente despliegue. Falla del lado seguro —deja de
+ * ofrecer algo que existe, nunca ofrece algo que no— y se arregla
+ * redesplegando, que es el mismo gesto que ya hace falta para casi cualquier
+ * cambio de contenido.
+ */
+export const publishedCourseSlugs = cache(async (): Promise<ReadonlySet<string>> => {
+  if (!isSupabaseAdminConfigured()) {
+    return new Set();
+  }
+
+  const { data, error } = await createSupabaseAdminClient()
+    .from('courses')
+    .select('slug')
+    .eq('status', 'publicado')
+    .eq('kind', 'curso');
+
+  if (error !== null || data === null) {
+    return new Set();
+  }
+
+  return new Set(data.map((row) => row.slug));
+});
+
 export const listCourses = cache(async (): Promise<readonly Course[]> => {
   const supabase = await createSupabaseServerClient();
 

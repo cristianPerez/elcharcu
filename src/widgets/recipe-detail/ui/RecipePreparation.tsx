@@ -47,7 +47,7 @@ export function RecipePreparation({
       {/* Cerrando los pasos: aquí es donde empieza la espera de semanas sin
             que nadie te diga si va bien. */}
       <div className="mt-8">
-        <RecipeDoubt doubt={doubt} />
+        <RecipeDoubt doubt={doubt} slot="pasos" />
       </div>
     </RecipeSection>
   );

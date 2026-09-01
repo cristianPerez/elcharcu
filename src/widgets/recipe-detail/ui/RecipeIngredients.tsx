@@ -52,7 +52,7 @@ export function RecipeIngredients({
           {/* Junto a la nota del charcutero, y no al final de la página: la
                 duda de las cantidades se tiene MIRANDO la tabla, no después de
                 haberla dejado atrás. */}
-          <RecipeDoubt doubt={doubt} tone="dark" />
+          <RecipeDoubt doubt={doubt} tone="dark" slot="ingredientes" />
         </div>
       </div>
     </RecipeSection>

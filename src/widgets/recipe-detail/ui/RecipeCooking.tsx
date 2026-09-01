@@ -58,7 +58,7 @@ export function RecipeCooking({
       {/* La última: ya lo tiene hecho o casi. Aquí es donde ofrece mandar la
             foto, que es lo que más impresiona y lo que hace volver. */}
       <div className="mt-7 max-w-[52ch]">
-        <RecipeDoubt doubt={doubt} tone="dark" variant="compact" />
+        <RecipeDoubt doubt={doubt} tone="dark" variant="compact" slot="coccion" />
       </div>
     </RecipeSection>
   );

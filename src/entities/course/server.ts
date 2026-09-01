@@ -4,6 +4,7 @@
  */
 export {
   listCourses,
+  publishedCourseSlugs,
   findCourse,
   progressByCourse,
   completedLessonIds,

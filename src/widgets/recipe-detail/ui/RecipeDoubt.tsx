@@ -22,6 +22,8 @@ interface RecipeDoubtProps {
    * abre El Charcu, se tiene que ver igual en los cuatro sitios.
    */
   readonly variant?: 'card' | 'compact';
+  /** Cuál de las cuatro es. Viaja al evento para poder comparar entre ellas. */
+  readonly slot: string;
 }
 
 /**
@@ -51,6 +53,7 @@ export function RecipeDoubt({
   doubt,
   tone = 'light',
   variant = 'card',
+  slot,
 }: RecipeDoubtProps): ReactNode {
   const assistant = useRecipeAssistant();
   const isDark = tone === 'dark';
@@ -76,7 +79,7 @@ export function RecipeDoubt({
     <button
       type="button"
       onClick={() => {
-        assistant.ask(doubt.prompt);
+        assistant.ask(doubt.prompt, slot);
       }}
       className={cn(
         'block w-full rounded-2xl border text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota active:scale-[0.99]',
