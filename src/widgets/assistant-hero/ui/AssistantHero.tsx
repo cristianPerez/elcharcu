@@ -34,7 +34,7 @@ import { Container } from '@/shared/ui';
  */
 export function AssistantHero(): ReactNode {
   const { quota, status, isKnown } = useUsageQuota();
-  const wall = useLeadWall();
+  const wall = useLeadWall({ place: 'portada' });
 
   /*
     ⚠️ EL MURO YA NO SALTA SOLO (2026-08-31, pedido de Cristian).
@@ -108,7 +108,11 @@ export function AssistantHero(): ReactNode {
       </section>
 
       {wall.isOpen && !isExhausted ? (
-        <LeadCaptureModal questionsLimit={quota.questionsLimit} onClose={wall.close} />
+        <LeadCaptureModal
+          questionsLimit={quota.questionsLimit}
+          onClose={wall.close}
+          source={wall.source}
+        />
       ) : null}
     </>
   );

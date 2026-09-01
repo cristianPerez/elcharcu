@@ -28,6 +28,31 @@ export const ANALYTICS_EVENTS = {
   freeRecipeCompleted: 'free_recipe_completed',
   /** El usuario abrió una receta cualquiera (gratis o de pago). */
   recipeStarted: 'recipe_started',
+  /**
+   * Abrió la página de una receta del sitio público.
+   *
+   * ⚠️ Es EL DENOMINADOR de todo el embudo de las recetas: cuántas veces se vio
+   * una receta contra cuántas veces alguien tocó una duda. Por eso no hacen
+   * falta eventos de impresión por cada CTA — serían cuatro por visita, y la
+   * pregunta que responderían ya la responde este.
+   *
+   * El nombre estaba escrito a mano en `RecipeViewTracker`, que es justo lo que
+   * este catálogo existe para evitar (2026-09-01).
+   */
+  recipeDetailViewed: 'recipe_detail_view',
+  /**
+   * Tocó una de las cuatro dudas de una receta. Lleva CUÁL: sin el hueco
+   * (`onIntro`, `onIngredients`…) no se puede saber si convierte la sal de cura
+   * o el secado, que es lo que decide dónde poner la quinta.
+   */
+  recipeDoubtTapped: 'recipe_doubt_tapped',
+  /** Abrió El Charcu desde una receta. `via` dice si por el botón o por una duda. */
+  recipeAssistantOpened: 'recipe_assistant_opened',
+  /**
+   * Se le pintó el muro del correo. Es el denominador de `leadCaptured`: sin
+   * esto solo se sabe cuántos lo dejaron, nunca a cuántos se les pidió.
+   */
+  leadWallShown: 'lead_wall_shown',
   /** El usuario intentó una SEGUNDA receta y chocó con el muro de suscripción. */
   paywallHit: 'paywall_hit',
   /** Se le acabaron las preguntas gratis del mes y vio el muro de cupo. */

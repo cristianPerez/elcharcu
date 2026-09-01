@@ -6,12 +6,22 @@ import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
 import { markLeadCaptured } from '../lib/leadFlag';
 import { sendAccountLink } from '../lib/sendAccountLink';
+import { type LeadWallSource } from '../model/useLeadWall';
 
 interface LeadCaptureModalProps {
   /** Preguntas que gana al dejar el correo. Lo dice la base, no la pantalla. */
   readonly questionsLimit: number;
   /** Cerrarlo sin dejar el correo. Devuelve la página, no el cupo. */
   readonly onClose: () => void;
+  /**
+   * De dónde salió este muro.
+   *
+   * ⚠️ Es lo único que contesta "¿de qué receta vino este correo?". Sin esto,
+   * `leadCaptured` dice cuántos correos entraron y nada más — y con cuatro CTA
+   * repartidos por 45 recetas, saber cuántos sin saber de dónde no sirve para
+   * decidir nada.
+   */
+  readonly source: LeadWallSource;
 }
 
 /**
@@ -46,6 +56,7 @@ interface LeadCaptureModalProps {
 export function LeadCaptureModal({
   questionsLimit,
   onClose,
+  source,
 }: LeadCaptureModalProps): ReactNode {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -90,7 +101,11 @@ export function LeadCaptureModal({
       borró la tabla y con ella este paso.
     */
     const sent = await sendAccountLink(clean);
-    track(ANALYTICS_EVENTS.accountLinkSent, { delivered: sent });
+    track(ANALYTICS_EVENTS.accountLinkSent, {
+      delivered: sent,
+      place: source.place,
+      recipe_slug: source.recipeSlug ?? '',
+    });
 
     if (!sent) {
       setError('No pudimos mandarte el enlace. Revisa el correo e inténtalo otra vez.');
@@ -99,7 +114,11 @@ export function LeadCaptureModal({
     }
 
     markLeadCaptured();
-    track(ANALYTICS_EVENTS.leadCaptured, { step: 'correo' });
+    track(ANALYTICS_EVENTS.leadCaptured, {
+      step: 'correo',
+      place: source.place,
+      recipe_slug: source.recipeSlug ?? '',
+    });
 
     setPhase('sent');
   };

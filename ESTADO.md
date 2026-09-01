@@ -107,15 +107,58 @@ sobre la receta, anclado a ella.
 - **Fase 2 · decisión de Cristian.** Hoy las frases de las dudas salen solas del
   contenido, sin escribir nada a mano. Falta decidir si redacta a mano las de sus
   recetas con más tráfico (campo opcional que sobrescribe; unas cinco, no 45).
-- **Fase 3 · medir.** No hay forma de saber de qué receta salió un correo.
-  Faltan tres eventos y una propiedad `source` en `leadCaptured`. **Sin esto la
-  fase 1 es una corazonada.** Es lo siguiente que haría.
+- ~~**Fase 3 · medir.**~~ Hecha el 2026-09-01. `recipe_doubt_tapped` (con el
+  hueco), `recipe_assistant_opened` (con el `via`), `lead_wall_shown`, y `place`
+  - `recipe_slug` en `lead_captured`. El denominador es `recipe_detail_view`,
+    que ya existía. ⚠️ **Falta confirmarlo en Mixpanel Live View sobre QA**: se
+    comprobó que tocar una duda dispara una petición a Mixpanel, pero desde el
+    navegador no se pudo leer el cuerpo para verificar las propiedades.
 - **Fase 4 · el cierre al final de la receta.** La cápsula relacionada o el plan.
   La duda es _ayuda_; esto es _oferta_. Van separadas a propósito.
 - **Fase 5 · el tope de gasto, a conciencia.** `checkBudget()` se comprueba
   ANTES de mirar la sesión, así que al agotarse el presupuesto diario se agota
   **para todos, incluido quien paga**. Con 45 recetas indexadas empujando
   preguntas gratis, esto pasa de teórico a probable. Va después de medir.
+
+### 🟡 Volver a la receta desde el enlace del correo
+
+Hoy el enlace del correo siempre cae en `/charcu`, así que quien deja su correo
+leyendo una receta entra a la app y **pierde de vista lo que estaba haciendo**.
+Debería volver a esa receta.
+
+⚠️ **El mecanismo ya existe, solo está fijo.** `sendAccountLink` escribe
+`emailRedirectTo: …/auth/callback?next=%2Fcharcu` a pelo, y `/auth/callback` ya
+lee `next` y lo pasa por `safeNext`, que es la guarda contra el redirect abierto
+—un `next` que llega por correo y se pega detrás del origen convierte
+`//otro-sitio.co` en una redirección a otra casa—. Falta pasar la ruta actual en
+vez de la constante.
+
+Dos cosas a decidir al hacerlo:
+
+- **Qué pasa con la conversación anónima.** Cuelga de la cookie de ese
+  navegador: si abre el enlace en el teléfono habiendo preguntado en el
+  computador, vuelve a la receta pero sin el hilo. Ya está aceptado, pero al
+  volver a la receta se va a notar más.
+- **`safeNext` tiene que seguir mandando.** La ruta viaja por correo, así que es
+  entrada de fuera aunque la escribamos nosotros.
+
+### 🟡 Los cursos en la portada no invitan a nada
+
+La sección de cursos del home debería invitar a entrar y enseñar el curso
+gratuito, en vez de quedarse en catálogo.
+
+⚠️ **Y hay que aclarar cuál.** Cristian lo pidió como "el curso gratuito de
+**Jamón curado**" (2026-09-01) y ese curso NO existe. Comprobado en producción:
+
+| lo que hay                                     | qué es                                                         |
+| ---------------------------------------------- | -------------------------------------------------------------- |
+| `lomo-curado` · "Lomo de cerdo curado"         | el ÚNICO curso publicado, 7 lecciones, el único con video real |
+| `bridar-un-jamon` · "Cómo bridar un jamón"     | una CÁPSULA de 2 lecciones, no un curso                        |
+| longaniza, santarrosano, paisa, chorizo de ajo | los cuatro en lista de espera, sin grabar                      |
+
+Lo más probable es que se refiera al **lomo curado**, que es el que está
+publicado y grabado. Pero "jamón" aparece en la cápsula de bridar, así que no se
+adivina: hay que preguntarle antes de construirlo.
 
 ### 🟡 Contenido, que solo puede dar Cristian
 

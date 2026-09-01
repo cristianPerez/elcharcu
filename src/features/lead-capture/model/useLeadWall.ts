@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { QUESTIONS_BEFORE_LEAD, useUsageQuota } from '@/entities/usage-quota';
+
+import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 
 import { useAccountSession } from './useAccountSession';
 
@@ -34,6 +36,15 @@ export interface LeadWallController {
    * que ponerlo ANTES, al tocar la duda.
    */
   readonly open: () => void;
+  /** De dónde salió este muro. Viaja hasta el evento de captura. */
+  readonly source: LeadWallSource;
+}
+
+export interface LeadWallSource {
+  /** Dónde se pidió el correo: `portada`, `receta`… */
+  readonly place: string;
+  /** La receta abierta, si la hay. Es lo que dice CUÁL convierte. */
+  readonly recipeSlug?: string | undefined;
 }
 
 /**
@@ -47,10 +58,33 @@ export interface LeadWallController {
  * Lo que decide es la SESIÓN, no una marca en `localStorage`: quien vuelve por
  * el enlace del correo llega con sesión y el muro se retira solo.
  */
-export function useLeadWall(): LeadWallController {
+export function useLeadWall(source: LeadWallSource): LeadWallController {
   const { quota, isKnown } = useUsageQuota();
   const { isSignedIn, isReady: isSessionReady } = useAccountSession();
   const [isOpen, setIsOpen] = useState(false);
+
+  /*
+    El evento se manda UNA vez por apertura, no en cada render.
+
+    Sin este freno, cada re-render con el muro abierto contaría otra vez y el
+    denominador de la conversión saldría inflado — que es la peor forma de
+    romper una métrica, porque el número sigue pareciendo razonable.
+  */
+  const yaContado = useRef(false);
+  useEffect(() => {
+    if (!isOpen) {
+      yaContado.current = false;
+      return;
+    }
+    if (yaContado.current) {
+      return;
+    }
+    yaContado.current = true;
+    track(ANALYTICS_EVENTS.leadWallShown, {
+      place: source.place,
+      recipe_slug: source.recipeSlug ?? '',
+    });
+  }, [isOpen, source.place, source.recipeSlug]);
 
   const needsAccount =
     isKnown &&
@@ -92,5 +126,5 @@ export function useLeadWall(): LeadWallController {
     setIsOpen(false);
   };
 
-  return { needsAccount, isOpen, block, open, close };
+  return { needsAccount, isOpen, block, open, close, source };
 }

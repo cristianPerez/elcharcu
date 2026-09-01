@@ -8,11 +8,18 @@ import { QuotaNotice } from '@/features/quota-wall';
 
 import { useUsageQuota } from '@/entities/usage-quota';
 
-import { cn } from '@/shared/lib';
+import { ANALYTICS_EVENTS, cn, track } from '@/shared/lib';
 
 interface RecipeAssistantStore {
-  /** Manda una duda ya escrita y abre el panel. */
-  readonly ask: (prompt: string) => void;
+  /**
+   * Manda una duda ya escrita y abre el panel.
+   *
+   * `slot` dice CUÁL de las cuatro se tocó. Sin ese dato solo se sabe que
+   * alguien preguntó desde una receta; con él se sabe si convierte la sal de
+   * cura o el secado, que es lo que decide dónde poner la quinta duda —o cuál
+   * quitar.
+   */
+  readonly ask: (prompt: string, slot: string) => void;
   /** `false` cuando ya no quedan preguntas este mes. */
   readonly canAsk: boolean;
 }
@@ -58,7 +65,7 @@ export function RecipeAssistantProvider({
   children,
 }: RecipeAssistantProviderProps): ReactNode {
   const { quota, status, isKnown } = useUsageQuota();
-  const wall = useLeadWall();
+  const wall = useLeadWall({ place: 'receta', recipeSlug: slug });
   const [isOpen, setIsOpen] = useState(false);
   const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
 
@@ -74,11 +81,18 @@ export function RecipeAssistantProvider({
     gastó su pregunta gratis entraría por aquí sin que nadie le pidiera el
     correo.
   */
-  const ask = (prompt: string): void => {
+  const ask = (prompt: string, slot: string): void => {
+    // Se cuenta el TOQUE, pase lo que pase después. Si solo se contara cuando
+    // la pregunta sale, las dudas que chocan con el muro parecerían no
+    // interesarle a nadie — cuando son justo las que más interés demuestran.
+    track(ANALYTICS_EVENTS.recipeDoubtTapped, { recipe_slug: slug, slot });
+
     if (!isExhausted && wall.needsAccount) {
       wall.open();
       return;
     }
+
+    track(ANALYTICS_EVENTS.recipeAssistantOpened, { recipe_slug: slug, via: slot });
     setPendingPrompt(prompt);
     setIsOpen(true);
   };
@@ -112,6 +126,10 @@ export function RecipeAssistantProvider({
       <button
         type="button"
         onClick={() => {
+          track(ANALYTICS_EVENTS.recipeAssistantOpened, {
+            recipe_slug: slug,
+            via: 'boton-flotante',
+          });
           setIsOpen(true);
         }}
         aria-label={`Pregúntale a El Charcu sobre ${name}`}
@@ -202,7 +220,11 @@ export function RecipeAssistantProvider({
       </div>
 
       {wall.isOpen && !isExhausted ? (
-        <LeadCaptureModal questionsLimit={quota.questionsLimit} onClose={wall.close} />
+        <LeadCaptureModal
+          questionsLimit={quota.questionsLimit}
+          onClose={wall.close}
+          source={wall.source}
+        />
       ) : null}
     </RecipeAssistantContext.Provider>
   );
