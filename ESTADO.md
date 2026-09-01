@@ -191,96 +191,96 @@ No se empieza por el chat.
       pestaña de El Charcu, agrupadas por Hoy · Esta semana · Antes.
 
       **La regla de sesión** (decisión de Cristian, 2026-08-20): se empieza en
-                                                      blanco cuando pasa CUALQUIERA de las dos cosas — **una hora sin escribir**
-                                                      o **se cierra la pestaña**. Las dos salen de la misma línea:
-                                                      `sessionStorage` muere al cerrar la pestaña y la marca de tiempo se
-                                                      encarga de la inactividad, así que no hay que escuchar eventos ni
-                                                      preguntarle nada al usuario
-                                                      (`features/assistant-chat/lib/activeChat.ts`).
-                                                      Una hora y no seis: una duda de charcutería se resuelve en minutos, y
-                                                      quien vuelve al cabo de una hora casi seguro trae otra pregunta — meterla
-                                                      en el hilo anterior ensucia las dos. Volver a lo de antes está a un toque
-                                                      en el historial.
+                                                                                      blanco cuando pasa CUALQUIERA de las dos cosas — **una hora sin escribir**
+                                                                                      o **se cierra la pestaña**. Las dos salen de la misma línea:
+                                                                                      `sessionStorage` muere al cerrar la pestaña y la marca de tiempo se
+                                                                                      encarga de la inactividad, así que no hay que escuchar eventos ni
+                                                                                      preguntarle nada al usuario
+                                                                                      (`features/assistant-chat/lib/activeChat.ts`).
+                                                                                      Una hora y no seis: una duda de charcutería se resuelve en minutos, y
+                                                                                      quien vuelve al cabo de una hora casi seguro trae otra pregunta — meterla
+                                                                                      en el hilo anterior ensucia las dos. Volver a lo de antes está a un toque
+                                                                                      en el historial.
 
-                                                      ⚠️ **Lo importante del cambio**: `/api/asistente` **dejó de retomar la
-                                                      última receta abierta por su cuenta**. Ese rescate existía porque el id
-                                                      vivía en memoria y una recarga lo perdía — pero tenía un efecto que nadie
-                                                      había visto: era IMPOSIBLE empezar un chat nuevo, porque el servidor
-                                                      siempre devolvía al anterior. Ahora manda el navegador y el servidor solo
-                                                      comprueba que la receta sea suya.
+                                                                                      ⚠️ **Lo importante del cambio**: `/api/asistente` **dejó de retomar la
+                                                                                      última receta abierta por su cuenta**. Ese rescate existía porque el id
+                                                                                      vivía en memoria y una recarga lo perdía — pero tenía un efecto que nadie
+                                                                                      había visto: era IMPOSIBLE empezar un chat nuevo, porque el servidor
+                                                                                      siempre devolvía al anterior. Ahora manda el navegador y el servidor solo
+                                                                                      comprueba que la receta sea suya.
 
-                                                      **Los títulos los pone el asistente** tras la primera respuesta, con
-                                                      `after()` de Next para no hacer esperar a nadie: se contesta primero y se
-                                                      titula por detrás. Probado — "¿Cuánta sal de cura #1 para 1,8 kg de
-                                                      bondiola?" quedó como **"Bondiola 1,8 kg"**. Si el titulador falla queda
-                                                      el título provisional (la pregunta recortada): feo, no roto.
+                                                                                      **Los títulos los pone el asistente** tras la primera respuesta, con
+                                                                                      `after()` de Next para no hacer esperar a nadie: se contesta primero y se
+                                                                                      titula por detrás. Probado — "¿Cuánta sal de cura #1 para 1,8 kg de
+                                                                                      bondiola?" quedó como **"Bondiola 1,8 kg"**. Si el titulador falla queda
+                                                                                      el título provisional (la pregunta recortada): feo, no roto.
 
-                                                      Verificado en producción local: recargar dentro de la ventana restaura la
-                                                      conversación, pasada la hora empieza en blanco, una pregunta sin
-                                                      `recipeId` abre receta nueva, y un id ajeno no entrega nada.
+                                                                                      Verificado en producción local: recargar dentro de la ventana restaura la
+                                                                                      conversación, pasada la hora empieza en blanco, una pregunta sin
+                                                                                      `recipeId` abre receta nueva, y un id ajeno no entrega nada.
 
 - [x] **4h-bis. Dos fallos del cupo, encontrados probando en el celular**
       (2026-08-20). El síntoma: la hamburguesa mostraba 5 conversaciones y la
       cuenta decía "3 de 8 preguntas". Eran dos cosas distintas.
 
       **1. El cupo se le cobraba a la primera cuenta que usó ese navegador.**
-                                                  Las recetas de hoy tenían `user_id` de la cuenta personal, pero el
-                                                  contador del mismo `visitor_id` seguía atado a la cuenta de trabajo, de
-                                                  días antes. Dos `coalesce` preferían al dueño viejo:
-                                                  `consume_quota` hacía `coalesce(c.user_id, excluded.user_id)` y
-                                                  `link_visitor_to_user` solo escribía `where user_id is null`. Entre los
-                                                  dos, un navegador no cambiaba de cuenta nunca.
-                                                  Ahora manda quien está usando la app AHORA.
-                                                  ⚠️ Las RECETAS siguen adoptándose solo si no tienen dueño: reasignarlas
-                                                  le entregaría las conversaciones de una persona a otra por compartir un
-                                                  teléfono.
+                                                                                  Las recetas de hoy tenían `user_id` de la cuenta personal, pero el
+                                                                                  contador del mismo `visitor_id` seguía atado a la cuenta de trabajo, de
+                                                                                  días antes. Dos `coalesce` preferían al dueño viejo:
+                                                                                  `consume_quota` hacía `coalesce(c.user_id, excluded.user_id)` y
+                                                                                  `link_visitor_to_user` solo escribía `where user_id is null`. Entre los
+                                                                                  dos, un navegador no cambiaba de cuenta nunca.
+                                                                                  Ahora manda quien está usando la app AHORA.
+                                                                                  ⚠️ Las RECETAS siguen adoptándose solo si no tienen dueño: reasignarlas
+                                                                                  le entregaría las conversaciones de una persona a otra por compartir un
+                                                                                  teléfono.
 
-                                                  **2. La pregunta de una lección se reenviaba en cada montaje.** Viajaba
-                                                  en la URL (`/charcu?pregunta=…`) y el parámetro se quedaba ahí, así que
-                                                  cada vuelta a esa pantalla la mandaba otra vez: quedaron **tres recetas
-                                                  idénticas** ("Especias para bondiola") y tres preguntas del cupo gastadas
-                                                  sin que nadie preguntara nada. Ahora el parámetro se borra de la URL en
-                                                  cuanto se recoge, y la duda de una lección abre hilo aparte de forma
-                                                  determinista — antes lo hacía por accidente, ganándole una carrera al
-                                                  efecto que restaura la conversación.
-                                                  De paso, `send` dejó de leer los mensajes del estado y los lee de una
-                                                  ref: empezar hilo nuevo y mandar en el mismo tirón le colaba al modelo la
-                                                  conversación anterior.
+                                                                                  **2. La pregunta de una lección se reenviaba en cada montaje.** Viajaba
+                                                                                  en la URL (`/charcu?pregunta=…`) y el parámetro se quedaba ahí, así que
+                                                                                  cada vuelta a esa pantalla la mandaba otra vez: quedaron **tres recetas
+                                                                                  idénticas** ("Especias para bondiola") y tres preguntas del cupo gastadas
+                                                                                  sin que nadie preguntara nada. Ahora el parámetro se borra de la URL en
+                                                                                  cuanto se recoge, y la duda de una lección abre hilo aparte de forma
+                                                                                  determinista — antes lo hacía por accidente, ganándole una carrera al
+                                                                                  efecto que restaura la conversación.
+                                                                                  De paso, `send` dejó de leer los mensajes del estado y los lee de una
+                                                                                  ref: empezar hilo nuevo y mandar en el mismo tirón le colaba al modelo la
+                                                                                  conversación anterior.
 
-                                                  Verificado en producción local: rebotar tres veces a `/charcu` ya no crea
-                                                  ni una receta, y un contador de la cuenta A pasa a la cuenta B en cuanto
-                                                  B pregunta.
+                                                                                  Verificado en producción local: rebotar tres veces a `/charcu` ya no crea
+                                                                                  ni una receta, y un contador de la cuenta A pasa a la cuenta B en cuanto
+                                                                                  B pregunta.
 
 - [ ] **4j. La pregunta se cobra ANTES de crear la receta** (la causa raíz que
       queda viva — anotado el 2026-08-20 para arreglar mañana).
 
       En `/api/asistente` el orden es: se descuenta el cupo → se llama a Gemini
-                                              → **se crea la receta**. Y `refundQuota` solo se dispara si falla Gemini.
-                                              Si lo que falla es la escritura en la base, **la pregunta se cobró y no
-                                              hay nada detrás**.
+                                                                              → **se crea la receta**. Y `refundQuota` solo se dispara si falla Gemini.
+                                                                              Si lo que falla es la escritura en la base, **la pregunta se cobró y no
+                                                                              hay nada detrás**.
 
-                                              No es teórico: es lo que infló los contadores durante las horas en que QA
-                                              estuvo sin credenciales — `createRecipe` devolvía `null` en silencio
-                                              mientras el cobro entraba igual. Acabó en un contador que decía 3 con una
-                                              sola receta, y en una limpieza a mano
-                                              (`20260820210148_limpieza_duplicados_y_contadores`).
+                                                                              No es teórico: es lo que infló los contadores durante las horas en que QA
+                                                                              estuvo sin credenciales — `createRecipe` devolvía `null` en silencio
+                                                                              mientras el cobro entraba igual. Acabó en un contador que decía 3 con una
+                                                                              sola receta, y en una limpieza a mano
+                                                                              (`20260820210148_limpieza_duplicados_y_contadores`).
 
-                                              **Mientras esto siga así, cualquier caída de Supabase vuelve a descuadrar
-                                              los números.** Y el usuario paga el error: pierde una pregunta de su cupo
-                                              por un fallo nuestro.
+                                                                              **Mientras esto siga así, cualquier caída de Supabase vuelve a descuadrar
+                                                                              los números.** Y el usuario paga el error: pierde una pregunta de su cupo
+                                                                              por un fallo nuestro.
 
-                                              El arreglo es corto: que el `refundQuota` cubra también el fallo al
-                                              escribir, no solo el de Gemini. Ojo al hacerlo con qué se le contesta al
-                                              usuario — la respuesta del modelo SÍ llegó y estaría mal tirarla; lo que
-                                              falló es guardarla. Probablemente haya que devolverle el texto y avisarle
-                                              de que esa conversación no se guardó, en vez de fingir un error entero.
+                                                                              El arreglo es corto: que el `refundQuota` cubra también el fallo al
+                                                                              escribir, no solo el de Gemini. Ojo al hacerlo con qué se le contesta al
+                                                                              usuario — la respuesta del modelo SÍ llegó y estaría mal tirarla; lo que
+                                                                              falló es guardarla. Probablemente haya que devolverle el texto y avisarle
+                                                                              de que esa conversación no se guardó, en vez de fingir un error entero.
 
-                                              ⚠️ Y de fondo hay algo más grande, para pensar sin prisa: el contador y la
-                                              realidad pueden separarse sin que nada avise. Hoy se descubrió mirando la
-                                              pantalla y sospechando. **Los cuatro fallos de cupo de hoy salen de ahí.**
-                                              Un chequeo que compare contadores contra recetas —el mismo que se acaba de
-                                              escribir a mano para la limpieza— convertido en algo que se pueda correr
-                                              cuando se quiera, avisaría antes de que lo note un cliente.
+                                                                              ⚠️ Y de fondo hay algo más grande, para pensar sin prisa: el contador y la
+                                                                              realidad pueden separarse sin que nada avise. Hoy se descubrió mirando la
+                                                                              pantalla y sospechando. **Los cuatro fallos de cupo de hoy salen de ahí.**
+                                                                              Un chequeo que compare contadores contra recetas —el mismo que se acaba de
+                                                                              escribir a mano para la limpieza— convertido en algo que se pueda correr
+                                                                              cuando se quiera, avisaría antes de que lo note un cliente.
 
 - [ ] **4i. Cuándo más nace un chat nuevo** (fase 3, pedida por Cristian el
       2026-08-20 y **no construida**). Faltan dos disparadores: 1. **Preguntar desde una lección** (`/charcu?pregunta=…`) debería abrir
@@ -303,13 +303,13 @@ No se empieza por el chat.
       `charcu.recipes`.
 
       ⚠️ **La trampa está en el nombre, no en el modelo.** Hoy "receta" significa
-                                                      "una conversación sobre una pieza". El día que existan proyectos, la pieza
-                                                      es el proyecto y "receta" pasa a significar otra cosa — o deja de tener
-                                                      sentido. Eso arrastra renombrar tabla, entidad, rutas y copy. **Cuanto
-                                                      antes se decida el vocabulario, más barato sale**; hacerlo con cien
-                                                      usuarios y URLs compartidas cuesta diez veces más.
-                                                      Mi sugerencia para cuando toque: la pieza es el **proyecto**, y cada
-                                                      conversación es una **consulta**. Pero es decisión tuya, y no la tomo yo.
+                                                                                      "una conversación sobre una pieza". El día que existan proyectos, la pieza
+                                                                                      es el proyecto y "receta" pasa a significar otra cosa — o deja de tener
+                                                                                      sentido. Eso arrastra renombrar tabla, entidad, rutas y copy. **Cuanto
+                                                                                      antes se decida el vocabulario, más barato sale**; hacerlo con cien
+                                                                                      usuarios y URLs compartidas cuesta diez veces más.
+                                                                                      Mi sugerencia para cuando toque: la pieza es el **proyecto**, y cada
+                                                                                      conversación es una **consulta**. Pero es decisión tuya, y no la tomo yo.
 
 - [ ] **4f. Qué hacemos con las recetas gratuitas** (pregunta abierta de Cristian,
       2026-08-19 — **decidir antes de tocar nada**). Hoy `/recetas` y `/tablas` son
@@ -335,28 +335,28 @@ No se empieza por el chat.
       `0011_cursos.sql`, aplicada y probada contra el proyecto real.
 
       ```
-                                                                              curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
-                                                                              ```
+                                                                                                              curso ──1:N──▶ módulo ──1:N──▶ lección (video | pdf | imagen | texto)
+                                                                                                              ```
 
-                                                                              **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
-                                                                              campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
-                                                                              tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
-                                                                              que no son videos y todo el código que las lee empezaría a mentir. Añadir
-                                                                              un tipo nuevo es sumar un valor, no cambiar la estructura.
-                                                                              · El **orden es un campo** (`position`) en los tres niveles, con
-                                                                                `unique (padre, position)`. Reordenar es cambiar números.
-                                                                              · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
-                                                                                vigila un `check` por tipo: **una lección de PDF sin archivo no entra
-                                                                                en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
-                                                                                validación al TypeScript, y con la política de cero `any` eso acaba en
-                                                                                guardas de tipo por todos lados.
-                                                                              · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
-                                                                                al servidor de quien no tiene suscripción. Probado — no sale en la
-                                                                                lista y por URL directa da 404. Se contesta 404 y no "no tienes
-                                                                                acceso" a propósito: un mensaje distinto delataría qué cursos existen.
-                                                                              · En TypeScript la lección es una **unión discriminada por `kind`**, así
-                                                                                que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
-                                                                                deja de compilar hasta que alguien decida cómo se ve.
+                                                                                                              **La tercera entidad NO se llama `videos`**, se llama `lessons` con un
+                                                                                                              campo `kind`. Pedido de Cristian: dejarla abierta a PDF e imagen. Si la
+                                                                                                              tabla se llamara `videos`, el día del primer PDF habría filas en `videos`
+                                                                                                              que no son videos y todo el código que las lee empezaría a mentir. Añadir
+                                                                                                              un tipo nuevo es sumar un valor, no cambiar la estructura.
+                                                                                                              · El **orden es un campo** (`position`) en los tres niveles, con
+                                                                                                                `unique (padre, position)`. Reordenar es cambiar números.
+                                                                                                              · Las columnas de origen (`bunny_video_id` · `file_url` · `body`) las
+                                                                                                                vigila un `check` por tipo: **una lección de PDF sin archivo no entra
+                                                                                                                en la tabla**. Se prefirió a un `jsonb` porque el `jsonb` muda la
+                                                                                                                validación al TypeScript, y con la política de cero `any` eso acaba en
+                                                                                                                guardas de tipo por todos lados.
+                                                                                                              · **La puerta la vigila RLS** (D12): el curso de pago ni siquiera llega
+                                                                                                                al servidor de quien no tiene suscripción. Probado — no sale en la
+                                                                                                                lista y por URL directa da 404. Se contesta 404 y no "no tienes
+                                                                                                                acceso" a propósito: un mensaje distinto delataría qué cursos existen.
+                                                                                                              · En TypeScript la lección es una **unión discriminada por `kind`**, así
+                                                                                                                que el `switch` que la pinta es exhaustivo: el día que se añada un tipo,
+                                                                                                                deja de compilar hasta que alguien decida cómo se ve.
 
 - [x] **6a-bis. Progreso por usuario y por curso** (2026-08-19). Se APUNTA por
       lección (`charcu.lesson_progress`) y se MUESTRA por curso
@@ -403,31 +403,31 @@ No se empieza por el chat.
       chorizo de ajo, los cuatro de **pago**. 23 módulos y 60 lecciones.
 
       ⚠️ **EL CAMBIO IMPORTANTE ES DE POLÍTICA, no de contenido.** Hasta hoy
-                                  `courses_select_visible` usaba `can_read_course()`, que exige suscripción
-                                  para los cursos de pago: eso no los bloqueaba, los hacía **invisibles**.
-                                  Y un curso que nadie ve no se vende.
-                                  Ahora el CATÁLOGO es público —título, resumen y portada de lo publicado—
-                                  y lo cerrado es el CONTENIDO: `modules` y `lessons` conservan
-                                  `can_read_course()` sin tocar. Se ve el escaparate, no se saca la
-                                  mercancía. D12 sigue en pie.
+                                                                  `courses_select_visible` usaba `can_read_course()`, que exige suscripción
+                                                                  para los cursos de pago: eso no los bloqueaba, los hacía **invisibles**.
+                                                                  Y un curso que nadie ve no se vende.
+                                                                  Ahora el CATÁLOGO es público —título, resumen y portada de lo publicado—
+                                                                  y lo cerrado es el CONTENIDO: `modules` y `lessons` conservan
+                                                                  `can_read_course()` sin tocar. Se ve el escaparate, no se saca la
+                                                                  mercancía. D12 sigue en pie.
 
-                                  ⚠️ **Cómo se sabe que un curso está bloqueado, y cómo NO.** `listCourses`
-                                  se lo pregunta a la base: pide los `modules` con la sesión del usuario y
-                                  RLS solo devuelve los de cursos que puede abrir. NO se usa
-                                  `access === 'pago'`, porque un suscriptor también tiene cursos de pago y
-                                  para él no están bloqueados — sería duplicar la regla de la suscripción
-                                  en TypeScript y acabar con dos verdades.
+                                                                  ⚠️ **Cómo se sabe que un curso está bloqueado, y cómo NO.** `listCourses`
+                                                                  se lo pregunta a la base: pide los `modules` con la sesión del usuario y
+                                                                  RLS solo devuelve los de cursos que puede abrir. NO se usa
+                                                                  `access === 'pago'`, porque un suscriptor también tiene cursos de pago y
+                                                                  para él no están bloqueados — sería duplicar la regla de la suscripción
+                                                                  en TypeScript y acabar con dos verdades.
 
-                                  ⚠️ **Y ojo con `course_progress`**: es `security definer` y cuenta las
-                                  lecciones saltándose RLS, así que dice "13 lecciones" aunque no puedas
-                                  ver ninguna. Sirve para enseñar cuánto hay dentro; NO sirve para saber si
-                                  tienes acceso. Confundirlo dejó un botón de "Empezar el curso" que
-                                  llevaba a una lección que la base nunca iba a entregar.
+                                                                  ⚠️ **Y ojo con `course_progress`**: es `security definer` y cuenta las
+                                                                  lecciones saltándose RLS, así que dice "13 lecciones" aunque no puedas
+                                                                  ver ninguna. Sirve para enseñar cuánto hay dentro; NO sirve para saber si
+                                                                  tienes acceso. Confundirlo dejó un botón de "Empezar el curso" que
+                                                                  llevaba a una lección que la base nunca iba a entregar.
 
-                                  Lo visual: en la lista, insignia de candado "El Charcu Pro", foto
-                                  atenuada, "13 lecciones esperándote" en vez de una barra al 0% —un 0% en
-                                  algo que no puedes empezar desanima; el número de lecciones vende— y el
-                                  pie dice "Incluido en El Charcu Pro, ábrelo y mira lo que trae".
+                                                                  Lo visual: en la lista, insignia de candado "El Charcu Pro", foto
+                                                                  atenuada, "13 lecciones esperándote" en vez de una barra al 0% —un 0% en
+                                                                  algo que no puedes empezar desanima; el número de lecciones vende— y el
+                                                                  pie dice "Incluido en El Charcu Pro, ábrelo y mira lo que trae".
 
 - [x] **6e. El índice de un curso de pago SE VE; el muro está en la lección**
       (2026-08-21).
@@ -437,37 +437,37 @@ No se empieza por el chat.
       con sus lecciones, y el muro aparece **al tocar una lección**.
 
       ⚠️ **Por qué una función y no abrir la RLS de `lessons`.** Si se relajara
-                                  la política, cualquiera podría leer `bunny_video_id` por la API — y los
-                                  enlaces de Bunny **no van firmados todavía**, así que con ese id se ve el
-                                  video sin pagar. Se regalaría el producto por enseñar el índice.
-                                  `charcu.course_outline(slug)` es `security definer` y devuelve SOLO
-                                  títulos, resúmenes y orden. Nunca `bunny_video_id`, ni `body`, ni
-                                  `file_url`, ni `ask`. Comprobado en el HTML servido: las 14 lecciones
-                                  viajan con `bunnyVideoId: null` y sin un solo `href` a una lección.
-                                  `modules` y `lessons` siguen cerradas con `can_read_course()` — la puerta
-                                  de verdad no se tocó.
+                                                                  la política, cualquiera podría leer `bunny_video_id` por la API — y los
+                                                                  enlaces de Bunny **no van firmados todavía**, así que con ese id se ve el
+                                                                  video sin pagar. Se regalaría el producto por enseñar el índice.
+                                                                  `charcu.course_outline(slug)` es `security definer` y devuelve SOLO
+                                                                  títulos, resúmenes y orden. Nunca `bunny_video_id`, ni `body`, ni
+                                                                  `file_url`, ni `ask`. Comprobado en el HTML servido: las 14 lecciones
+                                                                  viajan con `bunnyVideoId: null` y sin un solo `href` a una lección.
+                                                                  `modules` y `lessons` siguen cerradas con `can_read_course()` — la puerta
+                                                                  de verdad no se tocó.
 
-                                  El guardia de `/cursos/[curso]/[leccion]` redirige a la página de precios,
-                                  **no a un 404**: decirle "no existe" a algo que el usuario acaba de ver en
-                                  el índice es una mentira que además no vende nada.
+                                                                  El guardia de `/cursos/[curso]/[leccion]` redirige a la página de precios,
+                                                                  **no a un 404**: decirle "no existe" a algo que el usuario acaba de ver en
+                                                                  el índice es una mentira que además no vende nada.
 
-                                  ⚠️ **De paso, un bug que estaba vivo:** `PLAN_LABEL` en "Mi cuenta" usaba
-                                  las claves `charcutero` y `maestro`, que **no existen** en
-                                  `charcu.plan_quotas` (son `aprendiz`, `pro-mensual`, `pro-anual`,
-                                  `maestro-mensual`, `maestro-anual`). Al primer suscriptor le habría salido
-                                  el id crudo en pantalla. El tier de cara al usuario es **El Charcu Pro**;
-                                  "Charcutero" no existe en ninguna parte y ya no se nombra en el código.
+                                                                  ⚠️ **De paso, un bug que estaba vivo:** `PLAN_LABEL` en "Mi cuenta" usaba
+                                                                  las claves `charcutero` y `maestro`, que **no existen** en
+                                                                  `charcu.plan_quotas` (son `aprendiz`, `pro-mensual`, `pro-anual`,
+                                                                  `maestro-mensual`, `maestro-anual`). Al primer suscriptor le habría salido
+                                                                  el id crudo en pantalla. El tier de cara al usuario es **El Charcu Pro**;
+                                                                  "Charcutero" no existe en ninguna parte y ya no se nombra en el código.
 
-                                  ⚠️ **Todos los videos de los 4 cursos nuevos son el MISMO placeholder**
-                                  (el corte del lomo), a propósito, para ver la estructura antes de grabar.
-                                  El "Ahumado al barril (opcional)" es compartido por los cuatro y se
-                                  cambia de una vez:
-                                  `update charcu.lessons set bunny_video_id = '<real>' where title = 'Ahumado al barril (opcional)';`
+                                                                  ⚠️ **Todos los videos de los 4 cursos nuevos son el MISMO placeholder**
+                                                                  (el corte del lomo), a propósito, para ver la estructura antes de grabar.
+                                                                  El "Ahumado al barril (opcional)" es compartido por los cuatro y se
+                                                                  cambia de una vez:
+                                                                  `update charcu.lessons set bunny_video_id = '<real>' where title = 'Ahumado al barril (opcional)';`
 
-                                  ⚠️ **`chorizo-paisa` no tiene portada**: no hay foto suya en el repo ni
-                                  receta pública. Se ve con el fondo verde de respaldo hasta que haya una.
-                                  Y **`chorizo-de-ajo` es una elección mía**: el brief pedía 3 chorizos y
-                                  hacían falta 4. Se cambia por otro con un `update` al slug y al título.
+                                                                  ⚠️ **`chorizo-paisa` no tiene portada**: no hay foto suya en el repo ni
+                                                                  receta pública. Se ve con el fondo verde de respaldo hasta que haya una.
+                                                                  Y **`chorizo-de-ajo` es una elección mía**: el brief pedía 3 chorizos y
+                                                                  hacían falta 4. Se cambia por otro con un `update` al slug y al título.
 
 - [ ] **7. Pagos reales** (Hotmart + webhook, D17). Tres cosas que hay que resolver sí o
       sí: emparejar la compra con el usuario de Supabase, atender el reembolso/chargeback
@@ -794,24 +794,24 @@ texto pesaba igual.
       dentro quiere volver a su curso, quien está fuera quiere volver a la portada.
 
       ⚠️ **El caso que lo destapó: sin conexión a Supabase.** Hoy la pantalla de
-                                                                  entrar dice _"Las cuentas todavía no están conectadas. Vuelve en un rato"_
-                                                                  cuando en realidad **faltan variables de entorno** —le pasó a Cristian en
-                                                                  QA el 2026-08-19 y costó dos rondas de adivinar—. Ese mensaje miente a
-                                                                  medias y no hay forma de diagnosticarlo desde fuera. Hay que separar tres
-                                                                  cosas que hoy se ven igual:
-                                                                  1. **Falta configuración** (sin claves): es un fallo de despliegue, no del
-                                                                     usuario. Aviso claro en el log del servidor al arrancar, y en pantalla
-                                                                     algo que no invite a "volver en un rato", porque solo, no se arregla.
-                                                                  2. **Supabase no responde** (caída o red): ahí sí "vuelve en un rato", con
-                                                                     botón de reintentar.
-                                                                  3. **El usuario no tiene permiso**: ni error ni vacío, es la puerta
-                                                                     haciendo su trabajo.
+                                                                                                  entrar dice _"Las cuentas todavía no están conectadas. Vuelve en un rato"_
+                                                                                                  cuando en realidad **faltan variables de entorno** —le pasó a Cristian en
+                                                                                                  QA el 2026-08-19 y costó dos rondas de adivinar—. Ese mensaje miente a
+                                                                                                  medias y no hay forma de diagnosticarlo desde fuera. Hay que separar tres
+                                                                                                  cosas que hoy se ven igual:
+                                                                                                  1. **Falta configuración** (sin claves): es un fallo de despliegue, no del
+                                                                                                     usuario. Aviso claro en el log del servidor al arrancar, y en pantalla
+                                                                                                     algo que no invite a "volver en un rato", porque solo, no se arregla.
+                                                                                                  2. **Supabase no responde** (caída o red): ahí sí "vuelve en un rato", con
+                                                                                                     botón de reintentar.
+                                                                                                  3. **El usuario no tiene permiso**: ni error ni vacío, es la puerta
+                                                                                                     haciendo su trabajo.
 
-                                                                  Ojo al hacerlo: un `error.tsx` es un componente de cliente y **no atrapa lo
-                                                                  que falla en el servidor durante el render** más que como error genérico; el
-                                                                  detalle no viaja al navegador a propósito. Si se quiere distinguir los tres
-                                                                  casos de arriba, la decisión se toma en el servidor y se baja como dato, no
-                                                                  como excepción.
+                                                                                                  Ojo al hacerlo: un `error.tsx` es un componente de cliente y **no atrapa lo
+                                                                                                  que falla en el servidor durante el render** más que como error genérico; el
+                                                                                                  detalle no viaja al navegador a propósito. Si se quiere distinguir los tres
+                                                                                                  casos de arriba, la decisión se toma en el servidor y se baja como dato, no
+                                                                                                  como excepción.
 
 **El revisor visual ya existe**: `.claude/agents/revisor-visual.md`. Recibe la
 RUTA de una captura, puntúa usabilidad /40 y craft /20 contra esta paleta, y la
