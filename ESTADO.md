@@ -124,10 +124,37 @@ sobre la receta, anclado a ella.
   refleja en las recetas hasta el siguiente despliegue.** Falla del lado seguro:
   deja de ofrecer algo que existe, nunca ofrece algo que no.
 
-- **Fase 5 · el tope de gasto, a conciencia.** `checkBudget()` se comprueba
-  ANTES de mirar la sesión, así que al agotarse el presupuesto diario se agota
-  **para todos, incluido quien paga**. Con 45 recetas indexadas empujando
-  preguntas gratis, esto pasa de teórico a probable. Va después de medir.
+- ~~**Fase 5 · el tope de gasto.**~~ Hecha el 2026-09-01. Dos bolsillos por día
+  (`AI_DAILY_BUDGET_LEADS_USD`, `AI_DAILY_BUDGET_PRO_USD`), y `checkBudget()`
+  se comprueba DESPUÉS de saber el plan. Que los anónimos se coman su
+  presupuesto ya no deja mudo al que paga. En QA, `AI_SIMULAR_IA=1` contesta
+  sin llamar a Gemini — ignorado por código en producción.
+
+  ⚠️ Los dos bolsillos son globales POR PÚBLICO, no por persona: un solo
+  suscriptor puede agotar el de `pro` para los demás. Hoy da igual porque
+  `subscriptions` está vacía; cuando haya varios pagando hay que decidir si el
+  tope pasa a ser por cuenta.
+
+### 🟡 Responder desde `chat_messages` sin ir a Gemini — descartado por ahora
+
+Cristian lo propuso el 2026-09-01 para ahorrar. Medido antes de construirlo:
+**producción tiene 4 preguntas y 0 repetidas**; QA tiene 32 con 4 repetidas, y
+esas 4 son pruebas repetidas a mano. Hoy no ahorraría nada.
+
+⚠️ Y el problema no es solo que no sirva. Estas tres son la MISMA duda escrita
+distinto: _"¿cuánta sal de cura por kilo?"_, _"¿cuántos gramos de sal de cura #2
+por kilo?"_, _"¿cuánta sal de cura #2 uso para 2 kg de bondiola?"_. Una caché
+exacta no atrapa ninguna —son cadenas distintas— y una difusa las atrapa todas,
+pudiendo contestar una pregunta de **#2 con la respuesta de #1**, que es
+justamente la distinción de la que depende la seguridad. **La caché es o inútil
+o peligrosa.**
+
+Además el 47% de las preguntas llevan números (_"mi bondiola pesa 1,8 kg"_) y la
+respuesta se calcula para ESOS kilos. Servirla a otro es un error de dosis.
+
+Se revisa si algún día el gasto duele y hay repeticiones reales medidas. La
+condición mínima para volver a mirarlo: misma receta, sin foto, sin números,
+primer turno de la conversación, y la respuesta sin ninguna dosis dentro.
 
 ### 🟡 Volver a la receta desde el enlace del correo
 

@@ -1,4 +1,5 @@
 import { geminiConfig } from './config';
+import { fakeAnswer, isFakeAiEnabled } from './fake';
 
 export interface GeminiImage {
   readonly mimeType: string;
@@ -116,6 +117,15 @@ export async function generateAnswer(
   systemPrompt: string,
   turns: readonly GeminiTurn[],
 ): Promise<GeminiResult> {
+  /*
+    El desvío de QA va ANTES de mirar la clave, a propósito: así se puede
+    probar el flujo entero en un entorno que ni siquiera tenga `GEMINI_API_KEY`
+    configurada, en vez de necesitar una clave real para simular que no se usa.
+  */
+  if (isFakeAiEnabled()) {
+    return fakeAnswer(turns);
+  }
+
   if (geminiConfig.apiKey === '') {
     return { ok: false, reason: 'sin-clave' };
   }

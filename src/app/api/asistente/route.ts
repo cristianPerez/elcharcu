@@ -1,6 +1,6 @@
 import { after, NextResponse, type NextRequest } from 'next/server';
 
-import { checkBudget, recordSpend } from '@/entities/ai-budget';
+import { checkBudget, recordSpend, type Audience } from '@/entities/ai-budget';
 import {
   buildSystemPrompt,
   cleanTitle,
@@ -143,18 +143,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
-  // Freno de gasto: se comprueba ANTES de llamar a Gemini, que es lo que cuesta.
-  const budget = await checkBudget();
-  if (budget.isExhausted) {
-    console.warn(
-      `[presupuesto] tope diario alcanzado: ${budget.spentUsd.toFixed(4)} de ${String(budget.budgetUsd)} USD`,
-    );
-    return attachVisitorCookie(
-      NextResponse.json({ error: 'sin-presupuesto' }, { status: 429 }),
-      visitorId,
-    );
-  }
-
   // El cupo del visitante, también ANTES de llamar a Gemini. Aquí es donde el
   // muro deja de ser una pantalla y se vuelve una regla: por más que alguien
   // llame a esta ruta a mano, sin cupo no hay respuesta.
@@ -196,6 +184,38 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 
+  /*
+    Freno de gasto, con DOS BOLSILLOS (Cristian, 2026-09-01).
+
+    ⚠️ Antes esto iba arriba del todo, antes incluso de saber quién preguntaba,
+    y ese era exactamente el fallo: al agotarse el tope del día se agotaba para
+    TODOS, incluido el que paga. Un mal día de tráfico anónimo dejaba mudo al
+    asistente del único que puso dinero.
+
+    Ahora se comprueba después del cupo, que es lo que dice el plan, y cada
+    público gasta de lo suyo. El precio de haberlo movido es que el cupo ya se
+    cobró: por eso, si el bolsillo está vacío, se DEVUELVE. Es el mismo gesto
+    que cuando Gemini falla — no se le cobra una pregunta a alguien por un
+    límite nuestro.
+
+    Sigue estando antes de llamar a Gemini, que es lo que cuesta.
+  */
+  const audience: Audience = quota?.snapshot.plan === 'aprendiz' ? 'lead' : 'pro';
+  const budget = await checkBudget(audience);
+
+  if (budget.isExhausted) {
+    console.warn(
+      `[presupuesto] tope diario de "${audience}" alcanzado: ${budget.spentUsd.toFixed(4)} de ${String(budget.budgetUsd)} USD`,
+    );
+    if (quota !== null) {
+      await refundQuota(visitorId, userId, images, isNewRecipe);
+    }
+    return attachVisitorCookie(
+      NextResponse.json({ error: 'sin-presupuesto' }, { status: 429 }),
+      visitorId,
+    );
+  }
+
   // La receta la resuelve el SERVIDOR a partir del slug. Lo que no esté entre
   // las 45 del repo no existe: `getRecipeBySlug` devuelve `undefined` y la
   // conversación sigue como asistente general.
@@ -227,7 +247,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 
   // Se apunta lo que de verdad consumió, no una estimación.
-  await recordSpend(result.usage);
+  await recordSpend(result.usage, audience);
 
   // La receta se crea DESPUÉS de que la respuesta llegó bien. Si se creara
   // antes, un fallo de Gemini dejaría recetas vacías en el historial de la

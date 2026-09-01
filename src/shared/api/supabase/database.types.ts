@@ -12,6 +12,7 @@ export type Database = {
       ai_spend: {
         Row: {
           answer_tokens: number;
+          audience: string;
           cost_usd: number;
           day: string;
           prompt_tokens: number;
@@ -21,6 +22,7 @@ export type Database = {
         };
         Insert: {
           answer_tokens?: number;
+          audience?: string;
           cost_usd?: number;
           day?: string;
           prompt_tokens?: number;
@@ -30,6 +32,7 @@ export type Database = {
         };
         Update: {
           answer_tokens?: number;
+          audience?: string;
           cost_usd?: number;
           day?: string;
           prompt_tokens?: number;
@@ -589,6 +592,7 @@ export type Database = {
       record_ai_spend: {
         Args: {
           p_answer_tokens: number;
+          p_audience: string;
           p_cost_usd: number;
           p_prompt_tokens: number;
           p_thought_tokens: number;
@@ -622,7 +626,7 @@ export type Database = {
           title: string;
         }[];
       };
-      today_ai_spend: { Args: never; Returns: number };
+      today_ai_spend: { Args: { p_audience: string }; Returns: number };
     };
     Enums: {
       [_ in never]: never;

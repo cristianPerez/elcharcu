@@ -41,13 +41,33 @@ export function estimateCostUsd(usage: TokenUsage, when: Date = new Date()): num
 }
 
 /**
- * Tope diario, de `AI_DAILY_BUDGET_USD`.
+ * Quién gasta: la demostración o el servicio que se pagó.
  *
- * Si la variable falta o no es un número, se asume 0 = apagado, que corta todas
- * las llamadas. Es a propósito: ante una configuración rota preferimos que el
- * asistente deje de responder a que se gaste el presupuesto sin freno.
+ * `lead` es todo el que no tiene suscripción activa —sin cuenta o con cuenta
+ * gratis—. `pro` es quien paga.
  */
-export function dailyBudgetUsd(): number {
-  const parsed = Number.parseFloat(process.env.AI_DAILY_BUDGET_USD ?? '');
+export type Audience = 'lead' | 'pro';
+
+/**
+ * El tope diario de ese público, en dólares.
+ *
+ * ⚠️ SON DOS BOLSILLOS SEPARADOS (Cristian, 2026-09-01). Antes había uno solo
+ * y `checkBudget()` se comprueba ANTES de mirar la sesión, así que al agotarse
+ * el presupuesto del día se agotaba **para todos, incluido quien paga**. Un mal
+ * día de tráfico anónimo dejaba sin asistente al único que puso dinero.
+ *
+ * Si la variable falta o no es un número, se asume 0 = APAGADO, que corta todas
+ * las llamadas de ese público. Es a propósito y no es un descuido: ante una
+ * configuración rota preferimos que el asistente deje de responder a que se
+ * gaste sin freno. Lo que NO puede pasar es que un tope mal escrito se lea como
+ * "sin límite".
+ */
+export function dailyBudgetUsd(audience: Audience): number {
+  const raw =
+    audience === 'pro'
+      ? process.env.AI_DAILY_BUDGET_PRO_USD
+      : process.env.AI_DAILY_BUDGET_LEADS_USD;
+
+  const parsed = Number.parseFloat(raw ?? '');
   return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
 }
