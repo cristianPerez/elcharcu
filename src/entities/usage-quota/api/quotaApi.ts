@@ -2,6 +2,7 @@ import {
   createSupabaseAdminClient,
   isSupabaseAdminConfigured,
 } from '@/shared/api/supabase/server';
+import { reportError } from '@/shared/lib';
 
 import { type QuotaDeniedBy, type QuotaSnapshot } from '../model/types';
 
@@ -82,7 +83,7 @@ export async function consumeQuota(
   });
 
   if (error !== null) {
-    console.error('[cupo] no se pudo consumir:', error.message);
+    reportError('cupo', 'no se pudo consumir', { detail: error.message });
     return null;
   }
 
@@ -124,7 +125,7 @@ export async function refundQuota(
   });
 
   if (error !== null) {
-    console.error('[cupo] no se pudo devolver la pregunta:', error.message);
+    reportError('cupo', 'no se pudo devolver la pregunta', { detail: error.message });
   }
 }
 
@@ -144,7 +145,7 @@ export async function readQuota(
   });
 
   if (error !== null) {
-    console.error('[cupo] no se pudo leer:', error.message);
+    reportError('cupo', 'no se pudo leer', { detail: error.message });
     return null;
   }
 
@@ -172,6 +173,8 @@ export async function linkVisitorToUser(
   });
 
   if (error !== null) {
-    console.error('[cupo] no se pudo atar el visitante a la cuenta:', error.message);
+    reportError('cupo', 'no se pudo atar el visitante a la cuenta', {
+      detail: error.message,
+    });
   }
 }

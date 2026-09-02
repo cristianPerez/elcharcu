@@ -1,3 +1,4 @@
+import { reportError } from '../../lib/observability/reportError';
 /**
  * Credenciales de Supabase para el SERVIDOR, con red de seguridad.
  *
@@ -74,8 +75,9 @@ export function warnIfMisconfigured(where: string): void {
   const faltaUrl = serverSupabaseUrl() === '';
   const faltaClave = serverSupabasePublishableKey() === '';
 
-  console.error(
-    `[supabase] Sin credenciales en ${where}. ` +
+  reportError(
+    'config',
+    `Sin credenciales de Supabase en ${where}. ` +
       `Falta ${faltaUrl ? 'la URL' : ''}${faltaUrl && faltaClave ? ' y ' : ''}` +
       `${faltaClave ? 'la clave publicable' : ''}. ` +
       'Esto NO es una caída de Supabase: es configuración. Revisa las variables ' +

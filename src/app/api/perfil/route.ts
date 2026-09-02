@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 import { createSupabaseServerClient } from '@/shared/api/supabase/server';
 import { parseInterests } from '@/shared/config';
+import { reportError } from '@/shared/lib';
 
 /**
  * El perfil del usuario: cerrarlo la primera vez (POST) y cambiarlo después
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   });
 
   if (error !== null) {
-    console.error('[perfil] no se pudo cerrar el onboarding:', error.message);
+    reportError('perfil', 'no se pudo cerrar el onboarding', { detail: error.message });
     return NextResponse.json({ error: 'no-se-pudo-guardar' }, { status: 500 });
   }
 
@@ -97,7 +98,7 @@ export async function PATCH(request: NextRequest): Promise<NextResponse> {
     .eq('id', auth.user.id);
 
   if (error !== null) {
-    console.error('[perfil] no se pudo actualizar:', error.message);
+    reportError('perfil', 'no se pudo actualizar', { detail: error.message });
     return NextResponse.json({ error: 'no-se-pudo-guardar' }, { status: 500 });
   }
 

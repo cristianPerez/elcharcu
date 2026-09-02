@@ -2,6 +2,7 @@ import {
   createSupabaseAdminClient,
   isSupabaseAdminConfigured,
 } from '@/shared/api/supabase/server';
+import { reportError } from '@/shared/lib';
 
 import {
   dailyBudgetUsd,
@@ -48,7 +49,10 @@ export async function checkBudget(audience: Audience): Promise<BudgetStatus> {
   });
 
   if (error) {
-    console.error('[presupuesto] no se pudo leer el gasto de hoy:', error.message);
+    reportError('presupuesto', 'no se pudo leer el gasto de hoy', {
+      detail: error.message,
+      audience,
+    });
     return { spentUsd: 0, budgetUsd, isExhausted: false };
   }
 
@@ -75,7 +79,10 @@ export async function recordSpend(
   });
 
   if (error) {
-    console.error('[presupuesto] no se pudo apuntar el gasto:', error.message);
+    reportError('presupuesto', 'no se pudo apuntar el gasto', {
+      detail: error.message,
+      audience,
+    });
     return 0;
   }
 

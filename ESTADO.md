@@ -128,26 +128,6 @@ Salen de las fases 3, 4 y 5. No son pendientes: son cómo se comporta.
   sesión, así que quien vuelve tras cerrar sesión queda contado. Los contactos
   nuevos de verdad son `account_created`.
 
-### 🔴 Borrar el puente de la 0026 en cuanto despliegue
-
-La migración `0026` devolvió temporalmente las firmas VIEJAS de
-`today_ai_spend` y `record_ai_spend`, para que el código que está sirviendo
-ahora siguiera contando el gasto mientras se despliega el nuevo. Sin ellas, la
-ventana entre la migración y el despliegue deja a producción **sin tope y sin
-contabilidad** — no caída, pero sin freno.
-
-⚠️ **Mientras existan son una trampa**, y es la misma que la 0025 quitó a
-propósito: una llamada futura que se olvide del público compila igual y suma a
-`lead` sin decir nada. Un fallo silencioso en la contabilidad del dinero.
-
-**Cuando `/api/salud` de www.elcharcu.co devuelva el commit con los dos
-presupuestos, se borran:**
-
-```sql
-drop function if exists charcu.today_ai_spend();
-drop function if exists charcu.record_ai_spend(bigint, bigint, bigint, numeric);
-```
-
 ### 🟡 Responder desde `chat_messages` sin ir a Gemini — descartado por ahora
 
 Cristian lo propuso el 2026-09-01 para ahorrar. Medido antes de construirlo:
@@ -233,6 +213,10 @@ altavoz a un número sin revisar.
   de que la demostración no pida cuenta (D14), y ahora lo acota el presupuesto
   diario de `lead`. **Antes de gastar trabajo en taparlo hay que medir si
   alguien lo hace de verdad** — hoy no hay ninguna medición.
+- **Los fallos del servidor solo viven en los logs de Vercel**, que se purgan.
+  Datadog se planteó y Cristian lo aparcó el 2026-09-01. No queda nada a medias:
+  `reportError` / `reportWarning` ya centralizan todo fallo técnico en JSON, así
+  que el día que haga falta un proveedor se cablea **en ese único archivo**.
 - **`QuotaWall` quedó sin usar** y sigue exportado. Lo sustituyó `QuotaNotice`.
 - **`FreeSession` es una pantalla de transición** que sobrevive a su modelo. Se
   va cuando exista "Mis recetas" de verdad.

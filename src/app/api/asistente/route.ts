@@ -21,6 +21,7 @@ import { generateAnswer, type GeminiTurn } from '@/shared/api/gemini';
 import { countryFromRequest } from '@/shared/api/geo';
 import { createSupabaseServerClient } from '@/shared/api/supabase/server';
 import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
+import { reportWarning } from '@/shared/lib';
 
 /** Tope de la imagen en base64 (~3 MB de foto). */
 const MAX_IMAGE_CHARS = 4_000_000;
@@ -204,9 +205,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const budget = await checkBudget(audience);
 
   if (budget.isExhausted) {
-    console.warn(
-      `[presupuesto] tope diario de "${audience}" alcanzado: ${budget.spentUsd.toFixed(4)} de ${String(budget.budgetUsd)} USD`,
-    );
+    reportWarning('presupuesto', 'tope diario alcanzado', {
+      audience,
+      spent_usd: Number(budget.spentUsd.toFixed(4)),
+      budget_usd: budget.budgetUsd,
+    });
     if (quota !== null) {
       await refundQuota(visitorId, userId, images, isNewRecipe);
     }
@@ -284,10 +287,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const verdict = auditCureDoses(result.text);
 
   if (!verdict.isSafe) {
-    console.warn(
-      '[asistente] respuesta bloqueada por dosis insegura:',
-      verdict.dangerous.map((finding) => finding.excerpt),
-    );
+    /*
+      ⚠️ Se apunta CUÁNTAS dosis se bloquearon, no cuáles.
+
+      El fragmento peligroso es texto que el modelo escribió sobre lo que está
+      curando esa persona, y esto acaba saliendo del edificio en cuanto exista
+      el log drain. El número basta para lo único que hay que vigilar: si sube,
+      el prompt se rompió.
+    */
+    reportWarning('asistente', 'respuesta bloqueada por dosis insegura', {
+      findings: verdict.dangerous.length,
+    });
     // Se guarda la corregida, no la peligrosa: el historial que después lee el
     // modelo no debe contener nunca la dosis que bloqueamos.
     const corregida = blockedAnswer();
