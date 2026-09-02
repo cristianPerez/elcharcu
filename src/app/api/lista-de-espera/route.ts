@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 import { createSupabaseServerClient } from '@/shared/api/supabase/server';
+import { reportError } from '@/shared/lib';
 
 /**
  * Apuntarse a la lista de espera de un curso.
@@ -55,7 +56,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    console.error('[lista-de-espera] no se pudo apuntar:', error.message);
+    reportError('lista-de-espera', 'no se pudo apuntar', { detail: error.message });
     return NextResponse.json({ error: 'no-se-pudo' }, { status: 500 });
   }
 

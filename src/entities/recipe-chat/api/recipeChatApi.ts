@@ -2,6 +2,7 @@ import {
   createSupabaseAdminClient,
   isSupabaseAdminConfigured,
 } from '@/shared/api/supabase/server';
+import { reportError } from '@/shared/lib';
 
 /**
  * Las recetas del asistente: cada conversación gira en torno a UNA pieza.
@@ -77,7 +78,7 @@ export async function createRecipe(
     .single();
 
   if (error !== null) {
-    console.error('[receta] no se pudo crear:', error.message);
+    reportError('receta', 'no se pudo crear', { detail: error.message });
     return null;
   }
 
@@ -178,7 +179,9 @@ export async function saveExchange(params: {
     ]);
 
   if (error !== null) {
-    console.error('[receta] no se pudo guardar la conversación:', error.message);
+    reportError('receta', 'no se pudo guardar la conversación', {
+      detail: error.message,
+    });
   }
 }
 
@@ -346,6 +349,6 @@ export async function renameRecipe(recipeId: string, title: string): Promise<voi
     .eq('id', recipeId);
 
   if (error !== null) {
-    console.error('[receta] no se pudo renombrar:', error.message);
+    reportError('receta', 'no se pudo renombrar', { detail: error.message });
   }
 }

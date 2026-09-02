@@ -9,6 +9,7 @@ import {
   attachButtonClickTracking,
   identifyAccount,
   initMixpanel,
+  watchBrowserErrors,
   track,
 } from '@/shared/lib';
 
@@ -56,6 +57,10 @@ export function AppProviders({ children, visitorId }: AppProvidersProps): ReactN
     url.searchParams.delete('entrada');
     window.history.replaceState(null, '', `${url.pathname}${url.search}`);
   }, []);
+
+  // Lo que revienta fuera de React. Se engancha lo primero: un fallo mientras
+  // arranca lo demás también tiene que quedar apuntado.
+  useEffect(() => watchBrowserErrors(), []);
 
   useEffect(() => {
     initMixpanel();

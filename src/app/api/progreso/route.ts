@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 import { createSupabaseServerClient } from '@/shared/api/supabase/server';
+import { reportError } from '@/shared/lib';
 
 interface ProgressPayload {
   readonly lessonId: string;
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   });
 
   if (error !== null) {
-    console.error('[progreso] no se pudo guardar:', error.message);
+    reportError('progreso', 'no se pudo guardar', { detail: error.message });
     return NextResponse.json({ error: 'no-se-pudo-guardar' }, { status: 500 });
   }
 

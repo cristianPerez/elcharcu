@@ -1,5 +1,6 @@
 import { createSupabaseBrowserClient } from '@/shared/api/supabase';
 import { parseInterests } from '@/shared/config';
+import { reportError } from '@/shared/lib';
 
 import { type CuringProfile } from '../model/profile.types';
 
@@ -89,7 +90,9 @@ export async function syncProfileToSupabase(profile: CuringProfile): Promise<voi
       .eq('id', userId);
 
     if (error !== null) {
-      console.error('[perfil] no se pudo guardar en la base:', error.message);
+      reportError('perfil', 'no se pudo guardar en la base', {
+        detail: error.message,
+      });
     }
   } catch {
     // Sin Supabase configurado se sigue con el guardado local, sin ruido.
