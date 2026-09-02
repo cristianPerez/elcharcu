@@ -213,6 +213,10 @@ altavoz a un número sin revisar.
   de que la demostración no pida cuenta (D14), y ahora lo acota el presupuesto
   diario de `lead`. **Antes de gastar trabajo en taparlo hay que medir si
   alguien lo hace de verdad** — hoy no hay ninguna medición.
+- **Los fallos del servidor solo viven en los logs de Vercel**, que se purgan.
+  Datadog se planteó y Cristian lo aparcó el 2026-09-01. No queda nada a medias:
+  `reportError` / `reportWarning` ya centralizan todo fallo técnico en JSON, así
+  que el día que haga falta un proveedor se cablea **en ese único archivo**.
 - **`QuotaWall` quedó sin usar** y sigue exportado. Lo sustituyó `QuotaNotice`.
 - **`FreeSession` es una pantalla de transición** que sobrevive a su modelo. Se
   va cuando exista "Mis recetas" de verdad.
