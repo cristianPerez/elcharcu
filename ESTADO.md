@@ -87,38 +87,28 @@ todavía no hay código**. Se quedaron en la versión larga de este archivo:
 integrar, o se recuperan de ahí o se releen de su documentación. ⚠️ **OnePay solo cobra en COP y D18 fija los
 precios en dólares** — hay que decidir el precio en pesos antes de crear el plan.
 
-### 🔴 La auditoría de seguridad bloquea respuestas CORRECTAS
+### 🟡 Un hueco conocido en la auditoría de seguridad
 
-Encontrado el 2026-09-14 publicando el Jamón de Bondiola Ahumado. El asistente
-contestó bien y se bloqueó a sí mismo.
-
-El patrón de `auditCureDoses` salta por encima de un paréntesis y une un TOTAL
-con una tasa por kilo que viene después:
+Los dos falsos positivos del 2026-09-14 están cerrados. Queda uno, y es
+**preexistente** —comprobado contra el código anterior, no lo introdujo el
+arreglo—: el patrón exige que el número vaya ANTES de "por kilo", así que
 
 ```
-"Sal de cura #1: 4,5 g en total, que son 2,5 g por kilo"
-                 ↑ lo lee como 4,5 g POR KILO → bloquea
+"Por kilo lleva 7 g de sal de cura #1, 1,2 g de pimienta…"
 ```
 
-4,5 g es el total correcto para 1,8 kg a 2,5 g/kg. La respuesta era segura.
+se escapa. Cerrarlo pide un segundo patrón en orden inverso, y cada
+ensanchamiento de esta regla crea aristas nuevas: el primer intento de arreglo
+de ese día introdujo **tres falsos negativos** que solo se vieron por la matriz
+de casos.
 
-⚠️ **Y el prompt del sistema PIDE esa frase**: "cuando des una dosis, dala por
-kilo y calcula el total para SUS kilos. Los dos números y ya". Que bloquee o no
-depende de si el modelo metió por casualidad una palabra de `WARNING_TERMS`
-—con "nunca" en la frase pasa, sin ella bloquea—, así que es intermitente.
+⚠️ **Antes y después de tocar `cure-safety`:**
 
-Afecta a la pregunta más común que hay: "¿y si mi pieza pesa otra cosa?", que
-además es una de las cuatro dudas de cada receta.
+```bash
+npx tsx scripts/comprobar-seguridad.ts
+```
 
-⚠️ **Segundo falso positivo, del mismo módulo.** `NON_CURE_TERMS` reconoce "sal
-gruesa", "sal fina", "sal marina"… pero no "sal" a secas. **27 de las 31
-recetas con sal de cura nombran el ingrediente solo "Sal"**, así que su gramaje
-—18, 26, hasta 280 g— se atribuye a la sal de cura. Se hizo visible al inyectar
-la receta en el prompt (fase 1.1): antes el modelo no repetía el texto de la
-receta.
-
-No se arregla aquí a propósito: es el módulo más delicado del repo y merece su
-propio cambio, no ir de acompañante de una receta.
+En ese módulo, pasarse de preciso es peor que pasarse de ancho.
 
 ### 🔴 `knowledge` está vacía y nadie la lee
 
