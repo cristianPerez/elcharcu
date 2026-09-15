@@ -1,0 +1,145 @@
+{
+  "slug": "jamon-de-bondiola-ahumado",
+  "name": "Jamón de Bondiola Ahumado",
+  "description": "Bondiola curada, bridada como jamón y ahumada lento con leña de guayabo hasta los 75 °C internos — para cortar en lonchas finas.",
+  "image": "/recipes/jamon-de-bondiola-ahumado.jpg",
+  "tags": ["Colombia", "Ahumado", "Curado"],
+  "eyebrow": "Receta · Curados del mundo",
+  "subtitle": "Bondiola convertida en jamón, con humo de guayabo.",
+  "intro": "¿Bondiola convertida en jamón? La duda es razonable: la bondiola es una pieza con vetas de grasa, nada que ver con el músculo magro y compacto del que se hacen los jamones clásicos. Y justo ahí está la gracia — esa grasa entreverada se funde durante el ahumado y deja una loncha jugosa donde un jamón de pierna quedaría seco. El proceso es de tres tiempos: se cura empacada al vacío, se brida para que tome la forma cilíndrica, y se ahúma lento con leña de guayabo hasta los 75 °C internos. El guayabo es lo que le da el carácter: un humo dulce y redondo, mucho menos agresivo que el de maderas duras como el roble.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg" },
+    { "label": "Tipo", "value": "Curado en seco, ahumado y cocido" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Curado", "value": "1 día por cada kilo, al vacío" },
+    { "label": "Ahumado", "value": "Horno o barril a 200 °C, guayabo" },
+    { "label": "Temperatura interna", "value": "75 °C" },
+    { "label": "Reposo", "value": "Toda la noche, en frío" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Bondiola de cerdo, el cabecero de lomo. Es la pieza con más grasa entreverada del cerdo, y por eso aguanta un ahumado largo sin secarse."
+    },
+    {
+      "title": "Textura",
+      "description": "Firme pero jugosa. Al enfriarse la grasa se asienta y la pieza se deja cortar en lonchas finas sin desarmarse."
+    },
+    {
+      "title": "Sabor",
+      "description": "Profundo y especiado, con el humo dulce del guayabo por encima. La paprika y el chile quebrado aportan color y un picante de fondo, no de golpe."
+    }
+  ],
+  "quote": "Yo también tenía mis dudas, hasta que lo probé: la grasa de la bondiola es justo lo que impide que un jamón ahumado quede seco.",
+  "ingredientsNote": "Estas cantidades son para 1 kg de bondiola. La mezcla completa son 27,43 g por kilo — pesa la pieza antes de nada, porque todo se calcula sobre su peso real y no sobre el que dice la receta.",
+  "ingredients": [
+    { "name": "Bondiola de cerdo (pieza entera)", "amount": "1000 g", "pct": "100%" },
+    { "name": "Sal fina", "amount": "16,26 g", "pct": "1,63%" },
+    {
+      "name": "Sal de cura #1 (Prague Powder #1)",
+      "amount": "2,5 g",
+      "pct": "0,25%"
+    },
+    { "name": "Azúcar", "amount": "2,51 g", "pct": "0,25%" },
+    { "name": "Ajo en polvo", "amount": "1,51 g", "pct": "0,15%" },
+    { "name": "Pimienta negra molida", "amount": "1,20 g", "pct": "0,12%" },
+    { "name": "Paprika dulce", "amount": "1,20 g", "pct": "0,12%" },
+    { "name": "Coriandro molido", "amount": "1,00 g", "pct": "0,10%" },
+    { "name": "Chile quebrado", "amount": "1,00 g", "pct": "0,10%" },
+    { "name": "Nuez moscada", "amount": "0,25 g", "pct": "0,025%" },
+    { "name": "Pellets o astillas de guayabo", "amount": "al gusto", "pct": "—" },
+    { "name": "Pita o cabuya para bridar", "amount": "1 madeja", "pct": "—" }
+  ],
+  "proportionNote": "La sal fina al 1,63% es lo que hace que quede sabroso sin salarse, y la sal de cura al 0,25% es el estándar seguro y también el techo: nunca más. El azúcar no está para endulzar — redondea la sal y ayuda al color durante el ahumado.",
+  "charcuteroNote": "Valores por kilo de bondiola: sal fina 16,26 g · sal de cura #1 2,5 g · azúcar 2,51 g · ajo en polvo 1,51 g · pimienta negra 1,20 g · paprika dulce 1,20 g · coriandro 1,00 g · chile quebrado 1,00 g · nuez moscada 0,25 g. Total de la mezcla: 27,43 g por kilo. Aquí la sal de cura NO es opcional: la pieza pasa horas entre 30 y 60 °C mientras sube al centro, que es justo el rango donde el Clostridium botulinum trabaja mejor.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Pesa la bondiola y calcula la mezcla sobre ese peso. Si la pieza es grande, porciónala: una bondiola de 2 kg partida en dos cura en la mitad de tiempo y con mucha menos incertidumbre."
+    },
+    {
+      "n": "02",
+      "text": "Mezcla todos los secos en un bol aparte antes de tocar la carne. Hacerlo así es lo único que garantiza que la sal de cura quede repartida pareja; echándolos uno a uno sobre la pieza siempre queda una zona con más."
+    },
+    {
+      "n": "03",
+      "text": "Cubre la bondiola con la mezcla masajeando bien toda la superficie, incluidos los pliegues y las puntas. No sobra nada: todo lo que pesaste va sobre la carne."
+    },
+    {
+      "n": "04",
+      "text": "Empaca al vacío y refrigera 1 día por cada kilo de carne. Voltea la bolsa una vez al día para que la salmuera que se forma bañe la pieza por los dos lados."
+    },
+    {
+      "n": "05",
+      "text": "Saca la pieza, escúrrela y brídala con pita o cabuya dándole forma cilíndrica. Esa forma no es estética: una pieza pareja se cocina pareja y se corta en lonchas redondas."
+    },
+    {
+      "n": "06",
+      "text": "Precalienta el barril u horno a 200 °C y mete la pieza. Añade pellets de guayabo cada 30 minutos para mantener el humo constante durante toda la cocción."
+    },
+    {
+      "n": "07",
+      "text": "Cocina hasta que el CENTRO de la pieza marque 75 °C. Mide con termómetro en la parte más gruesa, nunca por tiempo: dos bondiolas del mismo peso pueden tardar distinto según su forma."
+    },
+    {
+      "n": "08",
+      "text": "Enfría de golpe en agua con hielo hasta que la pieza esté fría al tacto. Este paso corta la cocción residual y es también seguridad: acorta el tiempo que la carne pasa en el rango de temperatura donde crecen las bacterias."
+    },
+    {
+      "n": "09",
+      "text": "Envuelve en papel aluminio y deja reposar en la nevera toda la noche. Al día siguiente corta en lonchas finas — en caliente se desarma, en frío se corta limpio."
+    }
+  ],
+  "tips": [
+    {
+      "title": "El guayabo, en pellets o astillas",
+      "description": "El guayabo da un humo dulce y suave. Si no consigues, el manzano o el cerezo son los sustitutos más cercanos; evita maderas duras como el roble, que tapan las especias."
+    },
+    {
+      "title": "Un día por kilo, no un día y ya",
+      "description": "El curado es proporcional al peso. Una pieza de 2 kg necesita 2 días; cortarlo a la mitad del tiempo deja el centro sin curar, que es donde importa."
+    },
+    {
+      "title": "El termómetro manda sobre el reloj",
+      "description": "75 °C internos es el objetivo, no una duración. Si el horno es más chico o la pieza más gruesa, tardará más — y está bien."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "En lonchas finas",
+      "description": "Frío y recién cortado, sobre tabla. Es como mejor se aprecia el humo del guayabo."
+    },
+    {
+      "title": "En sándwich",
+      "description": "En lonchas algo más gruesas, apenas templado, con pan crujiente y poco más."
+    }
+  ],
+  "recommendations": [
+    "No omitas la sal de cura #1 — la pieza pasa horas en el rango de riesgo mientras sube al centro.",
+    "Pesa la bondiola antes de calcular nada: los porcentajes se aplican sobre el peso real.",
+    "Mide siempre la temperatura en el centro de la parte más gruesa, no cerca de la superficie.",
+    "El enfriado rápido en agua con hielo no es opcional: es parte de la seguridad, no del acabado.",
+    "Guarda la pieza entera y corta a medida que consumas — en loncha se seca mucho más rápido."
+  ],
+  "resultNote": "El resultado: una pieza firme por fuera y jugosa por dentro, con el humo dulce del guayabo integrado en toda la carne y un picante de fondo que aparece al final del bocado.",
+  "finalQuote": "Bondiola, especias, humo de guayabo y paciencia. No hay atajo para ninguno de los cuatro.",
+  "finalQuoteCaption": "Consejo de El Charcu",
+  "doubts": {
+    "onIntro": {
+      "label": "¿Cuánto curo si mi pieza pesa más?",
+      "prompt": "La receta del Jamón de Bondiola Ahumado está para 1 kg y cura 1 día por kilo. Mi bondiola pesa otra cosa: ¿cómo reescalo los 27,43 g de mezcla y cuántos días la dejo al vacío? ¿Conviene partirla en dos?"
+    },
+    "onIngredients": {
+      "label": "¿Por qué sal de cura #1 y no #2?",
+      "prompt": "El Jamón de Bondiola Ahumado lleva 2,5 g de sal de cura #1 por kilo. ¿Por qué la #1 y no la #2 si la pieza se cura antes de ahumar? ¿Qué pasa exactamente si me paso de esa cantidad, y se puede hacer sin ella?"
+    },
+    "onProcess": {
+      "label": "¿Cómo sé que llegó a 75 °C de verdad?",
+      "prompt": "Estoy ahumando mi Jamón de Bondiola Ahumado en horno a 200 °C con pellets de guayabo. ¿Dónde clavo el termómetro exactamente, qué hago si la temperatura se estanca a mitad de camino, y cómo evito que la superficie se seque antes de que el centro llegue a 75 °C?"
+    },
+    "onServing": {
+      "label": "Mándale una foto de cómo quedó",
+      "prompt": "Te voy a mandar una foto del corte de mi Jamón de Bondiola Ahumado para que me digas si el ahumado y la cocción quedaron bien, si el color por dentro es el que debería, y cuánto me aguanta en la nevera."
+    }
+  }
+}

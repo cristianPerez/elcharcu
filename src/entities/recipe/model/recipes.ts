@@ -19,6 +19,7 @@ import chouricoPortugues from '../recipes/chourico-portugues.json';
 import fuet from '../recipes/fuet.json';
 import hamburguesaCerdoEuropea from '../recipes/hamburguesa-cerdo-europea.json';
 import jamonAhumadoPicante from '../recipes/jamon-ahumado-picante.json';
+import jamonDeBondiolaAhumado from '../recipes/jamon-de-bondiola-ahumado.json';
 import jamonPiernaHorneado from '../recipes/jamon-pierna-horneado.json';
 import jamonSelvaNegra from '../recipes/jamon-selva-negra.json';
 import kielbasaBajoSodio from '../recipes/kielbasa-bajo-sodio.json';
@@ -91,6 +92,7 @@ const recipes: readonly Recipe[] = [
   biltong,
   pastrami,
   jamonAhumadoPicante,
+  jamonDeBondiolaAhumado,
   hamburguesaCerdoEuropea,
   mortadelaDePolloCasera,
   jamonPiernaHorneado,
