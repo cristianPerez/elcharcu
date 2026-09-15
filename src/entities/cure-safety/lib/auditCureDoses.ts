@@ -1,6 +1,7 @@
 import {
   CURE_TERMS,
   MAX_CURE_1_G_PER_KG,
+  NON_CURE_PATTERNS,
   NON_CURE_TERMS,
   WARNING_TERMS,
 } from '../model/limits';
@@ -25,9 +26,39 @@ export interface SafetyVerdict {
   readonly dangerous: readonly DoseFinding[];
 }
 
-/** Captura "2,5 g por kilo", "3 gramos / kg", "4 gr por cada kilogramo"… */
+/**
+ * Captura "2,5 g por kilo", "3 gramos / kg", "4 gr por cada kilogramo"…
+ *
+ * A propósito es PERMISIVO: el hueco admite cualquier cosa, de modo que en
+ * "8 g de sal de cura y 2 g de pimienta por kilo" los 8 g también quedan
+ * atrapados. El "por kilo" del final se aplica a toda la lista, y perder eso
+ * sería dejar escapar una dosis peligrosa.
+ *
+ * ⚠️ Se intentó apretarlo —prohibir que el hueco contuviera otra dosis— y fue
+ * un error que costó tres falsos negativos comprobados (2026-09-14): las tres
+ * frases de arriba dejaban de bloquearse. En un módulo de seguridad, pasarse de
+ * preciso es peor que pasarse de ancho. El hueco se captura en el grupo 2 para
+ * poder mirarlo después, que es donde está el arreglo de verdad.
+ */
 const DOSE_PATTERN =
-  /(\d+(?:[.,]\d+)?)\s*(?:g|gr|gramos)\b[^.;\n]{0,40}?(?:por|\/|cada)\s*(?:kilo|kilogramo|kg)\b/gi;
+  /(\d+(?:[.,]\d+)?)\s*(?:g|gr|gramos)\b([^.;\n]{0,80}?)(?:por|\/|cada)\s*(?:kilo|kilogramo|kg)\b/gi;
+
+/**
+ * Señales de que el número que las precede es un TOTAL y no una dosis por kilo.
+ *
+ * El paréntesis está porque la forma más común de restarlo es entre ellos:
+ * "4,5 g (son 2,5 g por kilo)".
+ */
+const TOTAL_MARKERS: readonly string[] = [
+  'en total',
+  'total',
+  '(',
+  'es decir',
+  'o sea',
+  'equivale',
+  'para tus',
+  'para la pieza',
+];
 
 const CONTEXT_BEFORE = 160;
 const CONTEXT_AFTER = 80;
@@ -45,6 +76,31 @@ function nearestDistance(
     while (index !== -1) {
       best = Math.min(best, Math.abs(index - position));
       index = window.indexOf(term, index + 1);
+    }
+  }
+
+  return best;
+}
+
+/** Igual que `nearestDistance`, pero para términos que necesitan contexto. */
+function nearestPatternDistance(
+  window: string,
+  patterns: readonly RegExp[],
+  position: number,
+): number {
+  let best = Number.POSITIVE_INFINITY;
+
+  for (const pattern of patterns) {
+    // La bandera `g` guarda estado entre llamadas: se copia para que dos
+    // comprobaciones seguidas no se pisen el `lastIndex`.
+    const scan = new RegExp(
+      pattern.source,
+      pattern.flags.includes('g') ? pattern.flags : `${pattern.flags}g`,
+    );
+    for (const match of window.matchAll(scan)) {
+      if (match.index !== undefined) {
+        best = Math.min(best, Math.abs(match.index - position));
+      }
     }
   }
 
@@ -71,7 +127,12 @@ function isAboutCureSalt(text: string, matchIndex: number, matchLength: number):
     return false;
   }
 
-  return cureDistance < nearestDistance(window, NON_CURE_TERMS, position);
+  const nonCureDistance = Math.min(
+    nearestDistance(window, NON_CURE_TERMS, position),
+    nearestPatternDistance(window, NON_CURE_PATTERNS, position),
+  );
+
+  return cureDistance < nonCureDistance;
 }
 
 /** La frase completa donde cae el número, para leer su intención. */
@@ -108,7 +169,30 @@ export function auditCureDoses(text: string): SafetyVerdict {
 
   for (const match of text.matchAll(DOSE_PATTERN)) {
     const raw = match[1];
+    const gap = match[2] ?? '';
     if (raw === undefined || match.index === undefined) {
+      continue;
+    }
+
+    /*
+      ⚠️ ESTE NÚMERO ES UN TOTAL, NO UNA TASA.
+
+      El prompt del sistema le pide al asistente los DOS números: la dosis por
+      kilo y el total para los kilos de esa persona. Al escribirlos juntos, el
+      patrón enganchaba el total con el "por kilo" de la tasa:
+
+          "4,5 g en total, que son 2,5 g por kilo"
+           ↑ leído como 4,5 g POR KILO → bloqueaba una respuesta correcta
+
+      4,5 g es el total correcto de 1,8 kg a 2,5 g/kg. Que saltara o no dependía
+      de si el modelo metía por casualidad una palabra de `WARNING_TERMS`, así
+      que era intermitente (2026-09-14).
+
+      Se descarta solo en las DOS formas en que aparece un total, y mirando
+      únicamente el HUECO —no la frase entera—: si la marca estuviera después
+      del "por kilo", "8 g de sal de cura por kilo en total" se colaría.
+    */
+    if (TOTAL_MARKERS.some((marker) => gap.toLowerCase().includes(marker))) {
       continue;
     }
 

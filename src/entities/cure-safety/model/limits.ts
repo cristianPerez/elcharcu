@@ -64,6 +64,23 @@ export const WARNING_TERMS: readonly string[] = [
   'enferm',
 ];
 
+/**
+ * Lo mismo que `NON_CURE_TERMS`, pero cuando hace falta mirar el CONTEXTO.
+ *
+ * ⚠️ "sal" a secas no puede ir en la lista de cadenas: `indexOf` la encontraría
+ * dentro de "sal de cura", a distancia cero, y entonces NINGUNA dosis de sal de
+ * cura se detectaría jamás. Con un patrón sí se puede decir "la palabra sal
+ * cuando NO la sigue «de cura»".
+ *
+ * Hacía falta porque 27 de las 31 recetas con sal de cura llaman al ingrediente
+ * simplemente "Sal", y desde que la receta se inyecta en el prompt el asistente
+ * repite ese nombre. Sus 18–280 g de sal común se atribuían a la sal de cura y
+ * la respuesta se bloqueaba sola (2026-09-14).
+ */
+export const NON_CURE_PATTERNS: readonly RegExp[] = [
+  /\bsal\b(?!\s+(?:de\s+cura|nitro|curante))/gi,
+];
+
 /** Palabras que indican que el número habla de OTRA cosa (sal común, azúcar…). */
 export const NON_CURE_TERMS: readonly string[] = [
   'sal común',
