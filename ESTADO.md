@@ -87,6 +87,39 @@ todavía no hay código**. Se quedaron en la versión larga de este archivo:
 integrar, o se recuperan de ahí o se releen de su documentación. ⚠️ **OnePay solo cobra en COP y D18 fija los
 precios en dólares** — hay que decidir el precio en pesos antes de crear el plan.
 
+### 🔴 La auditoría de seguridad bloquea respuestas CORRECTAS
+
+Encontrado el 2026-09-14 publicando el Jamón de Bondiola Ahumado. El asistente
+contestó bien y se bloqueó a sí mismo.
+
+El patrón de `auditCureDoses` salta por encima de un paréntesis y une un TOTAL
+con una tasa por kilo que viene después:
+
+```
+"Sal de cura #1: 4,5 g en total, que son 2,5 g por kilo"
+                 ↑ lo lee como 4,5 g POR KILO → bloquea
+```
+
+4,5 g es el total correcto para 1,8 kg a 2,5 g/kg. La respuesta era segura.
+
+⚠️ **Y el prompt del sistema PIDE esa frase**: "cuando des una dosis, dala por
+kilo y calcula el total para SUS kilos. Los dos números y ya". Que bloquee o no
+depende de si el modelo metió por casualidad una palabra de `WARNING_TERMS`
+—con "nunca" en la frase pasa, sin ella bloquea—, así que es intermitente.
+
+Afecta a la pregunta más común que hay: "¿y si mi pieza pesa otra cosa?", que
+además es una de las cuatro dudas de cada receta.
+
+⚠️ **Segundo falso positivo, del mismo módulo.** `NON_CURE_TERMS` reconoce "sal
+gruesa", "sal fina", "sal marina"… pero no "sal" a secas. **27 de las 31
+recetas con sal de cura nombran el ingrediente solo "Sal"**, así que su gramaje
+—18, 26, hasta 280 g— se atribuye a la sal de cura. Se hizo visible al inyectar
+la receta en el prompt (fase 1.1): antes el modelo no repetía el texto de la
+receta.
+
+No se arregla aquí a propósito: es el módulo más delicado del repo y merece su
+propio cambio, no ir de acompañante de una receta.
+
 ### 🔴 `knowledge` está vacía y nadie la lee
 
 La tabla existe, con RLS y cero políticas de lectura a propósito, y
