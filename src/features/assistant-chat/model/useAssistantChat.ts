@@ -13,6 +13,7 @@ import {
   rememberActiveRecipe,
 } from '../lib/activeChat';
 import { recallChat, rememberChat } from '../lib/chatMemory';
+import { fetchRecipes } from '../lib/recipeHistory';
 
 export interface AssistantChatParams {
   /**
@@ -365,10 +366,34 @@ export function useAssistantChat(
         publishQuotaFrom(answer.quota);
 
         if (typeof answer.recipeId === 'string' && answer.recipeId !== '') {
+          const esNueva = recipeId.current === null;
           recipeId.current = answer.recipeId;
           // Cada respuesta reinicia la hora de inactividad: mientras se
           // conversa, la sesión sigue viva.
           rememberActiveRecipe(answer.recipeId);
+
+          /*
+            El título lo escribe el servidor DESPUÉS de contestar, en `after()`
+            y con una segunda llamada al modelo, para no hacer esperar a nadie.
+            El precio es que el navegador no se entera: la cabecera se quedaba
+            en "Receta sin nombre" hasta que recargabas (Cristian, 2026-09-16).
+
+            Así que se vuelve a preguntar una vez, pasados unos segundos. Es una
+            sola petición, solo en la PRIMERA respuesta de cada conversación, y
+            si llega tarde o falla la cabecera se queda como estaba — que es
+            exactamente lo que hace hoy.
+          */
+          if (esNueva) {
+            const nuevaId = answer.recipeId;
+            window.setTimeout(() => {
+              void fetchRecipes().then((lista) => {
+                const suya = lista.recipes.find((r) => r.id === nuevaId);
+                if (suya !== undefined) {
+                  setRecipeTitle(suya.title);
+                }
+              });
+            }, 2500);
+          }
         }
 
         if (typeof answer.text !== 'string') {

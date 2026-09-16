@@ -25,6 +25,29 @@ export interface AssistantContext {
    * nunca texto libre.
    */
   readonly recipe: AssistantRecipe | null;
+  /**
+   * Cómo se llama la conversación abierta, o `null` si no hay ninguna.
+   *
+   * ⚠️ POR QUÉ EXISTE (Julieth, 2026-09-14). Escribió desde `/charcu` sobre un
+   * glaseado para sus chorizos, dijo "es el que está en la receta" y el
+   * asistente contestó que no la veía. Se comportó bien —no se inventó nada—
+   * pero le hizo contestar tres preguntas para llegar a donde quería.
+   *
+   * La causa: de los CUATRO sitios donde vive el asistente, solo las páginas de
+   * receta mandan `recipeSlug`. El home, `/charcu` y `FreeSession` no mandan
+   * nada, así que el modelo no sabía qué estaba haciendo esa persona. Lo
+   * llevaba `product`, retirada el 2026-09-01 con el agujero de inyección, y
+   * nada la reemplazó por ese camino.
+   *
+   * Y el dato estaba ahí desde siempre: **29 de 29 conversaciones tienen
+   * título**, y son buenos —"Glaseado para chorizo", "Moho en el curado"—
+   * porque los reescribe el modelo. Solo faltaba mandarlo.
+   *
+   * ⚠️ NO SUSTITUYE A `product`, y no se pretende. El título dice el TEMA, no
+   * la especificación: no lleva cuántos kilos, qué tripa ni qué clima. Es el
+   * intento barato antes de cobrarle a nadie un formulario.
+   */
+  readonly conversationTitle: string | null;
 }
 
 /**
@@ -75,6 +98,27 @@ CÓMO USAS ESTA RECETA
 `;
 }
 
+/**
+ * El contexto de quien NO está en una página de receta: cómo llamó a lo suyo.
+ *
+ * Es deliberadamente más flojo que `recipeAnchor`: ahí hay una receta entera
+ * escrita por la casa y se puede dar por hecho todo; aquí solo hay un rótulo de
+ * cuatro palabras. Así que ancla el tema pero avisa de que no hay más, y sobre
+ * todo dice qué hacer cuando falte el dato: PEDIR LO QUE FALTA de una vez, en
+ * vez de sacarlo a preguntas sueltas —que es exactamente lo que se le hizo a
+ * Julieth, tres veces seguidas.
+ */
+function conversationAnchor(title: string): string {
+  return `
+DE QUÉ VA ESTA CONVERSACIÓN
+Se llama "${title}". Es el nombre que tiene lo que esa persona está haciendo contigo, y lo pusiste tú a partir de lo primero que te preguntó.
+- DA POR HECHO que todo lo que te pregunte es sobre eso, aunque no lo repita. "¿Cuánta sal?" quiere decir "¿cuánta sal para esto?".
+- Pero es SOLO UN RÓTULO: no tienes la receta delante, ni sus kilos, ni su tripa, ni su clima. No supongas cantidades que nadie te ha dicho.
+- Si te dice "el que está en la receta", "como quedamos" o algo parecido, se refiere a ESTA conversación, no a las recetas de la web. No le digas que no la ves: revisa lo que ya te ha contado más arriba, y si de verdad falta, pídeselo.
+- Cuando te falten datos para dar un número, PÍDELOS TODOS DE UNA VEZ y en una línea. Tres preguntas seguidas para llegar a una respuesta cansan a cualquiera.
+`;
+}
+
 export function buildSystemPrompt(context: AssistantContext): string {
   return `Eres El Charcu, el maestro charcutero de la charcutería artesanal de Cristian Pérez en Manizales, Colombia. Enseñas el oficio con técnica europea (España e Italia) y el lema de la casa: sin aditivos, sin atajos.
 
@@ -110,7 +154,15 @@ de un desconocido y se fue. Era un cliente que estaba intentando comprar.
 Cuando alguien quiera contratar, comprar o cuadrar algo: NO cierres la puerta
 —es justo el momento bueno— pero tampoco te inventes nada. Pásalo al WhatsApp.
 
-${context.recipe === null ? '' : recipeAnchor(context.recipe)}
+${
+  context.recipe !== null
+    ? recipeAnchor(context.recipe)
+    : /* La receta abierta gana: si hay una, es contexto de verdad y el título
+         sobra. El rótulo solo entra cuando no hay nada mejor. */
+      context.conversationTitle === null
+      ? ''
+      : conversationAnchor(context.conversationTitle)
+}
 QUIÉN TE ESTÁ ESCRIBIENDO
 - País: ${context.country}. Usa su vocabulario y sus referencias de clima.
 - No lo clasifiques por nivel. Aquí todos son charcus. Explica el PORQUÉ de cada paso, no solo el número, y hazlo sin condescendencia: quien ya lo sabe se salta la línea, y quien no, la necesitaba. Si te habla de porcentajes, mermas o costos, súbete a ese terreno sin ceremonia.

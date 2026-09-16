@@ -11,6 +11,7 @@ import { getRecipeBySlug, recipeBrief } from '@/entities/recipe';
 import {
   createRecipe,
   ownsRecipe,
+  recipeHeader,
   renameRecipe,
   saveExchange,
   touchRecipe,
@@ -225,12 +226,27 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   const openRecipe =
     parsed.recipeSlug === null ? undefined : getRecipeBySlug(parsed.recipeSlug);
 
+  /*
+    Y si NO viene de una página de receta, al menos se le dice cómo se llama la
+    conversación (Julieth, 2026-09-14).
+
+    Solo se busca cuando hace falta: con una receta abierta hay contexto de
+    verdad y esta consulta sería una ida a la base para nada. `recipeId` ya pasó
+    por `ownsRecipe` más arriba, así que no se puede pedir el título de una
+    conversación ajena.
+  */
+  const conversationTitle =
+    openRecipe !== undefined || recipeId === null
+      ? null
+      : ((await recipeHeader(recipeId))?.title ?? null);
+
   const systemPrompt = buildSystemPrompt({
     country: countryFromRequest(request),
     recipe:
       openRecipe === undefined
         ? null
         : { name: openRecipe.name, brief: recipeBrief(openRecipe) },
+    conversationTitle,
   });
 
   const result = await generateAnswer(systemPrompt, parsed.turns);
