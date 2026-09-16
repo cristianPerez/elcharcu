@@ -12,7 +12,7 @@
     { "label": "Tipo", "value": "Fermentado y curado en seco" },
     { "label": "Nivel", "value": "Avanzado" },
     { "label": "Tiempo de preparación", "value": "90 min" },
-    { "label": "Fermentación", "value": "18–24 h a 22–24 °C" },
+    { "label": "Fermentación", "value": "18–24 °C hasta pH ≤ 5,3 — con T-SPX, 48–72 h" },
     { "label": "Curado", "value": "4–10 semanas, hasta 35% de merma" },
     { "label": "Tipo de tripa", "value": "Colágeno o natural de res, cal. 55–60 mm" }
   ],
@@ -31,7 +31,7 @@
     }
   ],
   "quote": "En un salami, la seguridad no la da un solo ingrediente: la dan tres barreras juntas — la acidez, el nitrito y la merma. Saltarse una es saltárselas todas.",
-  "ingredientsNote": "Aquí la sal de cura NO es opcional ni negociable: es carne PICADA en curado LARGO. Va la #2, que además de nitrito lleva nitrato y lo va soltando durante semanas. Y el cultivo iniciador no es un lujo de purista: sin él no baja el pH, y sin acidez falta una de las tres barreras.",
+  "ingredientsNote": "Aquí la sal de cura NO es opcional ni negociable: es carne PICADA en curado LARGO. Va la #2, que además de nitrito lleva nitrato y lo va soltando durante semanas. Y el cultivo iniciador no es un lujo de purista: hace DOS trabajos. Acidifica —sin él no baja el pH, y sin acidez falta una de las tres barreras— y además es quien convierte el nitrato de la #2 en nitrito. Sin cultivo, la #2 se queda a medias: por eso estos dos ingredientes van juntos y no se sustituyen el uno al otro.",
   "ingredients": [
     {
       "name": "Carne de res magra (bola, chuck o pulpa)",
@@ -47,7 +47,7 @@
     },
     { "name": "Dextrosa (alimento del cultivo)", "amount": "5 g", "pct": "0.5%" },
     {
-      "name": "Cultivo iniciador de fermentación lenta (T-SPX)",
+      "name": "Cultivo iniciador de fermentación lenta (T-SPX) — guardado en congelador",
       "amount": "0.25 g",
       "pct": "0.025%"
     },
@@ -66,7 +66,7 @@
   "steps": [
     {
       "n": "01",
-      "text": "Hidrata el cultivo iniciador en 20 ml de agua SIN cloro y déjalo reposar 20–30 min. El cloro del agua de la llave lo mata."
+      "text": "Saca el cultivo del CONGELADOR —ahí es donde vive, a −17 °C o menos— y hidrátalo en 20 ml de agua SIN cloro, 20–30 min. Dos formas de matarlo antes de empezar: el cloro del agua de la llave, y tenerlo guardado en un cajón de la cocina. Son bacterias vivas: a temperatura ambiente se van muriendo, y un cultivo muerto no avisa."
     },
     {
       "n": "02",
@@ -78,7 +78,7 @@
     },
     {
       "n": "04",
-      "text": "Mezcla los secos aparte: sal, sal de cura #2, dextrosa, pimientas y ajo. Pesa en balanza de gramos, nunca con cucharas."
+      "text": "Mezcla los secos aparte: sal, sal de cura #2, dextrosa, pimientas y ajo. Pesa en balanza de gramos, nunca con cucharas. ⚠️ El cultivo va aparte y necesita OTRA balanza: son 0,25 g, y una balanza de gramos no los distingue de cero. Hace falta una de 0,01 g — quedarse corto de cultivo es lo que hace que el pH no baje."
     },
     {
       "n": "05",
@@ -94,11 +94,11 @@
     },
     {
       "n": "08",
-      "text": "Fermenta 18–24 h a 22–24 °C y 85–90% de humedad, hasta pH 5,3 o menos."
+      "text": "Fermenta a 18–24 °C y 85–90% de humedad HASTA QUE EL pH BAJE A 5,3 O MENOS. Manda el pH, no el reloj: el T-SPX es un cultivo lento y suele tardar entre 48 y 72 horas, no un día. Si a las 24 h no ha bajado, no ha fallado nada — todavía va. Lo que dice el sobre de TU cultivo manda sobre este número."
     },
     {
       "n": "09",
-      "text": "Pasa a curado: 12–14 °C y 75–80% de humedad, 4–10 semanas."
+      "text": "⚠️ NO PASES A CURADO SIN HABER LLEGADO A pH 5,3. Si a las 72 h sigue por encima, el lote se descarta: sin acidez falta una de las tres barreras, y eso no lo arreglan semanas de bodega. Colgar un salami que no acidificó es curar el problema dentro. Con el pH ya abajo, pasa a 12–14 °C y 75–80% de humedad, 4–10 semanas."
     },
     {
       "n": "10",
@@ -107,8 +107,8 @@
   ],
   "tips": [
     {
-      "title": "El pH manda",
-      "description": "Baja a 5,3 o menos durante la fermentación. Un medidor de pH cuesta poco y es la única forma de saberlo. Si a las 24 h no bajó, algo falló con el cultivo o con la temperatura."
+      "title": "Sin medidor de pH, esta receta no se hace",
+      "description": "La acidez es la primera de las tres barreras, y es la única que no se ve, no se huele y no se adivina. No es un accesorio recomendable: es el instrumento que te dice si el lote es seguro. Si no tienes medidor, haz otra receta de esta casa y deja el salami para cuando lo tengas."
     },
     {
       "title": "La grasa de res no es la de cerdo",
@@ -135,9 +135,11 @@
   ],
   "recommendations": [
     "No omitas la sal de cura #2: es carne picada en curado largo.",
+    "Guarda el cultivo en el congelador, no en un cajón: son bacterias vivas.",
     "Hidrata el cultivo en agua sin cloro, o no fermenta.",
+    "Pesa el cultivo en balanza de 0,01 g: 0,25 g no se pesan en una de gramos.",
     "Pesa la pieza al embutir y apunta el número.",
-    "Fermenta hasta pH 5,3 o menos antes de pasar a curado.",
+    "Fermenta hasta pH 5,3 o menos, tarde lo que tarde. Si a las 72 h no bajó, se descarta.",
     "Da el salami por terminado por merma (35%), nunca por calendario."
   ],
   "resultNote": "El resultado: un salami firme, de corte marmoleado, ligeramente ácido y de sabor a res profundo. Menos untuoso que uno de cerdo y con más carácter.",
