@@ -1,12 +1,12 @@
 {
   "slug": "linguica-calabresa",
   "name": "Linguiça Calabresa",
-  "description": "El ahumado picante de Brasil — pimienta calabresa y páprica, ahumado lento. Reina de la pizza y la feijoada.",
+  "description": "El ahumado picante de Brasil — pimienta calabresa y páprica, ahumada y cocida a 75 °C. Reina de la pizza y la feijoada.",
   "image": "/recipes/linguica-calabresa.jpg",
-  "tags": ["Brasil", "Ahumado", "Picante"],
+  "tags": ["Brasil", "Ahumado", "Picante", "Cocido"],
   "eyebrow": "Receta · Chorizos del mundo",
-  "subtitle": "Ahumada y picante, de la pizza a la feijoada.",
-  "intro": "La calabresa es el embutido más popular de Brasil: de cerdo, ahumada y con el picor característico de la pimienta calabresa (guindilla en hojuelas). Aunque su nombre remite a Calabria, es una creación brasileña, presente en la pizza, la feijoada y el churrasco. Firme, roja y con fuego, se cura y ahúma lento hasta concentrar su sabor.",
+  "subtitle": "Ahumada, picante y lista para usar.",
+  "intro": "La calabresa es el embutido más popular de Brasil: de cerdo, ahumada y con el picor característico de la pimienta calabresa (guindilla en hojuelas). Aunque su nombre remite a Calabria, es una creación brasileña, presente en la pizza, la feijoada y el churrasco. Firme, roja y con fuego, se cura y ahúma lento hasta concentrar su sabor.\n\n⚠️ ESTA ES LA VERSIÓN COCIDA, adaptada al clima colombiano. La tradicional se ahúma en frío varios días y se cuelga a orear, y eso pide un ambiente estable de 12–15 °C que aquí casi nadie tiene: a 25 °C o más, cuatro días de humo frío sobre carne picada cruda no es ahumado, es incubación. Al terminarla a 75 °C internos queda algo más firme y menos seco que la original, y se puede hacer con seguridad en cualquier cocina.",
   "stats": [
     {
       "label": "Rendimiento base",
@@ -14,7 +14,7 @@
     },
     {
       "label": "Tipo",
-      "value": "Ahumado"
+      "value": "Ahumado y cocido"
     },
     {
       "label": "Nivel",
@@ -25,8 +25,12 @@
       "value": "50 min"
     },
     {
-      "label": "Ahumado + oreo",
-      "value": "3–5 días"
+      "label": "Piel + ahumado",
+      "value": "12–24 h en nevera + 2–4 h de humo"
+    },
+    {
+      "label": "Temperatura interna",
+      "value": "75 °C"
     },
     {
       "label": "Tipo de tripa",
@@ -48,7 +52,7 @@
     }
   ],
   "quote": "La calabresa no es italiana pese a su nombre: es puro Brasil, y el humo con el picante son su firma.",
-  "ingredientsNote": "El picante viene de la pimienta calabresa (guindilla en hojuelas). La sal de cura es obligatoria para el ahumado.",
+  "ingredientsNote": "El picante viene de la pimienta calabresa (guindilla en hojuelas). Aquí la sal de cura #1 NO es opcional. Aunque la pieza termine cocida a 75 °C, antes pasa horas formando piel y tomando humo por debajo de esa temperatura: ese es el rato de riesgo, y es justo el rango donde el Clostridium botulinum trabaja mejor. Va la #1 porque su nitrito actúa desde el primer minuto; el nitrato de la #2 necesita semanas y una bacteria que lo convierta, y aquí no hay ni lo uno ni lo otro.",
   "ingredients": [
     {
       "name": "Carne de cerdo (paleta)",
@@ -81,7 +85,7 @@
       "pct": "2.2%"
     },
     {
-      "name": "Sal de cura (nitrificante, #2)",
+      "name": "Sal de cura #1 (nitrificante)",
       "amount": "2.5 g",
       "pct": "0.25%"
     },
@@ -97,11 +101,11 @@
     }
   ],
   "proportionNote": "80% carne y 20% grasa da firmeza para rodajas y jugosidad al fundirse en la pizza. Ajusta el picante con la cantidad de pimienta calabresa.",
-  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. La sal de cura al 0.25% protege durante el ahumado.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. La sal de cura #1 al 0,25% protege las horas de piel y humo que hay antes de la cocción. 2,5 g por kilo es el estándar y también el techo, nunca más.",
   "steps": [
     {
       "n": "01",
-      "text": "Mezcla los secos: pimienta calabresa, páprica, sal, sal de cura y pimienta negra."
+      "text": "Mezcla los secos: pimienta calabresa, páprica, sal, sal de cura #1 y pimienta negra."
     },
     {
       "n": "02",
@@ -121,11 +125,19 @@
     },
     {
       "n": "06",
-      "text": "Orea 1 día y ahúma en frío 2–4 días."
+      "text": "Orea en la NEVERA, destapada sobre rejilla, 12–24 h, hasta que la tripa quede seca al tacto. Esa piel es lo que hace que el humo se agarre. En nevera y no al ambiente: aquí hace demasiado calor."
     },
     {
       "n": "07",
-      "text": "Termina de orear; consúmela cocinada."
+      "text": "Ahúma a temperatura baja (por debajo de 30 °C) durante 2–4 horas, para que tome sabor sin que la grasa se funda. Horas, no días: lo que antes conservaba ahora lo hace la cocción."
+    },
+    {
+      "n": "08",
+      "text": "Sube la temperatura y cocina hasta que el CENTRO marque 75 °C. Mide con termómetro en la pieza más gruesa, nunca por tiempo."
+    },
+    {
+      "n": "09",
+      "text": "Enfría de golpe en agua con hielo hasta que esté fría al tacto. Seca, y a la nevera. Aguanta una semana refrigerada, o congelada varios meses."
     }
   ],
   "tips": [
@@ -134,31 +146,32 @@
       "description": "Las hojuelas de guindilla dan el picor y el aspecto moteado típico. Son insustituibles."
     },
     {
-      "title": "Ahumado en frío",
-      "description": "Por debajo de 30 °C para no fundir la grasa; da el sabor que la define."
+      "title": "El termómetro manda sobre el reloj",
+      "description": "75 °C en el CENTRO de la pieza, medidos con termómetro en la parte más gruesa. No por tiempo: dos tandas del mismo peso tardan distinto según el ahumador y el clima."
     },
     {
-      "title": "Firmeza para rodajas",
-      "description": "El oreo tras el ahumado la deja firme para cortar fino sobre la pizza."
+      "title": "El enfriado de golpe no es acabado, es seguridad",
+      "description": "En cuanto llega a 75 °C, al agua con hielo hasta que esté fría al tacto. Corta la cocción residual y saca la pieza del rango de temperatura donde crecen las bacterias, en vez de dejarla enfriando despacio dentro de él."
     }
   ],
   "cookMethods": [
     {
       "title": "En rodajas",
-      "description": "Sobre pizza o en la feijoada, se rehidrata y suelta su sabor ahumado."
+      "description": "Ya viene cocida: sobre la pizza o en la feijoada solo se calienta y suelta su humo."
     },
     {
       "title": "Parrilla",
-      "description": "A la brasa en el churrasco, dorada y jugosa."
+      "description": "A la brasa, solo para dorar y templar. No hay que cocinarla, ya lo está."
     }
   ],
   "recommendations": [
     "Usa pimienta calabresa en hojuelas para el picor correcto.",
-    "Ahúma en frío para no fundir la grasa.",
-    "No omitas la sal de cura.",
-    "Orea hasta lograr firmeza para cortar en rodajas."
+    "No omitas la sal de cura #1: antes de los 75 °C hay horas de riesgo.",
+    "Ahúma por debajo de 30 °C para no fundir la grasa; después sube a cocinar.",
+    "Da la pieza por lista a 75 °C internos, medidos con termómetro.",
+    "Enfría en agua con hielo en cuanto llegue: es parte de la seguridad."
   ],
-  "resultNote": "El resultado: una calabresa firme, roja y ahumada, con el picor moteado a la vista. Lista para la pizza, la feijoada o la brasa.",
+  "resultNote": "El resultado: una calabresa firme, roja y ahumada, con el picor moteado a la vista — y ya cocida, lista para la pizza, la feijoada o la brasa.",
   "finalQuote": "La calabresa enseña que el humo y el picante, bien medidos, hacen un embutido que trasciende fronteras — de Calabria de nombre, brasileño de alma.",
   "finalQuoteCaption": "Consejo de El Charcu"
 }
