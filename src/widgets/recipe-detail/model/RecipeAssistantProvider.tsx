@@ -10,6 +10,8 @@ import { useUsageQuota } from '@/entities/usage-quota';
 
 import { ANALYTICS_EVENTS, cn, track } from '@/shared/lib';
 
+import { useAttentionHop } from '../lib/useAttentionHop';
+
 interface RecipeAssistantStore {
   /**
    * Manda una duda ya escrita y abre el panel.
@@ -67,6 +69,9 @@ export function RecipeAssistantProvider({
   const { quota, status, isKnown } = useUsageQuota();
   const wall = useLeadWall({ place: 'receta', recipeSlug: slug });
   const [isOpen, setIsOpen] = useState(false);
+
+  /* Se calla en cuanto el panel se abre por primera vez: ya cumplió. */
+  const hop = useAttentionHop(isOpen);
   const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
 
   const isExhausted = isKnown && status.isExhausted;
@@ -135,7 +140,18 @@ export function RecipeAssistantProvider({
           —se sigue bajando—; al final del todo no habría cómo apartarlo. */}
       <div aria-hidden="true" className="h-16 bg-cream md:h-0" />
 
-      {/* El botón de siempre. Se esconde con el panel abierto: ya está ahí. */}
+      {/*
+        El botón de siempre. Se esconde con el panel abierto: ya está ahí.
+
+        ⚠️ ERA VERDE BOSQUE, o sea del color del fondo de media página, y se
+        perdía contra ella. Ahora es NARANJA BRASA, que en la paleta nueva es
+        justo el color de lo que se toca.
+
+        ⚠️ Y LLEVA LETRA `cocoa`, NO BLANCA. Blanco sobre brasa da 2,48:1 de
+        contraste y no llega ni al mínimo de AA; `cocoa` sobre brasa da 7,2:1.
+        Un botón naranja con letra blanca es lo primero que uno escribe y es
+        también lo único que aquí no se puede hacer.
+      */}
       <button
         type="button"
         onClick={() => {
@@ -147,10 +163,19 @@ export function RecipeAssistantProvider({
         }}
         aria-label={`Pregúntale a El Charcu sobre ${name}`}
         className={cn(
-          'fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full bg-forest px-4 py-3 text-[13px] font-medium text-cream shadow-raised transition hover:bg-forest-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-95 md:bottom-5 md:right-5 md:px-5 md:py-3.5 md:text-sm',
+          'fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full bg-brasa px-5 py-3.5 text-[14px] font-semibold text-cocoa shadow-raised ring-1 ring-brasa-tinta/20 transition-colors hover:bg-brasa-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brasa-tinta focus-visible:ring-offset-2 active:scale-95 md:bottom-5 md:right-5 md:px-6 md:py-4 md:text-[15px]',
+          hop && 'animate-brasa-hop',
           isOpen && 'pointer-events-none opacity-0',
         )}
       >
+        {/* El halo. `inset-0` sobre el botón y por DEBAJO de él, para que no
+            tape la letra mientras se expande. */}
+        {hop ? (
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10 animate-brasa-ring rounded-full bg-brasa"
+          />
+        ) : null}
         <span aria-hidden="true">💬</span>
         Pregúntale a El Charcu
       </button>
