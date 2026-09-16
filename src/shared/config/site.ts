@@ -27,7 +27,13 @@ const WHATSAPP_NUMBER = '573003526578';
   Neutro a propósito: quien escribe completa la frase. Los enlaces que SÍ saben
   a qué vienen —los de cada plan— traen su propio texto (`planWhatsappHref`).
 */
-const WHATSAPP_MESSAGE = encodeURIComponent('Hola El Charcu, tengo una pregunta 🥩');
+/*
+  ⚠️ SIN EMOJI, a propósito (Cristian, 2026-09-16): el 🥩 no llegaba bien por
+  la URL de wa.me. `encodeURIComponent` lo codifica correcto, pero el enlace
+  se comparte y se reabre por sitios que no siempre respetan ese encoding, y
+  lo que le aparecía a la persona no era el emoji.
+*/
+const WHATSAPP_MESSAGE = encodeURIComponent('Hola El Charcu, tengo una pregunta');
 
 export const site = {
   name: 'El Charcu',
