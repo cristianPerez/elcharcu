@@ -229,6 +229,17 @@ Desde el 2026-09-01 **pesa más**: con la receta inyectada en el prompt, El Char
 repite esas cantidades **citándolas como lo que dice la receta**. Le puso un
 altavoz a un número sin revisar.
 
+### 🔴 El asistente no sabe qué está haciendo quien le escribe en la app
+
+Dentro de `/charcu` va `recipe: null`: el único contexto viene del `recipeSlug`,
+o sea solo desde las 45 páginas del sitio. Lo llevaba `product`, retirada el
+2026-09-01 con el agujero de inyección — y nada la reemplazó por ese camino.
+**29 de 29 sesiones con `product` en null, y otras 29 con `summary` en null.**
+
+Se vio con Julieth el 2026-09-14. Diagnóstico, arreglos y el plan de "recetas de
+la comunidad" que Cristian quiere encima de esto:
+**[docs/plan-recetas-de-la-comunidad.md](docs/plan-recetas-de-la-comunidad.md)**.
+
 ### 🟢 Sueltos
 
 - **Borrar las cookies regala DOS preguntas gratis** (~0,011 USD la tanda,
