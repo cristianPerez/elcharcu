@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 
 import { appRoutes } from '@/shared/config';
 import { cn } from '@/shared/lib';
@@ -77,7 +78,27 @@ export function ChatHistoryDrawer({
   const recipes = history?.recipes ?? null;
   const grupos = recipes === null ? [] : groupByDate(recipes);
 
-  return (
+  /*
+    ⚠️ VA EN UN PORTAL AL `body`, Y NO ES UN LUJO (Cristian, 2026-09-16).
+
+    Dentro de una receta, el chat vive en un panel que se anima al abrirse:
+    `translate-y-0` cuando está abierto. Eso produce `transform: matrix(1, 0, 0,
+    1, 0, 0)` —la identidad, no mueve nada— pero **un `transform` convierte al
+    elemento en el marco de referencia de sus descendientes `fixed`**. Así que
+    este `fixed inset-0` dejaba de medir la pantalla y pasaba a medir el panel:
+    373×457 en la esquina en vez de 375×812 a pantalla completa.
+
+    El cajón SÍ se abría. Solo que dibujado dentro de una caja del tamaño del
+    chat, encima del propio chat, y recortado. Desde fuera se ve como "no abre"
+    o "se cierra solo", que es justo lo que se reportó.
+
+    Con el portal el nodo cuelga del `body` y no hay ancestro transformado, así
+    que el panel se puede seguir animando sin romper esto. Lo mismo valdría para
+    `filter`, `backdrop-filter`, `contain` o `will-change`: cualquiera de ellos
+    crea el mismo marco, y el día que alguien añada uno más arriba este portal
+    es lo que evita que vuelva a pasar.
+  */
+  return createPortal(
     <div className="fixed inset-0 z-50 flex">
       <button
         type="button"
@@ -183,6 +204,7 @@ export function ChatHistoryDrawer({
           )}
         </div>
       </aside>
-    </div>
+    </div>,
+    document.body,
   );
 }
