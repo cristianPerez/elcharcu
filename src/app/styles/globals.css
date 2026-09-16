@@ -4,8 +4,16 @@
 
 @layer base {
   :root {
+    /* Verde Bosque + Naranja Brasa — raíz y calidez. Ver tailwind.config.ts,
+       que es donde está explicado por qué el naranja es una rampa. */
     --color-forest: #2d4a3e;
-    --color-terracota: #c17a5a;
+    --color-forest-dark: #233b31;
+    --color-brasa-light: #f5a87f;
+    --color-brasa: #ee8b5d;
+    --color-brasa-dark: #c96a3c;
+    --color-brasa-tinta: #9c4a22;
+    /* Alias heredado. En código nuevo se usa --color-brasa-*. */
+    --color-terracota: #c96a3c;
     --color-cream: #f4f1eb;
     --color-sage: #7a9e8e;
     --color-cocoa: #1e1612;

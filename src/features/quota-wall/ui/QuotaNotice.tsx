@@ -87,7 +87,7 @@ export function QuotaNotice({
           href={`${appRoutes.subscription}?de=aviso-cupo`}
           className={`shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors ${
             isExhausted
-              ? 'bg-terracota-dark text-cream-white'
+              ? 'bg-brasa text-cocoa'
               : 'border border-cocoa/20 text-cocoa/70 hover:border-terracota hover:text-terracota'
           }`}
         >

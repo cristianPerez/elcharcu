@@ -49,7 +49,7 @@ export function CompleteLessonButton({
       onClick={() => {
         void handleClick();
       }}
-      className="w-full rounded-full bg-terracota-dark px-6 py-3.5 font-medium text-cream-white shadow-surface transition-shadow hover:shadow-raised focus:outline-none focus:ring-2 focus:ring-terracota focus:ring-offset-2 active:scale-[0.98] disabled:opacity-50"
+      className="w-full rounded-full bg-brasa px-6 py-3.5 font-medium text-cocoa shadow-surface transition-shadow hover:shadow-raised focus:outline-none focus:ring-2 focus:ring-terracota focus:ring-offset-2 active:scale-[0.98] disabled:opacity-50"
     >
       {isSaving ? 'Guardando…' : isDone ? 'Siguiente lección' : 'Listo, siguiente'}
     </button>

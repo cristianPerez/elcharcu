@@ -91,7 +91,7 @@ export function TablaSearch({ tablas }: TablaSearchProps): ReactNode {
                   className={cn(
                     'rounded-full border px-3 py-1 text-[13px] transition-colors',
                     isActive
-                      ? 'border-transparent bg-terracota text-cream'
+                      ? 'border-transparent bg-brasa text-cocoa'
                       : 'border-cocoa/15 text-cocoa/70 hover:border-cocoa/30',
                   )}
                 >

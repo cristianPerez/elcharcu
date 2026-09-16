@@ -38,7 +38,7 @@ export function NavPending({ children, className }: NavPendingProps): ReactNode 
 
   return (
     <span aria-hidden="true" className={cn('inline-flex items-center', className)}>
-      {children ?? <span className="size-1.5 animate-pulse rounded-full bg-terracota" />}
+      {children ?? <span className="size-1.5 animate-pulse rounded-full bg-brasa-dark" />}
     </span>
   );
 }
@@ -62,7 +62,7 @@ export function NavPendingBar(): ReactNode {
       aria-hidden="true"
       className="absolute inset-x-0 top-0 h-0.5 overflow-hidden rounded-t-2xl bg-terracota/20"
     >
-      <span className="block h-full w-1/3 animate-[nav-sweep_1s_ease-in-out_infinite] rounded-full bg-terracota" />
+      <span className="block h-full w-1/3 animate-[nav-sweep_1s_ease-in-out_infinite] rounded-full bg-brasa-dark" />
     </span>
   );
 }

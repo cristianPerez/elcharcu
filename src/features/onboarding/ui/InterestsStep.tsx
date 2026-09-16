@@ -74,7 +74,7 @@ export function InterestsStep({ stepIndex, onSubmit }: InterestsStepProps): Reac
                   aria-hidden
                   className={`grid size-5 shrink-0 place-items-center rounded-full border text-[11px] ${
                     isChosen
-                      ? 'border-terracota bg-terracota text-cream-white'
+                      ? 'border-terracota bg-brasa text-cocoa'
                       : 'border-cocoa/20 text-transparent'
                   }`}
                 >
@@ -92,7 +92,7 @@ export function InterestsStep({ stepIndex, onSubmit }: InterestsStepProps): Reac
         onClick={() => {
           onSubmit(chosen);
         }}
-        className="mt-3 w-full rounded-2xl bg-terracota-dark px-5 py-4 font-medium text-cream-white shadow-surface transition-all active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
+        className="mt-3 w-full rounded-2xl bg-brasa px-5 py-4 font-medium text-cocoa shadow-surface transition-all active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
       >
         {chosen.length === 0
           ? 'Elige al menos uno'

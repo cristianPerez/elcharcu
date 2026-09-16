@@ -109,7 +109,7 @@ export function ChatHistoryDrawer({
               onNew();
               onClose();
             }}
-            className="w-full rounded-full bg-terracota-dark px-5 py-3 font-medium text-cream-white shadow-surface transition-transform active:scale-[0.98]"
+            className="w-full rounded-full bg-brasa px-5 py-3 font-medium text-cocoa shadow-surface transition-transform active:scale-[0.98]"
           >
             Empezar una nueva
           </button>

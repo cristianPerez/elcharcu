@@ -15,8 +15,7 @@ interface ButtonLinkProps {
 }
 
 const VARIANT_STYLES: Record<ButtonVariant, string> = {
-  primary:
-    'bg-terracota-dark text-cream-white shadow-surface hover:shadow-raised active:scale-[0.97]',
+  primary: 'bg-brasa text-cocoa shadow-surface hover:shadow-raised active:scale-[0.97]',
   cream: 'bg-cream text-forest hover:bg-white',
   outline: 'border border-current bg-transparent hover:bg-current/10',
 };

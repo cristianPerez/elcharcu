@@ -44,7 +44,7 @@ export function QuotaWall({ questionsUsed, questionsLimit }: QuotaWallProps): Re
 
       <a
         href={`${appRoutes.subscription}?de=muro`}
-        className="mt-6 inline-flex items-center justify-center rounded-full bg-terracota-dark px-6 py-3 text-sm font-medium tracking-wide text-cream-white shadow-surface transition-shadow hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-[0.97]"
+        className="mt-6 inline-flex items-center justify-center rounded-full bg-brasa px-6 py-3 text-sm font-medium tracking-wide text-cocoa shadow-surface transition-shadow hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-[0.97]"
       >
         Ver los planes
       </a>

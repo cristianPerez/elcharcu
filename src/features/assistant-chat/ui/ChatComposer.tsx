@@ -168,7 +168,7 @@ export function ChatComposer({
               'flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota',
               isThinking || isEmpty
                 ? 'bg-cocoa/10 text-cocoa/35'
-                : 'bg-terracota-dark text-cream-white shadow-surface hover:shadow-raised active:scale-[0.97]',
+                : 'bg-brasa text-cocoa shadow-surface hover:shadow-raised active:scale-[0.97]',
             )}
           >
             <span aria-hidden className="text-lg leading-none">

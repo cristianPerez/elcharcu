@@ -51,7 +51,7 @@ export function StepShell({
             key={index}
             className={
               index < stepIndex
-                ? 'h-1 flex-1 rounded-full bg-terracota'
+                ? 'h-1 flex-1 rounded-full bg-brasa-dark'
                 : 'h-1 flex-1 rounded-full bg-cream/15'
             }
           />

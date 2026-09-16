@@ -117,7 +117,7 @@ export function ContactStep({
         <button
           type="submit"
           disabled={!canSubmit}
-          className="mt-5 w-full rounded-2xl bg-terracota-dark px-5 py-4 font-medium text-cream-white shadow-surface transition-all active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
+          className="mt-5 w-full rounded-2xl bg-brasa px-5 py-4 font-medium text-cocoa shadow-surface transition-all active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40"
         >
           {isSaving ? 'Guardando…' : 'Entrar a El Charcu'}
         </button>
