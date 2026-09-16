@@ -1,12 +1,12 @@
 {
   "slug": "linguica-portuguesa",
   "name": "Linguiça Portuguesa",
-  "description": "Más fina que el chouriço — ajo, pimentón y vino, ahumada lento. Fundamental en la parrilla lusa.",
+  "description": "Más fina que el chouriço — ajo, pimentón y vino, ahumada y cocida a 75 °C. Fundamental en la parrilla lusa.",
   "image": "/recipes/linguica-portuguesa.jpg",
-  "tags": ["Portugal", "Ahumado", "Parrillero"],
+  "tags": ["Portugal", "Ahumado", "Parrillero", "Cocido"],
   "eyebrow": "Receta · Chorizos del mundo",
-  "subtitle": "La hermana fina del chouriço.",
-  "intro": "La linguiça es la versión más fina y menos grasa del embutido portugués: se macera en vino y ajo, se sazona con pimentón (colorau) y se ahúma lento, pero en un calibre delgado que la hace ideal para la parrilla y el pan. Menos rústica que el chouriço, comparte su alma ahumada. Un toque de piri-piri le da el punto justo de calor.",
+  "subtitle": "La hermana fina del chouriço, ya cocida.",
+  "intro": "La linguiça es la versión más fina y menos grasa del embutido portugués: se macera en vino y ajo, se sazona con pimentón (colorau) y se ahúma lento, pero en un calibre delgado que la hace ideal para la parrilla y el pan. Menos rústica que el chouriço, comparte su alma ahumada. Un toque de piri-piri le da el punto justo de calor.\n\n⚠️ ESTA ES LA VERSIÓN COCIDA, adaptada al clima colombiano. La tradicional se ahúma en frío varios días y se cuelga a orear, y eso pide un ambiente estable de 12–15 °C que aquí casi nadie tiene: a 25 °C o más, cuatro días de humo frío sobre carne picada cruda no es ahumado, es incubación. Al terminarla a 75 °C internos queda algo más firme y menos seco que la original, y se puede hacer con seguridad en cualquier cocina.",
   "stats": [
     {
       "label": "Rendimiento base",
@@ -14,7 +14,7 @@
     },
     {
       "label": "Tipo",
-      "value": "Ahumado"
+      "value": "Ahumado y cocido"
     },
     {
       "label": "Nivel",
@@ -25,8 +25,12 @@
       "value": "50 min"
     },
     {
-      "label": "Maceración + ahumado",
-      "value": "24 h + 2–3 días"
+      "label": "Piel + ahumado",
+      "value": "12–24 h en nevera + humo a 80–150 °C"
+    },
+    {
+      "label": "Temperatura interna",
+      "value": "75 °C"
     },
     {
       "label": "Tipo de tripa",
@@ -48,7 +52,7 @@
     }
   ],
   "quote": "La linguiça demuestra que el mismo adobo, en tripa fina y con menos grasa, cuenta otra historia.",
-  "ingredientsNote": "Macera la carne en vino y ajo antes de embutir. La sal de cura protege durante el ahumado.",
+  "ingredientsNote": "Macera la carne en vino y ajo antes de embutir. Aquí la sal de cura #1 NO es opcional. Aunque la pieza termine cocida a 75 °C, antes pasa horas formando piel y tomando humo por debajo de esa temperatura: ese es el rato de riesgo, y es justo el rango donde el Clostridium botulinum trabaja mejor. Va la #1 porque su nitrito actúa desde el primer minuto; el nitrato de la #2 necesita semanas y una bacteria que lo convierta, y aquí no hay ni lo uno ni lo otro.",
   "ingredients": [
     {
       "name": "Carne de cerdo (paleta)",
@@ -81,7 +85,7 @@
       "pct": "2.2%"
     },
     {
-      "name": "Sal de cura (nitrificante, #2)",
+      "name": "Sal de cura #1 (nitrificante)",
       "amount": "2.5 g",
       "pct": "0.25%"
     },
@@ -97,7 +101,7 @@
     }
   ],
   "proportionNote": "85% carne y 15% tocino: más magra que el chouriço. Esa es la diferencia de textura entre ambos, con el mismo perfil de adobo.",
-  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura al 0.25% acompaña el ahumado con seguridad.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura #1 al 0,25% protege las horas de piel y humo que hay antes de la cocción. 2,5 g por kilo es el estándar y también el techo, nunca más.",
   "steps": [
     {
       "n": "01",
@@ -105,7 +109,7 @@
     },
     {
       "n": "02",
-      "text": "Macera 24 h en frío con vino, ajo, pimentón, sal, sal de cura, piri-piri y laurel."
+      "text": "Macera 24 h en frío con vino, ajo, pimentón, sal, sal de cura #1, piri-piri y laurel."
     },
     {
       "n": "03",
@@ -117,15 +121,19 @@
     },
     {
       "n": "05",
-      "text": "Orea 1 día a 12–15 °C para formar piel."
+      "text": "Orea en la NEVERA, destapada sobre rejilla, 12–24 h, hasta que la tripa quede seca al tacto. Esa piel es lo que hace que el humo se agarre. En nevera y no al ambiente: aquí hace demasiado calor."
     },
     {
       "n": "06",
-      "text": "Ahúma en frío con leña, 2–3 días de forma intermitente."
+      "text": "Ahúma EN CALIENTE, entre 80 y 150 °C. Empieza por abajo —80–100 °C la primera media hora— y sube después. Si arrancas fuerte, la grasa se funde antes de que el centro se caliente y la tripa revienta."
     },
     {
       "n": "07",
-      "text": "Orea hasta la firmeza deseada; consúmela cocinada."
+      "text": "Cocina hasta que el CENTRO marque 75 °C. Mide con termómetro en la pieza más gruesa, nunca por tiempo: el calibre y la carga del ahumador cambian cuánto tarda."
+    },
+    {
+      "n": "08",
+      "text": "Enfría de golpe en agua con hielo hasta que esté fría al tacto. Seca, y a la nevera. Aguanta una semana refrigerada, o congelada varios meses."
     }
   ],
   "tips": [
@@ -134,18 +142,26 @@
       "description": "El diámetro delgado (30–32 mm) es lo que la separa del chouriço; respeta la tripa fina."
     },
     {
-      "title": "Ahumado en frío",
-      "description": "Por debajo de 30 °C, para no cocer la grasa y conservar la textura."
+      "title": "Empieza flojo y sube",
+      "description": "80–100 °C la primera media hora, y de ahí para arriba. Si la metes de golpe a 150 °C, la grasa sale antes de que el centro suba y te quedas con la tripa rota y el embutido seco."
+    },
+    {
+      "title": "El termómetro manda sobre el reloj",
+      "description": "75 °C en el CENTRO, medidos en la pieza más gruesa. La temperatura del ahumador dice a qué ritmo va; la del centro dice cuándo está."
     },
     {
       "title": "Piri-piri al gusto",
       "description": "Ajusta la guindilla según cuánto calor busques; la linguiça admite desde suave a picante."
+    },
+    {
+      "title": "El enfriado de golpe no es acabado, es seguridad",
+      "description": "En cuanto llega a 75 °C, al agua con hielo hasta que esté fría al tacto. Corta la cocción residual y saca la pieza del rango de temperatura donde crecen las bacterias, en vez de dejarla enfriando despacio dentro de él."
     }
   ],
   "cookMethods": [
     {
       "title": "Parrilla",
-      "description": "A la brasa hasta dorar, girando; clásica en el churrasco portugués y brasileño."
+      "description": "A la brasa hasta dorar. Ya viene cocida: es dorar y templar, no cocinar."
     },
     {
       "title": "Para guisar",
@@ -155,10 +171,11 @@
   "recommendations": [
     "Respeta la maceración de 24 h.",
     "Usa tripa fina para el calibre correcto.",
-    "Ahúma en frío para no fundir la grasa.",
-    "No omitas la sal de cura durante el ahumado."
+    "No omitas la sal de cura #1: antes de los 75 °C hay horas de riesgo.",
+    "Ahúma entre 80 y 150 °C, empezando por abajo para no reventar la tripa.",
+    "Da la pieza por lista a 75 °C internos, y enfríala de golpe."
   ],
-  "resultNote": "El resultado: una linguiça firme y ahumada, más esbelta que el chouriço, perfecta para la brasa. El ajo y el humo, en formato fino.",
+  "resultNote": "El resultado: una linguiça firme y ahumada, más esbelta que el chouriço y ya cocida. El ajo y el humo, en formato fino y listos para la brasa.",
   "finalQuote": "La linguiça y el chouriço comparten adobo pero no destino: el calibre y la grasa definen a cuál llega tu parrilla.",
   "finalQuoteCaption": "Consejo de El Charcu"
 }

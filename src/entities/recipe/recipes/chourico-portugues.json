@@ -1,12 +1,12 @@
 {
   "slug": "chourico-portugues",
   "name": "Chouriço Português",
-  "description": "El curado ahumado luso — carne macerada en vino y ajo, pimentón y humo lento de encina.",
+  "description": "El ahumado luso — carne macerada en vino y ajo, pimentón, humo de encina y cocción a 75 °C.",
   "image": "/recipes/chourico-portugues.jpg",
-  "tags": ["Portugal", "Curado", "Ahumado"],
+  "tags": ["Portugal", "Ahumado", "Cocido"],
   "eyebrow": "Receta · Chorizos del mundo",
   "subtitle": "Vinho, alho, colorau e fumo.",
-  "intro": "El chouriço portugués nace de una maceración: la carne descansa en vino tinto, ajo y pimentón (colorau) antes de embutirse, y luego se ahúma lentamente sobre leña. Ese doble proceso — vino y humo — le da su color oscuro y su aroma profundo. Es más rústico y ahumado que el chorizo español, y base de platos como la feijoada y el cozido.",
+  "intro": "El chouriço portugués nace de una maceración: la carne descansa en vino tinto, ajo y pimentón (colorau) antes de embutirse, y luego se ahúma lentamente sobre leña. Ese doble proceso — vino y humo — le da su color oscuro y su aroma profundo. Es más rústico y ahumado que el chorizo español, y base de platos como la feijoada y el cozido.\n\n⚠️ ESTA ES LA VERSIÓN COCIDA, adaptada al clima colombiano. La tradicional se ahúma en frío varios días y se cuelga a orear, y eso pide un ambiente estable de 12–15 °C que aquí casi nadie tiene: a 25 °C o más, cuatro días de humo frío sobre carne picada cruda no es ahumado, es incubación. Al terminarla a 75 °C internos queda algo más firme y menos seco que la original, y se puede hacer con seguridad en cualquier cocina.",
   "stats": [
     {
       "label": "Rendimiento base",
@@ -14,7 +14,7 @@
     },
     {
       "label": "Tipo",
-      "value": "Curado y ahumado"
+      "value": "Ahumado y cocido"
     },
     {
       "label": "Nivel",
@@ -25,8 +25,12 @@
       "value": "50 min"
     },
     {
-      "label": "Maceración + ahumado",
-      "value": "24 h + 3–5 días"
+      "label": "Piel + ahumado",
+      "value": "12–24 h en nevera + humo a 80–150 °C"
+    },
+    {
+      "label": "Temperatura interna",
+      "value": "75 °C"
     },
     {
       "label": "Tipo de tripa",
@@ -48,7 +52,7 @@
     }
   ],
   "quote": "El chouriço no se entiende sin humo: la maceración en vino pone la base, pero es la leña la que lo define.",
-  "ingredientsNote": "Macera la carne en vino y ajo antes de embutir. La sal de cura protege durante el ahumado y el oreo.",
+  "ingredientsNote": "Macera la carne en vino y ajo antes de embutir. Aquí la sal de cura #1 NO es opcional. Aunque la pieza termine cocida a 75 °C, antes pasa horas formando piel y tomando humo por debajo de esa temperatura: ese es el rato de riesgo, y es justo el rango donde el Clostridium botulinum trabaja mejor. Va la #1 porque su nitrito actúa desde el primer minuto; el nitrato de la #2 necesita semanas y una bacteria que lo convierta, y aquí no hay ni lo uno ni lo otro.",
   "ingredients": [
     {
       "name": "Carne de cerdo (paleta)",
@@ -81,7 +85,7 @@
       "pct": "2.4%"
     },
     {
-      "name": "Sal de cura (nitrificante, #2)",
+      "name": "Sal de cura #1 (nitrificante)",
       "amount": "2.5 g",
       "pct": "0.25%"
     },
@@ -97,7 +101,7 @@
     }
   ],
   "proportionNote": "80% carne y 20% tocino, con el vino al 5%. La maceración previa hace que el vino y el ajo penetren la carne antes de moler o picar.",
-  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura al 0.25% acompaña el ahumado y el oreo con seguridad.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y tocino. La sal de cura #1 al 0,25% protege las horas de piel y humo que hay antes de la cocción. 2,5 g por kilo es el estándar y también el techo, nunca más.",
   "steps": [
     {
       "n": "01",
@@ -105,7 +109,7 @@
     },
     {
       "n": "02",
-      "text": "Macera 24 h en frío con vino, ajo, pimentones, sal, sal de cura y laurel."
+      "text": "Macera 24 h en frío con vino, ajo, pimentones, sal, sal de cura #1 y laurel."
     },
     {
       "n": "03",
@@ -117,15 +121,19 @@
     },
     {
       "n": "05",
-      "text": "Orea 1 día a 12–15 °C para formar piel."
+      "text": "Orea en la NEVERA, destapada sobre rejilla, 12–24 h, hasta que la tripa quede seca al tacto. Esa piel es lo que hace que el humo se agarre. En nevera y no al ambiente: aquí hace demasiado calor."
     },
     {
       "n": "06",
-      "text": "Ahúma en frío con leña de encina, 3–5 días de forma intermitente."
+      "text": "Ahúma EN CALIENTE, entre 80 y 150 °C. Empieza por abajo —80–100 °C la primera media hora— y sube después. Si arrancas fuerte, la grasa se funde antes de que el centro se caliente y la tripa revienta."
     },
     {
       "n": "07",
-      "text": "Termina de orear hasta la firmeza deseada."
+      "text": "Cocina hasta que el CENTRO marque 75 °C. Mide con termómetro en la pieza más gruesa, nunca por tiempo: el calibre y la carga del ahumador cambian cuánto tarda."
+    },
+    {
+      "n": "08",
+      "text": "Enfría de golpe en agua con hielo hasta que esté fría al tacto. Seca, y a la nevera. Aguanta una semana refrigerada, o congelada varios meses."
     }
   ],
   "tips": [
@@ -134,18 +142,26 @@
       "description": "Las 24 h en vino y ajo son el corazón del chouriço; no las saltes."
     },
     {
-      "title": "Humo frío",
-      "description": "Ahúma en frío (por debajo de 30 °C) para no cocer la grasa; encina o roble dan el aroma clásico."
+      "title": "Empieza flojo y sube",
+      "description": "80–100 °C la primera media hora, y de ahí para arriba. Si la metes de golpe a 150 °C, la grasa sale antes de que el centro suba y te quedas con la tripa rota y el embutido seco."
     },
     {
-      "title": "Sal de cura",
-      "description": "Durante ahumado y oreo, protege contra bacterias. No la omitas."
+      "title": "El termómetro manda sobre el reloj",
+      "description": "75 °C en el CENTRO, medidos en la pieza más gruesa. La temperatura del ahumador dice a qué ritmo va; la del centro dice cuándo está."
+    },
+    {
+      "title": "Sal de cura #1, no #2",
+      "description": "Las horas de piel y de humo, antes de llegar a los 75 °C, son el rato en que la carne picada cruda está expuesta. Va la #1 porque su nitrito actúa desde el primer minuto; el nitrato de la #2 necesita semanas y una bacteria que lo convierta, y aquí no hay ni lo uno ni lo otro. No la omitas por llevar cocción al final."
+    },
+    {
+      "title": "El enfriado de golpe no es acabado, es seguridad",
+      "description": "En cuanto llega a 75 °C, al agua con hielo hasta que esté fría al tacto. Corta la cocción residual y saca la pieza del rango de temperatura donde crecen las bacterias, en vez de dejarla enfriando despacio dentro de él."
     }
   ],
   "cookMethods": [
     {
       "title": "Para guisar",
-      "description": "En rodajas, base de feijoada, cozido y caldo verde."
+      "description": "En rodajas, base de feijoada, cozido y caldo verde. Ya viene cocido."
     },
     {
       "title": "Assado / à bombeiro",
@@ -154,11 +170,12 @@
   ],
   "recommendations": [
     "Respeta las 24 h de maceración en vino y ajo.",
-    "Ahúma en frío para no fundir la grasa.",
-    "No omitas la sal de cura durante el ahumado.",
-    "Usa leña de encina o roble para el aroma correcto."
+    "No omitas la sal de cura #1: antes de los 75 °C hay horas de riesgo.",
+    "Usa leña de encina o roble para el aroma correcto.",
+    "Ahúma entre 80 y 150 °C, empezando por abajo para no reventar la tripa.",
+    "Da la pieza por lista a 75 °C internos, y enfríala de golpe."
   ],
-  "resultNote": "El resultado: un chouriço oscuro, rústico y profundamente ahumado, con el vino y el ajo integrados en la carne. Puro carácter luso.",
+  "resultNote": "El resultado: un chouriço oscuro, rústico y profundamente ahumado, con el vino y el ajo integrados — y ya cocido, listo para la feijoada o el cozido.",
   "finalQuote": "El chouriço enseña que el humo es un ingrediente más — y de los que más mandan. Sin buena leña, no hay buen chouriço.",
   "finalQuoteCaption": "Consejo de El Charcu"
 }
