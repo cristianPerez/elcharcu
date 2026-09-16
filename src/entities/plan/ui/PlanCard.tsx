@@ -38,7 +38,7 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
       )}
     >
       {isHighlighted ? (
-        <span className="mb-4 self-start rounded-full bg-terracota-dark px-3 py-1 text-[11px] font-medium uppercase tracking-eyebrow text-cream-white">
+        <span className="mb-4 self-start rounded-full bg-brasa px-3 py-1 text-[11px] font-medium uppercase tracking-eyebrow text-cocoa">
           El más elegido
         </span>
       ) : null}
@@ -102,8 +102,8 @@ export function PlanCard({ plan, cycle, href }: PlanCardProps): ReactNode {
         className={cn(
           'mt-8 inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-medium tracking-wide transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 active:scale-[0.97]',
           isHighlighted
-            ? 'bg-terracota-dark text-cream-white shadow-surface hover:shadow-raised'
-            : 'bg-terracota-dark text-cream-white shadow-surface hover:shadow-raised',
+            ? 'bg-brasa text-cocoa shadow-surface hover:shadow-raised'
+            : 'bg-brasa text-cocoa shadow-surface hover:shadow-raised',
         )}
       >
         {plan.ctaLabel}

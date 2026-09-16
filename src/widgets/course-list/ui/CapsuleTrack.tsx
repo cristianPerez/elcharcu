@@ -87,7 +87,7 @@ function CapsuleStep({ course, index, state, isLast }: CapsuleStepProps): ReactN
       className={cn(
         'relative z-10 grid size-7 shrink-0 place-items-center rounded-full text-xs font-semibold',
         state === 'terminada' && 'bg-sage text-cream-white',
-        isCurrent && 'bg-terracota text-cream-white',
+        isCurrent && 'bg-brasa text-cocoa',
         isLocked && 'bg-cream text-cocoa/35 ring-1 ring-cocoa/10',
       )}
     >

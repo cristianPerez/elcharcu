@@ -91,7 +91,7 @@ export function RecipeClosing({ recipeName, courseSlug }: RecipeClosingProps): R
       </p>
       <Link
         href={href}
-        className="mt-6 inline-block rounded-full bg-terracota-dark px-6 py-3 text-[15px] font-medium text-cream-white shadow-surface transition-shadow hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2"
+        className="mt-6 inline-block rounded-full bg-brasa px-6 py-3 text-[15px] font-medium text-cocoa shadow-surface transition-shadow hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2"
       >
         {cta}
       </Link>

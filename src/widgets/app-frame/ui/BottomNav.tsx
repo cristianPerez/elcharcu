@@ -70,13 +70,13 @@ export function BottomNav(): ReactNode {
               {isActive ? (
                 <span
                   aria-hidden="true"
-                  className="absolute top-0 h-0.5 w-8 rounded-full bg-terracota"
+                  className="absolute top-0 h-0.5 w-8 rounded-full bg-brasa-dark"
                 />
               ) : (
                 /* La misma marca de la pestaña activa, pero latiendo: al tocar,
                    el destino se señala ANTES de que llegue nada del servidor. */
                 <NavPending className="absolute top-0">
-                  <span className="h-0.5 w-8 animate-pulse rounded-full bg-terracota" />
+                  <span className="h-0.5 w-8 animate-pulse rounded-full bg-brasa-dark" />
                 </NavPending>
               )}
               <Icon size={22} strokeWidth={isActive ? 2.1 : 1.8} />

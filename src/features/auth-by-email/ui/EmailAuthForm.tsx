@@ -77,7 +77,7 @@ export function EmailAuthForm(): ReactNode {
         <button
           type="submit"
           disabled={isSending}
-          className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-terracota-dark px-6 py-4 text-sm font-medium tracking-wide text-cream-white shadow-surface transition-shadow hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 disabled:opacity-60"
+          className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-brasa px-6 py-4 text-sm font-medium tracking-wide text-cocoa shadow-surface transition-shadow hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 disabled:opacity-60"
         >
           {isSending ? 'Enviando…' : 'Enviarme el enlace'}
         </button>

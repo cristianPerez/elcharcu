@@ -54,7 +54,7 @@ export function BillingToggle({
               }}
               className={cn(
                 'rounded-full px-5 py-2 text-sm font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota',
-                isActive && 'bg-terracota-dark text-cream-white',
+                isActive && 'bg-brasa text-cocoa',
                 !isActive && onDark && 'text-cream/75 hover:text-cream',
                 !isActive && !onDark && 'text-cocoa/65 hover:text-cocoa',
               )}

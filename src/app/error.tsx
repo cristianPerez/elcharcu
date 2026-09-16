@@ -65,7 +65,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps): ReactNode {
         <button
           type="button"
           onClick={reset}
-          className="rounded-full bg-terracota-dark px-6 py-3 font-medium text-cream-white shadow-surface transition-shadow hover:shadow-raised"
+          className="rounded-full bg-brasa px-6 py-3 font-medium text-cocoa shadow-surface transition-shadow hover:shadow-raised"
         >
           Volver a intentar
         </button>

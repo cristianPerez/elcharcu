@@ -110,7 +110,7 @@ export function CourseRow({ course, progress, isSubscribed }: CourseRowProps): R
             En preparación
           </span>
         ) : course.access === 'libre' ? (
-          <span className="absolute right-3 top-3 rounded-full bg-terracota px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cream-white shadow-surface">
+          <span className="absolute right-3 top-3 rounded-full bg-brasa px-3 py-1 text-xs font-semibold uppercase tracking-wide text-cocoa shadow-surface">
             Gratis
           </span>
         ) : (

@@ -94,7 +94,7 @@ export function AppCuentaView({ email, name, interests }: AppCuentaViewProps): R
         <Reveal delay={0.08}>
           <Link
             href={appRoutes.subscription}
-            className="mt-4 flex items-center justify-between rounded-2xl bg-terracota-dark px-5 py-4 text-cream-white shadow-surface transition-transform active:scale-[0.98]"
+            className="mt-4 flex items-center justify-between rounded-2xl bg-brasa px-5 py-4 text-cocoa shadow-surface transition-transform active:scale-[0.98]"
           >
             <span>
               <span className="block font-medium">Pasar a El Charcu Pro</span>

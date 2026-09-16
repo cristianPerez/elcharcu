@@ -87,7 +87,7 @@ export function WaitlistButton({
 
       <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-cocoa/10">
         <div
-          className="h-full rounded-full bg-terracota transition-[width] duration-500"
+          className="h-full rounded-full bg-brasa-dark transition-[width] duration-500"
           style={{ width: `${String(percent)}%` }}
         />
       </div>

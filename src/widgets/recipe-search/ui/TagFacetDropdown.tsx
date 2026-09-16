@@ -52,7 +52,7 @@ export function TagFacetDropdown({
         className={cn(
           'flex items-center gap-1.5 rounded-full border px-3 py-1 text-[13px] transition-colors',
           activeCount > 0
-            ? 'border-transparent bg-terracota text-cream'
+            ? 'border-transparent bg-brasa text-cocoa'
             : 'border-cocoa/15 text-cocoa/70 hover:border-cocoa/30',
         )}
       >

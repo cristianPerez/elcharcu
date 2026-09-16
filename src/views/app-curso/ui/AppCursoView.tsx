@@ -135,7 +135,7 @@ export function AppCursoView({
             </p>
             <Link
               href={appRoutes.subscription}
-              className="mt-5 flex items-center justify-center gap-1 rounded-full bg-terracota-dark px-6 py-3 font-medium text-cream-white shadow-surface transition-transform active:scale-[0.98]"
+              className="mt-5 flex items-center justify-center gap-1 rounded-full bg-brasa px-6 py-3 font-medium text-cocoa shadow-surface transition-transform active:scale-[0.98]"
             >
               Ver la membresía
               <IconChevron size={16} />
@@ -177,7 +177,7 @@ export function AppCursoView({
                 </p>
                 <Link
                   href={`/cursos/${nextCapsule.slug}`}
-                  className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-terracota-dark px-5 py-4 text-cream-white shadow-surface transition-transform active:scale-[0.98]"
+                  className="mt-3 flex items-center justify-between gap-3 rounded-xl bg-brasa px-5 py-4 text-cocoa shadow-surface transition-transform active:scale-[0.98]"
                 >
                   <span className="min-w-0">
                     <span className="block text-xs uppercase tracking-eyebrow text-cream-white/70">
@@ -208,7 +208,7 @@ export function AppCursoView({
             ) : (
               <Link
                 href={`/cursos/${course.slug}/${nextLessonId}`}
-                className="mt-4 flex items-center justify-center gap-1 rounded-full bg-terracota-dark px-6 py-3 font-medium text-cream-white shadow-surface transition-transform active:scale-[0.98]"
+                className="mt-4 flex items-center justify-center gap-1 rounded-full bg-brasa px-6 py-3 font-medium text-cocoa shadow-surface transition-transform active:scale-[0.98]"
               >
                 {done === 0 ? 'Empezar el curso' : 'Continuar'}
                 <IconChevron size={16} />
