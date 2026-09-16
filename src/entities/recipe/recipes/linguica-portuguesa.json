@@ -26,7 +26,7 @@
     },
     {
       "label": "Piel + ahumado",
-      "value": "12–24 h en nevera + 2–4 h de humo"
+      "value": "12–24 h en nevera + humo a 80–150 °C"
     },
     {
       "label": "Temperatura interna",
@@ -125,11 +125,11 @@
     },
     {
       "n": "06",
-      "text": "Ahúma a temperatura baja (por debajo de 30 °C) durante 2–4 horas, para que tome sabor sin que la grasa se funda. Horas, no días: lo que antes conservaba ahora lo hace la cocción."
+      "text": "Ahúma EN CALIENTE, entre 80 y 150 °C. Empieza por abajo —80–100 °C la primera media hora— y sube después. Si arrancas fuerte, la grasa se funde antes de que el centro se caliente y la tripa revienta."
     },
     {
       "n": "07",
-      "text": "Sube la temperatura y cocina hasta que el CENTRO marque 75 °C. Mide con termómetro en la pieza más gruesa, nunca por tiempo."
+      "text": "Cocina hasta que el CENTRO marque 75 °C. Mide con termómetro en la pieza más gruesa, nunca por tiempo: el calibre y la carga del ahumador cambian cuánto tarda."
     },
     {
       "n": "08",
@@ -142,12 +142,16 @@
       "description": "El diámetro delgado (30–32 mm) es lo que la separa del chouriço; respeta la tripa fina."
     },
     {
-      "title": "Piri-piri al gusto",
-      "description": "Ajusta la guindilla según cuánto calor busques; la linguiça admite desde suave a picante."
+      "title": "Empieza flojo y sube",
+      "description": "80–100 °C la primera media hora, y de ahí para arriba. Si la metes de golpe a 150 °C, la grasa sale antes de que el centro suba y te quedas con la tripa rota y el embutido seco."
     },
     {
       "title": "El termómetro manda sobre el reloj",
-      "description": "75 °C en el CENTRO de la pieza, medidos con termómetro en la parte más gruesa. No por tiempo: dos tandas del mismo peso tardan distinto según el ahumador y el clima."
+      "description": "75 °C en el CENTRO, medidos en la pieza más gruesa. La temperatura del ahumador dice a qué ritmo va; la del centro dice cuándo está."
+    },
+    {
+      "title": "Piri-piri al gusto",
+      "description": "Ajusta la guindilla según cuánto calor busques; la linguiça admite desde suave a picante."
     },
     {
       "title": "El enfriado de golpe no es acabado, es seguridad",
@@ -168,7 +172,7 @@
     "Respeta la maceración de 24 h.",
     "Usa tripa fina para el calibre correcto.",
     "No omitas la sal de cura #1: antes de los 75 °C hay horas de riesgo.",
-    "Ahúma por debajo de 30 °C para no fundir la grasa; después sube a cocinar.",
+    "Ahúma entre 80 y 150 °C, empezando por abajo para no reventar la tripa.",
     "Da la pieza por lista a 75 °C internos, y enfríala de golpe."
   ],
   "resultNote": "El resultado: una linguiça firme y ahumada, más esbelta que el chouriço y ya cocida. El ajo y el humo, en formato fino y listos para la brasa.",

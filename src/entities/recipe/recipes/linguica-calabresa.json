@@ -26,7 +26,7 @@
     },
     {
       "label": "Piel + ahumado",
-      "value": "12–24 h en nevera + 2–4 h de humo"
+      "value": "12–24 h en nevera + humo a 80–150 °C"
     },
     {
       "label": "Temperatura interna",
@@ -52,7 +52,7 @@
     }
   ],
   "quote": "La calabresa no es italiana pese a su nombre: es puro Brasil, y el humo con el picante son su firma.",
-  "ingredientsNote": "El picante viene de la pimienta calabresa (guindilla en hojuelas). Aquí la sal de cura #1 NO es opcional. Aunque la pieza termine cocida a 75 °C, antes pasa horas formando piel y tomando humo por debajo de esa temperatura: ese es el rato de riesgo, y es justo el rango donde el Clostridium botulinum trabaja mejor. Va la #1 porque su nitrito actúa desde el primer minuto; el nitrato de la #2 necesita semanas y una bacteria que lo convierta, y aquí no hay ni lo uno ni lo otro.",
+  "ingredientsNote": "El picante viene de la pimienta calabresa (guindilla en hojuelas). Aquí la sal de cura #1 no es opcional aunque haya cocción: antes del humo caliente hay entre 12 y 24 horas formando piel, y es carne picada cruda. Va la #1 porque su nitrito actúa desde el primer minuto; el nitrato de la #2 necesita semanas y una bacteria que lo convierta, y aquí no hay ni lo uno ni lo otro. Además es la que da el color rojo del ahumado en vez del pardo de la carne cocida.",
   "ingredients": [
     {
       "name": "Carne de cerdo (paleta)",
@@ -101,7 +101,7 @@
     }
   ],
   "proportionNote": "80% carne y 20% grasa da firmeza para rodajas y jugosidad al fundirse en la pizza. Ajusta el picante con la cantidad de pimienta calabresa.",
-  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. La sal de cura #1 al 0,25% protege las horas de piel y humo que hay antes de la cocción. 2,5 g por kilo es el estándar y también el techo, nunca más.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el total de carne y grasa. La sal de cura #1 al 0,25% protege las horas de piel que hay antes del humo, y es la que sostiene el color. 2,5 g por kilo es el estándar y también el techo, nunca más.",
   "steps": [
     {
       "n": "01",
@@ -125,15 +125,15 @@
     },
     {
       "n": "06",
-      "text": "Orea en la NEVERA, destapada sobre rejilla, 12–24 h, hasta que la tripa quede seca al tacto. Esa piel es lo que hace que el humo se agarre. En nevera y no al ambiente: aquí hace demasiado calor."
+      "text": "Orea en la NEVERA, destapada sobre rejilla, 12–24 h, hasta que la tripa quede seca al tacto. Esa piel es lo que hace que el humo se agarre: sobre tripa húmeda el humo resbala y el color queda desigual."
     },
     {
       "n": "07",
-      "text": "Ahúma a temperatura baja (por debajo de 30 °C) durante 2–4 horas, para que tome sabor sin que la grasa se funda. Horas, no días: lo que antes conservaba ahora lo hace la cocción."
+      "text": "Ahúma EN CALIENTE, entre 80 y 150 °C. Empieza por abajo —80–100 °C la primera media hora— y sube después. Si arrancas fuerte, la grasa se funde antes de que el centro se caliente y la tripa revienta: sale seca por dentro y rota por fuera."
     },
     {
       "n": "08",
-      "text": "Sube la temperatura y cocina hasta que el CENTRO marque 75 °C. Mide con termómetro en la pieza más gruesa, nunca por tiempo."
+      "text": "Cocina hasta que el CENTRO marque 75 °C. Mide con termómetro en la pieza más gruesa, nunca por tiempo: a 150 °C un aro de 34 mm llega en poco más de media hora, y pasarse de ahí solo le saca grasa."
     },
     {
       "n": "09",
@@ -146,8 +146,12 @@
       "description": "Las hojuelas de guindilla dan el picor y el aspecto moteado típico. Son insustituibles."
     },
     {
+      "title": "Empieza flojo y sube",
+      "description": "80–100 °C la primera media hora, y de ahí para arriba. El calibre de la calabresa es fino: si la metes de golpe a 150 °C, la grasa sale antes de que el centro suba y te quedas con una tripa rota y un embutido seco."
+    },
+    {
       "title": "El termómetro manda sobre el reloj",
-      "description": "75 °C en el CENTRO de la pieza, medidos con termómetro en la parte más gruesa. No por tiempo: dos tandas del mismo peso tardan distinto según el ahumador y el clima."
+      "description": "75 °C en el CENTRO, medidos en la pieza más gruesa. La temperatura del ahumador dice a qué ritmo va; la del centro dice cuándo está."
     },
     {
       "title": "El enfriado de golpe no es acabado, es seguridad",
@@ -166,8 +170,8 @@
   ],
   "recommendations": [
     "Usa pimienta calabresa en hojuelas para el picor correcto.",
-    "No omitas la sal de cura #1: antes de los 75 °C hay horas de riesgo.",
-    "Ahúma por debajo de 30 °C para no fundir la grasa; después sube a cocinar.",
+    "No omitas la sal de cura #1: antes del humo hay 12–24 h de carne picada cruda.",
+    "Ahúma entre 80 y 150 °C, empezando por abajo para no reventar la tripa.",
     "Da la pieza por lista a 75 °C internos, medidos con termómetro.",
     "Enfría en agua con hielo en cuanto llegue: es parte de la seguridad."
   ],
