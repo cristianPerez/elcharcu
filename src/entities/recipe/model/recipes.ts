@@ -39,6 +39,7 @@ import pancetaAhumada from '../recipes/panceta-ahumada.json';
 import pastrami from '../recipes/pastrami.json';
 import quesoBurrata from '../recipes/queso-burrata.json';
 import salamiDeRes from '../recipes/salami-de-res.json';
+import salchichonCerveceroColombiano from '../recipes/salchichon-cervecero-colombiano.json';
 import salchichonIberico from '../recipes/salchichon-iberico.json';
 import salchichon from '../recipes/salchichon.json';
 import sobrasada from '../recipes/sobrasada.json';
@@ -67,6 +68,7 @@ const recipes: readonly Recipe[] = [
   chorizoSantarrosano,
   chistorra,
   salchichon,
+  salchichonCerveceroColombiano,
   salchichonIberico,
   chouricoPortugues,
   linguicaPortuguesa,

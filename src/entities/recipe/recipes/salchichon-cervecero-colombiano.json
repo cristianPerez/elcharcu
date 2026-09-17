@@ -1,0 +1,128 @@
+{
+  "slug": "salchichon-cervecero-colombiano",
+  "name": "Salchichón Cervecero Colombiano",
+  "description": "El cervecero de toda la vida, hecho en casa — pollo, bondiola y panceta, especiado con ajo y comino y cocido hasta 75 °C para tajarlo frío.",
+  "image": "/recipes/salchichon-cervecero-colombiano.jpg",
+  "tags": ["Colombia", "Ahumado", "Cocido", "Pollo"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Pollo, bondiola y panceta; especiado, cocido y tajado en frío.",
+  "intro": "El salchichón cervecero es el embutido de la nevera colombiana: el de las arepas, el sándwich y la picada. Esta versión lo hace artesanal y le da un giro europeo — pechuga de pollo para la base magra, bondiola de cerdo para el sabor y panceta para la grasa que lo mantiene jugoso. Ajo, comino, pimienta y paprika le dan el perfil especiado que reconoces en cada tajada. Se embute en tripa de colágeno, se cocina u ahúma hasta los 75 °C internos y se enfría bien antes de cortar. Nada de humo frío: aquí se termina cocido.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "1 kg de carne" },
+    { "label": "Tipo", "value": "Cocido (u ahumado cocido)" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Tiempo de preparación", "value": "1 h" },
+    { "label": "Cocción", "value": "80–150 °C hasta 75 °C internos" },
+    { "label": "Tipo de tripa", "value": "Colágeno, cal. 45–60 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Mezcla de pechuga de pollo (40%), bondiola de cerdo (30%) y panceta sin piel (30%)."
+    },
+    {
+      "title": "Textura",
+      "description": "Emulsión fina y compacta; la panceta y el agua helada la vuelven jugosa y fácil de tajar."
+    },
+    {
+      "title": "Sabor",
+      "description": "Especiado y aromático — ajo y comino al frente, paprika y pimienta de fondo."
+    }
+  ],
+  "quote": "El cervecero no se cura: se cocina. Por eso la clave está en la temperatura interna, no en el calendario.",
+  "ingredientsNote": "Si usas sal de cura, la cantidad depende de la concentración de nitrito del producto: no uses la misma dosis para sales de cura distintas. Con la Prague Powder #1 estándar (6,25% de nitrito), 2,5 g por kilo es el estándar y también el techo — y baja entonces la sal común a 14 g para no pasarte de sal. Es la #1, no la #2: esto se cocina y se come en días, no se cura durante semanas.",
+  "ingredients": [
+    { "name": "Pechuga de pollo", "amount": "400 g", "pct": "40%" },
+    { "name": "Bondiola de cerdo", "amount": "300 g", "pct": "30%" },
+    { "name": "Panceta de cerdo sin piel", "amount": "300 g", "pct": "30%" },
+    { "name": "Sal", "amount": "16 g", "pct": "1.6%" },
+    {
+      "name": "Sal de cura #1 (opcional, recomendada si ahúmas)",
+      "amount": "2.5 g",
+      "pct": "0.25%"
+    },
+    { "name": "Azúcar", "amount": "2 g", "pct": "0.2%" },
+    { "name": "Ajo", "amount": "4 g", "pct": "0.4%" },
+    { "name": "Comino", "amount": "1 g", "pct": "0.1%" },
+    { "name": "Pimienta", "amount": "2 g", "pct": "0.2%" },
+    { "name": "Paprika", "amount": "2 g", "pct": "0.2%" },
+    { "name": "Agua helada", "amount": "70 ml", "pct": "7%" }
+  ],
+  "proportionNote": "40% pollo, 30% bondiola y 30% panceta: el pollo aporta el magro, la bondiola el sabor y la panceta la grasa. Si bajas la panceta, el salchichón queda seco y se desmorona al tajarlo.",
+  "charcuteroNote": "El porcentaje junto a cada ingrediente es su peso sobre el kilo de carne. Por kilo: sal 16 g, azúcar 2 g, ajo 4 g, comino 1 g, pimienta 2 g, paprika 2 g y 70 ml de agua helada. El agua no es relleno: es lo que permite formar la emulsión y lo que se pierde en parte durante la cocción.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Mezcla los secos aparte: sal, sal de cura si la usas, azúcar, ajo, comino, pimienta y paprika. Repartirlos bien es lo único que garantiza una salazón pareja."
+    },
+    {
+      "n": "02",
+      "text": "Corta el pollo, la bondiola y la panceta en cubos y déjalos muy fríos (0–2 °C)."
+    },
+    {
+      "n": "03",
+      "text": "Muele con disco de 4–6 mm, manteniendo la carne casi congelada."
+    },
+    {
+      "n": "04",
+      "text": "Agrega los secos y el agua helada; amasa hasta que la masa quede pegajosa y ligada — esa es la emulsión."
+    },
+    {
+      "n": "05",
+      "text": "Vigila la temperatura de la masa: no debe pasar de 8–10 °C. Si se calienta, al frío otra vez."
+    },
+    {
+      "n": "06",
+      "text": "Embute en tripa de colágeno (45–60 mm) bien apretado, sin bolsas de aire, y ata los extremos."
+    },
+    {
+      "n": "07",
+      "text": "Cocina u ahúma entre 80 y 150 °C hasta que el centro marque 75 °C."
+    },
+    {
+      "n": "08",
+      "text": "Enfría rápido y refrigera varias horas antes de cortar: frío, taja firme y bonito."
+    }
+  ],
+  "tips": [
+    {
+      "title": "Todo muy frío",
+      "description": "Pollo y panceta pierden la emulsión con el calor. Trabaja casi congelado y no alargues el amasado."
+    },
+    {
+      "title": "El termómetro manda",
+      "description": "No lo saques por tiempo: sácalo a 75 °C internos. Menos es inseguro; más lo reseca."
+    },
+    {
+      "title": "Sal de cura solo si ahúmas",
+      "description": "Si lo vas a ahumar a baja temperatura, la #1 es lo correcto. Si lo horneas y lo comes en pocos días, puedes ir sin ella — pero nunca con la #2."
+    },
+    {
+      "title": "Frío antes del cuchillo",
+      "description": "Tajarlo tibio lo desarma. Refrigéralo entero y córtalo al día siguiente."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Ahumador",
+      "description": "Entre 80 y 150 °C, humo suave, hasta los 75 °C en el centro. Aquí sí lleva sal de cura #1."
+    },
+    {
+      "title": "Horno",
+      "description": "Entre 80 y 150 °C hasta los 75 °C internos; una bandeja con agua ayuda a que no se reseque."
+    },
+    {
+      "title": "A la sartén, ya frío",
+      "description": "Tajadas gruesas doradas un minuto por lado, para arepa o sándwich."
+    }
+  ],
+  "recommendations": [
+    "Mantén la masa por debajo de 8–10 °C durante todo el proceso.",
+    "Embute apretado: las bolsas de aire dejan huecos al tajar.",
+    "Cocina hasta 75 °C internos, medidos con termómetro.",
+    "Enfría y refrigera antes de cortar."
+  ],
+  "resultNote": "El resultado: un salchichón cervecero casero, jugoso y aromático, de corte compacto y parejo. Perfecto para la arepa, el sándwich, la picada o unas tajadas directas de la nevera.",
+  "finalQuote": "El cervecero de la tienda es un producto industrial; este es el mismo sabor, pero sabiendo exactamente qué lleva. Ahí está la diferencia del oficio.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
