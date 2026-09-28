@@ -23,6 +23,7 @@ import jamonDeBondiolaAhumado from '../recipes/jamon-de-bondiola-ahumado.json';
 import jamonPiernaHorneado from '../recipes/jamon-pierna-horneado.json';
 import jamonSelvaNegra from '../recipes/jamon-selva-negra.json';
 import kielbasaBajoSodio from '../recipes/kielbasa-bajo-sodio.json';
+import kielbasaDeMozzarellaYJalapeno from '../recipes/kielbasa-de-mozzarella-y-jalapeno.json';
 import kielbasaDePollo from '../recipes/kielbasa-de-pollo.json';
 import kielbasaPolaca from '../recipes/kielbasa-polaca.json';
 import linguicaCalabresa from '../recipes/linguica-calabresa.json';
@@ -83,6 +84,7 @@ const recipes: readonly Recipe[] = [
   sujuk,
   kielbasaPolaca,
   kielbasaDePollo,
+  kielbasaDeMozzarellaYJalapeno,
   lomoCurado,
   cecinaDeLeon,
   pancetaAhumada,
