@@ -1,0 +1,160 @@
+{
+  "slug": "kielbasa-de-mozzarella-y-jalapeno",
+  "name": "Kielbasa de Mozzarella y Jalapeño",
+  "description": "Kielbasa ahumada de textura artesanal — 70% picada a cuchillo — con cubos de mozzarella y jalapeño encurtido, trabajada en dos días.",
+  "image": "/recipes/kielbasa-de-mozzarella-y-jalapeno.jpg",
+  "tags": ["Polonia", "Ahumado", "Picante", "Queso"],
+  "eyebrow": "Receta · Chorizos del mundo",
+  "subtitle": "Picada a cuchillo, con queso y jalapeño, ahumada en dos días.",
+  "intro": "Una kielbasa de estructura, no de emulsión: el 70% de la carne va picada a cuchillo y solo el 30% molida fina, que es la que liga y sostiene. Se trabaja en dos días — el primero solo carne, condimentos y agua, amasando hasta la liga y ocho horas de reposo en frío; el segundo se incorporan la mozzarella en cubos y el jalapeño encurtido bien escurrido, con la mano suave, para que lleguen enteros al corte. Después, secado de la tripa y ahumado progresivo. El queso funde dentro y el jalapeño corta la grasa; al tajarla se ven los cubos blancos y el verde repartidos en una masa de grano grueso.",
+  "stats": [
+    { "label": "Rendimiento base", "value": "2 kg de carne" },
+    { "label": "Tipo", "value": "Ahumada y cocida" },
+    { "label": "Nivel", "value": "Intermedio" },
+    { "label": "Proceso", "value": "2 días (8 h de reposo en frío)" },
+    { "label": "Molienda", "value": "70% a cuchillo, 30% fina" },
+    { "label": "Ahumado", "value": "Progresivo, sin golpes de calor" },
+    { "label": "Temperatura interna", "value": "72 °C" },
+    { "label": "Tipo de tripa", "value": "Natural de cerdo, cal. 32–38 mm" }
+  ],
+  "details": [
+    {
+      "title": "Origen",
+      "description": "Carne de cerdo en dos texturas: 1400 g picada a cuchillo y 600 g molida fina."
+    },
+    {
+      "title": "Textura",
+      "description": "De grano grueso y mordida marcada; el 30% molido fino es el que da la liga que la mantiene unida."
+    },
+    {
+      "title": "Sabor",
+      "description": "Ajo, pimienta y coriandro de base, con el picante del jalapeño encurtido y la mozzarella fundida dentro."
+    }
+  ],
+  "quote": "El queso y el jalapeño no son adorno: son agua y grasa dentro de una tripa cerrada. Por eso aquí manda la presión, no la prisa.",
+  "ingredientsNote": "La mozzarella y el jalapeño entran el segundo día, nunca en el amasado del primero: si se amasan con la masa se deshacen y sueltan su agua dentro. El jalapeño hay que escurrirlo y secarlo de verdad — el líquido del encurtido es lo que después revienta la tripa.",
+  "ingredients": [
+    { "name": "Carne de cerdo picada a cuchillo", "amount": "1400 g", "pct": "70%" },
+    { "name": "Carne de cerdo molida fina", "amount": "600 g", "pct": "30%" },
+    { "name": "Sal", "amount": "30 g", "pct": "1.5%" },
+    { "name": "Sal de cura #1 (Cure #1)", "amount": "5 g", "pct": "0.25%" },
+    { "name": "Azúcar", "amount": "3.3 g", "pct": "0.17%" },
+    { "name": "Ajo en polvo", "amount": "2.7 g", "pct": "0.14%" },
+    { "name": "Pimienta negra", "amount": "1.75 g", "pct": "0.09%" },
+    { "name": "Coriandro molido", "amount": "1 g", "pct": "0.05%" },
+    { "name": "Paprika dulce", "amount": "1 g", "pct": "0.05%" },
+    { "name": "Nuez moscada", "amount": "0.2 g", "pct": "0.01%" },
+    { "name": "Agua helada", "amount": "100 ml", "pct": "5%" },
+    {
+      "name": "Mozzarella en cubos de 5–7 mm, muy fría",
+      "amount": "120 g",
+      "pct": "6%"
+    },
+    {
+      "name": "Jalapeño encurtido, escurrido, seco y picado",
+      "amount": "140 g",
+      "pct": "7%"
+    }
+  ],
+  "proportionNote": "70% picada a cuchillo y 30% molida fina: esa es la receta. El grano grueso da la mordida artesanal y el molido fino la liga que sostiene todo. Si subes el molido fino se va hacia la emulsión y pierde el carácter; si lo bajas, la salchicha se desarma al tajarla.",
+  "charcuteroNote": "El porcentaje es el peso sobre los 2 kg de carne. Valores por kilo: sal 15 g, sal de cura #1 2,5 g, azúcar 1,65 g, ajo en polvo 1,35 g, pimienta negra 0,88 g, coriandro 0,5 g, paprika 0,5 g, nuez moscada 0,1 g, agua helada 50 ml, mozzarella 60 g y jalapeño 70 g. Los 2,5 g de Prague Powder #1 por kilo equivalen a 156 ppm de nitrito de entrada, el nivel estándar para un embutido cocido — y también el techo. Si tu sal de cura tiene otra concentración de nitrito, la dosis no es la misma.",
+  "steps": [
+    {
+      "n": "01",
+      "text": "Día 1 — Pica 1400 g de cerdo a cuchillo y muele finos los 600 g restantes. Todo muy frío."
+    },
+    {
+      "n": "02",
+      "text": "Día 1 — Junta las dos texturas de carne en un bol."
+    },
+    {
+      "n": "03",
+      "text": "Día 1 — Agrega la sal, el Cure #1, el ajo en polvo, la pimienta negra, el coriandro, la nuez moscada, la paprika dulce, el azúcar y los 100 ml de agua helada."
+    },
+    {
+      "n": "04",
+      "text": "Día 1 — Amasa hasta desarrollar la liga: la masa tiene que quedar pegajosa y cohesiva, agarrándose a la mano. Aquí no se escatima."
+    },
+    {
+      "n": "05",
+      "text": "Día 1 — Cubre y refrigera 8 horas."
+    },
+    {
+      "n": "06",
+      "text": "Día 2 — Saca la masa y trabájala muy fría; si se ha templado, al congelador un rato antes de seguir."
+    },
+    {
+      "n": "07",
+      "text": "Día 2 — Añade los 120 g de mozzarella en cubos de 5–7 mm y los 140 g de jalapeño encurtido, muy bien escurrido y secado."
+    },
+    {
+      "n": "08",
+      "text": "Día 2 — Mezcla suavemente, solo hasta repartir: los cubos de queso y el jalapeño tienen que llegar enteros, sin romperse."
+    },
+    {
+      "n": "09",
+      "text": "Día 2 — Embute sin sobrellenar la tripa. Deja margen: el queso fundido y el vapor van a empujar desde dentro."
+    },
+    {
+      "n": "10",
+      "text": "Día 2 — Deja secar la superficie de la tripa hasta que esté seca al tacto, antes de meter humo."
+    },
+    {
+      "n": "11",
+      "text": "Ahúma y cocina de forma progresiva, subiendo la temperatura por escalones y sin golpes de calor."
+    },
+    {
+      "n": "12",
+      "text": "Controla con sonda en el centro de la pieza más gruesa y cocina hasta 72 °C internos, parejos en toda la salchicha."
+    },
+    {
+      "n": "13",
+      "text": "Enfría rápido, seca la superficie y refrigera antes de cortar."
+    }
+  ],
+  "tips": [
+    {
+      "title": "El jalapeño, seco de verdad",
+      "description": "Escúrrelo y sécalo con papel hasta que no suelte nada. El líquido del encurtido se convierte en vapor dentro de la tripa, y ese vapor es presión."
+    },
+    {
+      "title": "No sobrellenes la tripa",
+      "description": "Es el error que revienta estas salchichas. La mozzarella funde y ocupa más, el agua se evapora y no hay a dónde ir. Embute con margen."
+    },
+    {
+      "title": "Calor progresivo, nunca de golpe",
+      "description": "Una temperatura alta de entrada funde el queso antes de que la masa cuaje: la tripa cede por el punto más lleno. Sube por escalones."
+    },
+    {
+      "title": "El queso y el jalapeño, el Día 2",
+      "description": "El amasado del Día 1 es solo carne, condimentos y agua. Si metes las inclusiones ahí, se deshacen y engrasan la masa."
+    },
+    {
+      "title": "La superficie seca antes del humo",
+      "description": "Con la tripa húmeda el humo se deposita manchado y el color sale disparejo."
+    }
+  ],
+  "cookMethods": [
+    {
+      "title": "Ahumada y cocida",
+      "description": "El método de la receta: humo progresivo, sin temperaturas excesivas, hasta 72 °C en el centro. Queda lista para comer."
+    },
+    {
+      "title": "A la parrilla",
+      "description": "Ya cocida, solo dorar unos minutos a fuego medio. Fuego fuerte revienta la tripa por el queso."
+    },
+    {
+      "title": "A la sartén, ya fría",
+      "description": "Tajadas gruesas doradas un minuto por lado; el queso se tuesta en el corte."
+    }
+  ],
+  "recommendations": [
+    "Escurre y seca el jalapeño encurtido antes de incorporarlo.",
+    "Mantén la masa muy fría los dos días.",
+    "Embute sin sobrellenar y deja secar la tripa antes del humo.",
+    "Sube la temperatura por escalones y mide con sonda hasta 72 °C internos."
+  ],
+  "resultNote": "El resultado: una kielbasa de grano grueso, jugosa y picante, con los cubos de mozzarella fundidos y el jalapeño repartido a la vista en cada tajada. Textura artesanal, no industrial — se nota que la carne se picó a cuchillo.",
+  "finalQuote": "Meter queso en una tripa es un problema de presión, no de sabor. Se resuelve embutiendo con margen, secando el jalapeño y subiendo el calor despacio.",
+  "finalQuoteCaption": "Consejo de El Charcu"
+}
