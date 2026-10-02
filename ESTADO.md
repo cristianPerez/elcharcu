@@ -205,7 +205,7 @@ gratuito, en vez de quedarse en catálogo.
 | lo que hay                                     | qué es                                                         |
 | ---------------------------------------------- | -------------------------------------------------------------- |
 | `lomo-curado` · "Lomo de cerdo curado"         | el ÚNICO curso publicado, 7 lecciones, el único con video real |
-| `bridar-un-jamon` · "Cómo bridar un jamón"     | una CÁPSULA de 2 lecciones, no un curso                        |
+| `bridar-un-jamon` · "Cómo bridar un jamón"     | una CÁPSULA de 4 lecciones (2 en video), no un curso           |
 | longaniza, santarrosano, paisa, chorizo de ajo | los cuatro en lista de espera, sin grabar                      |
 
 Lo más probable es que se refiera al **lomo curado**, que es el que está
