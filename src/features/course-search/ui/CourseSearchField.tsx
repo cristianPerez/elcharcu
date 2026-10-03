@@ -49,7 +49,6 @@ export function CourseSearchField({
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState(query.q);
-  const firstRender = useRef(true);
   // Los filtros vigentes, leídos al disparar y no como dependencia: cambian
   // con cada navegación que el propio efecto provoca.
   const queryRef = useRef(query);
@@ -77,11 +76,22 @@ export function CourseSearchField({
     if (!live) {
       return;
     }
-    if (firstRender.current) {
-      firstRender.current = false;
+    /*
+      Solo se navega si lo ESCRITO difiere de lo que ya dice la URL.
+
+      Antes bastaba con que el efecto se volviera a ejecutar —cambia `router`
+      al hidratar, por ejemplo— para programar un `replace` con la búsqueda
+      vieja. Si en ese cuarto de segundo se tocaba un filtro, el `replace`
+      llegaba tarde y BORRABA el filtro de la URL. En desarrollo no se veía
+      porque todo es más lento; en producción, sí (lo cazó el e2e en CI).
+    */
+    if (value.trim() === queryRef.current.q.trim()) {
       return;
     }
     const timer = window.setTimeout(() => {
+      if (value.trim() === queryRef.current.q.trim()) {
+        return;
+      }
       router.replace(courseSearchHref({ ...queryRef.current, q: value }, basePath), {
         scroll: false,
       });

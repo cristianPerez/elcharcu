@@ -42,9 +42,14 @@ test('los intereses se activan, se apagan y se guardan', async ({ page }) => {
 
 test('el último interés no se puede quitar', async ({ page }) => {
   await page.goto('/cuenta');
+  // `count()` no espera: se cuenta con la página ya hidratada y en reposo. En
+  // el build de producción contaba antes de que la lista terminara de pintarse
+  // y se saltaba el bucle entero.
+  await page.waitForLoadState('networkidle');
   const chosen = page
     .getByRole('list', { name: 'Qué quieres aprender' })
     .getByRole('button', { pressed: true });
+  await expect(chosen.first()).toBeVisible();
 
   // Deja uno solo elegido.
   while ((await chosen.count()) > 1) {
