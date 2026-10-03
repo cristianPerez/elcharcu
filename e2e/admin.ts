@@ -2,6 +2,8 @@ import { createClient } from '@supabase/supabase-js';
 
 import { type Database } from '@/shared/api/supabase/database.types';
 
+import { loadLocalEnv } from './env';
+
 /**
  * Acceso de administración a QA para preparar y leer datos en los tests.
  * Solo QA: si `.env.local` apunta a otra base, se niega.
@@ -16,7 +18,7 @@ export function admin(): AdminClient {
   if (client !== null) {
     return client;
   }
-  process.loadEnvFile('.env.local');
+  loadLocalEnv();
   const url = process.env.SUPABASE_URL ?? '';
   const key = process.env.SUPABASE_SECRET_KEY ?? '';
   if (!url.includes(QA_REF) || key === '') {

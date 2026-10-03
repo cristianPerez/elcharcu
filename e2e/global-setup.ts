@@ -5,6 +5,8 @@ import { createClient } from '@supabase/supabase-js';
 
 import { type Database } from '@/shared/api/supabase/database.types';
 
+import { BROWSER_CHANNEL, loadLocalEnv } from './env';
+
 /**
  * Prepara dos cuentas de prueba en QA y deja su sesión guardada.
  *
@@ -71,13 +73,13 @@ async function seedCourseInProgress(charcu: CharcuClient, userId: string): Promi
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (value === undefined || value === '') {
-    throw new Error(`Falta ${name} en .env.local`);
+    throw new Error(`Falta ${name} (en .env.local o en los secretos del repo)`);
   }
   return value;
 }
 
 export default async function globalSetup(config: FullConfig): Promise<void> {
-  process.loadEnvFile('.env.local');
+  loadLocalEnv();
 
   const url = requireEnv('SUPABASE_URL');
   if (!url.includes(QA_REF)) {
@@ -92,7 +94,7 @@ export default async function globalSetup(config: FullConfig): Promise<void> {
 
   const baseURL = config.projects[0]?.use.baseURL ?? 'http://localhost:3100';
   mkdirSync('e2e/.auth', { recursive: true });
-  const browser = await chromium.launch({ channel: 'chrome' });
+  const browser = await chromium.launch(BROWSER_CHANNEL);
 
   for (const key of Object.keys(E2E_USERS) as E2eUser[]) {
     const { email, name } = E2E_USERS[key];
