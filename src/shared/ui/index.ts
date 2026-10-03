@@ -8,5 +8,47 @@ export { OptionTile } from './OptionTile';
 export { Reveal } from './Reveal';
 export { NavPending, NavPendingBar } from './NavPending';
 export { Skeleton, SkeletonHeader, SkeletonCard, SkeletonLabel } from './Skeleton';
-export { IconCourses, IconCharcu, IconAccount, IconChevron, IconLock } from './icons';
+export {
+  IconAccount,
+  IconArrowLeft,
+  IconArrowRight,
+  IconBell,
+  IconCamera,
+  IconCard,
+  IconCharcu,
+  IconChat,
+  IconCheck,
+  IconChevron,
+  IconClose,
+  IconCourses,
+  IconFlame,
+  IconHanging,
+  IconLock,
+  IconLogout,
+  IconMenu,
+  IconMinus,
+  IconPlay,
+  IconPlus,
+  IconPot,
+  IconSearch,
+  IconSend,
+  IconShield,
+  IconSliders,
+  IconTie,
+} from './icons';
+export { Badge } from './Badge';
+export type { BadgeTone } from './Badge';
+export { Chip } from './Chip';
+export { ChipRow } from './ChipRow';
+export { CoverPanel, coverToneFor } from './CoverPanel';
+export type { CoverTone } from './CoverPanel';
+export { EmptyState } from './EmptyState';
+export { Highlight, foldText } from './Highlight';
+export { ListRow } from './ListRow';
+export { PageTitle } from './PageTitle';
+export { ProgressBar } from './ProgressBar';
+export { SectionHeader } from './SectionHeader';
+export { SegmentedControl } from './SegmentedControl';
+export { StatTile } from './StatTile';
+export { Toggle } from './Toggle';
 export type { IconProps } from './icons';

@@ -108,3 +108,200 @@ export function IconChevron(props: IconProps): ReactNode {
     </Svg>
   );
 }
+
+/*
+  Los del rediseño de la app (2026-10). Mismo trazo, misma caja: se dibujan
+  aquí en vez de instalar lucide porque siguen siendo pocos y fijos.
+*/
+
+/** Lupa del buscador. */
+export function IconSearch(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.5-3.5" />
+    </Svg>
+  );
+}
+
+/** Los filtros: dos deslizadores. */
+export function IconSliders(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M4 8h10M18 8h2M4 16h2M10 16h10" />
+      <circle cx="16" cy="8" r="2" />
+      <circle cx="8" cy="16" r="2" />
+    </Svg>
+  );
+}
+
+export function IconClose(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M6 6l12 12M18 6 6 18" />
+    </Svg>
+  );
+}
+
+export function IconArrowLeft(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="m15 5-7 7 7 7" />
+    </Svg>
+  );
+}
+
+export function IconArrowRight(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </Svg>
+  );
+}
+
+export function IconCheck(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="m5 12.5 4.5 4.5L19 7.5" />
+    </Svg>
+  );
+}
+
+export function IconBell(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15Z" />
+      <path d="M10 20.5a2.2 2.2 0 0 0 4 0" />
+    </Svg>
+  );
+}
+
+export function IconCamera(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M4 8.5h3l1.6-2.5h6.8L17 8.5h3v11H4Z" />
+      <circle cx="12" cy="13.5" r="3.5" />
+    </Svg>
+  );
+}
+
+export function IconMenu(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M4 7h16M4 12h16M4 17h16" />
+    </Svg>
+  );
+}
+
+export function IconPlus(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M12 5v14M5 12h14" />
+    </Svg>
+  );
+}
+
+export function IconMinus(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M5 12h14" />
+    </Svg>
+  );
+}
+
+/** El triángulo de "continuar lección". Relleno: a trazo se lee como flecha. */
+export function IconPlay({ size = 14, className }: IconProps): ReactNode {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      className={className}
+    >
+      <path d="M7 4.5v15l12-7.5Z" />
+    </svg>
+  );
+}
+
+export function IconSend(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M12 19V5M6 11l6-6 6 6" />
+    </Svg>
+  );
+}
+
+export function IconShield(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.6 7 9 4.1-1.4 7-4.8 7-9V6Z" />
+      <path d="m9 12 2.2 2.2L15.5 10" />
+    </Svg>
+  );
+}
+
+export function IconCard(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <rect x="3.5" y="6" width="17" height="12" rx="2" />
+      <path d="M3.5 10h17M7 14.5h3" />
+    </Svg>
+  );
+}
+
+export function IconChat(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M5 18.5 4 21l3.2-1.4A8.5 8.5 0 1 0 5 18.5Z" />
+    </Svg>
+  );
+}
+
+export function IconLogout(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M14 4.5H6.5v15H14M10 12h10M17 8.5l3.5 3.5-3.5 3.5" />
+    </Svg>
+  );
+}
+
+/** Embutir y amarrar: la tripa que se cierra con un nudo. */
+export function IconTie(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M3 13c2.5 0 3-3 5.5-3S11 14 13.5 14 16 10 18.5 10H21" />
+      <path d="M18.5 10v4" />
+    </Svg>
+  );
+}
+
+/** Curado: la pieza colgada. */
+export function IconHanging(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M12 2.5v4" />
+      <path d="M9.5 6.5h5l-.8 13a1.7 1.7 0 0 1-3.4 0Z" />
+    </Svg>
+  );
+}
+
+/** Ahumado: la llama. */
+export function IconFlame(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M12 3c.5 3.5 5 5.5 5 10.5a5 5 0 0 1-10 0c0-2.5 1.5-3.8 2.5-5 .3 1.6 1 2.5 2 3 0-3 .2-5.5.5-8.5Z" />
+    </Svg>
+  );
+}
+
+/** Cocción: la olla. */
+export function IconPot(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M4 10.5h16v6a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3Z" />
+      <path d="M2.5 10.5h19M9 4v3M12 3v4M15 4v3" />
+    </Svg>
+  );
+}

@@ -1,4 +1,5 @@
 export { cn } from './cn';
+export { initialsOf } from './initials';
 export {
   initMixpanel,
   track,

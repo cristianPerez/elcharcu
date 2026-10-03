@@ -2,6 +2,8 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // Los e2e compilan en otra carpeta para no pisar el servidor de desarrollo.
+  distDir: process.env.NEXT_DIST_DIR ?? '.next',
   typescript: {
     // Nunca ignorar errores de tipos en build (enterprise gate).
     ignoreBuildErrors: false,

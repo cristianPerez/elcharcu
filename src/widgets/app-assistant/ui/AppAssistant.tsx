@@ -68,7 +68,7 @@ export function AppAssistant(): ReactNode {
   const showNotice = isKnown && status.questionsLeft <= 2;
 
   return (
-    <>
+    <div className="mx-auto max-w-xl">
       <Reveal>
         <header>
           <p className="text-xs font-medium uppercase tracking-eyebrow text-sage">
@@ -107,6 +107,6 @@ export function AppAssistant(): ReactNode {
           ) : null}
         </div>
       </Reveal>
-    </>
+    </div>
   );
 }

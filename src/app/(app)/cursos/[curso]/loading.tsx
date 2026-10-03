@@ -5,7 +5,7 @@ import { Skeleton, SkeletonLabel } from '@/shared/ui';
 /** El hueco de un curso: portada, progreso y el acordeón de módulos. */
 export default function CursoLoading(): ReactNode {
   return (
-    <>
+    <div className="mx-auto max-w-xl">
       <SkeletonLabel>Abriendo el curso</SkeletonLabel>
       <Skeleton className="h-4 w-24" />
       <Skeleton className="mt-3 h-9 w-3/4" />
@@ -23,6 +23,6 @@ export default function CursoLoading(): ReactNode {
         <Skeleton className="h-[72px] w-full rounded-2xl" />
         <Skeleton className="h-[72px] w-full rounded-2xl" />
       </div>
-    </>
+    </div>
   );
 }

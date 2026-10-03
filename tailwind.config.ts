@@ -54,9 +54,34 @@ const config: Config = {
         cream: {
           DEFAULT: '#F4F1EB', // superficie de página
           white: '#FFFFFF', // superficie de tarjeta, un nivel por encima
+          muted: '#EDE8DF', // fondo apagado: lo bloqueado, lo vacío, el carril
         },
-        sage: '#7A9E8E',
-        cocoa: '#1E1612', // Marrón Oscuro
+        /*
+          Dos sages, y no es un descuido. El DEFAULT (#7A9E8E) es el del sitio
+          público y se queda donde está. El `light` (#9DBAAC) es el del rediseño
+          de la app (2026-10): "completado" y los antetítulos sobre verde, donde
+          el oscuro se hundía en el fondo.
+        */
+        sage: {
+          DEFAULT: '#7A9E8E',
+          light: '#9DBAAC',
+        },
+        /*
+          El texto. `cocoa` pasó de color suelto a familia para que el texto
+          secundario y el deshabilitado sean TOKENS y no opacidades a ojo: un
+          `cocoa/55` sobre crema da 4,1:1 y no pasa AA; `soft` da 7,9:1 y
+          `muted` 5,6:1. `text-cocoa` y `text-cocoa/10` siguen funcionando.
+        */
+        cocoa: {
+          DEFAULT: '#1E1612', // Marrón Oscuro
+          soft: '#5B4E45', // texto secundario
+          muted: '#6E625A', // deshabilitado
+        },
+        /** El fondo del término resaltado en una búsqueda. */
+        highlight: '#F9D9C6',
+      },
+      borderRadius: {
+        card: '16px',
       },
       /**
        * Profundidad en superficies claras.
@@ -75,6 +100,8 @@ const config: Config = {
       },
       maxWidth: {
         content: '72rem',
+        /** El ancho de la app en escritorio (rediseño 2026-10). */
+        app: '1200px',
       },
       letterSpacing: {
         eyebrow: '0.28em',

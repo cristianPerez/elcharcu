@@ -4,3 +4,5 @@ out
 build
 pnpm-lock.yaml
 coverage
+.next-e2e
+e2e/.auth

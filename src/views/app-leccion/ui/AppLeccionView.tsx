@@ -42,7 +42,7 @@ export function AppLeccionView({
     id === null ? null : `${courseHref}/${id}`;
 
   return (
-    <>
+    <div className="mx-auto max-w-xl">
       <LessonNav
         courseHref={courseHref}
         courseTitle={course.title}
@@ -108,6 +108,6 @@ export function AppLeccionView({
           ) : null}
         </div>
       </Reveal>
-    </>
+    </div>
   );
 }

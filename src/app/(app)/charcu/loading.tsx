@@ -11,7 +11,7 @@ import { Skeleton, SkeletonHeader, SkeletonLabel } from '@/shared/ui';
  */
 export default function CharcuLoading(): ReactNode {
   return (
-    <>
+    <div className="mx-auto max-w-xl">
       <SkeletonLabel>Abriendo el asistente</SkeletonLabel>
       <SkeletonHeader />
 
@@ -22,6 +22,6 @@ export default function CharcuLoading(): ReactNode {
         <Skeleton className="mt-3 h-11 w-2/3 rounded-full" />
         <Skeleton className="mt-6 h-14 w-full rounded-full" />
       </div>
-    </>
+    </div>
   );
 }
