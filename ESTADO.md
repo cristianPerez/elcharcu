@@ -77,15 +77,132 @@ mundo es `aprendiz`** y ningún curso de pago es visible para nadie.
 No está sin usar: está esperando la pasarela. Mientras tanto, los botones de los
 planes abren WhatsApp con el plan escrito y la suscripción se activa a mano.
 
-**OnePay (D21)** está investigado pero sin integrar: falta el KYC, el SDK de
-Elements, el 3DS y el webhook.
+**OnePay (D21)** está investigado pero sin integrar. La primera lectura
+(2026-08-29) sigue en `git show 6a644b2:ESTADO.md`, sección _"1. Pagos —
+OnePay"_: autenticación, estados y las reglas del webhook siguen valiendo.
 
-📌 La investigación de su API —autenticación, endpoints, planes, 3DS, webhook—
-son 167 líneas que se leyeron el 2026-08-29 y que **no están en el código porque
-todavía no hay código**. Se quedaron en la versión larga de este archivo:
-`git show 6a644b2:ESTADO.md`, sección _"1. Pagos — OnePay"_. Cuando se empiece a
-integrar, o se recuperan de ahí o se releen de su documentación. ⚠️ **OnePay solo cobra en COP y D18 fija los
-precios en dólares** — hay que decidir el precio en pesos antes de crear el plan.
+### 🟠 Miniplan — suscripciones con OnePay (empezado el 2026-09-27)
+
+**Lo que cambia respecto a agosto: el bloqueo nº1 desaparece.** Entonces se
+creía que el `card_id` solo salía de integrar el SDK Elements + 3DS en nuestro
+frontend. No: OnePay tiene **Links de Captura** (`POST /connect-links`), una
+página alojada en `pagos.onepay.la` donde el cliente mete tarjeta, cuenta o
+Nequi, y nos avisa con el webhook `connect_link.completed`. Nada de PCI ni de
+SDK de nuestro lado.
+
+**El flujo, de punta a punta:**
+
+```
+[Suscribirme] ─► formulario corto (cédula; nombre y WhatsApp ya los tenemos)
+   ─► POST /api/pagos/onepay/checkout   (servidor, sk_* por env)
+        1. POST /customers         (una vez por persona; se guarda el id)
+        2. POST /connect-links     (single_use, external_id = user_id)
+   ─► redirect a pagos.onepay.la/connect-link/…  ─► vuelve a /asistente/suscripcion
+webhook connect_link.completed
+   ─► POST /subscriptions  (customer_id + price_id + card_id|account_id)
+webhook subscription.active|paid|unpaid|pass_due|frozen|canceled|finished
+   ─► UPDATE charcu.subscriptions  (status, current_period_end)
+```
+
+**Fases, en orden.** Cada una se puede cerrar y probar sola.
+
+1. **Cuenta y contrato** — KYC aprobado, claves `sk_test`/`sk_live`, webhook
+   creado en el panel (el `secret` se ve UNA vez). Pedirle a soporte **el cuerpo
+   real de `POST /subscriptions`** y qué métodos tiene habilitados la cuenta
+   (`allows`). _Solo Cristian._
+2. **Catálogo** — un producto por plan (Pro, Maestro) y **cuatro precios** con
+   `lookup_key` estable (`pro_mensual`, `pro_anual`, `maestro_mensual`,
+   `maestro_anual`), creados una sola vez con un script, no en caliente. El
+   código apunta al `lookup_key`, no al id: los precios son inmutables y así se
+   cambia el monto sin redesplegar.
+3. **Base** (migración, solo QA) — en `charcu.subscriptions`: `provider`,
+   `provider_customer_id`, `provider_subscription_id`, `provider_payment_method_id`.
+   Tabla `charcu.payment_events` (cuerpo crudo + clave única armada: tipo de
+   evento + id del recurso; en `connect_link.completed`, además el
+   `payment_method.id`). Tabla o columnas para el checkout pendiente: qué
+   `lookup_key` eligió quien abrió el link. Todo lo escribe solo `service_role`
+   (D12).
+4. **Cliente tipado** — `src/shared/api/onepay/`, cero `any`, `x-idempotency`
+   en todo POST, respuestas validadas con type guards (el doc y la API no
+   siempre coinciden: ver abajo).
+5. **Webhook** — `POST /api/pagos/onepay/webhook`: cuerpo crudo, `x-webhook-token`
+   siempre y `Signature` (HMAC-SHA256 hex) si hay secret, en tiempo constante.
+   Guardar el evento, contestar 200 en <10 s y procesar con `after()`. Rechazar
+   eventos con `event.environment` que no toca (un `test` en producción).
+6. **Checkout** — botón de `QuotaWallPlans`/`Pricing`, formulario de cédula,
+   ruta de checkout, página de vuelta que diga _"estamos confirmando tu pago"_
+   hasta que llegue el webhook (el `redirect_url` NO prueba que pagó).
+7. **Cancelar desde la app** — `DELETE /subscriptions/{id}`, conservando el
+   acceso hasta `current_period_end`. El plan ya promete _"cancelas cuando
+   quieras, desde la app"_.
+8. **Migrar a las de `rail = 'whatsapp'`** y quitar el WhatsApp de los botones.
+
+**Mapa de estados** (el de agosto, sin cambios): `active`/`paid` → `active` ·
+`unpaid`, `frozen` → `past_due` · `pass_due`, `canceled`, `finished` → `canceled`.
+`current_period_end` se mueve con cada `subscription.paid`.
+
+**⚠️ Decisiones que faltan — de Cristian, antes de la fase 2:**
+
+- **Los cuatro precios en COP.** OnePay solo cobra en pesos y D18 los tiene en
+  dólares. Esto sustituye a D18: cuando se decida, entra como D22.
+- **Cómo se hace el anual.** `POST /prices` solo acepta `interval: day | month`
+  (`year` devuelve 422). Anual = `month` con `interval_count: 12`, pero hay que
+  confirmar con soporte que se cobra **una vez** y no doce.
+- **Pedir la cédula.** `POST /customers` exige `document_type` + `document_number`
+  y teléfono con prefijo. Es fricción nueva justo antes de pagar; no se puede
+  esquivar.
+- **Prueba gratis sí o no** (`trial_period_days` en el precio).
+
+**⚠️ La documentación de OnePay está en obras, y se contradice:**
+
+- La página "Crear suscripción" avisa ella misma de que su cuerpo **ya no se
+  acepta**: hoy pide `plan_id` **o** `price_id`, `customer_id`,
+  `payment_method_type` y `payment_method_id` — pero la introducción de la
+  misma sección usa `card_id`. Hay que probar en `sk_test` cuál vale.
+- La página "Crear plan" es **una copia de la de crear cliente**. Por eso el
+  plan va con productos + precios, que sí están documentados y son más nuevos.
+- Los estados salen en minúscula en unas páginas y en MAYÚSCULA en otras: se
+  normalizan antes de comparar.
+- La guía de webhooks lista solo tres eventos de suscripción; la referencia
+  (`/client/webhooks/index`) tiene los ocho. Manda la referencia.
+- Un 4xx nuestro dispara reintentos, pero la reconciliación lo da por
+  definitivo. Un endpoint que falla seguido **se desactiva solo** y lo que pasa
+  mientras está apagado no se reenvía.
+
+### 🟠 Rediseño de la app — lo que quedó pendiente (2026-10-03)
+
+Mis cursos, búsqueda, Cursos maestros, El Charcu y Mi cuenta ya siguen
+`design-refs/`. Lo que falta, y por qué:
+
+- **Aplazado por Cristian: el estado de la receta (M3) y el contrato
+  estructurado con Gemini.** Sin ellos no hay "2 kg · Paso 2 de 6 · Adobar"
+  ni la barra de segmentos en la cabecera, ni la tarjeta de ingredientes con
+  −/+, ni quick replies, ni el grupo "Dudas sueltas" en Mis recetas (hoy solo
+  En proceso / Terminadas, por `recipes.status`). La propuesta está en el plan
+  del rediseño: `responseSchema` de Gemini, validado con type guards, y las
+  dosis de la tarjeta auditadas contra `MAX_CURE_1_G_PER_KG`.
+- **Migraciones solo en QA: 0029, 0030, 0031 y 0032.** Ninguna está en producción.
+  - **0029**: categoría y técnicas de cada curso. El relleno es una propuesta
+    por slug **para revisar**: la longaniza va en "Embutidos frescos" (su
+    resumen lo dice) y bridar un jamón en "Jamones curados".
+  - **0030**: `course_requests` ("Quiero un curso de…" y "Propón un curso").
+  - **0031**: los tres avisos del perfil.
+- **Los avisos no envían nada.** Recordatorios de pasos, cursos nuevos y el
+  correo de novedades solo guardan la preferencia: no existe ningún canal.
+- **Avísame sigue cerrado a quien no paga (0021).** Al usuario gratis se le
+  explica que la lista es de El Charcu Pro. Con `subscriptions` vacía en
+  producción, hoy nadie puede apuntarse desde la app.
+- **Fotos de los cursos.** Encendidas. Las de `public/curso/` se comprimieron
+  al estándar (600 px, calidad 65) y el paisa toma prestada la del chorizo
+  parrillero (0032, solo QA). Las cápsulas no llevan foto: la maqueta no la
+  pinta.
+- **"Gestionar plan" y "Pagos y facturas" abren WhatsApp** hasta que exista
+  OnePay.
+- **Escritorio con una receta en curso** queda con la columna de recetas y
+  la conversación; la vista de 3 columnas con "Ficha" está fuera de alcance.
+- **Los e2e** (`pnpm test:e2e`) corren contra QA con dos cuentas de prueba
+  (`e2e-gratis@`, `e2e-pro@elcharcu.test`) y la IA simulada, en el Chrome
+  instalado: la 1.63 de Playwright ya no trae Chromium para macOS 13.
 
 ### 🟡 Un hueco conocido en la auditoría de seguridad
 
