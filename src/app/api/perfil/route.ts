@@ -69,13 +69,50 @@ export async function PATCH(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'datos-invalidos' }, { status: 400 });
   }
 
-  const { fullName, interests } = payload as Record<string, unknown>;
-  const chosen = parseInterests(interests);
+  /*
+    Cambios PARCIALES (rediseño 2026-10): "Mi cuenta" guarda cada cosa al
+    tocarla —un interés, un interruptor, el nombre—, así que llega solo lo que
+    cambió. Lo que no viene, no se toca.
 
-  // Dejarse sin intereses no es un cambio válido: son lo que usa el Charcu AI
-  // para saber de qué hablarle. La pantalla ya lo impide; esto es el cinturón.
-  if (chosen.length === 0) {
-    return NextResponse.json({ error: 'faltan-intereses' }, { status: 400 });
+    Los intereses, si vienen, no pueden quedar vacíos: el prompt del asistente
+    y "Qué quieres aprender" cuentan con al menos uno.
+  */
+  const fields = payload as Record<string, unknown>;
+  const update: {
+    full_name?: string;
+    interests?: string[];
+    notify_step_reminders?: boolean;
+    notify_new_courses?: boolean;
+    notify_news?: boolean;
+  } = {};
+
+  if ('interests' in fields) {
+    const chosen = parseInterests(fields.interests);
+    if (chosen.length === 0) {
+      return NextResponse.json({ error: 'faltan-intereses' }, { status: 400 });
+    }
+    update.interests = chosen;
+  }
+
+  const name = clean(fields.fullName, MAX_NAME);
+  if (name !== '') {
+    update.full_name = name;
+  }
+
+  const flags = [
+    ['notifyStepReminders', 'notify_step_reminders'],
+    ['notifyNewCourses', 'notify_new_courses'],
+    ['notifyNews', 'notify_news'],
+  ] as const;
+  for (const [key, column] of flags) {
+    const value = fields[key];
+    if (typeof value === 'boolean') {
+      update[column] = value;
+    }
+  }
+
+  if (Object.keys(update).length === 0) {
+    return NextResponse.json({ error: 'datos-invalidos' }, { status: 400 });
   }
 
   const supabase = await createSupabaseServerClient();
@@ -85,20 +122,10 @@ export async function PATCH(request: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'sin-sesion' }, { status: 401 });
   }
 
-  const name = clean(fullName, MAX_NAME);
-
-  const { error } = await supabase
-    .from('profiles')
-    .update({
-      interests: chosen,
-      // Un nombre en blanco no borra el que había: es más probable que sea un
-      // campo que se vació sin querer que una decisión de no llamarse nada.
-      ...(name === '' ? {} : { full_name: name }),
-    })
-    .eq('id', auth.user.id);
+  const { error } = await supabase.from('profiles').update(update).eq('id', auth.user.id);
 
   if (error !== null) {
-    reportError('perfil', 'no se pudo actualizar', { detail: error.message });
+    reportError('perfil', 'no se pudo actualizar el perfil', { detail: error.message });
     return NextResponse.json({ error: 'no-se-pudo-guardar' }, { status: 500 });
   }
 

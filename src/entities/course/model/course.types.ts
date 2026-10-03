@@ -1,3 +1,5 @@
+import { type CapsuleIcon, type CourseCategory, type CourseTechnique } from './catalog';
+
 /** Para quién es el curso. Coincide con el `check` de `charcu.courses.level`. */
 export type CourseLevel = 'para-empezar' | 'intermedio' | 'avanzado';
 
@@ -110,6 +112,11 @@ export interface Course {
   readonly waitlistCount: number;
   /** Si QUIEN MIRA ya se apuntó, para que el botón no le invite otra vez. */
   readonly isInWaitlist: boolean;
+  /** La pieza de la que trata. `null` en las cápsulas de base. */
+  readonly category: CourseCategory | null;
+  readonly techniques: readonly CourseTechnique[];
+  /** El dibujo de la tarjeta de cápsula. `null` = el genérico. */
+  readonly icon: CapsuleIcon | null;
 }
 
 /** El curso con todo lo que cuelga de él, para la pantalla del curso. */

@@ -33,3 +33,42 @@ export const hasActiveSubscription = cache(async (userId: string): Promise<boole
     return false;
   }
 });
+
+export interface SubscriptionInfo {
+  /** `pro-mensual`, `maestro-anual`… Tal cual lo guarda la base. */
+  readonly planId: string | null;
+  readonly status: string;
+  /** ISO 8601: cuándo se renueva (o se acaba, si está cancelada). */
+  readonly currentPeriodEnd: string | null;
+}
+
+/**
+ * La suscripción de esta persona, para enseñar la fecha REAL de renovación.
+ *
+ * Con el cliente de sesión: `subscriptions_select_own` (0001) solo entrega la
+ * propia. `null` si no tiene ninguna — que hoy es casi todo el mundo, porque
+ * OnePay todavía no está conectado (ver ESTADO.md).
+ */
+export const readSubscription = cache(
+  async (userId: string): Promise<SubscriptionInfo | null> => {
+    try {
+      const supabase = await createSupabaseServerClient();
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .select('plan_id, status, current_period_end')
+        .eq('user_id', userId)
+        .maybeSingle();
+
+      if (error !== null || data === null) {
+        return null;
+      }
+      return {
+        planId: data.plan_id,
+        status: data.status,
+        currentPeriodEnd: data.current_period_end,
+      };
+    } catch {
+      return null;
+    }
+  },
+);

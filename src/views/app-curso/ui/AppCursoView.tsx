@@ -92,7 +92,7 @@ export function AppCursoView({
   const needsSubscription = isLocked && !showNotRecorded;
 
   return (
-    <>
+    <div className="mx-auto max-w-xl">
       <Reveal>
         <header>
           <Link
@@ -231,6 +231,6 @@ export function AppCursoView({
           />
         </section>
       </Reveal>
-    </>
+    </div>
   );
 }

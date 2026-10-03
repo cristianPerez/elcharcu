@@ -14,5 +14,6 @@ export {
   listRecipes,
   hasSignedInHistory,
   renameRecipe,
+  recipeCounts,
 } from './api/recipeChatApi';
-export type { StoredMessage, RecipeSummary } from './api/recipeChatApi';
+export type { StoredMessage, RecipeSummary, RecipeCounts } from './api/recipeChatApi';

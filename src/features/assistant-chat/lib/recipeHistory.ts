@@ -2,6 +2,7 @@ export interface RecipeSummary {
   readonly id: string;
   readonly title: string;
   readonly lastMessageAt: string;
+  readonly status: 'activa' | 'terminada';
 }
 
 interface RecipesResponse {
@@ -31,7 +32,7 @@ function parse(value: unknown): readonly RecipeSummary[] {
     if (typeof row !== 'object' || row === null) {
       return [];
     }
-    const { id, title, lastMessageAt } = row as Record<string, unknown>;
+    const { id, title, lastMessageAt, status } = row as Record<string, unknown>;
     if (
       typeof id !== 'string' ||
       typeof title !== 'string' ||
@@ -39,7 +40,14 @@ function parse(value: unknown): readonly RecipeSummary[] {
     ) {
       return [];
     }
-    return [{ id, title, lastMessageAt }];
+    return [
+      {
+        id,
+        title,
+        lastMessageAt,
+        status: status === 'terminada' ? 'terminada' : 'activa',
+      },
+    ];
   });
 }
 

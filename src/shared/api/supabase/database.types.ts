@@ -83,6 +83,30 @@ export type Database = {
           },
         ];
       };
+      course_requests: {
+        Row: {
+          body: string | null;
+          category: string | null;
+          created_at: string;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          body?: string | null;
+          category?: string | null;
+          created_at?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Update: {
+          body?: string | null;
+          category?: string | null;
+          created_at?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       course_waitlist: {
         Row: {
           course_id: string;
@@ -112,8 +136,10 @@ export type Database = {
       courses: {
         Row: {
           access: string;
+          category: string | null;
           cover_url: string | null;
           created_at: string;
+          icon: string | null;
           id: string;
           kind: string;
           level: string;
@@ -121,6 +147,7 @@ export type Database = {
           slug: string;
           status: string;
           summary: string;
+          techniques: string[];
           title: string;
           unlock_mode: string;
           updated_at: string;
@@ -128,8 +155,10 @@ export type Database = {
         };
         Insert: {
           access?: string;
+          category?: string | null;
           cover_url?: string | null;
           created_at?: string;
+          icon?: string | null;
           id?: string;
           kind?: string;
           level?: string;
@@ -137,6 +166,7 @@ export type Database = {
           slug: string;
           status?: string;
           summary?: string;
+          techniques?: string[];
           title: string;
           unlock_mode?: string;
           updated_at?: string;
@@ -144,8 +174,10 @@ export type Database = {
         };
         Update: {
           access?: string;
+          category?: string | null;
           cover_url?: string | null;
           created_at?: string;
+          icon?: string | null;
           id?: string;
           kind?: string;
           level?: string;
@@ -153,6 +185,7 @@ export type Database = {
           slug?: string;
           status?: string;
           summary?: string;
+          techniques?: string[];
           title?: string;
           unlock_mode?: string;
           updated_at?: string;
@@ -363,6 +396,9 @@ export type Database = {
           full_name: string | null;
           id: string;
           interests: string[];
+          notify_new_courses: boolean;
+          notify_news: boolean;
+          notify_step_reminders: boolean;
           onboarding_status: string;
           updated_at: string;
           whatsapp: string | null;
@@ -373,6 +409,9 @@ export type Database = {
           full_name?: string | null;
           id: string;
           interests?: string[];
+          notify_new_courses?: boolean;
+          notify_news?: boolean;
+          notify_step_reminders?: boolean;
           onboarding_status?: string;
           updated_at?: string;
           whatsapp?: string | null;
@@ -383,6 +422,9 @@ export type Database = {
           full_name?: string | null;
           id?: string;
           interests?: string[];
+          notify_new_courses?: boolean;
+          notify_news?: boolean;
+          notify_step_reminders?: boolean;
           onboarding_status?: string;
           updated_at?: string;
           whatsapp?: string | null;

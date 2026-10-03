@@ -22,6 +22,15 @@ const REASONS: Record<string, { status: number; message: string }> = {
     status: 409,
     message: 'Este curso ya está abierto. Ábrelo y empieza.',
   },
+  /*
+    La 0021 cierra la lista a quien no paga. No es un fallo del servidor —es
+    la regla—, así que no se reporta como error: la pantalla lo convierte en
+    la invitación al plan.
+  */
+  'necesita-suscripcion': {
+    status: 403,
+    message: 'La lista de espera es para quien tiene El Charcu Pro.',
+  },
 };
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
@@ -61,4 +70,43 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   }
 
   return NextResponse.json({ ok: true, count: data ?? 0 });
+}
+
+/**
+ * Borrarse de la lista.
+ *
+ * Sin función de Postgres: la fila es suya y la política
+ * `course_waitlist_delete_own` (0013) solo deja borrar las propias. El
+ * `user_id` del filtro no da permiso a nada — sin él, RLS haría lo mismo.
+ */
+export async function DELETE(request: NextRequest): Promise<NextResponse> {
+  const payload: unknown = await request.json().catch(() => null);
+  const courseId =
+    typeof payload === 'object' && payload !== null
+      ? (payload as Record<string, unknown>).courseId
+      : undefined;
+
+  if (typeof courseId !== 'string' || courseId === '') {
+    return NextResponse.json({ error: 'datos-invalidos' }, { status: 400 });
+  }
+
+  const supabase = await createSupabaseServerClient();
+  const { data: auth } = await supabase.auth.getUser();
+
+  if (auth.user === null) {
+    return NextResponse.json({ error: 'sin-sesion' }, { status: 401 });
+  }
+
+  const { error } = await supabase
+    .from('course_waitlist')
+    .delete()
+    .eq('course_id', courseId)
+    .eq('user_id', auth.user.id);
+
+  if (error !== null) {
+    reportError('lista-de-espera', 'no se pudo borrar', { detail: error.message });
+    return NextResponse.json({ error: 'no-se-pudo' }, { status: 500 });
+  }
+
+  return NextResponse.json({ ok: true });
 }

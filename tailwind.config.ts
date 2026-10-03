@@ -37,6 +37,22 @@ const config: Config = {
           tinta: '#9C4A22', // Naranja Tinta
         },
         /*
+          Los fondos de las cápsulas de "Empieza por aquí" (Cristian,
+          2026-10-03): tonos pastel derivados de la paleta. El Naranja Brasa
+          pleno queda para los botones; de fondo de tarjeta "chillaba".
+
+          · done / done-alt     hecha, sage claro alternando.
+          · current             la actual, durazno (con borde Naranja Claro).
+          · locked / locked-alt bloqueada, crema neutro / crema cálido.
+        */
+        capsule: {
+          done: '#E3ECE7',
+          'done-alt': '#D6E4DC',
+          current: '#FCE3D4',
+          locked: '#EFEAE2',
+          'locked-alt': '#F6EADF',
+        },
+        /*
           `terracota` es ahora un ALIAS de la rampa, no una familia aparte.
 
           Se queda porque está escrito en 139 sitios y renombrarlos de golpe
@@ -54,9 +70,36 @@ const config: Config = {
         cream: {
           DEFAULT: '#F4F1EB', // superficie de página
           white: '#FFFFFF', // superficie de tarjeta, un nivel por encima
+          muted: '#EDE8DF', // fondo apagado: lo bloqueado, lo vacío, el carril
         },
-        sage: '#7A9E8E',
-        cocoa: '#1E1612', // Marrón Oscuro
+        /*
+          Dos sages, y no es un descuido. El DEFAULT (#7A9E8E) es el del sitio
+          público y se queda donde está. El `light` (#9DBAAC) es el del rediseño
+          de la app (2026-10): "completado" y los antetítulos sobre verde, donde
+          el oscuro se hundía en el fondo.
+        */
+        sage: {
+          DEFAULT: '#7A9E8E',
+          light: '#9DBAAC',
+        },
+        /*
+          El texto. `cocoa` pasó de color suelto a familia para que el texto
+          secundario y el deshabilitado sean TOKENS y no opacidades a ojo: un
+          `cocoa/55` sobre crema da 4,1:1 y no pasa AA; `soft` da 7,9:1 y
+          `muted` 5,6:1. `text-cocoa` y `text-cocoa/10` siguen funcionando.
+        */
+        cocoa: {
+          DEFAULT: '#1E1612', // Marrón Oscuro
+          soft: '#5B4E45', // texto secundario
+          muted: '#6E625A', // deshabilitado
+        },
+        /** El fondo del término resaltado en una búsqueda. */
+        highlight: '#F9D9C6',
+      },
+      borderRadius: {
+        card: '16px',
+        /** Las cápsulas de "Empieza por aquí" (rediseño 2026-10). */
+        capsule: '18px',
       },
       /**
        * Profundidad en superficies claras.
@@ -75,6 +118,8 @@ const config: Config = {
       },
       maxWidth: {
         content: '72rem',
+        /** El ancho de la app en escritorio (rediseño 2026-10). */
+        app: '1200px',
       },
       letterSpacing: {
         eyebrow: '0.28em',

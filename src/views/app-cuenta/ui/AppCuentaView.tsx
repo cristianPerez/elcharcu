@@ -1,168 +1,163 @@
-'use client';
-
-import Link from 'next/link';
 import { type ReactNode } from 'react';
 
+import {
+  AccountNav,
+  MaestroUpsell,
+  PlanCard,
+  ProgressSummary,
+  SupportLinks,
+  type AccountProgress,
+} from '@/widgets/account';
+
 import { SignOutButton } from '@/features/auth-by-email';
-import { EditProfile } from '@/features/edit-profile';
+import {
+  EditNameButton,
+  InterestChips,
+  NotificationToggles,
+  type NotificationValues,
+} from '@/features/edit-profile';
 
-import { useUsageQuota } from '@/entities/usage-quota';
+import { type CurrentPlan } from '@/entities/plan';
 
-import { appRoutes, type InterestId } from '@/shared/config';
-import { IconChevron, Reveal } from '@/shared/ui';
+import { type InterestId } from '@/shared/config';
+import { PageTitle } from '@/shared/ui';
 
 interface AppCuentaViewProps {
-  /** El correo con el que entró. Lo lee el servidor, no el navegador. */
-  readonly email: string;
   readonly name: string;
+  readonly email: string;
+  readonly initials: string;
   readonly interests: readonly InterestId[];
+  readonly notifications: NotificationValues;
+  readonly plan: CurrentPlan;
+  readonly renewsAt: string | null;
+  readonly isCanceled: boolean;
+  readonly usage: {
+    readonly questionsUsed: number;
+    readonly questionsLimit: number;
+    readonly imagesUsed: number;
+    readonly imagesLimit: number;
+  } | null;
+  readonly progress: AccountProgress;
 }
 
-/**
- * Nombre de cara al usuario del plan que dice la base.
- *
- * Las claves son los `plan_id` REALES de `charcu.plan_quotas`
- * (`aprendiz`, `pro-mensual`, `pro-anual`, `maestro-*`). Antes decían
- * `charcutero` y `maestro`, que no existen en la tabla: a quien pagara le
- * habría salido el id crudo en pantalla.
- */
-const PLAN_LABEL: Record<string, string> = {
-  aprendiz: 'Aprendiz · gratis',
-  'pro-mensual': 'El Charcu Pro · mensual',
-  'pro-anual': 'El Charcu Pro · anual',
-  'maestro-mensual': 'El Charcu Maestro · mensual',
-  'maestro-anual': 'El Charcu Maestro · anual',
-};
+const CARD = 'rounded-card border border-cocoa/10 bg-cream-white';
 
 /**
- * Tercera pestaña: quién eres aquí y qué te queda.
+ * "Mi cuenta" (rediseño 2026-10). En el celular, una columna; en escritorio,
+ * el menú de secciones a la izquierda y el contenido en grilla.
  *
- * El orden no es casual: primero lo que el usuario vino a mirar —cuánto le
- * queda este mes— y solo después la cuenta y la salida. Poner "cerrar sesión"
- * arriba es invitar a irse.
+ * Cada interés, interruptor o nombre se guarda al tocarlo: aquí no hay un
+ * botón de "guardar" que olvidar.
  */
-export function AppCuentaView({ email, name, interests }: AppCuentaViewProps): ReactNode {
-  const { quota, isKnown } = useUsageQuota();
-  const planLabel = PLAN_LABEL[quota.plan] ?? quota.plan;
-  // Se espera a saber el plan de verdad: enseñarle "pasa a El Charcu Pro" a
-  // alguien que ya paga, aunque sea medio segundo, es de las cosas que hacen
-  // dudar de si el cobro entró.
-  const isFree = isKnown && quota.plan === 'aprendiz';
+export function AppCuentaView(props: AppCuentaViewProps): ReactNode {
+  const { name, email, initials, plan } = props;
+  const isMaestro = plan.plan.id === 'maestro';
 
   return (
-    <>
-      <Reveal>
-        <header>
-          <p className="text-xs font-medium uppercase tracking-eyebrow text-sage">
-            El Charcu
-          </p>
-          <h1 className="mt-2 font-serif text-3xl font-semibold leading-tight text-forest">
-            Mi cuenta
-          </h1>
-        </header>
-      </Reveal>
+    <div className="reveal grid gap-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-12">
+      <aside className="hidden lg:block">
+        <AccountNav name={name} email={email} initials={initials} />
+      </aside>
 
-      <Reveal delay={0.06}>
-        <section className="mt-6 rounded-2xl border border-cocoa/10 bg-cream-white p-5 shadow-raised">
-          <div className="flex items-baseline justify-between gap-4">
-            <p className="text-sm text-cocoa/50">Tu plan</p>
-            <p className="text-sm font-medium text-forest">{isKnown ? planLabel : '—'}</p>
-          </div>
+      <div className="flex min-w-0 flex-col gap-8">
+        <PageTitle>Mi cuenta</PageTitle>
 
-          <dl className="mt-5 space-y-4">
-            <QuotaRow
-              label="Preguntas este mes"
-              used={quota.questionsUsed}
-              limit={quota.questionsLimit}
-              isKnown={isKnown}
-            />
-            <QuotaRow
-              label="Fotos este mes"
-              used={quota.imagesUsed}
-              limit={quota.imagesLimit}
-              isKnown={isKnown}
-            />
-          </dl>
-
-          <p className="mt-5 text-xs leading-relaxed text-cocoa/55">
-            El cupo se renueva el día 1 de cada mes.
-          </p>
-        </section>
-      </Reveal>
-
-      {isFree ? (
-        <Reveal delay={0.08}>
-          <Link
-            href={appRoutes.subscription}
-            className="mt-4 flex items-center justify-between rounded-2xl bg-brasa px-5 py-4 text-cocoa shadow-surface transition-transform active:scale-[0.98]"
+        {/* El perfil compacto: solo en el celular; en escritorio está en el menú. */}
+        <div className="-mt-2 flex items-center gap-3 lg:hidden">
+          <span
+            aria-hidden="true"
+            className="grid size-14 shrink-0 place-items-center rounded-full bg-forest font-serif text-xl font-semibold text-cream-white"
           >
-            <span>
-              <span className="block font-medium">Pasar a El Charcu Pro</span>
-              <span className="mt-0.5 block text-sm text-cream-white/80">
-                Más preguntas y más fotos al mes
-              </span>
-            </span>
-            <IconChevron size={18} />
-          </Link>
-        </Reveal>
-      ) : null}
-
-      <Reveal delay={0.12}>
-        <section className="mt-8">
-          <EditProfile initialName={name} initialInterests={interests} />
-
-          <div className="mt-3 rounded-xl border border-cocoa/10 bg-cream-white px-4 py-3.5">
-            <p className="text-xs text-cocoa/50">Correo</p>
-            <p className="mt-0.5 break-all text-base text-cocoa">{email}</p>
+            {initials}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-base font-semibold text-cocoa">
+              {name || 'Sin nombre'}
+            </p>
+            <p className="truncate text-sm text-cocoa-soft">{email}</p>
           </div>
-          <p className="mt-3 text-xs leading-relaxed text-cocoa/55">
-            Puedes pedirnos borrar tus datos cuando quieras en hola@elcharcu.co — Ley
-            1581/2012.
-          </p>
-        </section>
-      </Reveal>
-
-      <Reveal delay={0.16}>
-        <div className="mt-8">
-          <SignOutButton />
+          <EditNameButton initialName={name} />
         </div>
-      </Reveal>
-    </>
-  );
-}
 
-interface QuotaRowProps {
-  readonly label: string;
-  readonly used: number;
-  readonly limit: number;
-  readonly isKnown: boolean;
-}
-
-/**
- * Una fila de cupo, con la barra.
- *
- * Se enseña "3 de 8" y no "te quedan 5": el usuario está comprobando si le
- * alcanza, y para eso necesita ver el total contra el que va.
- */
-function QuotaRow({ label, used, limit, isKnown }: QuotaRowProps): ReactNode {
-  const percent = limit === 0 ? 0 : Math.min(100, Math.round((used / limit) * 100));
-
-  return (
-    <div>
-      <div className="flex items-baseline justify-between gap-4">
-        <dt className="text-base text-cocoa/70">{label}</dt>
-        <dd className="text-base font-medium text-cocoa">
-          {isKnown ? `${used} de ${limit}` : '—'}
-        </dd>
-      </div>
-      <div
-        className="mt-2 h-1.5 overflow-hidden rounded-full bg-cream"
-        role="presentation"
-      >
         <div
-          className="h-full rounded-full bg-sage transition-[width] duration-500"
-          style={{ width: `${isKnown ? percent : 0}%` }}
-        />
+          id="plan"
+          className="grid scroll-mt-28 gap-3 md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] md:gap-5"
+        >
+          <div className={isMaestro ? 'md:col-span-2' : undefined}>
+            <PlanCard
+              current={plan}
+              renewsAt={props.renewsAt}
+              isCanceled={props.isCanceled}
+              usage={props.usage}
+            />
+          </div>
+          {isMaestro ? null : <MaestroUpsell />}
+        </div>
+
+        <ProgressSummary progress={props.progress} />
+
+        <div className="grid gap-8 md:grid-cols-2 md:gap-5">
+          <section
+            id="perfil"
+            aria-labelledby="perfil-title"
+            className="scroll-mt-28 md:rounded-card md:border md:border-cocoa/10 md:bg-cream-white md:p-6"
+          >
+            <div className="flex items-baseline justify-between">
+              <h2
+                id="perfil-title"
+                className="font-serif text-[19px] font-semibold text-forest md:text-xl"
+              >
+                <span className="md:hidden">Qué quieres aprender</span>
+                <span className="hidden md:inline">Perfil</span>
+              </h2>
+              <span className="hidden md:inline">
+                <EditNameButton initialName={name} variant="link" />
+              </span>
+            </div>
+            <dl className="mt-4 hidden gap-4 md:grid">
+              <div>
+                <dt className="text-[13px] text-cocoa-soft">Cómo te llamas</dt>
+                <dd className="text-base text-cocoa">{name || 'Sin nombre'}</dd>
+              </div>
+              <div>
+                <dt className="text-[13px] text-cocoa-soft">Correo</dt>
+                <dd className="text-base text-cocoa">{email}</dd>
+              </div>
+            </dl>
+            <p className="mb-2 mt-4 hidden text-[13px] text-cocoa-soft md:block">
+              Qué quieres aprender
+            </p>
+            <div className="mt-4 md:mt-0">
+              <InterestChips initial={props.interests} />
+            </div>
+          </section>
+
+          <section
+            id="notificaciones"
+            aria-labelledby="ajustes-title"
+            className="scroll-mt-28"
+          >
+            <h2
+              id="ajustes-title"
+              className="mb-4 font-serif text-[19px] font-semibold text-forest md:sr-only"
+            >
+              Ajustes
+            </h2>
+            <div className={`overflow-hidden ${CARD} md:h-full md:p-6`}>
+              <h3 className="mb-2 hidden font-serif text-xl font-semibold text-forest md:block">
+                Notificaciones
+              </h3>
+              <NotificationToggles initial={props.notifications} withIcons />
+              <ul className="divide-y divide-cocoa/10 border-t border-cocoa/10 lg:hidden">
+                <SupportLinks variant="rows" />
+              </ul>
+            </div>
+          </section>
+        </div>
+
+        <div className="flex justify-center lg:hidden">
+          <SignOutButton className="min-h-11 px-4 text-[15px] font-semibold text-brasa-tinta hover:text-brasa-dark disabled:opacity-50" />
+        </div>
       </div>
     </div>
   );

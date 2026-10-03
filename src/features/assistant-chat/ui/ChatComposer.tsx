@@ -1,15 +1,10 @@
 'use client';
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type FormEvent,
-  type KeyboardEvent,
-  type ReactNode,
-} from 'react';
+import { type ReactNode } from 'react';
 
 import { cn } from '@/shared/lib';
+
+import { useComposer } from '../model/useComposer';
 
 interface ChatComposerProps {
   readonly isThinking: boolean;
@@ -35,9 +30,6 @@ interface ChatComposerProps {
   readonly onSend: (text: string, file: File | null) => boolean;
 }
 
-/** Hasta dónde crece la caja antes de hacer scroll por dentro. */
-const MAX_TEXTAREA_PX = 200;
-
 /**
  * La caja de escribir, con las costumbres que el usuario ya trae aprendidas
  * de ChatGPT: todo dentro de una sola pastilla, el `+` a la izquierda para
@@ -54,53 +46,18 @@ export function ChatComposer({
   blockedReason = null,
   onSend,
 }: ChatComposerProps): ReactNode {
-  const [text, setText] = useState('');
-  const [file, setFile] = useState<File | null>(null);
-  const fileInput = useRef<HTMLInputElement>(null);
-  const textarea = useRef<HTMLTextAreaElement>(null);
-
-  // La caja crece con lo que se escribe y vuelve a su sitio al enviar.
-  useEffect(() => {
-    const node = textarea.current;
-    if (node === null) {
-      return;
-    }
-    node.style.height = 'auto';
-    node.style.height = `${String(Math.min(node.scrollHeight, MAX_TEXTAREA_PX))}px`;
-  }, [text]);
-
-  const isEmpty = text.trim() === '' && file === null;
-
-  const clearFile = (): void => {
-    setFile(null);
-    if (fileInput.current !== null) {
-      fileInput.current.value = '';
-    }
-  };
-
-  const submit = (): void => {
-    if (isThinking || isEmpty) {
-      return;
-    }
-    if (!onSend(text, file)) {
-      return;
-    }
-    setText('');
-    clearFile();
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-    submit();
-  };
-
-  // Enter envía; Shift+Enter hace salto de línea. Es lo que la gente espera.
-  const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>): void => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      submit();
-    }
-  };
+  const {
+    text,
+    setText,
+    file,
+    setFile,
+    clearFile,
+    isEmpty,
+    fileInput,
+    textarea,
+    handleSubmit,
+    handleKeyDown,
+  } = useComposer({ isThinking, onSend });
 
   return (
     <form onSubmit={handleSubmit} className="mt-6">

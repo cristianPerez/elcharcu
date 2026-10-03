@@ -23,6 +23,7 @@ export type ErrorArea =
   | 'perfil'
   | 'progreso'
   | 'lista-de-espera'
+  | 'pedidos-de-cursos'
   | 'config'
   | 'navegador';
 

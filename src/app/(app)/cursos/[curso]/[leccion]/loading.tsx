@@ -11,7 +11,7 @@ import { Skeleton, SkeletonLabel } from '@/shared/ui';
  */
 export default function LeccionLoading(): ReactNode {
   return (
-    <>
+    <div className="mx-auto max-w-xl">
       <SkeletonLabel>Abriendo la lección</SkeletonLabel>
 
       <div className="-mx-4 mb-6 border-b border-cocoa/10 bg-cream-white px-4 py-3">
@@ -29,6 +29,6 @@ export default function LeccionLoading(): ReactNode {
       <Skeleton className="mt-5 h-40 w-full rounded-2xl" />
       <Skeleton className="mt-5 h-24 w-full rounded-2xl" />
       <Skeleton className="mt-8 h-12 w-full rounded-full" />
-    </>
+    </div>
   );
 }

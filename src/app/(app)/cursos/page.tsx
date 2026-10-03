@@ -3,8 +3,13 @@ import { type ReactNode } from 'react';
 
 import { AppCursosView } from '@/views/app-cursos';
 
-import { type CourseProgress } from '@/entities/course';
-import { listCourses, progressByCourse } from '@/entities/course/server';
+import { pickContinueCourse, type CourseProgress } from '@/entities/course';
+import {
+  lessonNumberIn,
+  listCourses,
+  progressByCourse,
+  recentCourseIds,
+} from '@/entities/course/server';
 import { hasActiveSubscription } from '@/entities/subscription/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
@@ -16,15 +21,36 @@ export default async function CursosPage(): Promise<ReactNode> {
   // deduplicado dentro de la misma petición.
   const userId = (await currentUser())?.id ?? null;
 
-  // Las dos consultas a la vez: son independientes y encadenarlas solo suma
-  // espera en un celular con mala señal.
-  const [courses, progress, isSubscribed] = await Promise.all([
+  // Todo a la vez: son independientes y encadenarlas solo suma espera en un
+  // celular con mala señal.
+  const [courses, progress, isSubscribed, recent] = await Promise.all([
     listCourses(),
     userId === null ? new Map<string, CourseProgress>() : progressByCourse(userId),
     userId === null ? false : hasActiveSubscription(userId),
+    userId === null ? [] : recentCourseIds(userId),
   ]);
 
+  const visible = courses.filter((course) => course.status !== 'borrador');
+  const capsules = visible.filter((course) => course.kind === 'capsula');
+  const fullCourses = visible.filter((course) => course.kind === 'curso');
+
+  const continueWith = pickContinueCourse(fullCourses, progress, recent);
+  const nextId = continueWith?.progress.nextLessonId ?? null;
+  const nextNumber =
+    continueWith === null || nextId === null
+      ? null
+      : await lessonNumberIn(continueWith.course.slug, nextId);
+
   return (
-    <AppCursosView courses={courses} progress={progress} isSubscribed={isSubscribed} />
+    <AppCursosView
+      capsules={capsules}
+      masters={fullCourses.filter((course) => course.status === 'publicado')}
+      upcoming={fullCourses.filter((course) => course.status === 'lista-de-espera')}
+      progress={progress}
+      continueWith={continueWith}
+      continueLessonNumber={nextNumber}
+      touchedIds={new Set(recent)}
+      isSubscribed={isSubscribed}
+    />
   );
 }

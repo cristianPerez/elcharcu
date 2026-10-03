@@ -8,4 +8,7 @@ export {
   findCourse,
   progressByCourse,
   completedLessonIds,
+  recentCourseIds,
+  requestedCategories,
+  lessonNumberIn,
 } from './api/courseApi';

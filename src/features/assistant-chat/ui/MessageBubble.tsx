@@ -4,11 +4,17 @@ import { type ReactNode } from 'react';
 import { type ChatMessage } from '@/entities/charcu-assistant';
 
 import { cn } from '@/shared/lib';
+import { IconCharcu } from '@/shared/ui';
 
 import { splitBold, tidyMarkdown } from '../lib/tidyMarkdown';
 
 interface MessageBubbleProps {
   readonly message: ChatMessage;
+  /**
+   * `app` es el rediseño de la app (2026-10): quien pregunta en burbuja verde
+   * y El Charcu sin burbuja, con su avatar. `site` es el de la web pública.
+   */
+  readonly tone?: 'site' | 'app' | undefined;
 }
 
 function Formatted({ content }: { readonly content: string }): ReactNode {
@@ -37,14 +43,21 @@ function Formatted({ content }: { readonly content: string }): ReactNode {
  * La burbuja usa `cream` sobre la tarjeta `cream-white`: el tercer nivel de
  * profundidad sale de la propia paleta, sin inventar un gris.
  */
-export function MessageBubble({ message }: MessageBubbleProps): ReactNode {
+export function MessageBubble({ message, tone = 'site' }: MessageBubbleProps): ReactNode {
   const isUser = message.role === 'user';
   const wasBlocked = message.wasBlocked === true;
 
   if (isUser) {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[85%] rounded-2xl rounded-br-md bg-cream px-4 py-3 text-base leading-relaxed text-cocoa">
+        <div
+          className={cn(
+            'max-w-[85%] rounded-2xl rounded-br-md px-4 py-3 text-base leading-relaxed',
+            tone === 'app'
+              ? 'bg-forest text-cream-white [&_strong]:text-cream-white'
+              : 'bg-cream text-cocoa',
+          )}
+        >
           {message.imageDataUrl === undefined ? null : (
             <img
               src={message.imageDataUrl}
@@ -52,6 +65,33 @@ export function MessageBubble({ message }: MessageBubbleProps): ReactNode {
               className="mb-3 max-h-64 w-full rounded-xl object-cover"
             />
           )}
+          <Formatted content={message.content} />
+        </div>
+      </div>
+    );
+  }
+
+  if (tone === 'app') {
+    return (
+      <div className="flex gap-3">
+        <span
+          aria-hidden="true"
+          className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-full bg-forest text-brasa"
+        >
+          <IconCharcu size={14} />
+        </span>
+        <div
+          className={cn(
+            'min-w-0 flex-1 text-base leading-[1.65] text-cocoa',
+            wasBlocked && 'rounded-card border border-brasa/40 bg-brasa/5 px-4 py-4',
+          )}
+        >
+          <span className="sr-only">El Charcu: </span>
+          {wasBlocked ? (
+            <p className="mb-2 text-xs font-semibold text-brasa-tinta">
+              Respuesta corregida por seguridad
+            </p>
+          ) : null}
           <Formatted content={message.content} />
         </div>
       </div>

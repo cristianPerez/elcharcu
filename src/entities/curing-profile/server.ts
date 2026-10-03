@@ -8,6 +8,14 @@ export interface ServerProfile {
   readonly interests: readonly InterestId[];
   /** `true` mientras no haya contestado el formulario obligatorio. */
   readonly needsOnboarding: boolean;
+  /** Qué avisos quiere (0031). Hoy solo se guardan: nada los envía todavía. */
+  readonly notifications: ProfileNotifications;
+}
+
+export interface ProfileNotifications {
+  readonly stepReminders: boolean;
+  readonly newCourses: boolean;
+  readonly news: boolean;
 }
 
 /**
@@ -28,13 +36,16 @@ export const readProfile = cache(async (userId: string): Promise<ServerProfile> 
     fullName: '',
     interests: [],
     needsOnboarding: false,
+    notifications: { stepReminders: true, newCourses: true, news: false },
   };
 
   try {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase
       .from('profiles')
-      .select('full_name, interests, onboarding_status')
+      .select(
+        'full_name, interests, onboarding_status, notify_step_reminders, notify_new_courses, notify_news',
+      )
       .eq('id', userId)
       .maybeSingle();
 
@@ -46,6 +57,11 @@ export const readProfile = cache(async (userId: string): Promise<ServerProfile> 
       fullName: data.full_name ?? '',
       interests: parseInterests(data.interests),
       needsOnboarding: data.onboarding_status === 'pendiente',
+      notifications: {
+        stepReminders: data.notify_step_reminders,
+        newCourses: data.notify_new_courses,
+        news: data.notify_news,
+      },
     };
   } catch {
     return fallback;

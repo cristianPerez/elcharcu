@@ -18,3 +18,5 @@ export { formatUsd } from './lib/formatUsd';
 export { planWhatsappHref } from './lib/planWhatsappHref';
 export { PlanCard } from './ui/PlanCard';
 export { BillingToggle } from './ui/BillingToggle';
+export { planOf } from './lib/planOf';
+export type { CurrentPlan } from './lib/planOf';

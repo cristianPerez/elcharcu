@@ -7,6 +7,12 @@ import {
 } from '@/shared/api/supabase/server';
 
 import {
+  isCapsuleIcon,
+  isCourseCategory,
+  isCourseTechnique,
+  type CourseCategory,
+} from '../model/catalog';
+import {
   type Course,
   type CourseAccess,
   type CourseKind,
@@ -68,11 +74,14 @@ interface CourseRow {
   readonly kind: string;
   readonly status: string;
   readonly waitlist_goal: number | null;
+  readonly category: string | null;
+  readonly techniques: readonly string[];
+  readonly icon: string | null;
 }
 
 /** Las columnas que pide toda consulta de curso. En un sitio, no en cuatro. */
 const COURSE_COLUMNS =
-  'id, slug, title, summary, cover_url, level, access, position, kind, status, waitlist_goal';
+  'id, slug, title, summary, cover_url, level, access, position, kind, status, waitlist_goal, category, techniques, icon';
 
 /**
  * El curso con sus módulos y lecciones dentro, en UNA consulta.
@@ -111,6 +120,9 @@ function toCourse(
     waitlistGoal: row.waitlist_goal,
     waitlistCount: waitlist.count,
     isInWaitlist: waitlist.isIn,
+    category: isCourseCategory(row.category) ? row.category : null,
+    techniques: row.techniques.filter(isCourseTechnique),
+    icon: isCapsuleIcon(row.icon) ? row.icon : null,
   };
 }
 
@@ -456,5 +468,74 @@ export const completedLessonIds = cache(
       .not('completed_at', 'is', null);
 
     return new Set((data ?? []).map((row) => row.lesson_id));
+  },
+);
+
+/**
+ * Los cursos que esta persona tocó, del más reciente al más viejo.
+ *
+ * Es lo que decide "Sigue donde ibas": no el curso con más avance, sino el
+ * ÚLTIMO en el que se movió algo. Sale de `lesson_progress.updated_at`, que
+ * cambia con cada segundo de video guardado, así que también cuenta una
+ * lección empezada y no terminada.
+ *
+ * Se piden las 40 últimas filas y no todas: alcanza para encontrar un curso
+ * aunque la persona haya repasado varias cápsulas después, y no crece con el
+ * historial.
+ */
+export const recentCourseIds = cache(
+  async (userId: string): Promise<readonly string[]> => {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from('lesson_progress')
+      .select('updated_at, lessons(modules(course_id))')
+      .eq('user_id', userId)
+      .order('updated_at', { ascending: false })
+      .limit(40);
+
+    if (error !== null || data === null) {
+      return [];
+    }
+
+    const ids: string[] = [];
+    for (const row of data) {
+      const courseId = row.lessons?.modules?.course_id;
+      if (courseId !== undefined && !ids.includes(courseId)) {
+        ids.push(courseId);
+      }
+    }
+    return ids;
+  },
+);
+
+/**
+ * Las categorías por las que esta persona ya votó ("Quiero un curso de…").
+ * RLS solo entrega sus propias filas (0030), así que no se filtra por usuario.
+ */
+export const requestedCategories = cache(
+  async (): Promise<ReadonlySet<CourseCategory>> => {
+    const supabase = await createSupabaseServerClient();
+    const { data } = await supabase
+      .from('course_requests')
+      .select('category')
+      .not('category', 'is', null)
+      .is('body', null);
+
+    return new Set((data ?? []).map((row) => row.category).filter(isCourseCategory));
+  },
+);
+
+/**
+ * En qué número va una lección dentro de su curso, contando desde 1 y en el
+ * orden en que se ven (módulo y luego lección). Para "Siguiente: lección 4 de
+ * 7": la siguiente pendiente no es siempre "hechas + 1" — quien se salta una
+ * lección tiene la pendiente más atrás. `null` si no la encuentra.
+ */
+export const lessonNumberIn = cache(
+  async (slug: string, lessonId: string): Promise<number | null> => {
+    const course = await findCourse(slug);
+    const ordered = (course?.modules ?? []).flatMap((m) => m.lessons);
+    const index = ordered.findIndex((lesson) => lesson.id === lessonId);
+    return index === -1 ? null : index + 1;
   },
 );

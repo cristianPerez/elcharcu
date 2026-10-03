@@ -1,10 +1,12 @@
-import { type ReactNode } from 'react';
+import { type CSSProperties, type ReactNode } from 'react';
 
 import { cn } from '@/shared/lib';
 
 interface SkeletonProps {
   /** Clases de tamaño y forma: `h-6 w-2/3`, `h-40 w-full`… */
   readonly className?: string;
+  /** Para un ancho que viene de un dato (los chips de largo distinto). */
+  readonly style?: CSSProperties;
 }
 
 /**
@@ -21,10 +23,11 @@ interface SkeletonProps {
  * `cream` sobre `cream-white`, sin colores nuevos: es la misma diferencia de
  * superficie que ya usa la app, no un gris de fuera de la paleta.
  */
-export function Skeleton({ className }: SkeletonProps): ReactNode {
+export function Skeleton({ className, style }: SkeletonProps): ReactNode {
   return (
     <div
       aria-hidden="true"
+      style={style}
       className={cn('animate-pulse rounded-lg bg-cocoa/[0.07]', className)}
     />
   );

@@ -42,6 +42,8 @@ export interface AssistantChatController {
   readonly error: string | null;
   /** El nombre de la receta abierta, si hay una. */
   readonly recipeTitle: string | null;
+  /** La conversación abierta, para marcarla en la lista. `null` = nueva. */
+  readonly currentRecipeId: string | null;
   readonly send: (text: string, file: File | null) => Promise<void>;
   /** Salta a una conversación del historial. */
   readonly openRecipe: (id: string) => Promise<void>;
@@ -159,6 +161,20 @@ export function useAssistantChat(
   // primera pregunta la crea en el servidor y aquí solo se guarda el id para
   // que las siguientes vayan a la misma y no abran una nueva cada vez.
   const recipeId = useRef<string | null>(null);
+  // Espejo de `recipeId` para pintar: el ref no provoca render y la lista de
+  // recetas necesita saber cuál marcar.
+  const [currentRecipeId, setCurrentRecipeId] = useState<string | null>(null);
+  /*
+    La "época" de la conversación en pantalla. Sube cada vez que se cambia de
+    conversación (receta nueva o abrir otra del historial).
+
+    Sin esto, tocar "Receta nueva" MIENTRAS El Charcu contestaba dejaba el chat
+    en blanco un momento… y al llegar la respuesta vieja la pintaba encima,
+    con toda la conversación anterior, y la receta nueva quedaba apuntando a la
+    vieja. Una respuesta que vuelve de otra época se descarta en pantalla: la
+    pregunta ya quedó guardada en su receta del servidor, no se pierde nada.
+  */
+  const epoch = useRef(0);
   const [recipeTitle, setRecipeTitle] = useState<string | null>(null);
 
   /**
@@ -169,11 +185,14 @@ export function useAssistantChat(
    */
   const openRecipe = useCallback(
     async (id: string): Promise<void> => {
+      epoch.current += 1;
+      setIsThinking(false);
       const recordado = recallChat();
       // Si es la que ya está en memoria, no se vuelve a pedir. Abrir el
       // historial y volver a la misma no es motivo para otro viaje a la base.
       if (recordado !== null && recordado.recipeId === id) {
         recipeId.current = id;
+        setCurrentRecipeId(id);
         setRecipeTitle(recordado.title);
         replaceMessages(recordado.messages);
         return;
@@ -197,6 +216,7 @@ export function useAssistantChat(
         const titulo = typeof data.title === 'string' ? data.title : null;
 
         recipeId.current = data.recipeId;
+        setCurrentRecipeId(data.recipeId);
         setRecipeTitle(titulo);
         replaceMessages(historial);
         setError(null);
@@ -211,7 +231,10 @@ export function useAssistantChat(
 
   /** Deja el chat en blanco. La siguiente pregunta abrirá una receta nueva. */
   const startNewRecipe = useCallback((): void => {
+    epoch.current += 1;
+    setIsThinking(false);
     recipeId.current = null;
+    setCurrentRecipeId(null);
     setRecipeTitle(null);
     replaceMessages([]);
     setError(null);
@@ -262,6 +285,8 @@ export function useAssistantChat(
       setError(null);
       setIsThinking(true);
       const startedAt = Date.now();
+      const myEpoch = epoch.current;
+      const isStale = (): boolean => epoch.current !== myEpoch;
 
       // El cupo ya no se cuenta aquí: lo descuenta el servidor antes de llamar
       // a Gemini, y nos devuelve cómo quedó. El navegador solo lo muestra.
@@ -315,6 +340,9 @@ export function useAssistantChat(
         });
 
         if (!response.ok) {
+          if (isStale()) {
+            return;
+          }
           if (response.status === 402) {
             // Se acabó el cupo. Se publica para que la portada levante el muro,
             // y se DICE cuál se acabó: antes esto se quedaba en silencio y el
@@ -365,9 +393,14 @@ export function useAssistantChat(
         const answer: ApiAnswer = (await response.json()) as ApiAnswer;
         publishQuotaFrom(answer.quota);
 
+        if (isStale()) {
+          return;
+        }
+
         if (typeof answer.recipeId === 'string' && answer.recipeId !== '') {
           const esNueva = recipeId.current === null;
           recipeId.current = answer.recipeId;
+          setCurrentRecipeId(answer.recipeId);
           // Cada respuesta reinicia la hora de inactividad: mientras se
           // conversa, la sesión sigue viva.
           rememberActiveRecipe(answer.recipeId);
@@ -439,13 +472,18 @@ export function useAssistantChat(
           });
         }
       } catch {
+        if (isStale()) {
+          return;
+        }
         setError('Se cayó la conexión. Inténtalo otra vez.');
         track(ANALYTICS_EVENTS.assistantFailed, {
           reason: 'conexion',
           recipe: params.recipeSlug ?? 'general',
         });
       } finally {
-        setIsThinking(false);
+        if (!isStale()) {
+          setIsThinking(false);
+        }
       }
     },
     [isThinking, params, recipeTitle, replaceMessages],
@@ -470,5 +508,14 @@ export function useAssistantChat(
     void send(externalPrompt, null);
   }, [externalPrompt, send]);
 
-  return { messages, isThinking, error, recipeTitle, send, openRecipe, startNewRecipe };
+  return {
+    messages,
+    isThinking,
+    error,
+    recipeTitle,
+    currentRecipeId,
+    send,
+    openRecipe,
+    startNewRecipe,
+  };
 }

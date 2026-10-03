@@ -1,141 +1,139 @@
+import Link from 'next/link';
 import { type ReactNode } from 'react';
 
-import { CapsuleTrack, CourseRow } from '@/widgets/course-list';
+import { AskCharcuCard } from '@/widgets/ask-charcu';
+import {
+  CapsuleRail,
+  ContinueCourseCard,
+  MasterCoursesStrip,
+  TechniqueGrid,
+  UpcomingCourses,
+} from '@/widgets/course-home';
 
-import { type Course, type CourseProgress } from '@/entities/course';
+import { CourseSearchField, courseSearchHref } from '@/features/course-search';
 
-import { Reveal } from '@/shared/ui';
+import {
+  COURSE_CATEGORIES,
+  type ContinueCourse,
+  type Course,
+  type CourseProgress,
+} from '@/entities/course';
+
+import { appRoutes } from '@/shared/config';
+import { Chip, ChipRow, IconSliders, PageTitle } from '@/shared/ui';
 
 interface AppCursosViewProps {
-  readonly courses: readonly Course[];
+  readonly capsules: readonly Course[];
+  readonly masters: readonly Course[];
+  readonly upcoming: readonly Course[];
   readonly progress: ReadonlyMap<string, CourseProgress>;
-  /**
-   * Si quien mira paga. Decide si ve la lista de espera o solo el temario.
-   *
-   * Viaja como prop desde el servidor en vez de leerse aquí: esta vista es un
-   * componente de servidor y preguntarlo dentro la volvería cliente, o
-   * añadiría un viaje a Supabase por tarjeta.
-   */
+  readonly continueWith: ContinueCourse | null;
+  /** El número de la siguiente lección en el orden del curso. */
+  readonly continueLessonNumber: number | null;
+  /** Los cursos con alguna actividad (de `lesson_progress`). */
+  readonly touchedIds: ReadonlySet<string>;
   readonly isSubscribed: boolean;
 }
 
 /**
- * Primera pestaña: lo que el usuario vino a aprender.
+ * Primera pestaña: lo que el usuario vino a aprender (rediseño 2026-10).
  *
- * Dos bloques, y el orden importa (2026-08-29):
- *
- *   1. **Las cápsulas.** Cortas, gratis y en ruta. Es lo que se puede ver YA, y
- *      va arriba porque una pantalla que abre con cosas cerradas se lee como
- *      "aquí no hay nada para ti".
- *   2. **Los cursos.** Los grandes. Casi todos en lista de espera mientras se
- *      graban, con su temario visible y su barra de cuánta gente los espera.
- *
- * Esto reemplaza a la lista plana de antes, que enseñaba cinco cursos de pago
- * que nadie podía abrir —`subscriptions` está vacía— y ninguna cápsula. Era la
- * pantalla más vacía de la app justo en la pestaña que abre la app.
- *
- * La lista sigue saliendo de la base y RLS decide qué entra, así que aquí no
- * hay ni un `if` de permisos: no le toca decidir a la pantalla (D12).
+ * El orden sigue la maqueta y tiene su lógica: arriba lo que ya es suyo
+ * ("Sigue donde ibas"), después la ruta gratis, y el catálogo al final. La
+ * lista sale de la base y RLS decide qué entra: aquí no hay ni un `if` de
+ * permisos (D12).
  */
 export function AppCursosView({
-  courses,
+  capsules,
+  masters,
+  upcoming,
   progress,
+  continueWith,
+  continueLessonNumber,
+  touchedIds,
   isSubscribed,
 }: AppCursosViewProps): ReactNode {
-  const capsules = courses.filter((course) => course.kind === 'capsula');
-  const rest = courses.filter((course) => course.kind === 'curso');
-
-  // Cuántas lleva hechas, para el "2 de 5" de la cabecera. El resto del
-  // cálculo —cuál es la actual, cuáles están cerradas— vive en `CapsuleTrack`,
-  // que es quien lo necesita para dibujar la ruta.
-  const doneCount = capsules.filter((course) => {
-    const p = progress.get(course.id);
-    return p !== undefined && p.totalLessons > 0 && p.doneLessons === p.totalLessons;
-  }).length;
-
   return (
-    <>
-      <Reveal>
-        <header>
-          <p className="text-xs font-medium uppercase tracking-eyebrow text-sage">
-            El Charcu
-          </p>
-          <h1 className="mt-2 font-serif text-3xl font-semibold leading-tight text-forest">
-            Aprende el oficio
-          </h1>
-        </header>
-      </Reveal>
+    <div className="reveal flex flex-col gap-9 md:gap-12">
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+          <PageTitle>Mis cursos</PageTitle>
+          <div className="flex gap-2.5 md:w-[420px]">
+            <CourseSearchField className="flex-1" />
+            <Link
+              href={appRoutes.appCoursesSearch}
+              aria-label="Filtrar cursos"
+              className="grid size-[52px] shrink-0 place-items-center rounded-full bg-forest text-cream-white md:hidden"
+            >
+              <IconSliders size={20} />
+            </Link>
+          </div>
+        </div>
 
-      {capsules.length > 0 ? (
-        <section className="mt-7">
-          <Reveal delay={0.04}>
-            <div className="flex items-baseline justify-between gap-4">
-              <h2 className="font-serif text-xl font-semibold text-forest">
-                Empieza por aquí
-              </h2>
-              {/* "Vas 2 de 5" y no un porcentaje: en una ruta de cinco pasos,
-                  el número entero es el dato y el porcentaje es ruido. */}
-              <span className="text-sm text-cocoa/55">
-                {doneCount} de {capsules.length}
-              </span>
-            </div>
-            <p className="mt-1 text-sm leading-relaxed text-cocoa/60">
-              {/* La regla del desbloqueo, dicha UNA vez. Estaba repetida en
-                  cada cápsula cerrada —"se abre cuando termines la 2 de 5", "la
-                  3 de 5"…— y algo repetido cuatro veces se lee como relleno. */}
-              Cápsulas cortas y gratis. Termina una y se abre la siguiente.
-            </p>
-          </Reveal>
+        <ChipRow label="Categorías">
+          <li>
+            <Chip href={appRoutes.appCourses} active>
+              Todos
+            </Chip>
+          </li>
+          {COURSE_CATEGORIES.map((category) => (
+            <li key={category.id}>
+              <Chip href={courseSearchHref({ categories: [category.id] })}>
+                {category.label}
+              </Chip>
+            </li>
+          ))}
+        </ChipRow>
+      </div>
 
-          <CapsuleTrack capsules={capsules} progress={progress} />
-        </section>
-      ) : null}
+      {/*
+        Con un curso en marcha, en escritorio "Pregúntale" va a su lado. Sin él,
+        no se estira a todo el ancho: baja al pie, como en el celular.
+      */}
+      {continueWith === null ? null : (
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_400px]">
+          <ContinueCourseCard
+            slug={continueWith.course.slug}
+            title={continueWith.course.title}
+            coverUrl={continueWith.course.coverUrl}
+            nextLessonHref={
+              continueWith.progress.nextLessonId === null
+                ? `/cursos/${continueWith.course.slug}`
+                : `/cursos/${continueWith.course.slug}/${continueWith.progress.nextLessonId}`
+            }
+            nextLessonNumber={
+              continueLessonNumber ?? continueWith.progress.doneLessons + 1
+            }
+            totalLessons={continueWith.progress.totalLessons}
+            percent={continueWith.progress.percent}
+          />
+          <AskCharcuCard variant="panel" className="hidden lg:flex" />
+        </div>
+      )}
 
-      {rest.length > 0 ? (
-        <section className="mt-10">
-          <Reveal delay={0.08}>
-            <h2 className="font-serif text-xl font-semibold text-forest">
-              Los cursos completos
-            </h2>
-            <p className="mt-1 text-sm leading-relaxed text-cocoa/60">
-              {/* Al gratis no se le menciona la lista de espera: es una función
-                  de suscriptor, y nombrarla sin poder usarla solo frustra. */}
-              {isSubscribed
-                ? 'Una receta de principio a fin. Los que todavía no están grabados abren cuando haya gente suficiente esperándolos.'
-                : 'Una receta de principio a fin. Mira el temario de cada uno para saber qué trae.'}
-            </p>
-          </Reveal>
+      <CapsuleRail capsules={capsules} progress={progress} touchedIds={touchedIds} />
 
-          <ul className="mt-4 space-y-4">
-            {rest.map((course, index) => (
-              <li key={course.id}>
-                <Reveal delay={0.1 + Math.min(index, 3) * 0.04}>
-                  <CourseRow
-                    course={course}
-                    progress={progress.get(course.id)}
-                    isSubscribed={isSubscribed}
-                  />
-                </Reveal>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      {/*
+        Una sola copia de cada bloque, reordenada con CSS: en el celular va
+        técnica → cursos → próximos; en escritorio los cursos suben a ancho
+        completo y técnica y próximos quedan lado a lado.
+      */}
+      <div className="grid grid-cols-1 gap-9 md:gap-12 lg:grid-cols-2 lg:gap-x-10">
+        <div className="lg:order-2">
+          <TechniqueGrid />
+        </div>
+        <div className="lg:order-1 lg:col-span-2">
+          <MasterCoursesStrip courses={masters} progress={progress} />
+        </div>
+        <div className="lg:order-3">
+          <UpcomingCourses courses={upcoming} isSubscribed={isSubscribed} />
+        </div>
+      </div>
 
-      {courses.length === 0 ? (
-        <Reveal delay={0.06}>
-          <p className="mt-6 rounded-2xl border border-cocoa/10 bg-cream-white p-5 text-base leading-relaxed text-cocoa/65 shadow-surface">
-            Todavía no hay nada publicado. Se está grabando: en cuanto haya algo, aparece
-            aquí.
-          </p>
-        </Reveal>
-      ) : null}
-
-      <Reveal delay={0.16}>
-        <p className="mt-8 text-sm leading-relaxed text-cocoa/60">
-          En cualquier paso puedes preguntarle a El Charcu. Es para lo que está.
-        </p>
-      </Reveal>
-    </>
+      <AskCharcuCard
+        variant="quiet"
+        className={continueWith === null ? undefined : 'lg:hidden'}
+      />
+    </div>
   );
 }

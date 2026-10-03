@@ -12,6 +12,7 @@ import { readQuota } from '@/entities/usage-quota/server';
 import { currentUser } from '@/shared/api/supabase/server';
 import { readVisitorIdFromCookies } from '@/shared/api/visitor/server';
 import { appRoutes } from '@/shared/config';
+import { initialsOf } from '@/shared/lib';
 
 interface AppLayoutProps {
   readonly children: ReactNode;
@@ -81,7 +82,9 @@ export default async function AppLayout({
 
   return (
     <QuotaProvider initial={quota}>
-      <AppFrame>{children}</AppFrame>
+      <AppFrame initials={initialsOf(profile.fullName, user.email ?? null)}>
+        {children}
+      </AppFrame>
     </QuotaProvider>
   );
 }

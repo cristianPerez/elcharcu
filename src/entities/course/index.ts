@@ -5,6 +5,8 @@
 export type {
   Course,
   CourseAccess,
+  CourseKind,
+  CourseStatus,
   CourseLevel,
   CourseModule,
   CourseProgress,
@@ -13,3 +15,25 @@ export type {
   LessonKind,
 } from './model/course.types';
 export { emptyProgress, LESSON_COMPLETE_RATIO } from './model/course.types';
+export {
+  COURSE_CATEGORIES,
+  COURSE_TECHNIQUES,
+  categoryLabel,
+  isCourseCategory,
+  isCourseTechnique,
+  levelLabel,
+  techniqueLabel,
+} from './model/catalog';
+export type { CourseCategory, CourseTechnique } from './model/catalog';
+export {
+  capsuleSteps,
+  courseCardVariant,
+  isFinished,
+  isInProgress,
+  lessonCountLabel,
+  pickContinueCourse,
+} from './lib/courseState';
+export type { CapsuleStep, ContinueCourse, CourseCardVariant } from './lib/courseState';
+export { CourseCard } from './ui/CourseCard';
+export { CapsuleCard } from './ui/CapsuleCard';
+export type { CapsuleState } from './ui/CapsuleCard';

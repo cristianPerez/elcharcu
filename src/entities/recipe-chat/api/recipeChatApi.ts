@@ -234,6 +234,8 @@ export interface RecipeSummary {
   readonly title: string;
   /** ISO 8601. La lista se ordena por esto, no por cuándo se creó. */
   readonly lastMessageAt: string;
+  /** "En proceso" o "Terminadas" en el menú de recetas. */
+  readonly status: 'activa' | 'terminada';
 }
 
 /**
@@ -257,7 +259,7 @@ export async function listRecipes(
 
   const query = createSupabaseAdminClient()
     .from('recipes')
-    .select('id, title, last_message_at')
+    .select('id, title, last_message_at, status')
     .neq('status', 'descartada')
     .order('last_message_at', { ascending: false })
     .limit(50);
@@ -298,6 +300,7 @@ export async function listRecipes(
     id: row.id,
     title: row.title,
     lastMessageAt: row.last_message_at,
+    status: row.status === 'terminada' ? 'terminada' : 'activa',
   }));
 }
 
@@ -351,4 +354,32 @@ export async function renameRecipe(recipeId: string, title: string): Promise<voi
   if (error !== null) {
     reportError('receta', 'no se pudo renombrar', { detail: error.message });
   }
+}
+
+export interface RecipeCounts {
+  readonly active: number;
+  readonly finished: number;
+}
+
+/**
+ * Cuántas conversaciones tiene en marcha y cuántas terminó, para "Tu avance".
+ * Dos `count` sin traer filas: el número es lo único que se pinta.
+ */
+export async function recipeCounts(userId: string): Promise<RecipeCounts> {
+  if (!isSupabaseAdminConfigured()) {
+    return { active: 0, finished: 0 };
+  }
+
+  const admin = createSupabaseAdminClient();
+  const count = async (status: 'activa' | 'terminada'): Promise<number> => {
+    const { count: total } = await admin
+      .from('recipes')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('status', status);
+    return total ?? 0;
+  };
+
+  const [active, finished] = await Promise.all([count('activa'), count('terminada')]);
+  return { active, finished };
 }
