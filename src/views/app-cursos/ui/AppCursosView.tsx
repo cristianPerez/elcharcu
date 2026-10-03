@@ -28,6 +28,8 @@ interface AppCursosViewProps {
   readonly upcoming: readonly Course[];
   readonly progress: ReadonlyMap<string, CourseProgress>;
   readonly continueWith: ContinueCourse | null;
+  /** El número de la siguiente lección en el orden del curso. */
+  readonly continueLessonNumber: number | null;
   /** Los cursos con alguna actividad (de `lesson_progress`). */
   readonly touchedIds: ReadonlySet<string>;
   readonly isSubscribed: boolean;
@@ -47,6 +49,7 @@ export function AppCursosView({
   upcoming,
   progress,
   continueWith,
+  continueLessonNumber,
   touchedIds,
   isSubscribed,
 }: AppCursosViewProps): ReactNode {
@@ -98,7 +101,9 @@ export function AppCursosView({
                 ? `/cursos/${continueWith.course.slug}`
                 : `/cursos/${continueWith.course.slug}/${continueWith.progress.nextLessonId}`
             }
-            nextLessonNumber={continueWith.progress.doneLessons + 1}
+            nextLessonNumber={
+              continueLessonNumber ?? continueWith.progress.doneLessons + 1
+            }
             totalLessons={continueWith.progress.totalLessons}
             percent={continueWith.progress.percent}
           />

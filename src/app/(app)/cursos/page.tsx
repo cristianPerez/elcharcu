@@ -4,7 +4,12 @@ import { type ReactNode } from 'react';
 import { AppCursosView } from '@/views/app-cursos';
 
 import { pickContinueCourse, type CourseProgress } from '@/entities/course';
-import { listCourses, progressByCourse, recentCourseIds } from '@/entities/course/server';
+import {
+  lessonNumberIn,
+  listCourses,
+  progressByCourse,
+  recentCourseIds,
+} from '@/entities/course/server';
 import { hasActiveSubscription } from '@/entities/subscription/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
@@ -29,13 +34,21 @@ export default async function CursosPage(): Promise<ReactNode> {
   const capsules = visible.filter((course) => course.kind === 'capsula');
   const fullCourses = visible.filter((course) => course.kind === 'curso');
 
+  const continueWith = pickContinueCourse(fullCourses, progress, recent);
+  const nextId = continueWith?.progress.nextLessonId ?? null;
+  const nextNumber =
+    continueWith === null || nextId === null
+      ? null
+      : await lessonNumberIn(continueWith.course.slug, nextId);
+
   return (
     <AppCursosView
       capsules={capsules}
       masters={fullCourses.filter((course) => course.status === 'publicado')}
       upcoming={fullCourses.filter((course) => course.status === 'lista-de-espera')}
       progress={progress}
-      continueWith={pickContinueCourse(fullCourses, progress, recent)}
+      continueWith={continueWith}
+      continueLessonNumber={nextNumber}
       touchedIds={new Set(recent)}
       isSubscribed={isSubscribed}
     />

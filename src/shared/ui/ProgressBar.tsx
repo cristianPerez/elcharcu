@@ -28,7 +28,7 @@ export function ProgressBar({
       aria-valuenow={clamped}
       className={cn(
         'h-1.5 w-full overflow-hidden rounded-full',
-        tone === 'dark' ? 'bg-cream-white/15' : 'bg-cream-muted',
+        tone === 'dark' ? 'bg-cream/15' : 'bg-cream-muted',
         className,
       )}
     >

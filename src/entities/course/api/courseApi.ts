@@ -524,3 +524,18 @@ export const requestedCategories = cache(
     return new Set((data ?? []).map((row) => row.category).filter(isCourseCategory));
   },
 );
+
+/**
+ * En qué número va una lección dentro de su curso, contando desde 1 y en el
+ * orden en que se ven (módulo y luego lección). Para "Siguiente: lección 4 de
+ * 7": la siguiente pendiente no es siempre "hechas + 1" — quien se salta una
+ * lección tiene la pendiente más atrás. `null` si no la encuentra.
+ */
+export const lessonNumberIn = cache(
+  async (slug: string, lessonId: string): Promise<number | null> => {
+    const course = await findCourse(slug);
+    const ordered = (course?.modules ?? []).flatMap((m) => m.lessons);
+    const index = ordered.findIndex((lesson) => lesson.id === lessonId);
+    return index === -1 ? null : index + 1;
+  },
+);

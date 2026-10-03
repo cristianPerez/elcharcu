@@ -17,7 +17,7 @@ interface ContinueCourseCardProps {
 /**
  * "Sigue donde ibas": el último curso que la persona tocó y no terminó.
  *
- * Es verde con grano porque es lo único de la pantalla que ya es SUYO; el resto
+ * Es verde con grano (al 6 %) porque es lo único de la pantalla que ya es SUYO; el resto
  * es catálogo. Si no hay ninguno en marcha, la vista ni la monta: una tarjeta
  * vacía de "empieza algo" repetiría lo que ya dice "Empieza por aquí".
  */
@@ -33,8 +33,24 @@ export function ContinueCourseCard({
   return (
     <section
       aria-labelledby="continue-title"
-      className="bg-grain flex items-center gap-7 rounded-card bg-forest p-5 md:p-7"
+      className="bg-grain-strong relative flex items-center gap-7 overflow-hidden rounded-card bg-forest p-[22px] md:p-7"
     >
+      {/* El aro y la pieza colgada: decoración del celular, como en la maqueta.
+          En escritorio ese sitio lo ocupa la portada. */}
+      <svg
+        width="150"
+        height="150"
+        viewBox="0 0 150 150"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-[30px] -top-[30px] text-sage-light opacity-[0.18] lg:hidden"
+      >
+        <circle cx="75" cy="75" r="70" />
+        <circle cx="75" cy="75" r="56" />
+        <path d="M75 40v20M68 60h14l-3 40h-8z" />
+      </svg>
       <CoverPanel
         title={title}
         imageUrl={coverUrl}
@@ -42,18 +58,19 @@ export function ContinueCourseCard({
         size="lg"
         className="hidden size-36 shrink-0 rounded-xl lg:block"
       />
-      <div className="min-w-0 flex-1 md:flex md:items-center md:gap-8">
+      <div className="relative min-w-0 flex-1 md:flex md:items-center md:gap-8">
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sage-light">
+          <p className="flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-sage-light">
+            <span aria-hidden="true" className="h-px w-[18px] bg-sage-light lg:hidden" />
             Sigue donde ibas
           </p>
           <h2
             id="continue-title"
-            className="mt-2 font-serif text-[22px] font-semibold leading-tight text-cream-white"
+            className="mt-2 font-serif text-[22px] font-semibold leading-tight text-cream"
           >
             {title}
           </h2>
-          <p className="mt-1 text-sm text-cream-white/85">
+          <p className="mt-1 text-sm text-cream/85">
             Siguiente: lección {nextLessonNumber} de {totalLessons}
           </p>
           <div className="mt-4 flex items-center gap-3">

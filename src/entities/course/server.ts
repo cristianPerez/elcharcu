@@ -10,4 +10,5 @@ export {
   completedLessonIds,
   recentCourseIds,
   requestedCategories,
+  lessonNumberIn,
 } from './api/courseApi';
