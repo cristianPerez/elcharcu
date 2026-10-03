@@ -9,11 +9,14 @@ test.use({ storageState: storageStateFor('pro') });
 
 async function startFresh(page: Page): Promise<void> {
   await page.goto('/charcu');
-  // Si quedó abierta una conversación de otra corrida, se empieza una nueva.
+  // La app reabre la última conversación al cargar, y lo hace DESPUÉS del
+  // primer pintado: se espera a que la red se calme y se empieza siempre de
+  // una receta nueva.
+  await page.waitForLoadState('networkidle');
+  // Solo hay "Receta nueva" a la vista si quedó una conversación abierta (en
+  // el celular, con el chat en blanco, no hay nada que tocar).
   const fresh = page.getByRole('button', { name: 'Receta nueva' }).first();
-  if (
-    !(await page.getByRole('heading', { level: 1, name: 'Receta nueva' }).isVisible())
-  ) {
+  if (await fresh.isVisible()) {
     await fresh.click();
   }
   await expect(
@@ -22,11 +25,18 @@ async function startFresh(page: Page): Promise<void> {
 }
 
 async function ask(page: Page, text: string): Promise<void> {
+  // Espera a SU respuesta, no a cualquiera: al cargar, la app puede reabrir
+  // una conversación vieja que ya trae respuestas simuladas.
+  // Se cuentan en la CONVERSACIÓN: los títulos de la columna de recetas
+  // también llevan el texto simulado y harían saltar la cuenta.
+  const answers = page
+    .locator('[aria-live="polite"]')
+    .first()
+    .getByText('RESPUESTA SIMULADA');
+  const before = await answers.count();
   await page.getByRole('textbox', { name: 'Tu pregunta' }).fill(text);
   await page.getByRole('button', { name: 'Enviar' }).click();
-  await expect(page.getByText('RESPUESTA SIMULADA').last()).toBeVisible({
-    timeout: 30_000,
-  });
+  await expect(answers).toHaveCount(before + 1, { timeout: 30_000 });
 }
 
 /** La lista de recetas: el cajón en el celular, la columna fija en escritorio. */

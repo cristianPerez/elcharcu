@@ -14,7 +14,9 @@ test.describe('Cursos maestros — cuenta gratis', () => {
     await expect(
       page.getByRole('heading', { level: 1, name: 'Cursos maestros' }),
     ).toBeVisible();
-    await expect(page.getByRole('heading', { level: 2, name: /^Chorizos/ })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { level: 2, name: /^Chorizos/ }),
+    ).toBeVisible();
 
     if (isDesktop(page)) {
       const crumbs = page.getByRole('navigation', { name: 'Migas de pan' });
