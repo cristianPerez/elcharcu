@@ -35,7 +35,11 @@ const config: Config = {
           DEFAULT: '#EE8B5D', // Naranja Brasa
           dark: '#C96A3C', // Naranja Oscuro
           tinta: '#9C4A22', // Naranja Tinta
+          /** Texto sobre durazno: el tinta no llega a AA ahí, este da 6,6:1. */
+          deep: '#6B3417',
         },
+        /** Durazno: el fondo de las cápsulas bloqueadas, alternando con sage. */
+        peach: '#E9CDB9',
         /*
           `terracota` es ahora un ALIAS de la rampa, no una familia aparte.
 
@@ -82,6 +86,8 @@ const config: Config = {
       },
       borderRadius: {
         card: '16px',
+        /** Las cápsulas de "Empieza por aquí" (rediseño 2026-10). */
+        capsule: '18px',
       },
       /**
        * Profundidad en superficies claras.

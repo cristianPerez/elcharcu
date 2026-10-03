@@ -3,7 +3,7 @@ import { type ReactNode } from 'react';
 
 import { AskCharcuCard } from '@/widgets/ask-charcu';
 import {
-  CapsulePath,
+  CapsuleRail,
   ContinueCourseCard,
   MasterCoursesStrip,
   TechniqueGrid,
@@ -28,6 +28,8 @@ interface AppCursosViewProps {
   readonly upcoming: readonly Course[];
   readonly progress: ReadonlyMap<string, CourseProgress>;
   readonly continueWith: ContinueCourse | null;
+  /** Los cursos con alguna actividad (de `lesson_progress`). */
+  readonly touchedIds: ReadonlySet<string>;
   readonly isSubscribed: boolean;
 }
 
@@ -45,6 +47,7 @@ export function AppCursosView({
   upcoming,
   progress,
   continueWith,
+  touchedIds,
   isSubscribed,
 }: AppCursosViewProps): ReactNode {
   return (
@@ -103,7 +106,7 @@ export function AppCursosView({
         </div>
       )}
 
-      <CapsulePath capsules={capsules} progress={progress} />
+      <CapsuleRail capsules={capsules} progress={progress} touchedIds={touchedIds} />
 
       {/*
         Una sola copia de cada bloque, reordenada con CSS: en el celular va

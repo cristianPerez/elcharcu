@@ -22,6 +22,8 @@ const QA_REF = 'lcvmsbfnnpviumsqcxip';
 export const E2E_USERS = {
   gratis: { email: 'e2e-gratis@elcharcu.test', name: 'Prueba Gratis' },
   pro: { email: 'e2e-pro@elcharcu.test', name: 'Prueba Pro' },
+  /** Para las cápsulas: su progreso se borra al empezar cada test. */
+  capsulas: { email: 'e2e-capsulas@elcharcu.test', name: 'Prueba Cápsulas' },
 } as const;
 
 export type E2eUser = keyof typeof E2E_USERS;

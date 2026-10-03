@@ -7,6 +7,7 @@ import {
 } from '@/shared/api/supabase/server';
 
 import {
+  isCapsuleIcon,
   isCourseCategory,
   isCourseTechnique,
   type CourseCategory,
@@ -75,11 +76,12 @@ interface CourseRow {
   readonly waitlist_goal: number | null;
   readonly category: string | null;
   readonly techniques: readonly string[];
+  readonly icon: string | null;
 }
 
 /** Las columnas que pide toda consulta de curso. En un sitio, no en cuatro. */
 const COURSE_COLUMNS =
-  'id, slug, title, summary, cover_url, level, access, position, kind, status, waitlist_goal, category, techniques';
+  'id, slug, title, summary, cover_url, level, access, position, kind, status, waitlist_goal, category, techniques, icon';
 
 /**
  * El curso con sus módulos y lecciones dentro, en UNA consulta.
@@ -120,6 +122,7 @@ function toCourse(
     isInWaitlist: waitlist.isIn,
     category: isCourseCategory(row.category) ? row.category : null,
     techniques: row.techniques.filter(isCourseTechnique),
+    icon: isCapsuleIcon(row.icon) ? row.icon : null,
   };
 }
 

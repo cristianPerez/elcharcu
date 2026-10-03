@@ -52,3 +52,12 @@ const LEVEL_LABELS = {
 export function levelLabel(level: keyof typeof LEVEL_LABELS): string {
   return LEVEL_LABELS[level];
 }
+
+/** El dibujo de cada cápsula (0033). El trazo vive en `CapsuleDrawing`. */
+export const CAPSULE_ICONS = ['sal', 'bascula', 'jamon', 'chorizo', 'amarre'] as const;
+
+export type CapsuleIcon = (typeof CAPSULE_ICONS)[number];
+
+export function isCapsuleIcon(value: unknown): value is CapsuleIcon {
+  return CAPSULE_ICONS.some((icon) => icon === value);
+}

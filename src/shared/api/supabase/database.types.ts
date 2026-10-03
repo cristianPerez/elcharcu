@@ -139,6 +139,7 @@ export type Database = {
           category: string | null;
           cover_url: string | null;
           created_at: string;
+          icon: string | null;
           id: string;
           kind: string;
           level: string;
@@ -157,6 +158,7 @@ export type Database = {
           category?: string | null;
           cover_url?: string | null;
           created_at?: string;
+          icon?: string | null;
           id?: string;
           kind?: string;
           level?: string;
@@ -175,6 +177,7 @@ export type Database = {
           category?: string | null;
           cover_url?: string | null;
           created_at?: string;
+          icon?: string | null;
           id?: string;
           kind?: string;
           level?: string;

@@ -36,6 +36,7 @@ export default async function CursosPage(): Promise<ReactNode> {
       upcoming={fullCourses.filter((course) => course.status === 'lista-de-espera')}
       progress={progress}
       continueWith={pickContinueCourse(fullCourses, progress, recent)}
+      touchedIds={new Set(recent)}
       isSubscribed={isSubscribed}
     />
   );
