@@ -18,6 +18,10 @@ interface CourseSearchFieldProps {
    */
   readonly query?: CourseQuery | undefined;
   readonly live?: boolean | undefined;
+  /** El nombre accesible del campo. */
+  readonly label?: string | undefined;
+  /** Dónde se busca. Por defecto, la búsqueda general de cursos. */
+  readonly basePath?: string | undefined;
   readonly autoFocus?: boolean | undefined;
   readonly className?: string | undefined;
 }
@@ -37,6 +41,8 @@ export function CourseSearchField({
   placeholder = 'Busca un curso, técnica o pieza',
   query = EMPTY_QUERY,
   live = false,
+  basePath = appRoutes.appCoursesSearch,
+  label = 'Buscar cursos',
   autoFocus = false,
   className,
 }: CourseSearchFieldProps): ReactNode {
@@ -76,22 +82,22 @@ export function CourseSearchField({
       return;
     }
     const timer = window.setTimeout(() => {
-      router.replace(courseSearchHref({ ...queryRef.current, q: value }), {
+      router.replace(courseSearchHref({ ...queryRef.current, q: value }, basePath), {
         scroll: false,
       });
     }, LIVE_DELAY_MS);
     return () => {
       window.clearTimeout(timer);
     };
-  }, [value, live, router]);
+  }, [value, live, router, basePath]);
 
   return (
     <form
       role="search"
-      action={appRoutes.appCoursesSearch}
+      action={basePath}
       onSubmit={(event) => {
         event.preventDefault();
-        router.push(courseSearchHref({ ...query, q: value }));
+        router.push(courseSearchHref({ ...query, q: value }, basePath));
       }}
       className={cn(
         'flex h-[52px] items-center gap-3 rounded-full border bg-cream-white pl-4 pr-1.5 transition-colors focus-within:border-forest',
@@ -101,7 +107,7 @@ export function CourseSearchField({
     >
       <IconSearch size={20} className="shrink-0 text-forest" />
       <label className="min-w-0 flex-1">
-        <span className="sr-only">Buscar cursos</span>
+        <span className="sr-only">{label}</span>
         <input
           ref={inputRef}
           type="search"

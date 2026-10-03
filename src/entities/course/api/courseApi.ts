@@ -6,7 +6,11 @@ import {
   isSupabaseAdminConfigured,
 } from '@/shared/api/supabase/server';
 
-import { isCourseCategory, isCourseTechnique } from '../model/catalog';
+import {
+  isCourseCategory,
+  isCourseTechnique,
+  type CourseCategory,
+} from '../model/catalog';
 import {
   type Course,
   type CourseAccess,
@@ -498,5 +502,22 @@ export const recentCourseIds = cache(
       }
     }
     return ids;
+  },
+);
+
+/**
+ * Las categorías por las que esta persona ya votó ("Quiero un curso de…").
+ * RLS solo entrega sus propias filas (0030), así que no se filtra por usuario.
+ */
+export const requestedCategories = cache(
+  async (): Promise<ReadonlySet<CourseCategory>> => {
+    const supabase = await createSupabaseServerClient();
+    const { data } = await supabase
+      .from('course_requests')
+      .select('category')
+      .not('category', 'is', null)
+      .is('body', null);
+
+    return new Set((data ?? []).map((row) => row.category).filter(isCourseCategory));
   },
 );

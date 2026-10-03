@@ -83,6 +83,30 @@ export type Database = {
           },
         ];
       };
+      course_requests: {
+        Row: {
+          body: string | null;
+          category: string | null;
+          created_at: string;
+          id: string;
+          user_id: string;
+        };
+        Insert: {
+          body?: string | null;
+          category?: string | null;
+          created_at?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Update: {
+          body?: string | null;
+          category?: string | null;
+          created_at?: string;
+          id?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
       course_waitlist: {
         Row: {
           course_id: string;

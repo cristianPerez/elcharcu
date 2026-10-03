@@ -9,4 +9,5 @@ export {
   progressByCourse,
   completedLessonIds,
   recentCourseIds,
+  requestedCategories,
 } from './api/courseApi';

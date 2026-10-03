@@ -75,8 +75,14 @@ export function hasFilters(query: CourseQuery): boolean {
   );
 }
 
-/** La URL de una búsqueda. Sin parámetros vacíos: `/cursos/buscar` a secas. */
-export function courseSearchHref(query: Partial<CourseQuery>): string {
+/**
+ * La URL de una búsqueda. Sin parámetros vacíos: `/cursos/buscar` a secas.
+ * `basePath` deja usar los mismos parámetros en otra pantalla (Cursos maestros).
+ */
+export function courseSearchHref(
+  query: Partial<CourseQuery>,
+  basePath: string = appRoutes.appCoursesSearch,
+): string {
   const params = new URLSearchParams();
   const q = query.q?.trim() ?? '';
 
@@ -94,9 +100,7 @@ export function courseSearchHref(query: Partial<CourseQuery>): string {
   }
 
   const search = params.toString();
-  return search === ''
-    ? appRoutes.appCoursesSearch
-    : `${appRoutes.appCoursesSearch}?${search}`;
+  return search === '' ? basePath : `${basePath}?${search}`;
 }
 
 /** Quita o pone un valor de una lista: lo que hace un chip o una casilla. */
