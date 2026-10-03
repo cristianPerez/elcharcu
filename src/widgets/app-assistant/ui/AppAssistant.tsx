@@ -3,13 +3,12 @@
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
-import { AssistantChat } from '@/features/assistant-chat';
+import { AppChat } from '@/features/assistant-chat';
 import { QuotaNotice } from '@/features/quota-wall';
 
 import { useUsageQuota } from '@/entities/usage-quota';
 
 import { appRoutes } from '@/shared/config';
-import { Reveal } from '@/shared/ui';
 
 /**
  * El asistente dentro de la app, para quien ya entró con su cuenta.
@@ -42,21 +41,28 @@ export function AppAssistant(): ReactNode {
    * veces a la misma lección dejó tres recetas idénticas y gastó tres
    * preguntas del cupo (2026-08-20). La pregunta se guarda en estado, que no
    * viaja en la dirección.
+   *
+   * `?borrador=` (desde la búsqueda, 2026-10) es lo contrario: se deja ESCRITO
+   * y no se manda. Se lee en el primer render para que la caja nazca con él, y
+   * también se borra de la URL.
    */
   const searchParams = useSearchParams();
   const router = useRouter();
   const fromUrl = searchParams.get('pregunta');
+  const [draft] = useState<string | null>(() => searchParams.get('borrador'));
   const [pendingPrompt, setPendingPrompt] = useState<string | null>(null);
   const alreadyTaken = useRef(false);
 
   useEffect(() => {
-    if (fromUrl === null || alreadyTaken.current) {
+    if (alreadyTaken.current || (fromUrl === null && draft === null)) {
       return;
     }
     alreadyTaken.current = true;
-    setPendingPrompt(fromUrl);
+    if (fromUrl !== null) {
+      setPendingPrompt(fromUrl);
+    }
     router.replace(appRoutes.appAssistant, { scroll: false });
-  }, [fromUrl, router]);
+  }, [fromUrl, draft, router]);
 
   // Solo se avisa si SABEMOS cómo va el cupo. Si no se pudo leer, se deja
   // pasar: quien protege el bolsillo es el tope diario de gasto, que es global
@@ -68,45 +74,27 @@ export function AppAssistant(): ReactNode {
   const showNotice = isKnown && status.questionsLeft <= 2;
 
   return (
-    <div className="mx-auto max-w-xl">
-      <Reveal>
-        <header>
-          <p className="text-xs font-medium uppercase tracking-eyebrow text-sage">
-            Pregúntale a El Charcu
-          </p>
-          <h1 className="mt-2 font-serif text-3xl font-semibold leading-tight text-forest">
-            El Charcu
-          </h1>
-        </header>
-      </Reveal>
-
-      <Reveal delay={0.06}>
-        <div className="mt-6 rounded-2xl border border-cocoa/10 bg-cream-white p-4 shadow-raised">
-          {showNotice ? (
+    <AppChat
+      pendingPrompt={pendingPrompt}
+      draft={draft}
+      canSendImages={!isKnown || !status.areImagesExhausted}
+      blockedReason={isExhausted ? 'Sin preguntas este mes. Vuelven el día 1.' : null}
+      usage={isKnown ? { used: quota.questionsUsed, limit: quota.questionsLimit } : null}
+      remaining={
+        isKnown && !isExhausted
+          ? { questions: status.questionsLeft, images: status.imagesLeft }
+          : null
+      }
+      notice={
+        showNotice ? (
+          <div className="mb-3">
             <QuotaNotice
               questionsLeft={status.questionsLeft}
               questionsLimit={quota.questionsLimit}
             />
-          ) : null}
-
-          <AssistantChat
-            canSendImages={!status.areImagesExhausted}
-            blockedReason={
-              isExhausted ? 'Sin preguntas este mes. Vuelven el día 1.' : null
-            }
-            pendingPrompt={pendingPrompt}
-          />
-
-          {/* El contador de siempre, solo mientras quede algo: cuando está a
-              cero lo dice la franja de arriba, y repetirlo sobra. */}
-          {isKnown && !isExhausted ? (
-            <p className="mt-3 text-xs text-cocoa/65">
-              Te quedan {status.questionsLeft} preguntas y {status.imagesLeft} fotos este
-              mes.
-            </p>
-          ) : null}
-        </div>
-      </Reveal>
-    </div>
+          </div>
+        ) : undefined
+      }
+    />
   );
 }

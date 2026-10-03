@@ -1,25 +1,22 @@
 import { type ReactNode } from 'react';
 
-import { Skeleton, SkeletonHeader, SkeletonLabel } from '@/shared/ui';
+import { Skeleton, SkeletonLabel } from '@/shared/ui';
 
 /**
- * El hueco del asistente.
- *
- * Se dibuja la caja de escribir con su forma real: es lo único que el usuario
- * tiene que hacer aquí, y verla ya en su sitio dice a dónde va el pulgar antes
- * de que la pantalla termine de cargar.
+ * El hueco del asistente: el saludo en el centro y la caja de escribir abajo,
+ * con la columna de recetas en escritorio.
  */
 export default function CharcuLoading(): ReactNode {
   return (
-    <div className="mx-auto max-w-xl">
+    <div className="lg:grid lg:grid-cols-[280px_1fr]">
       <SkeletonLabel>Abriendo el asistente</SkeletonLabel>
-      <SkeletonHeader />
-
-      <div className="mt-6 rounded-2xl border border-cocoa/10 bg-cream-white p-4 shadow-raised">
-        <Skeleton className="h-4 w-40" />
-        <Skeleton className="mt-4 h-11 w-4/5 rounded-full" />
-        <Skeleton className="mt-3 h-11 w-3/5 rounded-full" />
-        <Skeleton className="mt-3 h-11 w-2/3 rounded-full" />
+      <div className="hidden h-[calc(100dvh-72px)] border-r border-cocoa/10 bg-cream-white p-4 lg:block">
+        <Skeleton className="h-12 w-full rounded-full" />
+        <Skeleton className="mt-3 h-11 w-full rounded-full" />
+      </div>
+      <div className="mx-auto flex min-h-[calc(100dvh-8rem)] w-full max-w-[760px] flex-col items-center justify-center gap-4 px-4">
+        <Skeleton className="size-12 rounded-full" />
+        <Skeleton className="h-8 w-64" />
         <Skeleton className="mt-6 h-14 w-full rounded-full" />
       </div>
     </div>

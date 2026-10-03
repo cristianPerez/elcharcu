@@ -305,3 +305,41 @@ export function IconPot(props: IconProps): ReactNode {
     </Svg>
   );
 }
+
+/** Una hoja con renglones: empezar una receta. */
+export function IconDoc(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M6.5 3.5h7.5l4 4v13h-11.5Z" />
+      <path d="M14 3.5v4h4M9.5 12h5M9.5 15.5h5" />
+    </Svg>
+  );
+}
+
+export function IconCalculator(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <rect x="5" y="3" width="14" height="18" rx="2" />
+      <path d="M8.5 7h7M8.5 11h.01M12 11h.01M15.5 11h.01M8.5 14.5h.01M12 14.5h.01M15.5 14.5h.01M8.5 18h.01M12 18h.01M15.5 18h.01" />
+    </Svg>
+  );
+}
+
+export function IconQuestion(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M9.6 9.5a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.6M12 17h.01" />
+    </Svg>
+  );
+}
+
+/** Escribir algo nuevo: "receta nueva" desde una conversación abierta. */
+export function IconPencil(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16Z" />
+      <path d="m13.5 6.5 4 4" />
+    </Svg>
+  );
+}

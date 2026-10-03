@@ -234,6 +234,8 @@ export interface RecipeSummary {
   readonly title: string;
   /** ISO 8601. La lista se ordena por esto, no por cuándo se creó. */
   readonly lastMessageAt: string;
+  /** "En proceso" o "Terminadas" en el menú de recetas. */
+  readonly status: 'activa' | 'terminada';
 }
 
 /**
@@ -257,7 +259,7 @@ export async function listRecipes(
 
   const query = createSupabaseAdminClient()
     .from('recipes')
-    .select('id, title, last_message_at')
+    .select('id, title, last_message_at, status')
     .neq('status', 'descartada')
     .order('last_message_at', { ascending: false })
     .limit(50);
@@ -298,6 +300,7 @@ export async function listRecipes(
     id: row.id,
     title: row.title,
     lastMessageAt: row.last_message_at,
+    status: row.status === 'terminada' ? 'terminada' : 'activa',
   }));
 }
 

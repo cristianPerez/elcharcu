@@ -1,6 +1,7 @@
 import { type ReactNode } from 'react';
 
 import { BottomNav } from './BottomNav';
+import { FrameMain } from './FrameMain';
 import { TopNav } from './TopNav';
 
 interface AppFrameProps {
@@ -21,15 +22,14 @@ interface AppFrameProps {
  * pantallas que todavía no se rediseñaron (el curso, la lección) se encogen
  * ellas solas a una columna, así que este marco no decide su ancho.
  *
- * El `pb-24` en móvil es el hueco de la barra fija de abajo.
+ * El hueco de la barra fija de abajo lo reserva `FrameMain`, que también deja
+ * al asistente ir a sangre.
  */
 export function AppFrame({ children, initials }: AppFrameProps): ReactNode {
   return (
     <div className="flex min-h-dvh flex-col bg-cream">
       <TopNav initials={initials} />
-      <main className="mx-auto w-full max-w-app flex-1 overflow-x-clip px-5 pb-24 pt-6 md:px-8 md:pb-16 md:pt-8">
-        {children}
-      </main>
+      <FrameMain>{children}</FrameMain>
       <BottomNav />
     </div>
   );

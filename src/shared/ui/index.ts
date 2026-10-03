@@ -13,6 +13,7 @@ export {
   IconArrowLeft,
   IconArrowRight,
   IconBell,
+  IconCalculator,
   IconCamera,
   IconCard,
   IconCharcu,
@@ -21,15 +22,18 @@ export {
   IconChevron,
   IconClose,
   IconCourses,
+  IconDoc,
   IconFlame,
   IconHanging,
   IconLock,
   IconLogout,
   IconMenu,
   IconMinus,
+  IconPencil,
   IconPlay,
   IconPlus,
   IconPot,
+  IconQuestion,
   IconSearch,
   IconSend,
   IconShield,
@@ -52,3 +56,4 @@ export { SegmentedControl } from './SegmentedControl';
 export { StatTile } from './StatTile';
 export { Toggle } from './Toggle';
 export type { IconProps } from './icons';
+export { Dialog } from './Dialog';

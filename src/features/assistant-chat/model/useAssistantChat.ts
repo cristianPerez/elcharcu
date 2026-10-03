@@ -42,6 +42,8 @@ export interface AssistantChatController {
   readonly error: string | null;
   /** El nombre de la receta abierta, si hay una. */
   readonly recipeTitle: string | null;
+  /** La conversación abierta, para marcarla en la lista. `null` = nueva. */
+  readonly currentRecipeId: string | null;
   readonly send: (text: string, file: File | null) => Promise<void>;
   /** Salta a una conversación del historial. */
   readonly openRecipe: (id: string) => Promise<void>;
@@ -159,6 +161,9 @@ export function useAssistantChat(
   // primera pregunta la crea en el servidor y aquí solo se guarda el id para
   // que las siguientes vayan a la misma y no abran una nueva cada vez.
   const recipeId = useRef<string | null>(null);
+  // Espejo de `recipeId` para pintar: el ref no provoca render y la lista de
+  // recetas necesita saber cuál marcar.
+  const [currentRecipeId, setCurrentRecipeId] = useState<string | null>(null);
   const [recipeTitle, setRecipeTitle] = useState<string | null>(null);
 
   /**
@@ -174,6 +179,7 @@ export function useAssistantChat(
       // historial y volver a la misma no es motivo para otro viaje a la base.
       if (recordado !== null && recordado.recipeId === id) {
         recipeId.current = id;
+        setCurrentRecipeId(id);
         setRecipeTitle(recordado.title);
         replaceMessages(recordado.messages);
         return;
@@ -197,6 +203,7 @@ export function useAssistantChat(
         const titulo = typeof data.title === 'string' ? data.title : null;
 
         recipeId.current = data.recipeId;
+        setCurrentRecipeId(data.recipeId);
         setRecipeTitle(titulo);
         replaceMessages(historial);
         setError(null);
@@ -212,6 +219,7 @@ export function useAssistantChat(
   /** Deja el chat en blanco. La siguiente pregunta abrirá una receta nueva. */
   const startNewRecipe = useCallback((): void => {
     recipeId.current = null;
+    setCurrentRecipeId(null);
     setRecipeTitle(null);
     replaceMessages([]);
     setError(null);
@@ -470,5 +478,14 @@ export function useAssistantChat(
     void send(externalPrompt, null);
   }, [externalPrompt, send]);
 
-  return { messages, isThinking, error, recipeTitle, send, openRecipe, startNewRecipe };
+  return {
+    messages,
+    isThinking,
+    error,
+    recipeTitle,
+    currentRecipeId,
+    send,
+    openRecipe,
+    startNewRecipe,
+  };
 }
