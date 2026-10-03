@@ -6,6 +6,7 @@ import { CoverPanel, IconPlay, ProgressBar, coverToneFor } from '@/shared/ui';
 interface ContinueCourseCardProps {
   readonly slug: string;
   readonly title: string;
+  readonly coverUrl: string | null;
   readonly nextLessonHref: string;
   /** La lección que toca, contando desde 1. */
   readonly nextLessonNumber: number;
@@ -23,6 +24,7 @@ interface ContinueCourseCardProps {
 export function ContinueCourseCard({
   slug,
   title,
+  coverUrl,
   nextLessonHref,
   nextLessonNumber,
   totalLessons,
@@ -35,6 +37,7 @@ export function ContinueCourseCard({
     >
       <CoverPanel
         title={title}
+        imageUrl={coverUrl}
         tone={coverToneFor(slug)}
         size="lg"
         className="hidden size-36 shrink-0 rounded-xl lg:block"

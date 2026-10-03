@@ -89,6 +89,7 @@ export function AppCursosView({
           <ContinueCourseCard
             slug={continueWith.course.slug}
             title={continueWith.course.title}
+            coverUrl={continueWith.course.coverUrl}
             nextLessonHref={
               continueWith.progress.nextLessonId === null
                 ? `/cursos/${continueWith.course.slug}`

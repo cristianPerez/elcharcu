@@ -44,6 +44,18 @@ export function coverToneFor(key: string): CoverTone {
 }
 
 /**
+ * Cuánto mide la portada en pantalla, para que `next/image` no mande una foto
+ * de 600 px a una miniatura de 40.
+ */
+const SIZES = {
+  xs: '40px',
+  sm: '96px',
+  'sm-md': '(min-width: 768px) 300px, 96px',
+  md: '(min-width: 768px) 300px, 262px',
+  lg: '144px',
+} as const;
+
+/**
  * La inicial se apoya abajo a la izquierda, como en las maquetas; en la
  * miniatura (`xs`) va centrada y más viva, porque a 40 px no se leería.
  */
@@ -59,9 +71,9 @@ const LETTER = {
  * La portada de un curso: la foto si hay, y si no un panel de color con la
  * inicial en Fraunces.
  *
- * Hoy NINGÚN curso tiene foto y está bien: el panel es la portada oficial
- * mientras tanto, no un hueco. Cuando llegue `cover_url`, este componente la
- * pinta sin que nadie más se entere.
+ * Con foto, la foto; sin ella, el panel es la portada oficial, no un hueco.
+ * Las fotos siguen el estándar del sitio (600 px, calidad 65, ver la skill
+ * `create-recipe`).
  */
 export function CoverPanel({
   title,
@@ -95,7 +107,7 @@ export function CoverPanel({
           src={imageUrl}
           alt=""
           fill
-          sizes="(min-width: 768px) 300px, 50vw"
+          sizes={SIZES[size]}
           className="object-cover [object-position:50%_30%]"
         />
       )}

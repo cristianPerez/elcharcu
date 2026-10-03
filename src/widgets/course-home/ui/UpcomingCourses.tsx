@@ -29,6 +29,7 @@ export function UpcomingCourses({
           <li key={course.id} className="flex items-center gap-3 px-4 py-3">
             <CoverPanel
               title={course.title}
+              imageUrl={course.coverUrl}
               tone={coverToneFor(course.slug)}
               size="xs"
               className="size-10 shrink-0 rounded-lg"

@@ -12,15 +12,6 @@ import {
 
 import { type CourseCardVariant } from '../lib/courseState';
 
-/**
- * Las fotos de los cursos, apagadas a propósito (rediseño 2026-10).
- *
- * Cuatro cursos tienen `cover_url` en la base, pero el rediseño pide paneles
- * de color con la inicial "por ahora". Volver a las fotos es cambiar esto a
- * `true`: `CoverPanel` ya sabe pintarlas.
- */
-const SHOW_COVER_PHOTOS = false;
-
 const BADGES: Record<CourseCardVariant, { label: string; tone: BadgeTone }> = {
   gratis: { label: 'Gratis', tone: 'brasa' },
   pro: { label: 'Pro', tone: 'cream' },
@@ -123,7 +114,7 @@ export function CourseCard({
     >
       <CoverPanel
         title={plainTitle}
-        imageUrl={SHOW_COVER_PHOTOS ? coverUrl : null}
+        imageUrl={coverUrl}
         tone={coverToneFor(slug)}
         size={styles.letter}
         className={styles.cover}
