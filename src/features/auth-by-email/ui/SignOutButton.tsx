@@ -7,7 +7,17 @@ import { createSupabaseBrowserClient, isSupabaseConfigured } from '@/shared/api/
 /**
  * Salir de la cuenta.
  */
-export function SignOutButton(): ReactNode {
+interface SignOutButtonProps {
+  /** El aspecto, si no es el botón ancho de siempre (en "Mi cuenta" es un enlace). */
+  readonly className?: string | undefined;
+}
+
+const DEFAULT_CLASSES =
+  'w-full rounded-xl border border-cocoa/15 px-4 py-3 text-base font-medium text-cocoa/70 transition-colors hover:border-cocoa/25 hover:text-cocoa focus:outline-none focus:ring-2 focus:ring-terracota/30 active:scale-[0.98] disabled:opacity-50';
+
+export function SignOutButton({
+  className = DEFAULT_CLASSES,
+}: SignOutButtonProps): ReactNode {
   const [isLeaving, setIsLeaving] = useState(false);
 
   const handleClick = async (): Promise<void> => {
@@ -38,7 +48,7 @@ export function SignOutButton(): ReactNode {
       onClick={() => {
         void handleClick();
       }}
-      className="w-full rounded-xl border border-cocoa/15 px-4 py-3 text-base font-medium text-cocoa/70 transition-colors hover:border-cocoa/25 hover:text-cocoa focus:outline-none focus:ring-2 focus:ring-terracota/30 active:scale-[0.98] disabled:opacity-50"
+      className={className}
     >
       {isLeaving ? 'Saliendo…' : 'Cerrar sesión'}
     </button>

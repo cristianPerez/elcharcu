@@ -393,6 +393,9 @@ export type Database = {
           full_name: string | null;
           id: string;
           interests: string[];
+          notify_new_courses: boolean;
+          notify_news: boolean;
+          notify_step_reminders: boolean;
           onboarding_status: string;
           updated_at: string;
           whatsapp: string | null;
@@ -403,6 +406,9 @@ export type Database = {
           full_name?: string | null;
           id: string;
           interests?: string[];
+          notify_new_courses?: boolean;
+          notify_news?: boolean;
+          notify_step_reminders?: boolean;
           onboarding_status?: string;
           updated_at?: string;
           whatsapp?: string | null;
@@ -413,6 +419,9 @@ export type Database = {
           full_name?: string | null;
           id?: string;
           interests?: string[];
+          notify_new_courses?: boolean;
+          notify_news?: boolean;
+          notify_step_reminders?: boolean;
           onboarding_status?: string;
           updated_at?: string;
           whatsapp?: string | null;

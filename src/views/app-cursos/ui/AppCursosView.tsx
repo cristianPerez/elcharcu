@@ -12,16 +12,15 @@ import {
 
 import { CourseSearchField, courseSearchHref } from '@/features/course-search';
 
-import { COURSE_CATEGORIES, type Course, type CourseProgress } from '@/entities/course';
+import {
+  COURSE_CATEGORIES,
+  type ContinueCourse,
+  type Course,
+  type CourseProgress,
+} from '@/entities/course';
 
 import { appRoutes } from '@/shared/config';
 import { Chip, ChipRow, IconSliders, PageTitle } from '@/shared/ui';
-
-/** El curso en marcha que se ofrece seguir, ya resuelto por la ruta. */
-export interface ContinueCourse {
-  readonly course: Course;
-  readonly progress: CourseProgress;
-}
 
 interface AppCursosViewProps {
   readonly capsules: readonly Course[];

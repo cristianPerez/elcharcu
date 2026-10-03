@@ -4,7 +4,7 @@ interface StatTileProps {
   readonly value: number;
   /** El "/5" que va pegado al número. */
   readonly suffix?: string | undefined;
-  readonly label: string;
+  readonly label: ReactNode;
 }
 
 /** Un número destacado en Fraunces con su etiqueta debajo. */

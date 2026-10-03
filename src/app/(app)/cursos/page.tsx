@@ -1,9 +1,9 @@
 import { type Metadata } from 'next';
 import { type ReactNode } from 'react';
 
-import { AppCursosView, type ContinueCourse } from '@/views/app-cursos';
+import { AppCursosView } from '@/views/app-cursos';
 
-import { isInProgress, type CourseProgress } from '@/entities/course';
+import { pickContinueCourse, type CourseProgress } from '@/entities/course';
 import { listCourses, progressByCourse, recentCourseIds } from '@/entities/course/server';
 import { hasActiveSubscription } from '@/entities/subscription/server';
 
@@ -29,24 +29,13 @@ export default async function CursosPage(): Promise<ReactNode> {
   const capsules = visible.filter((course) => course.kind === 'capsula');
   const fullCourses = visible.filter((course) => course.kind === 'curso');
 
-  // "Sigue donde ibas": el curso tocado más hace menos que siga a medias.
-  const continueWith = recent
-    .map((id) => fullCourses.find((course) => course.id === id))
-    .map((course): ContinueCourse | null => {
-      const p = course === undefined ? undefined : progress.get(course.id);
-      return course !== undefined && p !== undefined && isInProgress(p)
-        ? { course, progress: p }
-        : null;
-    })
-    .find((candidate): candidate is ContinueCourse => candidate !== null);
-
   return (
     <AppCursosView
       capsules={capsules}
       masters={fullCourses.filter((course) => course.status === 'publicado')}
       upcoming={fullCourses.filter((course) => course.status === 'lista-de-espera')}
       progress={progress}
-      continueWith={continueWith ?? null}
+      continueWith={pickContinueCourse(fullCourses, progress, recent)}
       isSubscribed={isSubscribed}
     />
   );

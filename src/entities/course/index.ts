@@ -31,8 +31,9 @@ export {
   isFinished,
   isInProgress,
   lessonCountLabel,
+  pickContinueCourse,
 } from './lib/courseState';
-export type { CapsuleStep, CourseCardVariant } from './lib/courseState';
+export type { CapsuleStep, ContinueCourse, CourseCardVariant } from './lib/courseState';
 export { CourseCard } from './ui/CourseCard';
 export { CapsuleCard } from './ui/CapsuleCard';
 export type { CapsuleState } from './ui/CapsuleCard';

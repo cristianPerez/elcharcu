@@ -33,14 +33,14 @@ export function Toggle({
     >
       <span
         className={cn(
-          'relative h-7 w-12 rounded-full transition-colors',
-          checked ? 'bg-forest' : 'bg-cocoa/20',
+          'relative block h-7 w-12 rounded-full transition-colors',
+          checked ? 'bg-forest' : 'bg-cocoa/45',
         )}
       >
         <span
           className={cn(
-            'absolute top-0.5 size-6 rounded-full bg-cream-white transition-transform',
-            checked ? 'translate-x-[22px]' : 'translate-x-0.5',
+            'absolute left-0.5 top-0.5 block size-6 rounded-full bg-cream-white transition-transform',
+            checked ? 'translate-x-5' : 'translate-x-0',
           )}
         />
       </span>

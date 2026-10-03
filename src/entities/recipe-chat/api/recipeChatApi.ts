@@ -355,3 +355,31 @@ export async function renameRecipe(recipeId: string, title: string): Promise<voi
     reportError('receta', 'no se pudo renombrar', { detail: error.message });
   }
 }
+
+export interface RecipeCounts {
+  readonly active: number;
+  readonly finished: number;
+}
+
+/**
+ * Cuántas conversaciones tiene en marcha y cuántas terminó, para "Tu avance".
+ * Dos `count` sin traer filas: el número es lo único que se pinta.
+ */
+export async function recipeCounts(userId: string): Promise<RecipeCounts> {
+  if (!isSupabaseAdminConfigured()) {
+    return { active: 0, finished: 0 };
+  }
+
+  const admin = createSupabaseAdminClient();
+  const count = async (status: 'activa' | 'terminada'): Promise<number> => {
+    const { count: total } = await admin
+      .from('recipes')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('status', status);
+    return total ?? 0;
+  };
+
+  const [active, finished] = await Promise.all([count('activa'), count('terminada')]);
+  return { active, finished };
+}

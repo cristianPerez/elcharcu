@@ -76,3 +76,29 @@ export function capsuleSteps(
     ]),
   );
 }
+
+/** El curso que se ofrece seguir y cuánto lleva de él. */
+export interface ContinueCourse {
+  readonly course: Course;
+  readonly progress: CourseProgress;
+}
+
+/**
+ * "Sigue donde ibas": de los cursos tocados (del más reciente al más viejo),
+ * el primero que siga a medias. Solo cursos, no cápsulas: las cápsulas ya
+ * tienen su ruta en "Empieza por aquí". `null` si no hay ninguno.
+ */
+export function pickContinueCourse(
+  courses: readonly Course[],
+  progress: ReadonlyMap<string, CourseProgress>,
+  recentIds: readonly string[],
+): ContinueCourse | null {
+  for (const id of recentIds) {
+    const course = courses.find((c) => c.id === id && c.kind === 'curso');
+    const p = progress.get(id);
+    if (course !== undefined && p !== undefined && isInProgress(p)) {
+      return { course, progress: p };
+    }
+  }
+  return null;
+}
