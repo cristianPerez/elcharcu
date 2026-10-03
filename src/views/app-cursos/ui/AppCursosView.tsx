@@ -118,7 +118,7 @@ export function AppCursosView({
         técnica → cursos → próximos; en escritorio los cursos suben a ancho
         completo y técnica y próximos quedan lado a lado.
       */}
-      <div className="grid gap-9 md:gap-12 lg:grid-cols-2 lg:gap-x-10">
+      <div className="grid grid-cols-1 gap-9 md:gap-12 lg:grid-cols-2 lg:gap-x-10">
         <div className="lg:order-2">
           <TechniqueGrid />
         </div>
