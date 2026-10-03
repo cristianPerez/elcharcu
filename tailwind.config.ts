@@ -41,6 +41,18 @@ const config: Config = {
         /** Durazno: el fondo de las cápsulas bloqueadas, alternando con sage. */
         peach: '#E9CDB9',
         /*
+          Las versiones PASTEL del bosque y de la brasa, para el fondo de las
+          cápsulas hechas y de la actual (Cristian, 2026-10-03). El Brasa puro
+          es para los botones: de fondo de tarjeta "chillaba". Los dos verdes
+          son más claros que el sage de las bloqueadas para no confundirse con
+          ellas, y el naranja más vivo que el durazno.
+        */
+        pastel: {
+          forest: '#CADBD1',
+          'forest-deep': '#B6CCBF',
+          brasa: '#F5BC9A',
+        },
+        /*
           `terracota` es ahora un ALIAS de la rampa, no una familia aparte.
 
           Se queda porque está escrito en 139 sitios y renombrarlos de golpe

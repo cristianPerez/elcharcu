@@ -25,9 +25,12 @@ interface CapsuleCardProps {
 
 /**
  * Los colores salen del ESTADO y de la POSICIÓN, nunca de la base: hecha va en
- * bosque claro / bosque oscuro, bloqueada en sage / durazno, alternando.
- * Todos los textos pasan AA sobre su fondo (crema sobre bosque ≥ 6,6:1;
- * cocoa sobre brasa 7,2:1; #233B31 sobre sage 5,8:1; #6B3417 sobre durazno 6,6:1).
+ * bosque pastel claro / más hondo, la actual en brasa pastel y la bloqueada en
+ * sage / durazno, alternando. Todo en pastel a propósito: el Brasa pleno queda
+ * para los botones, que es donde tiene que llamar.
+ *
+ * Todos los textos pasan AA sobre su fondo: cocoa sobre los pastel ≥ 11:1;
+ * #233B31 sobre sage 5,8:1; #6B3417 sobre durazno 6,6:1.
  */
 function palette(
   state: CapsuleState,
@@ -39,12 +42,15 @@ function palette(
   const isOdd = position % 2 === 1;
   if (state === 'completada') {
     return {
-      card: isOdd ? 'bg-forest-light' : 'bg-forest-dark',
-      drawing: 'text-sage-light opacity-45',
+      card: isOdd ? 'bg-pastel-forest' : 'bg-pastel-forest-deep',
+      drawing: 'text-forest opacity-30',
     };
   }
   if (state === 'actual') {
-    return { card: 'bg-brasa', drawing: 'text-brasa-tinta opacity-50' };
+    return {
+      card: 'bg-pastel-brasa ring-[1.5px] ring-inset ring-brasa',
+      drawing: 'text-brasa-tinta opacity-40',
+    };
   }
   return isOdd
     ? { card: 'bg-peach', drawing: 'text-brasa-tinta opacity-35' }
@@ -152,11 +158,11 @@ export function CapsuleCard({
   return (
     <Link href={`/cursos/${slug}`} className={classes}>
       {drawing}
-      <span className="relative inline-flex h-6 items-center gap-1 self-start rounded-full bg-sage-light pl-1.5 pr-2.5 text-[11px] font-semibold text-cocoa">
+      <span className="relative inline-flex h-6 items-center gap-1 self-start rounded-full bg-forest pl-1.5 pr-2.5 text-[11px] font-semibold text-cream">
         <IconCheck size={12} strokeWidth={3} />
         Hecha
       </span>
-      <span className="relative font-serif text-base font-semibold leading-tight text-cream">
+      <span className="relative font-serif text-base font-semibold leading-tight text-cocoa">
         {title}
       </span>
     </Link>
