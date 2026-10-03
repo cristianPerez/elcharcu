@@ -74,10 +74,12 @@ test('el menú de recetas cambia de conversación', async ({ page }) => {
   await ask(page, 'Segunda receta: bondiola curada');
 
   const nav = await recipesNav(page);
-  const rows = nav.getByRole('button');
-  // La segunda de la lista es la anterior: la más reciente va primero.
-  await expect(rows.nth(1)).toBeVisible();
-  await rows.nth(1).click();
+  // La más reciente que NO es la abierta. No se cuenta por posición: el orden
+  // lo fija `last_message_at`, que el servidor toca en segundo plano después
+  // de contestar, y a veces la abierta todavía no subió al primer puesto.
+  const other = nav.locator('button:not([aria-current="true"])').first();
+  await expect(nav.locator('button[aria-current="true"]')).toHaveCount(1);
+  await other.click();
 
   const transcript = page.locator('[aria-live="polite"]').first();
   await expect(
