@@ -35,22 +35,22 @@ const config: Config = {
           DEFAULT: '#EE8B5D', // Naranja Brasa
           dark: '#C96A3C', // Naranja Oscuro
           tinta: '#9C4A22', // Naranja Tinta
-          /** Texto sobre durazno: el tinta no llega a AA ahí, este da 6,6:1. */
-          deep: '#6B3417',
         },
-        /** Durazno: el fondo de las cápsulas bloqueadas, alternando con sage. */
-        peach: '#E9CDB9',
         /*
-          Las versiones PASTEL del bosque y de la brasa, para el fondo de las
-          cápsulas hechas y de la actual (Cristian, 2026-10-03). El Brasa puro
-          es para los botones: de fondo de tarjeta "chillaba". Los dos verdes
-          son más claros que el sage de las bloqueadas para no confundirse con
-          ellas, y el naranja más vivo que el durazno.
+          Los fondos de las cápsulas de "Empieza por aquí" (Cristian,
+          2026-10-03): tonos pastel derivados de la paleta. El Naranja Brasa
+          pleno queda para los botones; de fondo de tarjeta "chillaba".
+
+          · done / done-alt     hecha, sage claro alternando.
+          · current             la actual, durazno (con borde Naranja Claro).
+          · locked / locked-alt bloqueada, crema neutro / crema cálido.
         */
-        pastel: {
-          forest: '#CADBD1',
-          'forest-deep': '#B6CCBF',
-          brasa: '#F5BC9A',
+        capsule: {
+          done: '#E3ECE7',
+          'done-alt': '#D6E4DC',
+          current: '#FCE3D4',
+          locked: '#EFEAE2',
+          'locked-alt': '#F6EADF',
         },
         /*
           `terracota` es ahora un ALIAS de la rampa, no una familia aparte.

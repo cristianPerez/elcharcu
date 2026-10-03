@@ -24,13 +24,18 @@ interface CapsuleCardProps {
 }
 
 /**
- * Los colores salen del ESTADO y de la POSICIÓN, nunca de la base: hecha va en
- * bosque pastel claro / más hondo, la actual en brasa pastel y la bloqueada en
- * sage / durazno, alternando. Todo en pastel a propósito: el Brasa pleno queda
- * para los botones, que es donde tiene que llamar.
+ * Los colores salen del ESTADO y de la POSICIÓN, nunca de la base. Todo en
+ * tonos pastel derivados de la paleta (Cristian, 2026-10-03): el Naranja
+ * Brasa pleno queda solo para el botón de la actual, que es donde tiene que
+ * llamar.
  *
- * Todos los textos pasan AA sobre su fondo: cocoa sobre los pastel ≥ 11:1;
- * #233B31 sobre sage 5,8:1; #6B3417 sobre durazno 6,6:1.
+ *   · Hecha: sage claro, alternando. Dibujo en bosque claro al 30 %.
+ *   · Actual: durazno con borde Naranja Claro. Dibujo en tinta.
+ *   · Bloqueada: crema neutro / crema cálido, alternando. Dibujo al 22 %.
+ *
+ * Todos los textos pasan AA: cocoa sobre cualquiera de los fondos ≥ 14:1;
+ * el número en tinta sobre durazno 5,0:1; "Se abre…" (#5B4E45) sobre los
+ * cremas ≥ 6,3:1; "Hecha" (#233B31) sobre blanco 12:1.
  */
 function palette(
   state: CapsuleState,
@@ -42,19 +47,20 @@ function palette(
   const isOdd = position % 2 === 1;
   if (state === 'completada') {
     return {
-      card: isOdd ? 'bg-pastel-forest' : 'bg-pastel-forest-deep',
-      drawing: 'text-forest opacity-30',
+      card: isOdd ? 'bg-capsule-done' : 'bg-capsule-done-alt',
+      drawing: 'text-forest-light opacity-30',
     };
   }
   if (state === 'actual') {
     return {
-      card: 'bg-pastel-brasa ring-[1.5px] ring-inset ring-brasa',
-      drawing: 'text-brasa-tinta opacity-40',
+      card: 'bg-capsule-current ring-[1.5px] ring-inset ring-brasa-light',
+      drawing: 'text-brasa-tinta opacity-30',
     };
   }
-  return isOdd
-    ? { card: 'bg-peach', drawing: 'text-brasa-tinta opacity-35' }
-    : { card: 'bg-sage-light', drawing: 'text-forest-dark opacity-30' };
+  return {
+    card: isOdd ? 'bg-capsule-locked-alt' : 'bg-capsule-locked',
+    drawing: 'text-cocoa-muted opacity-[0.22]',
+  };
 }
 
 /**
@@ -78,7 +84,6 @@ export function CapsuleCard({
   className,
 }: CapsuleCardProps): ReactNode {
   const colors = palette(state, position);
-  const isPeach = state === 'bloqueada' && position % 2 === 1;
   const classes = cn(
     'relative flex h-[196px] flex-col justify-between overflow-hidden rounded-capsule p-3.5',
     colors.card,
@@ -106,12 +111,7 @@ export function CapsuleCard({
         {drawing}
         <span
           aria-hidden="true"
-          className={cn(
-            'relative grid size-7 place-items-center rounded-full',
-            isPeach
-              ? 'bg-brasa-tinta/15 text-brasa-tinta'
-              : 'bg-forest-dark/15 text-forest-dark',
-          )}
+          className="relative grid size-7 place-items-center rounded-full bg-cocoa/[0.07] text-cocoa-muted"
         >
           <IconLock size={13} strokeWidth={2.2} />
         </span>
@@ -119,12 +119,7 @@ export function CapsuleCard({
           <span className="block font-serif text-base font-semibold leading-tight text-cocoa">
             {title}
           </span>
-          <span
-            className={cn(
-              'mt-1 block text-xs',
-              isPeach ? 'text-brasa-deep' : 'text-forest-dark',
-            )}
-          >
+          <span className="mt-1 block text-xs text-cocoa-soft">
             Se abre al terminar la {position - 1}
           </span>
         </span>
@@ -138,7 +133,7 @@ export function CapsuleCard({
         {drawing}
         <span
           aria-hidden="true"
-          className="relative font-serif text-4xl font-semibold leading-none text-cocoa"
+          className="relative font-serif text-4xl font-semibold leading-none text-brasa-tinta"
         >
           {position}
         </span>
@@ -146,7 +141,7 @@ export function CapsuleCard({
           <span className="font-serif text-[17px] font-semibold leading-tight text-cocoa">
             {title}
           </span>
-          <span className="inline-flex h-8 items-center gap-1 self-start rounded-full bg-cocoa px-3.5 text-[13px] font-semibold text-cream transition-colors group-hover:bg-forest-dark">
+          <span className="inline-flex h-8 items-center gap-1 self-start rounded-full bg-brasa px-3.5 text-[13px] font-semibold text-cocoa transition-colors group-hover:bg-brasa-dark">
             {isStarted ? 'Continuar' : 'Empezar'}
             <IconArrowRight size={13} strokeWidth={2.2} />
           </span>
@@ -158,7 +153,7 @@ export function CapsuleCard({
   return (
     <Link href={`/cursos/${slug}`} className={classes}>
       {drawing}
-      <span className="relative inline-flex h-6 items-center gap-1 self-start rounded-full bg-forest pl-1.5 pr-2.5 text-[11px] font-semibold text-cream">
+      <span className="relative inline-flex h-6 items-center gap-1 self-start rounded-full bg-cream-white pl-1.5 pr-2.5 text-[11px] font-semibold text-forest-dark">
         <IconCheck size={12} strokeWidth={3} />
         Hecha
       </span>
