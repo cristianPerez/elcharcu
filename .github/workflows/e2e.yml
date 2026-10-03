@@ -85,6 +85,9 @@ jobs:
             fi
           done
 
+      - name: sharp (optimizador de imágenes de Next)
+        run: node -e "const s=require('sharp'); console.log('sharp', s.versions)"
+
       - name: Navegador de Playwright
         run: pnpm exec playwright install --with-deps chromium
 

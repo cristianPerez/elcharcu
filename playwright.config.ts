@@ -68,5 +68,8 @@ export default defineConfig({
     reuseExistingServer: !IS_CI,
     timeout: IS_CI ? 600_000 : 180_000,
     env: { AI_SIMULAR_IA: '1', NEXT_DIST_DIR: '.next-e2e' },
+    // En CI se ve lo que dice el servidor: sin esto, un fallo del servidor
+    // solo se nota como una página que no termina de cargar.
+    stdout: IS_CI ? 'pipe' : 'ignore',
   },
 });
