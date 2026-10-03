@@ -34,7 +34,7 @@ permissions:
 
 jobs:
   calidad:
-    name: Calidad (tipos y lint)
+    name: Calidad (tipos, lint y build)
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -49,6 +49,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm type-check
       - run: pnpm lint
+      # Que el build de producción compila. Sin claves de Supabase: las páginas
+      # estáticas de recetas se generan igual (sin cursos enlazados).
+      - run: pnpm build
 
   e2e:
     name: E2E (Playwright)
@@ -84,11 +87,6 @@ jobs:
               exit 1
             fi
           done
-
-      # `sharp` no es dependencia directa: la trae Next. Sin él, el optimizador
-      # de imágenes de `next start` no puede servir ninguna foto.
-      - name: sharp (optimizador de imágenes de Next)
-        run: node -e "const p=require.resolve('sharp',{paths:[require.resolve('next')]}); console.log('sharp', require(p).versions)"
 
       - name: Navegador de Playwright
         run: pnpm exec playwright install --with-deps chromium

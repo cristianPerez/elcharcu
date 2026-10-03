@@ -11,8 +11,13 @@ import { BROWSER_CHANNEL } from './e2e/env';
  *     no publica Chromium para macOS 13— y `next dev`, que reutiliza el servidor
  *     si ya está levantado.
  *   · En GitHub Actions (`.github/workflows/e2e.yml`), antes de mezclar a
- *     `main`: Chromium de Playwright en Ubuntu, y `next build` + `next start`,
- *     que es más rápido y más estable que compilar página a página en dev.
+ *     `main`: Chromium de Playwright en Ubuntu, también con `next dev`.
+ *
+ * ⚠️ En CI se probó `next build` + `next start` (2026-10-03) y NO sirve: en
+ * los runners de GitHub, con varias precargas de enlaces a la vez, algunas
+ * respuestas de servidor llegaban con 200 y nunca terminaban de enviarse, y la
+ * navegación se quedaba colgada. No pasaba en local con el mismo build. Que el
+ * build compila lo comprueba aparte el job de calidad.
  *
  * Siempre con SU PROPIO servidor en el 3100, la IA simulada (`AI_SIMULAR_IA`)
  * y otra carpeta de compilación (`NEXT_DIST_DIR`), para no pisar el `.next` del
@@ -61,12 +66,10 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: IS_CI
-      ? `pnpm exec next build && pnpm exec next start --port ${String(PORT)}`
-      : `pnpm exec next dev --port ${String(PORT)}`,
+    command: `pnpm exec next dev --port ${String(PORT)}`,
     url: `http://localhost:${String(PORT)}/api/salud`,
     reuseExistingServer: !IS_CI,
-    timeout: IS_CI ? 600_000 : 180_000,
+    timeout: 300_000,
     env: { AI_SIMULAR_IA: '1', NEXT_DIST_DIR: '.next-e2e' },
     // En CI se ve lo que dice el servidor: sin esto, un fallo del servidor
     // solo se nota como una página que no termina de cargar.
