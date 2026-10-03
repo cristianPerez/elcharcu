@@ -112,6 +112,7 @@ export type Database = {
       courses: {
         Row: {
           access: string;
+          category: string | null;
           cover_url: string | null;
           created_at: string;
           id: string;
@@ -121,6 +122,7 @@ export type Database = {
           slug: string;
           status: string;
           summary: string;
+          techniques: string[];
           title: string;
           unlock_mode: string;
           updated_at: string;
@@ -128,6 +130,7 @@ export type Database = {
         };
         Insert: {
           access?: string;
+          category?: string | null;
           cover_url?: string | null;
           created_at?: string;
           id?: string;
@@ -137,6 +140,7 @@ export type Database = {
           slug: string;
           status?: string;
           summary?: string;
+          techniques?: string[];
           title: string;
           unlock_mode?: string;
           updated_at?: string;
@@ -144,6 +148,7 @@ export type Database = {
         };
         Update: {
           access?: string;
+          category?: string | null;
           cover_url?: string | null;
           created_at?: string;
           id?: string;
@@ -153,6 +158,7 @@ export type Database = {
           slug?: string;
           status?: string;
           summary?: string;
+          techniques?: string[];
           title?: string;
           unlock_mode?: string;
           updated_at?: string;

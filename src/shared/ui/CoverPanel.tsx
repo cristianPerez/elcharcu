@@ -7,12 +7,12 @@ export type CoverTone = 'forest' | 'forest-dark' | 'forest-light' | 'tinta' | 's
 
 interface CoverPanelProps {
   readonly title: string;
-  readonly imageUrl?: string | null;
+  readonly imageUrl?: string | null | undefined;
   readonly tone: CoverTone;
-  readonly className?: string;
+  readonly className?: string | undefined;
   /** El tamaño de la inicial cambia con el de la tarjeta. */
-  readonly size?: 'sm' | 'md' | 'lg';
-  readonly children?: ReactNode;
+  readonly size?: 'xs' | 'sm' | 'md' | 'lg' | undefined;
+  readonly children?: ReactNode | undefined;
 }
 
 const TONES: Record<CoverTone, { readonly bg: string; readonly letter: string }> = {
@@ -43,7 +43,16 @@ export function coverToneFor(key: string): CoverTone {
   return COVER_TONES[hash % COVER_TONES.length] ?? 'forest';
 }
 
-const LETTER_SIZE = { sm: 'text-3xl', md: 'text-5xl', lg: 'text-7xl' } as const;
+/**
+ * La inicial se apoya abajo a la izquierda, como en las maquetas; en la
+ * miniatura (`xs`) va centrada y más viva, porque a 40 px no se leería.
+ */
+const LETTER = {
+  xs: 'inset-0 grid place-items-center text-xl opacity-100',
+  sm: 'bottom-0 left-3 text-4xl',
+  md: 'bottom-0 left-4 text-6xl',
+  lg: 'bottom-0 left-4 text-7xl',
+} as const;
 
 /**
  * La portada de un curso: la foto si hay, y si no un panel de color con la
@@ -69,9 +78,13 @@ export function CoverPanel({
         <span
           aria-hidden="true"
           className={cn(
-            'absolute bottom-0 left-4 font-serif font-semibold leading-none',
-            LETTER_SIZE[size],
-            colors.letter,
+            'absolute font-serif font-semibold leading-none',
+            LETTER[size],
+            size === 'xs'
+              ? tone === 'sage'
+                ? 'text-forest'
+                : 'text-brasa-light'
+              : colors.letter,
           )}
         >
           {title.trim().charAt(0).toUpperCase()}

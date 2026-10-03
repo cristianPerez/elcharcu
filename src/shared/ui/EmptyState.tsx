@@ -5,8 +5,8 @@ import { cn } from '@/shared/lib';
 interface EmptyStateProps {
   readonly children: ReactNode;
   /** El botón o enlace que saca del vacío. */
-  readonly action?: ReactNode;
-  readonly className?: string;
+  readonly action?: ReactNode | undefined;
+  readonly className?: string | undefined;
 }
 
 /** Lo que se ve cuando no hay nada: fondo apagado, una frase y una salida. */

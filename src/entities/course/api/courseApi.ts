@@ -6,6 +6,7 @@ import {
   isSupabaseAdminConfigured,
 } from '@/shared/api/supabase/server';
 
+import { isCourseCategory, isCourseTechnique } from '../model/catalog';
 import {
   type Course,
   type CourseAccess,
@@ -68,11 +69,13 @@ interface CourseRow {
   readonly kind: string;
   readonly status: string;
   readonly waitlist_goal: number | null;
+  readonly category: string | null;
+  readonly techniques: readonly string[];
 }
 
 /** Las columnas que pide toda consulta de curso. En un sitio, no en cuatro. */
 const COURSE_COLUMNS =
-  'id, slug, title, summary, cover_url, level, access, position, kind, status, waitlist_goal';
+  'id, slug, title, summary, cover_url, level, access, position, kind, status, waitlist_goal, category, techniques';
 
 /**
  * El curso con sus módulos y lecciones dentro, en UNA consulta.
@@ -111,6 +114,8 @@ function toCourse(
     waitlistGoal: row.waitlist_goal,
     waitlistCount: waitlist.count,
     isInWaitlist: waitlist.isIn,
+    category: isCourseCategory(row.category) ? row.category : null,
+    techniques: row.techniques.filter(isCourseTechnique),
   };
 }
 
@@ -456,5 +461,42 @@ export const completedLessonIds = cache(
       .not('completed_at', 'is', null);
 
     return new Set((data ?? []).map((row) => row.lesson_id));
+  },
+);
+
+/**
+ * Los cursos que esta persona tocó, del más reciente al más viejo.
+ *
+ * Es lo que decide "Sigue donde ibas": no el curso con más avance, sino el
+ * ÚLTIMO en el que se movió algo. Sale de `lesson_progress.updated_at`, que
+ * cambia con cada segundo de video guardado, así que también cuenta una
+ * lección empezada y no terminada.
+ *
+ * Se piden las 40 últimas filas y no todas: alcanza para encontrar un curso
+ * aunque la persona haya repasado varias cápsulas después, y no crece con el
+ * historial.
+ */
+export const recentCourseIds = cache(
+  async (userId: string): Promise<readonly string[]> => {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from('lesson_progress')
+      .select('updated_at, lessons(modules(course_id))')
+      .eq('user_id', userId)
+      .order('updated_at', { ascending: false })
+      .limit(40);
+
+    if (error !== null || data === null) {
+      return [];
+    }
+
+    const ids: string[] = [];
+    for (const row of data) {
+      const courseId = row.lessons?.modules?.course_id;
+      if (courseId !== undefined && !ids.includes(courseId)) {
+        ids.push(courseId);
+      }
+    }
+    return ids;
   },
 );

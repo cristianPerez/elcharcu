@@ -7,15 +7,15 @@ import { IconChevron } from './icons';
 
 interface ListRowProps {
   readonly title: ReactNode;
-  readonly subtitle?: ReactNode;
-  readonly leading?: ReactNode;
+  readonly subtitle?: ReactNode | undefined;
+  readonly leading?: ReactNode | undefined;
   /** Lo de la derecha. Si no hay, y la fila navega, va un chevron. */
-  readonly trailing?: ReactNode;
-  readonly href?: string;
+  readonly trailing?: ReactNode | undefined;
+  readonly href?: string | undefined;
   /** Enlace que sale del sitio (WhatsApp): abre en otra pestaña. */
-  readonly external?: boolean;
-  readonly onClick?: () => void;
-  readonly className?: string;
+  readonly external?: boolean | undefined;
+  readonly onClick?: () => void | undefined;
+  readonly className?: string | undefined;
 }
 
 /**

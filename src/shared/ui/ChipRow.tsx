@@ -5,7 +5,7 @@ import { cn } from '@/shared/lib';
 interface ChipRowProps {
   readonly children: ReactNode;
   readonly label: string;
-  readonly className?: string;
+  readonly className?: string | undefined;
 }
 
 /**

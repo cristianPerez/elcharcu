@@ -4,7 +4,7 @@ import { cn } from '@/shared/lib';
 
 interface PageTitleProps {
   readonly children: ReactNode;
-  readonly className?: string;
+  readonly className?: string | undefined;
 }
 
 /**

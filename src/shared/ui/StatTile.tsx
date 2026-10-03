@@ -3,7 +3,7 @@ import { type ReactNode } from 'react';
 interface StatTileProps {
   readonly value: number;
   /** El "/5" que va pegado al número. */
-  readonly suffix?: string;
+  readonly suffix?: string | undefined;
   readonly label: string;
 }
 

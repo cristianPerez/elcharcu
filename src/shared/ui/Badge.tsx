@@ -6,8 +6,8 @@ export type BadgeTone = 'brasa' | 'forest' | 'cream' | 'sage' | 'muted';
 
 interface BadgeProps {
   readonly children: ReactNode;
-  readonly tone?: BadgeTone;
-  readonly className?: string;
+  readonly tone?: BadgeTone | undefined;
+  readonly className?: string | undefined;
 }
 
 const TONES: Record<BadgeTone, string> = {

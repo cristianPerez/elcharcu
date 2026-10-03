@@ -9,7 +9,7 @@ interface ToggleProps {
   readonly onChange: (checked: boolean) => void;
   /** El nombre accesible: lo que se lee junto al interruptor. */
   readonly label: string;
-  readonly disabled?: boolean;
+  readonly disabled?: boolean | undefined;
 }
 
 /** Interruptor con `role="switch"`, 44 px de área táctil. */

@@ -84,6 +84,10 @@ export const appRoutes = {
    * es donde todo el mundo la busca.
    */
   appCourses: '/cursos',
+  /** La búsqueda de cursos. Su estado vive en la URL (`?q=&categoria=…`). */
+  appCoursesSearch: '/cursos/buscar',
+  /** "Ver todos" de los cursos maestros. */
+  appMasterCourses: '/cursos/maestros',
   appAssistant: '/charcu',
   appAccount: '/cuenta',
   /**
@@ -141,3 +145,17 @@ export const contactChannels: readonly ContactChannel[] = [
     href: site.instagramUrl,
   },
 ];
+
+/**
+ * El asistente con una pregunta ESCRITA pero sin enviar.
+ *
+ * Es otra cosa que `?pregunta=`, que se manda sola al llegar: desde la
+ * búsqueda la persona todavía no decidió preguntar, y mandarla por ella le
+ * gastaría una pregunta del mes sin pedírselo.
+ */
+export function assistantDraftHref(text: string): string {
+  const draft = text.trim();
+  return draft === ''
+    ? appRoutes.appAssistant
+    : `${appRoutes.appAssistant}?borrador=${encodeURIComponent(draft)}`;
+}

@@ -1,10 +1,10 @@
 import { type Metadata } from 'next';
 import { type ReactNode } from 'react';
 
-import { AppCursosView } from '@/views/app-cursos';
+import { AppCursosView, type ContinueCourse } from '@/views/app-cursos';
 
-import { type CourseProgress } from '@/entities/course';
-import { listCourses, progressByCourse } from '@/entities/course/server';
+import { isInProgress, type CourseProgress } from '@/entities/course';
+import { listCourses, progressByCourse, recentCourseIds } from '@/entities/course/server';
 import { hasActiveSubscription } from '@/entities/subscription/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
@@ -16,15 +16,38 @@ export default async function CursosPage(): Promise<ReactNode> {
   // deduplicado dentro de la misma petición.
   const userId = (await currentUser())?.id ?? null;
 
-  // Las dos consultas a la vez: son independientes y encadenarlas solo suma
-  // espera en un celular con mala señal.
-  const [courses, progress, isSubscribed] = await Promise.all([
+  // Todo a la vez: son independientes y encadenarlas solo suma espera en un
+  // celular con mala señal.
+  const [courses, progress, isSubscribed, recent] = await Promise.all([
     listCourses(),
     userId === null ? new Map<string, CourseProgress>() : progressByCourse(userId),
     userId === null ? false : hasActiveSubscription(userId),
+    userId === null ? [] : recentCourseIds(userId),
   ]);
 
+  const visible = courses.filter((course) => course.status !== 'borrador');
+  const capsules = visible.filter((course) => course.kind === 'capsula');
+  const fullCourses = visible.filter((course) => course.kind === 'curso');
+
+  // "Sigue donde ibas": el curso tocado más hace menos que siga a medias.
+  const continueWith = recent
+    .map((id) => fullCourses.find((course) => course.id === id))
+    .map((course): ContinueCourse | null => {
+      const p = course === undefined ? undefined : progress.get(course.id);
+      return course !== undefined && p !== undefined && isInProgress(p)
+        ? { course, progress: p }
+        : null;
+    })
+    .find((candidate): candidate is ContinueCourse => candidate !== null);
+
   return (
-    <AppCursosView courses={courses} progress={progress} isSubscribed={isSubscribed} />
+    <AppCursosView
+      capsules={capsules}
+      masters={fullCourses.filter((course) => course.status === 'publicado')}
+      upcoming={fullCourses.filter((course) => course.status === 'lista-de-espera')}
+      progress={progress}
+      continueWith={continueWith ?? null}
+      isSubscribed={isSubscribed}
+    />
   );
 }

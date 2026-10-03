@@ -8,11 +8,11 @@ import { IconArrowRight } from './icons';
 interface SectionHeaderProps {
   readonly title: string;
   /** El "Ver todos →" de la derecha. */
-  readonly action?: { readonly href: string; readonly label: string };
+  readonly action?: { readonly href: string; readonly label: string } | undefined;
   /** Un dato corto a la derecha ("2 de 5 · gratis") cuando no hay enlace. */
-  readonly aside?: ReactNode;
-  readonly id?: string;
-  readonly className?: string;
+  readonly aside?: ReactNode | undefined;
+  readonly id?: string | undefined;
+  readonly className?: string | undefined;
 }
 
 /** Título de sección: Fraunces en verde, sin antetítulo ni subtítulo. */

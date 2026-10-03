@@ -7,8 +7,8 @@ interface ProgressBarProps {
   readonly value: number;
   readonly label: string;
   /** Sobre verde el carril es más claro y el relleno, naranja. */
-  readonly tone?: 'light' | 'dark';
-  readonly className?: string;
+  readonly tone?: 'light' | 'dark' | undefined;
+  readonly className?: string | undefined;
 }
 
 export function ProgressBar({

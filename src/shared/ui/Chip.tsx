@@ -7,13 +7,13 @@ import { IconClose } from './icons';
 
 interface ChipProps {
   readonly children: ReactNode;
-  readonly active?: boolean;
+  readonly active?: boolean | undefined;
   /** Con `href` es un enlace (el filtro vive en la URL); sin él, un botón. */
-  readonly href?: string;
-  readonly onClick?: () => void;
+  readonly href?: string | undefined;
+  readonly onClick?: () => void | undefined;
   /** Pinta la ✕ de "quitar este filtro". Solo tiene sentido activo. */
-  readonly removable?: boolean;
-  readonly className?: string;
+  readonly removable?: boolean | undefined;
+  readonly className?: string | undefined;
 }
 
 /**

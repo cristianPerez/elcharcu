@@ -13,7 +13,7 @@ interface SegmentedControlProps {
   readonly segments: readonly Segment[];
   readonly activeId: string;
   readonly label: string;
-  readonly className?: string;
+  readonly className?: string | undefined;
 }
 
 /** El selector Todos / Disponibles / Próximos. Cada opción es un enlace. */
