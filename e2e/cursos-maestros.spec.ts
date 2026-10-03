@@ -14,7 +14,7 @@ test.describe('Cursos maestros — cuenta gratis', () => {
     await expect(
       page.getByRole('heading', { level: 1, name: 'Cursos maestros' }),
     ).toBeVisible();
-    await expect(page.getByRole('heading', { name: /Chorizos/ })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: /^Chorizos/ })).toBeVisible();
 
     if (isDesktop(page)) {
       const crumbs = page.getByRole('navigation', { name: 'Migas de pan' });
@@ -44,18 +44,18 @@ test.describe('Cursos maestros — cuenta gratis', () => {
     await expect(dialog).toBeHidden();
   });
 
-  test('"Quiero un curso de quesos" registra la demanda y se recuerda', async ({
-    page,
-  }) => {
+  test('"¿Qué pieza quieres aprender?" registra la demanda', async ({ page }) => {
+    // Desde la 0034 todas las categorías tienen cursos: no queda ningún
+    // "Quiero un curso de…" que tocar, así que la demanda se prueba por aquí.
     await page.goto('/cursos/maestros');
-    const ask = page.getByRole('button', { name: 'Quiero un curso de quesos' });
-    if (await ask.isVisible()) {
-      await ask.click();
-    }
-    await expect(page.getByRole('button', { name: /Lo pediste/ }).last()).toBeVisible();
+    await page.getByRole('button', { name: /Qué pieza quieres aprender/ }).click();
 
-    await page.reload();
-    await expect(page.getByRole('button', { name: /Lo pediste/ }).last()).toBeDisabled();
+    const dialog = page.getByRole('dialog', { name: '¿Qué pieza quieres aprender?' });
+    await dialog.getByRole('textbox').fill('Pastrami de res ahumado');
+    const saved = page.waitForResponse((r) => r.url().includes('/api/pedidos-de-cursos'));
+    await dialog.getByRole('button', { name: 'Proponer curso' }).click();
+    expect((await saved).ok()).toBe(true);
+    await expect(dialog.getByRole('status')).toContainText('Anotado');
   });
 });
 
@@ -66,10 +66,10 @@ test.describe('Cursos maestros — cuenta pro', () => {
     await page.goto('/cursos/maestros');
 
     const join = page.getByRole('button', {
-      name: 'Avísame cuando abra Chorizo Santarrosano',
+      name: 'Avísame cuando abra Chorizo de Ajo Parrillero',
     });
     const leave = page.getByRole('button', {
-      name: 'Dejar de esperar Chorizo Santarrosano',
+      name: 'Dejar de esperar Chorizo de Ajo Parrillero',
     });
 
     // Deja el estado de partida limpio aunque una corrida anterior fallara.
@@ -87,14 +87,14 @@ test.describe('Cursos maestros — cuenta pro', () => {
     // En Mis cursos el mismo curso sale como "✓ Te aviso".
     await page.goto('/cursos');
     await expect(
-      page.getByRole('button', { name: 'Dejar de esperar Chorizo Santarrosano' }),
+      page.getByRole('button', { name: 'Dejar de esperar Chorizo de Ajo Parrillero' }),
     ).toContainText('Te aviso');
 
     await page
-      .getByRole('button', { name: 'Dejar de esperar Chorizo Santarrosano' })
+      .getByRole('button', { name: 'Dejar de esperar Chorizo de Ajo Parrillero' })
       .click();
     await expect(
-      page.getByRole('button', { name: 'Avísame cuando abra Chorizo Santarrosano' }),
+      page.getByRole('button', { name: 'Avísame cuando abra Chorizo de Ajo Parrillero' }),
     ).toBeVisible();
   });
 });

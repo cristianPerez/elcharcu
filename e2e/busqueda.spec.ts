@@ -49,7 +49,7 @@ test('filtrar por categoría y estado cambia la URL y los resultados', async ({
 
 test('una técnica de Mis cursos abre la búsqueda filtrada', async ({ page }) => {
   await page.goto('/cursos');
-  await page.getByRole('link', { name: /Ahumado/ }).click();
+  await page.getByRole('link', { name: /^Ahumado/ }).click();
   await expect(page).toHaveURL(/\/cursos\/buscar\?tecnica=ahumado/);
   await expect(page.getByRole('status').filter({ hasText: /en Ahumado/ })).toBeVisible();
 });
