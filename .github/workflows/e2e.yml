@@ -85,8 +85,10 @@ jobs:
             fi
           done
 
+      # `sharp` no es dependencia directa: la trae Next. Sin él, el optimizador
+      # de imágenes de `next start` no puede servir ninguna foto.
       - name: sharp (optimizador de imágenes de Next)
-        run: node -e "const s=require('sharp'); console.log('sharp', s.versions)"
+        run: node -e "const p=require.resolve('sharp',{paths:[require.resolve('next')]}); console.log('sharp', require(p).versions)"
 
       - name: Navegador de Playwright
         run: pnpm exec playwright install --with-deps chromium
