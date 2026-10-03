@@ -46,3 +46,33 @@ export function lessonCountLabel(progress: CourseProgress | undefined): string |
   }
   return total === 1 ? '1 lección' : `${String(total)} lecciones`;
 }
+
+export type CapsuleStep = 'completada' | 'actual' | 'bloqueada';
+
+/**
+ * El estado de cada cápsula dentro de su ruta: la actual es la primera sin
+ * terminar; las de después, cerradas.
+ *
+ * Se calcula sobre la ruta ENTERA aunque se vayan a pintar solo algunas (una
+ * búsqueda que devuelve la 4 y la 5 tiene que saber que la 3 no está hecha).
+ */
+export function capsuleSteps(
+  capsules: readonly Course[],
+  progress: ReadonlyMap<string, CourseProgress>,
+): ReadonlyMap<string, { readonly position: number; readonly state: CapsuleStep }> {
+  const currentIndex = capsules.findIndex((c) => !isFinished(progress.get(c.id)));
+
+  return new Map(
+    capsules.map((capsule, index) => [
+      capsule.id,
+      {
+        position: index + 1,
+        state: isFinished(progress.get(capsule.id))
+          ? 'completada'
+          : index === currentIndex
+            ? 'actual'
+            : 'bloqueada',
+      },
+    ]),
+  );
+}

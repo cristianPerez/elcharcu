@@ -2,8 +2,8 @@ import { type ReactNode } from 'react';
 
 import {
   CapsuleCard,
+  capsuleSteps,
   isFinished,
-  type CapsuleState,
   type Course,
   type CourseProgress,
 } from '@/entities/course';
@@ -29,7 +29,7 @@ export function CapsulePath({ capsules, progress }: CapsulePathProps): ReactNode
   }
 
   const done = capsules.filter((c) => isFinished(progress.get(c.id))).length;
-  const currentIndex = capsules.findIndex((c) => !isFinished(progress.get(c.id)));
+  const steps = capsuleSteps(capsules, progress);
 
   return (
     <section aria-labelledby="capsules-title">
@@ -40,11 +40,7 @@ export function CapsulePath({ capsules, progress }: CapsulePathProps): ReactNode
       />
       <ol className="-mx-5 mt-4 flex snap-x scroll-px-5 gap-3 overflow-x-auto px-5 pb-1 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-[repeat(auto-fit,minmax(150px,1fr))] md:overflow-visible md:px-0 [&::-webkit-scrollbar]:hidden">
         {capsules.map((capsule, index) => {
-          const state: CapsuleState = isFinished(progress.get(capsule.id))
-            ? 'completada'
-            : index === currentIndex
-              ? 'actual'
-              : 'bloqueada';
+          const state = steps.get(capsule.id)?.state ?? 'bloqueada';
 
           return (
             <li key={capsule.id} className="w-[150px] shrink-0 snap-start md:w-auto">

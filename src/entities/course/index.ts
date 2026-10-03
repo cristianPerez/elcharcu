@@ -26,12 +26,13 @@ export {
 } from './model/catalog';
 export type { CourseCategory, CourseTechnique } from './model/catalog';
 export {
+  capsuleSteps,
   courseCardVariant,
   isFinished,
   isInProgress,
   lessonCountLabel,
 } from './lib/courseState';
-export type { CourseCardVariant } from './lib/courseState';
+export type { CapsuleStep, CourseCardVariant } from './lib/courseState';
 export { CourseCard } from './ui/CourseCard';
 export { CapsuleCard } from './ui/CapsuleCard';
 export type { CapsuleState } from './ui/CapsuleCard';

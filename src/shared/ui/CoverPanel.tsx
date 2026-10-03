@@ -11,7 +11,7 @@ interface CoverPanelProps {
   readonly tone: CoverTone;
   readonly className?: string | undefined;
   /** El tamaño de la inicial cambia con el de la tarjeta. */
-  readonly size?: 'xs' | 'sm' | 'md' | 'lg' | undefined;
+  readonly size?: 'xs' | 'sm' | 'sm-md' | 'md' | 'lg' | undefined;
   readonly children?: ReactNode | undefined;
 }
 
@@ -50,6 +50,7 @@ export function coverToneFor(key: string): CoverTone {
 const LETTER = {
   xs: 'inset-0 grid place-items-center text-xl opacity-100',
   sm: 'bottom-0 left-3 text-4xl',
+  'sm-md': 'bottom-0 left-3 text-4xl md:left-4 md:text-6xl',
   md: 'bottom-0 left-4 text-6xl',
   lg: 'bottom-0 left-4 text-7xl',
 } as const;

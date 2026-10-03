@@ -4,7 +4,9 @@ import { type ReactNode } from 'react';
 import { cn } from '@/shared/lib';
 import { IconArrowRight, IconCheck, IconLock } from '@/shared/ui';
 
-export type CapsuleState = 'completada' | 'actual' | 'bloqueada';
+import { type CapsuleStep } from '../lib/courseState';
+
+export type CapsuleState = CapsuleStep;
 
 interface CapsuleCardProps {
   readonly slug: string;
