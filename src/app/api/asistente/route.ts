@@ -5,9 +5,19 @@ import {
   buildSystemPrompt,
   cleanTitle,
   TITLE_SYSTEM_PROMPT,
+  type AssistantCatalog,
 } from '@/entities/charcu-assistant';
+import { assistantCourseCatalog, courseCatalogBrief } from '@/entities/course/server';
 import { auditCureDoses, MAX_CURE_1_G_PER_KG } from '@/entities/cure-safety';
-import { getRecipeBySlug, recipeBrief } from '@/entities/recipe';
+import { formatUsd, priceFor, proPlan } from '@/entities/plan';
+import {
+  findMentionedRecipe,
+  getRecipeBySlug,
+  getRecipes,
+  recipeBrief,
+  recipeCatalogBrief,
+  type Recipe,
+} from '@/entities/recipe';
 import {
   createRecipe,
   ownsRecipe,
@@ -125,6 +135,48 @@ function blockedAnswer(): string {
 El tope es **${String(MAX_CURE_1_G_PER_KG)} g de sal de cura #1 por kilo de carne** (unas 156 ppm de nitrito, el máximo permitido). Por encima de ahí no curas mejor: solo metes más nitrito del que debería comerse una persona.
 
 Cuéntame cuántos kilos tienes exactamente y qué sal de cura estás usando (#1 o #2), y te doy la cantidad justa.`;
+}
+
+/**
+ * Lo que la casa ofrece, para que El Charcu lo pueda recomendar (2026-10-04).
+ * Se arma aquí, en el servidor: nada de esto viene del navegador.
+ */
+async function buildCatalog(): Promise<AssistantCatalog> {
+  const monthly = priceFor(proPlan, 'mensual');
+  const yearly = priceFor(proPlan, 'anual');
+  const price =
+    monthly === null || yearly === null
+      ? ''
+      : ` Cuesta ${formatUsd(monthly.priceUsd)} al mes o ${formatUsd(yearly.priceUsd)} al año.`;
+
+  return {
+    courses: courseCatalogBrief(await assistantCourseCatalog()),
+    recipes: recipeCatalogBrief(getRecipes()),
+    subscription: `${proPlan.name} abre todos los cursos de pago y sube el cupo a ${String(proPlan.quota.questionsPerMonth)} preguntas al mes.${price} Los planes están en la sección Precios de la web y en Mi cuenta dentro de la app.`,
+  };
+}
+
+/**
+ * La receta de la casa que nombró sin tenerla abierta (Ana, 2026-10-04).
+ * Se busca de la pregunta más nueva a la más vieja: si cambió de receta a
+ * mitad de conversación, gana la última. Con receta abierta, no se busca.
+ */
+function mentionedFor(
+  openRecipe: Recipe | undefined,
+  turns: readonly GeminiTurn[],
+): { readonly name: string; readonly brief: string } | null {
+  if (openRecipe !== undefined) {
+    return null;
+  }
+  const recipes = getRecipes();
+  for (const turn of [...turns].reverse()) {
+    const found =
+      turn.role === 'user' ? findMentionedRecipe(turn.text, recipes) : undefined;
+    if (found !== undefined) {
+      return { name: found.name, brief: recipeBrief(found) };
+    }
+  }
+  return null;
 }
 
 /** Cuántas fotos trae esta pregunta. Las imágenes cuestan bastante más. */
@@ -247,6 +299,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         ? null
         : { name: openRecipe.name, brief: recipeBrief(openRecipe) },
     conversationTitle,
+    catalog: await buildCatalog(),
+    mentionedRecipe: mentionedFor(openRecipe, parsed.turns),
   });
 
   const result = await generateAnswer(systemPrompt, parsed.turns);

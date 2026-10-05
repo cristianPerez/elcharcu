@@ -357,6 +357,28 @@ Se vio con Julieth el 2026-09-14. Diagnóstico, arreglos y el plan de "recetas d
 la comunidad" que Cristian quiere encima de esto:
 **[docs/plan-recetas-de-la-comunidad.md](docs/plan-recetas-de-la-comunidad.md)**.
 
+### 🟠 El Charcu ya recomienda cursos — lo que quedó pendiente (2026-10-04)
+
+Desde el 2026-10-04 el prompt lleva el catálogo de cursos, cápsulas, recetas y
+la suscripción, y la receta de la casa que alguien nombra sin tenerla abierta
+(casos de Felipe y Ana, ver `catalogAnchor.ts`). Falta:
+
+- **No sabe lo que esa persona ya hizo.** Le puede recomendar una cápsula que
+  ya terminó: a Felipe le volvería a ofrecer "Qué saber de la sal de cura", que
+  completó entera. Hay que pasarle su avance (`progressByCourse` /
+  `completedLessonIds`) para que recomiende lo SIGUIENTE.
+- **Los nombres de cursos en el chat no se pueden tocar.** `MessageBubble` solo
+  pinta negritas, no enlaces; el Charcu nombra el curso y la persona tiene que
+  ir a buscarlo a Cursos. Un enlace directo a `/cursos/<slug>` cerraría el
+  camino (el catálogo del prompt tendría que llevar el slug).
+- **No siempre reconoce que la otra opción también vale.** En la prueba con la
+  pregunta de Ana (seco vs. salmuera en un jamón cocido) ya contesta con el
+  método de la receta, pero no admite que la salmuera también es válida, que
+  era justo lo que ella planteaba. El prompt se lo pide; el modelo no siempre.
+- **Medir si funciona:** en unos días, revisar en producción cuántas
+  conversaciones nombran un curso y si después hay `lesson_progress` de esa
+  persona en ese curso.
+
 ### 🟢 Sueltos
 
 - **Borrar las cookies regala DOS preguntas gratis** (~0,011 USD la tanda,
