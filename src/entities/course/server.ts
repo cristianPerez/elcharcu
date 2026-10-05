@@ -11,4 +11,7 @@ export {
   recentCourseIds,
   requestedCategories,
   lessonNumberIn,
+  assistantCourseCatalog,
 } from './api/courseApi';
+export type { AssistantCourse } from './api/courseApi';
+export { courseCatalogBrief } from './lib/courseCatalogBrief';

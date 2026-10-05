@@ -21,6 +21,11 @@
  * tres: es el mensaje con menos contexto y más riesgo. Si alguien vuelve a
  * mover esa regla a un bloque condicional, este script falla.
  *
+ * ⚠️ Y QUE EL CATÁLOGO DE LA CASA ENTRE EN TODOS (2026-10-04). Felipe preguntó
+ * por "el curso" y lo mandaron al WhatsApp; Ana preguntó por una receta de la
+ * casa que el asistente confundió con otra. Sin el catálogo no puede
+ * recomendar nada, así que va en las tres pantallas, como la regla de arriba.
+ *
  * ⚠️ LO QUE ESTO NO PRUEBA: que el modelo OBEDEZCA la regla. Aquí solo se
  * comprueba que el texto se le manda. Saber si funciona es mirar en unos días
  * si siguen apareciendo conversaciones donde nombra piezas que nadie mencionó.
@@ -28,6 +33,12 @@
 import { buildSystemPrompt } from '../src/entities/charcu-assistant';
 
 const RECETA = { name: 'Chistorra', brief: 'Sal de cura #1 — 2,5 g por kilo' };
+
+const CATALOGO = {
+  courses: '- Lomo de cerdo curado (GRATIS, solo hay que registrarse): …',
+  recipes: '- Jamón de Bondiola Ahumado: Curado en seco, ahumado y cocido',
+  subscription: 'El Charcu Pro abre todos los cursos de pago.',
+};
 
 const CASOS = [
   {
@@ -50,10 +61,13 @@ for (const caso of CASOS) {
     country: 'CO',
     recipe: caso.recipe,
     conversationTitle: caso.conversationTitle,
+    catalog: CATALOGO,
+    mentionedRecipe: null,
   });
   const receta = prompt.includes('QUÉ ESTÁ LEYENDO AHORA MISMO');
   const titulo = prompt.includes('DE QUÉ VA ESTA CONVERSACIÓN');
   const noInventar = prompt.includes('LO QUE NO SABES DE QUIEN TE ESCRIBE');
+  const catalogo = prompt.includes('LO QUE TIENE LA CASA');
 
   // La receta abierta gana: es contexto de verdad y el rótulo sobra.
   const contexto =
@@ -62,11 +76,11 @@ for (const caso of CASOS) {
       : titulo === (caso.conversationTitle !== null);
 
   // Y esta va en TODOS los casos, sin excepción. Ver abajo por qué.
-  const esperado = contexto && noInventar;
+  const esperado = contexto && noInventar && catalogo;
   if (!esperado) fallos += 1;
 
   console.log(
-    `  ${esperado ? '✓' : '✗'} ${caso.etiqueta.padEnd(30)} receta: ${receta ? 'sí' : 'no'}   título: ${titulo ? 'sí' : 'no'}   no-inventar: ${noInventar ? 'sí' : 'no'}`,
+    `  ${esperado ? '✓' : '✗'} ${caso.etiqueta.padEnd(30)} receta: ${receta ? 'sí' : 'no'}   título: ${titulo ? 'sí' : 'no'}   no-inventar: ${noInventar ? 'sí' : 'no'}   catálogo: ${catalogo ? 'sí' : 'no'}`,
   );
 }
 

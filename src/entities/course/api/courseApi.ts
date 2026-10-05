@@ -236,6 +236,74 @@ export const publishedCourseSlugs = cache(async (): Promise<ReadonlySet<string>>
   return new Set(data.map((row) => row.slug));
 });
 
+/** Lo que El Charcu necesita saber de un curso para poder recomendarlo. */
+export interface AssistantCourse {
+  readonly title: string;
+  readonly summary: string;
+  readonly kind: CourseKind;
+  readonly access: CourseAccess;
+  readonly status: CourseStatus;
+}
+
+/** Cada cuánto se vuelve a leer el catálogo para el asistente. */
+const ASSISTANT_CATALOG_TTL_MS = 5 * 60 * 1000;
+
+let assistantCatalogMemo: {
+  readonly at: number;
+  readonly courses: readonly AssistantCourse[];
+} | null = null;
+
+/**
+ * El catálogo que El Charcu tiene delante al contestar (2026-10-04).
+ *
+ * ⚠️ POR QUÉ EXISTE. Felipe preguntó "¿qué necesito para iniciar con el
+ * curso?" y el asistente lo mandó al WhatsApp de Cristian: no sabía que hay
+ * cursos en la plataforma, y menos que uno gratis —Lomo curado— era justo lo
+ * que él quería hacer. Ana preguntó por una receta de la casa y tampoco se le
+ * ofreció nada. Un asistente que no conoce el catálogo no puede recomendarlo.
+ *
+ * Lee con el cliente de ADMINISTRACIÓN: solo salen título, resumen y estado,
+ * lo mismo que ya enseña la lista pública de cursos. Los borradores no salen.
+ *
+ * Se recuerda 5 minutos en memoria de la instancia: esto entra en CADA
+ * pregunta y el catálogo cambia una vez por semana. Si falla la lectura, se
+ * devuelve la última buena (o nada): el asistente contesta igual, solo que sin
+ * recomendar.
+ */
+export async function assistantCourseCatalog(): Promise<readonly AssistantCourse[]> {
+  const now = Date.now();
+  if (
+    assistantCatalogMemo !== null &&
+    now - assistantCatalogMemo.at < ASSISTANT_CATALOG_TTL_MS
+  ) {
+    return assistantCatalogMemo.courses;
+  }
+
+  if (!isSupabaseAdminConfigured()) {
+    return [];
+  }
+
+  const { data, error } = await createSupabaseAdminClient()
+    .from('courses')
+    .select('title, summary, kind, access, status')
+    .in('status', ['publicado', 'lista-de-espera'])
+    .order('position');
+
+  if (error !== null || data === null) {
+    return assistantCatalogMemo?.courses ?? [];
+  }
+
+  const courses = data.map((row) => ({
+    title: row.title,
+    summary: row.summary,
+    kind: toKind(row.kind),
+    access: toAccess(row.access),
+    status: toStatus(row.status),
+  }));
+  assistantCatalogMemo = { at: now, courses };
+  return courses;
+}
+
 export const listCourses = cache(async (): Promise<readonly Course[]> => {
   const supabase = await createSupabaseServerClient();
 
