@@ -379,6 +379,31 @@ la suscripción, y la receta de la casa que alguien nombra sin tenerla abierta
   conversaciones nombran un curso y si después hay `lesson_progress` de esa
   persona en ese curso.
 
+### 🟡 Los e2e de CI fallan a ratos, y no por el código (2026-10-06)
+
+En el PR #25 fallaron 8 tests de escritorio con el mismo síntoma: tras un
+clic en un enlace (buscador, menú, "Ver todos", "Continuar lección") la URL
+**no cambia** y el servidor ni siquiera recibe la petición. La navegación no
+llega a arrancar en el navegador.
+
+No era el cambio: los mismos tests pasaron en local con el mismo código y la
+misma base de QA, y en CI pasaron al relanzarlos sin tocar nada. Y no es
+nuevo: el 2026-10-03, mientras se montaba el CI, ya fallaban igual otros tests
+(`busqueda.spec.ts:27`, "Próximos" de cursos maestros), en móvil y escritorio.
+
+Sin causa todavía. Ojo: no es solo `next dev`. Esos fallos del 2026-10-03
+fueron ANTES de db9b7af, que es cuando los e2e pasaron a `next dev`, o sea que
+ya pasaba con el build. Lo que sí se repite: en CI el escritorio corre DESPUÉS
+de los ~10 min de móvil sobre el mismo servidor, y en local un `next dev` que
+llevaba rato encendido también se quedó sin archivos de `.next` (ENOENT) y dejó
+de navegar. Otra pista a mirar: que el clic llegue antes de que la página
+termine de hidratar.
+
+Mientras no se arregle, **bloquea PRs a main de vez en cuando**; el remedio de
+hoy es relanzar el trabajo fallido (`gh run rerun <id> --failed`). Para
+investigarlo: el informe de Playwright de la corrida 37411457358 tiene las
+trazas, y probar con `next build && next start` o un servidor por proyecto.
+
 ### 🟢 Sueltos
 
 - **Borrar las cookies regala DOS preguntas gratis** (~0,011 USD la tanda,
