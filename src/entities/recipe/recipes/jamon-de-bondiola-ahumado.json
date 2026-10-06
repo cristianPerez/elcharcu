@@ -31,17 +31,17 @@
     }
   ],
   "quote": "Yo también tenía mis dudas, hasta que lo probé: la grasa de la bondiola es justo lo que impide que un jamón ahumado quede seco.",
-  "ingredientsNote": "Estas cantidades son para 1 kg de bondiola. La mezcla completa son 27,43 g por kilo — pesa la pieza antes de nada, porque todo se calcula sobre su peso real y no sobre el que dice la receta.",
+  "ingredientsNote": "Estas cantidades son para 1 kg de bondiola. La mezcla completa son 27,35 g por kilo — pesa la pieza antes de nada, porque todo se calcula sobre su peso real y no sobre el que dice la receta.",
   "ingredients": [
     { "name": "Bondiola de cerdo (pieza entera)", "amount": "1000 g", "pct": "100%" },
-    { "name": "Sal fina", "amount": "16,26 g", "pct": "1,63%" },
+    { "name": "Sal fina", "amount": "16,20 g", "pct": "1,62%" },
     {
       "name": "Sal de cura #1 (Prague Powder #1)",
       "amount": "2,5 g",
       "pct": "0,25%"
     },
-    { "name": "Azúcar", "amount": "2,51 g", "pct": "0,25%" },
-    { "name": "Ajo en polvo", "amount": "1,51 g", "pct": "0,15%" },
+    { "name": "Azúcar", "amount": "2,50 g", "pct": "0,25%" },
+    { "name": "Ajo en polvo", "amount": "1,50 g", "pct": "0,15%" },
     { "name": "Pimienta negra molida", "amount": "1,20 g", "pct": "0,12%" },
     { "name": "Paprika dulce", "amount": "1,20 g", "pct": "0,12%" },
     { "name": "Coriandro molido", "amount": "1,00 g", "pct": "0,10%" },
@@ -50,8 +50,8 @@
     { "name": "Pellets o astillas de guayabo", "amount": "al gusto", "pct": "—" },
     { "name": "Pita o cabuya para bridar", "amount": "1 madeja", "pct": "—" }
   ],
-  "proportionNote": "La sal fina al 1,63% es lo que hace que quede sabroso sin salarse, y la sal de cura al 0,25% es el estándar seguro y también el techo: nunca más. El azúcar no está para endulzar — redondea la sal y ayuda al color durante el ahumado.",
-  "charcuteroNote": "Valores por kilo de bondiola: sal fina 16,26 g · sal de cura #1 2,5 g · azúcar 2,51 g · ajo en polvo 1,51 g · pimienta negra 1,20 g · paprika dulce 1,20 g · coriandro 1,00 g · chile quebrado 1,00 g · nuez moscada 0,25 g. Total de la mezcla: 27,43 g por kilo. Aquí la sal de cura NO es opcional: la pieza pasa horas entre 30 y 60 °C mientras sube al centro, que es justo el rango donde el Clostridium botulinum trabaja mejor.",
+  "proportionNote": "La sal fina al 1,62% es lo que hace que quede sabroso sin salarse, y la sal de cura al 0,25% es el estándar seguro y también el techo: nunca más. El azúcar no está para endulzar — redondea la sal y ayuda al color durante el ahumado.",
+  "charcuteroNote": "Valores por kilo de bondiola: sal fina 16,20 g · sal de cura #1 2,5 g · azúcar 2,50 g · ajo en polvo 1,50 g · pimienta negra 1,20 g · paprika dulce 1,20 g · coriandro 1,00 g · chile quebrado 1,00 g · nuez moscada 0,25 g. Total de la mezcla: 27,35 g por kilo. Aquí la sal de cura NO es opcional: la pieza pasa horas entre 30 y 60 °C mientras sube al centro, que es justo el rango donde el Clostridium botulinum trabaja mejor.",
   "steps": [
     {
       "n": "01",
@@ -127,7 +127,7 @@
   "doubts": {
     "onIntro": {
       "label": "¿Cuánto curo si mi pieza pesa más?",
-      "prompt": "La receta del Jamón de Bondiola Ahumado está para 1 kg y cura 1 día por kilo. Mi bondiola pesa otra cosa: ¿cómo reescalo los 27,43 g de mezcla y cuántos días la dejo al vacío? ¿Conviene partirla en dos?"
+      "prompt": "La receta del Jamón de Bondiola Ahumado está para 1 kg y cura 1 día por kilo. Mi bondiola pesa otra cosa: ¿cómo reescalo los 27,35 g de mezcla y cuántos días la dejo al vacío? ¿Conviene partirla en dos?"
     },
     "onIngredients": {
       "label": "¿Por qué sal de cura #1 y no #2?",

@@ -3,6 +3,7 @@ import { type ReactNode } from 'react';
 
 import { type Lesson } from '@/entities/course';
 
+import { LessonText } from './LessonText';
 import { LessonVideo } from './LessonVideo';
 
 interface LessonBodyProps {
@@ -27,10 +28,8 @@ export function LessonBody({ lesson }: LessonBodyProps): ReactNode {
               Nadie retiene "2,5 g de coriandro" de oído, y al llegar el momento
               de pesarlo el video ya terminó. */}
           {lesson.body === null || lesson.body === '' ? null : (
-            <div className="mt-4 rounded-2xl border border-cocoa/10 bg-cream-white p-5 shadow-surface">
-              <p className="whitespace-pre-line text-base leading-relaxed text-cocoa/80">
-                {lesson.body}
-              </p>
+            <div className="mt-4">
+              <LessonText body={lesson.body} />
             </div>
           )}
         </>
@@ -68,12 +67,6 @@ export function LessonBody({ lesson }: LessonBodyProps): ReactNode {
       );
 
     case 'texto':
-      return (
-        <div className="rounded-2xl border border-cocoa/10 bg-cream-white p-5 shadow-surface">
-          <p className="whitespace-pre-line text-base leading-relaxed text-cocoa/80">
-            {lesson.body}
-          </p>
-        </div>
-      );
+      return <LessonText body={lesson.body} />;
   }
 }

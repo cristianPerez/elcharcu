@@ -4,6 +4,7 @@ import { type ReactNode } from 'react';
 import { LessonBody, LessonNav } from '@/widgets/lesson-view';
 
 import { CompleteLessonButton } from '@/features/lesson-progress';
+import { hasGramsSlot, QuantityAsk } from '@/features/quantity-ask';
 
 import { type CourseWithModules, type Lesson } from '@/entities/course';
 
@@ -77,8 +78,13 @@ export function AppLeccionView({
 
       {/* La duda de siempre, ya escrita. Es lo que une el curso con el
           asistente: en vez de terminar y quedarte con la pregunta, la
-          pregunta es el siguiente botón. */}
-      {lesson.ask === null ? null : (
+          pregunta es el siguiente botón. Si la pregunta deja hueco para los
+          gramos, se elige la cantidad antes de mandarla. */}
+      {lesson.ask === null ? null : hasGramsSlot(lesson.ask) ? (
+        <Reveal delay={0.1}>
+          <QuantityAsk ask={lesson.ask} />
+        </Reveal>
+      ) : (
         <Reveal delay={0.1}>
           <Link
             href={`${appRoutes.appAssistant}?pregunta=${encodeURIComponent(lesson.ask)}`}
