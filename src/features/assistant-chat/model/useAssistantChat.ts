@@ -364,6 +364,20 @@ export function useAssistantChat(
             return;
           }
 
+          if (response.status === 401) {
+            // La 3.ª pregunta sin cuenta (2026-10-07). La pantalla abre antes
+            // la hoja de crear cuenta; esto es la red por si llega igual
+            // (una pestaña vieja, una llamada a mano).
+            setError(
+              'Ya hiciste tus 2 preguntas gratis. Crea tu cuenta gratis para seguir: es un paso, sin contraseña.',
+            );
+            track(ANALYTICS_EVENTS.assistantFailed, {
+              reason: 'necesita-cuenta',
+              recipe: params.recipeSlug ?? 'general',
+            });
+            return;
+          }
+
           if (response.status === 429) {
             setError(
               'El asistente descansa hasta mañana: hoy ya atendió a mucha gente. Escríbenos por WhatsApp si es urgente.',

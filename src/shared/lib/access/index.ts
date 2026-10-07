@@ -4,3 +4,14 @@
  * suyo en la base. Nada de dominio: reciben datos simples.
  */
 export { DEFAULT_DESTINATION, safeDestination } from './destination';
+export {
+  ANONYMOUS_QUESTIONS,
+  canAskWithoutAccount,
+  canOpenCourse,
+  canOpenRecipeFromCookbook,
+  canSeeFullCookbook,
+  canSeeRelatedRecipes,
+  isSubscriber,
+  viewerPlanOf,
+} from './rules';
+export type { ViewerPlan } from './rules';

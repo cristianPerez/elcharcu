@@ -47,7 +47,12 @@ interface AppLayoutProps {
  * este formulario no se sale hasta completarlo.
  */
 /** Las rutas de la app que se ven sin cuenta. */
-const PUBLIC_APP_ROUTES: ReadonlySet<string> = new Set(['/', appRoutes.appCourses]);
+const PUBLIC_APP_ROUTES: ReadonlySet<string> = new Set([
+  '/',
+  appRoutes.appCourses,
+  appRoutes.appAssistant,
+  appRoutes.appMasterCourses,
+]);
 
 /** `/cursos/<slug>` y sus lecciones (no la búsqueda ni "Ver todos"). */
 function isCourseRoute(route: string | null): boolean {
@@ -71,10 +76,18 @@ export default async function AppLayout({
     // Lo que se ve SIN cuenta (diseño final, 2026-10-07): la portada de
     // Cursos, que también es `/`. Con el marco de la app y "Entrar".
     if (isPublicAppRoute(desde)) {
+      // El Charcu sin cuenta necesita su cupo (el del visitante): las dos
+      // preguntas gratis se cuentan por navegador.
+      // Solo ahí: la portada no paga una consulta que no usa.
+      const isChat = (desde ?? '').split('?')[0] === appRoutes.appAssistant;
+      const anonVisitor = isChat ? await readVisitorIdFromCookies() : null;
+      const anonQuota = anonVisitor === null ? null : await readQuota(anonVisitor, null);
       return (
-        <AppFrame viewer={{ kind: 'anon' }} layout="bleed">
-          {children}
-        </AppFrame>
+        <QuotaProvider initial={anonQuota}>
+          <AppFrame viewer={{ kind: 'anon' }} layout="bleed">
+            {children}
+          </AppFrame>
+        </QuotaProvider>
       );
     }
 

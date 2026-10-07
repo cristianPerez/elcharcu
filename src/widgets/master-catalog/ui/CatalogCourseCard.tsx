@@ -16,6 +16,7 @@ interface CatalogCourseCardProps {
   readonly course: Course;
   readonly progress: CourseProgress | undefined;
   readonly isSubscribed: boolean;
+  readonly isSignedIn: boolean;
 }
 
 /** La llamada de abajo. No es un enlace: la tarjeta entera ya lo es. */
@@ -33,6 +34,7 @@ export function CatalogCourseCard({
   course,
   progress,
   isSubscribed,
+  isSignedIn,
 }: CatalogCourseCardProps): ReactNode {
   const variant = courseCardVariant(course, progress);
   const isWaiting = variant === 'proximo' || variant === 'te-avisamos';
@@ -66,6 +68,7 @@ export function CatalogCourseCard({
             courseTitle={course.title}
             initiallyJoined={course.isInWaitlist}
             canJoin={isSubscribed}
+            asksForAccount={!isSignedIn}
           />
         ) : (
           <Cue>

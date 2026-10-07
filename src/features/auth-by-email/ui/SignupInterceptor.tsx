@@ -47,7 +47,26 @@ export function SignupInterceptor({
     ) {
       return;
     }
-    const anchor = event.target instanceof Element ? event.target.closest('a') : null;
+    const element = event.target instanceof Element ? event.target : null;
+
+    // "Avísame" sin cuenta: un botón que trae su contexto en `data-signup-*`.
+    const notify = element?.closest<HTMLElement>('[data-signup-trigger="avisame"]');
+    if (notify !== null && notify !== undefined) {
+      event.preventDefault();
+      event.stopPropagation();
+      const title = notify.dataset.signupTitle ?? 'Este curso';
+      openSignup({
+        trigger: 'avisame',
+        eyebrow: 'Próximamente',
+        title,
+        heading: 'Crea tu cuenta gratis y te avisamos',
+        destination: notify.dataset.signupDestination ?? appRoutes.appMasterCourses,
+        returnLabel: `el curso ${title}`,
+      });
+      return;
+    }
+
+    const anchor = element?.closest('a') ?? null;
     if (anchor === null) {
       return;
     }

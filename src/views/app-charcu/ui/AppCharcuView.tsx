@@ -9,10 +9,14 @@ import { AppAssistant } from '@/widgets/app-assistant';
  * duda que llega de una lección, y Next exige una frontera alrededor de quien
  * lee los parámetros de la URL o el build falla.
  */
-export function AppCharcuView(): ReactNode {
+interface AppCharcuViewProps {
+  readonly isSignedIn: boolean;
+}
+
+export function AppCharcuView({ isSignedIn }: AppCharcuViewProps): ReactNode {
   return (
     <Suspense fallback={null}>
-      <AppAssistant />
+      <AppAssistant isSignedIn={isSignedIn} />
     </Suspense>
   );
 }

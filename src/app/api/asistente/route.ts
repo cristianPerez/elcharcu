@@ -25,13 +25,14 @@ import {
   saveExchange,
   touchRecipe,
 } from '@/entities/recipe-chat/server';
-import { consumeQuota, refundQuota } from '@/entities/usage-quota/server';
+import { consumeQuota, readQuota, refundQuota } from '@/entities/usage-quota/server';
 
 import { generateAnswer, type GeminiTurn } from '@/shared/api/gemini';
 import { countryFromRequest } from '@/shared/api/geo';
 import { createSupabaseServerClient } from '@/shared/api/supabase/server';
 import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
 import { reportWarning } from '@/shared/lib';
+import { canAskWithoutAccount } from '@/shared/lib/access';
 
 /** Tope de la imagen en base64 (~3 MB de foto). */
 const MAX_IMAGE_CHARS = 4_000_000;
@@ -224,6 +225,21 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
    */
   const recipeId = ownsIt ? parsed.recipeId : null;
   const isNewRecipe = recipeId === null;
+
+  /*
+    Sin cuenta, El Charcu contesta DOS preguntas; la 3.ª pide crearla
+    (2026-10-07). Hasta hoy esto solo lo decía la pantalla y la API lo dejaba
+    pasar. Se mira ANTES de cobrar: rechazarla no gasta nada.
+  */
+  if (userId === null) {
+    const current = await readQuota(visitorId, null);
+    if (!canAskWithoutAccount('anonimo', current?.questionsUsed ?? 0)) {
+      return attachVisitorCookie(
+        NextResponse.json({ error: 'necesita-cuenta' }, { status: 401 }),
+        visitorId,
+      );
+    }
+  }
 
   const quota = await consumeQuota(visitorId, userId, images, isNewRecipe);
 
