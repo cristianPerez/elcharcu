@@ -85,8 +85,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     return withTracking(landing, `${origin}${conEntrada(next, data.user)}`, data.user);
   }
 
-  // Sin `code` ni `token_hash`: Supabase devuelve aquí el error del paso
-  // anterior (`?error_code=otp_expired` cuando el enlace ya se usó o venció).
+  // Sin `code` ni `token_hash`: lo normal es que Supabase rechazara el enlace
+  // antes (vencido o ya usado). El motivo lo deja en el FRAGMENTO de la URL,
+  // que aquí no se ve; lo mide `/entrar` como `auth_link_error`.
   landing.failed(searchParams.get('error_code') ?? 'sin_codigo');
   return withTracking(landing, `${origin}/entrar?error=sin-codigo`);
 }

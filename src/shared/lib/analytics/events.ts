@@ -133,6 +133,13 @@ export const ANALYTICS_EVENTS = {
   authCompleted: 'auth_completed',
   /** El callback NO abrió la sesión. Lleva `reason`. Se mide en el servidor. */
   authFailed: 'auth_failed',
+  /**
+   * Supabase rechazó el enlace ANTES del callback (vencido o ya usado) y dejó
+   * el motivo en el fragmento de la URL (`#error_code=otp_expired`), que el
+   * servidor no ve. Lo lee `/entrar`. No es un paso del embudo: el fallo ya
+   * contó como `auth_failed` con `reason: sin_codigo`; esto da el motivo real.
+   */
+  authLinkError: 'auth_link_error',
   /** Después de entrar, llegó a la página que había elegido antes de que se le pidiera la cuenta. */
   returnedToOrigin: 'returned_to_origin',
 } as const;

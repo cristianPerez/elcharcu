@@ -37,7 +37,10 @@ test.use({ userAgent: INSTAGRAM_IOS_UA });
 
 test.beforeEach(({ page }) => {
   test.skip(isDesktop(page), 'Solo en móvil');
-  test.skip(!canReadEmailTokens(), 'Falta SUPABASE_ACCESS_TOKEN para leer el token del correo');
+  test.skip(
+    !canReadEmailTokens(),
+    'Falta SUPABASE_ACCESS_TOKEN para leer el token del correo',
+  );
 });
 
 test('hoy: desde Instagram y en el mismo navegador entra, pero no vuelve a la cápsula', async ({
@@ -77,11 +80,13 @@ test('hoy: desde Instagram y en el mismo navegador entra, pero no vuelve a la c�
     );
 });
 
-test('hoy: pedido en Instagram y abierto en otro navegador, no entra y no se le explica', async ({
+test('hoy: pedido en Instagram y abierto en otro navegador, no entra, no se le explica y el enlace queda gastado', async ({
   page,
+  context,
   browser,
 }) => {
   await ensureTestAccount(OTRO);
+  const events = await captureAuthEvents(context);
 
   await page.goto('/entrar');
   const redirectTo = await requestMagicLink(page, OTRO);
@@ -98,6 +103,12 @@ test('hoy: pedido en Instagram y abierto en otro navegador, no entra y no se le 
   // Y hoy `/entrar` no lee `error`: vuelve a pedir el correo sin decir por qué.
   await expect(other.getByRole('button', { name: /enlace/i })).toBeVisible();
   await expect(other.getByText(/otro navegador|venci|no pudimos/i)).toHaveCount(0);
-
   await safari.close();
+
+  // Y el enlace ya no sirve ni en el navegador correcto: Supabase lo da por
+  // usado y deja el motivo en el fragmento, que solo `/entrar` puede leer.
+  await page.goto(link);
+  await expect(page).toHaveURL(/error_code=otp_expired/);
+  expect(await hasSession(context)).toBe(false);
+  await expect.poll(() => events).toContain('auth_link_error');
 });
