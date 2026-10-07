@@ -5,14 +5,14 @@ import { SiteFooter } from '@/widgets/site-footer';
 import { SiteHeader } from '@/widgets/site-header';
 import { TablasStrip } from '@/widgets/tablas-strip';
 
-import { getRecipeSummaries } from '@/entities/recipe';
+import { getRecipeSummaries } from '@/entities/recipe/server';
 
 /**
  * FSD `views` layer: página de listado de recetas.
  * Carga los resúmenes en el servidor y los pasa al buscador (cliente).
  */
-export function RecetasPage(): ReactNode {
-  const recipes = getRecipeSummaries();
+export async function RecetasPage(): Promise<ReactNode> {
+  const recipes = await getRecipeSummaries();
 
   return (
     <>

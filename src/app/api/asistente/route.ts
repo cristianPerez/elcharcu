@@ -12,12 +12,11 @@ import { auditCureDoses, MAX_CURE_1_G_PER_KG } from '@/entities/cure-safety';
 import { formatUsd, priceFor, proPlan } from '@/entities/plan';
 import {
   findMentionedRecipe,
-  getRecipeBySlug,
-  getRecipes,
   recipeBrief,
   recipeCatalogBrief,
   type Recipe,
 } from '@/entities/recipe';
+import { recetarioOrLastGood } from '@/entities/recipe/server';
 import {
   createRecipe,
   ownsRecipe,
@@ -141,7 +140,7 @@ Cuéntame cuántos kilos tienes exactamente y qué sal de cura estás usando (#1
  * Lo que la casa ofrece, para que El Charcu lo pueda recomendar (2026-10-04).
  * Se arma aquí, en el servidor: nada de esto viene del navegador.
  */
-async function buildCatalog(): Promise<AssistantCatalog> {
+async function buildCatalog(houseRecipes: readonly Recipe[]): Promise<AssistantCatalog> {
   const monthly = priceFor(proPlan, 'mensual');
   const yearly = priceFor(proPlan, 'anual');
   const price =
@@ -151,7 +150,7 @@ async function buildCatalog(): Promise<AssistantCatalog> {
 
   return {
     courses: courseCatalogBrief(await assistantCourseCatalog()),
-    recipes: recipeCatalogBrief(getRecipes()),
+    recipes: recipeCatalogBrief(houseRecipes),
     subscription: `${proPlan.name} abre todos los cursos de pago y sube el cupo a ${String(proPlan.quota.questionsPerMonth)} preguntas al mes.${price} Los planes están en la sección Precios de la web y en Mi cuenta dentro de la app.`,
   };
 }
@@ -164,14 +163,14 @@ async function buildCatalog(): Promise<AssistantCatalog> {
 function mentionedFor(
   openRecipe: Recipe | undefined,
   turns: readonly GeminiTurn[],
+  houseRecipes: readonly Recipe[],
 ): { readonly name: string; readonly brief: string } | null {
   if (openRecipe !== undefined) {
     return null;
   }
-  const recipes = getRecipes();
   for (const turn of [...turns].reverse()) {
     const found =
-      turn.role === 'user' ? findMentionedRecipe(turn.text, recipes) : undefined;
+      turn.role === 'user' ? findMentionedRecipe(turn.text, houseRecipes) : undefined;
     if (found !== undefined) {
       return { name: found.name, brief: recipeBrief(found) };
     }
@@ -275,8 +274,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   // La receta la resuelve el SERVIDOR a partir del slug. Lo que no esté entre
   // las 45 del repo no existe: `getRecipeBySlug` devuelve `undefined` y la
   // conversación sigue como asistente general.
+  /*
+    El recetario sale de la base desde el 2026-10-07, pero de la CACHÉ: una
+    consulta por hora para todo el sitio, no una por pregunta. Y nunca lanza:
+    si la base falla, El Charcu contesta sin el contexto de las recetas (como
+    cuando nadie tiene una abierta) en vez de devolver un error.
+  */
+  const houseRecipes = (await recetarioOrLastGood()).map((entry) => entry.recipe);
   const openRecipe =
-    parsed.recipeSlug === null ? undefined : getRecipeBySlug(parsed.recipeSlug);
+    parsed.recipeSlug === null
+      ? undefined
+      : houseRecipes.find((recipe) => recipe.slug === parsed.recipeSlug);
 
   /*
     Y si NO viene de una página de receta, al menos se le dice cómo se llama la
@@ -299,8 +307,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         ? null
         : { name: openRecipe.name, brief: recipeBrief(openRecipe) },
     conversationTitle,
-    catalog: await buildCatalog(),
-    mentionedRecipe: mentionedFor(openRecipe, parsed.turns),
+    catalog: await buildCatalog(houseRecipes),
+    mentionedRecipe: mentionedFor(openRecipe, parsed.turns, houseRecipes),
   });
 
   const result = await generateAnswer(systemPrompt, parsed.turns);
