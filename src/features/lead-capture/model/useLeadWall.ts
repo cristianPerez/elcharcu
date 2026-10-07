@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { QUESTIONS_BEFORE_LEAD, useUsageQuota } from '@/entities/usage-quota';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
+import { startAuthAttempt } from '@/shared/lib/analytics';
 
 import { useAccountSession } from './useAccountSession';
 
@@ -84,6 +85,9 @@ export function useLeadWall(source: LeadWallSource): LeadWallController {
       place: source.place,
       recipe_slug: source.recipeSlug ?? '',
     });
+    // Y abre el intento del embudo del enlace mágico (`auth_modal_opened`):
+    // el origen es esta página, la receta o el home donde chocó con el muro.
+    startAuthAttempt('tercera_pregunta', window.location.pathname);
   }, [isOpen, source.place, source.recipeSlug]);
 
   const needsAccount =

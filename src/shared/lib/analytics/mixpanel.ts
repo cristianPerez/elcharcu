@@ -6,6 +6,21 @@ export type AnalyticsProperties = Record<string, string | number | boolean | und
 
 let isReady = false;
 
+/**
+ * Los eventos que llegan ANTES de que Mixpanel arranque (2026-10-07).
+ *
+ * React corre los efectos de los hijos antes que los del padre, y Mixpanel se
+ * inicia en el efecto de `AppProviders`, que es el padre de todo. Así que lo
+ * que una pantalla mide al montarse —`auth_modal_opened` en `/entrar`— se
+ * perdía sin ruido: `track()` no hacía nada. Ahora espera aquí y sale con
+ * `flushPendingEvents()`, que se llama cuando ya se sabe quién es la persona.
+ */
+const pending: {
+  readonly event: string;
+  readonly properties: AnalyticsProperties | undefined;
+}[] = [];
+const MAX_PENDING = 50;
+
 /** Inicializa Mixpanel (autocapture + grabación de sesión). Idempotente y solo en cliente. */
 export function initMixpanel(): void {
   if (isReady || typeof window === 'undefined' || !analyticsConfig.mixpanelToken) {
@@ -25,10 +40,23 @@ export function initMixpanel(): void {
 /** Envía un evento a Mixpanel. No-op si Mixpanel no se ha inicializado (token ausente). */
 export function track(event: string, properties?: AnalyticsProperties): void {
   if (!isReady) {
+    if (pending.length < MAX_PENDING) {
+      pending.push({ event, properties });
+    }
     return;
   }
   // eslint-disable-next-line import/no-named-as-default-member -- intentional: default Mixpanel instance API, not the named module-level export
   mixpanel.track(event, properties);
+}
+
+/** Manda lo que esperaba a que Mixpanel arrancara. Llamarlo después de identificar. */
+export function flushPendingEvents(): void {
+  if (!isReady) {
+    return;
+  }
+  for (const { event, properties } of pending.splice(0)) {
+    track(event, properties);
+  }
 }
 
 function resolveButtonLabel(element: HTMLElement): string {

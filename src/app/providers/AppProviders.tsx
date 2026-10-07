@@ -2,11 +2,14 @@
 
 import { type ReactNode, useEffect } from 'react';
 
+import { ReturnToOriginTracker } from '@/features/auth-by-email';
+
 import { createSupabaseBrowserClient, isSupabaseConfigured } from '@/shared/api/supabase';
 import {
   adoptVisitorId,
   ANALYTICS_EVENTS,
   attachButtonClickTracking,
+  flushPendingEvents,
   identifyAccount,
   initMixpanel,
   watchBrowserErrors,
@@ -66,6 +69,8 @@ export function AppProviders({ children, visitorId }: AppProvidersProps): ReactN
     initMixpanel();
     // El orden importa: primero arranca Mixpanel, luego se le dice quién es.
     adoptVisitorId(visitorId);
+    // Y ahora sí, lo que las pantallas midieron antes de que arrancara.
+    flushPendingEvents();
 
     // Y si ya tiene cuenta, se enlaza lo que hizo de anónimo con su perfil.
     // Sin esto, el que probó el asistente y el que se registró parecen dos
@@ -86,5 +91,11 @@ export function AppProviders({ children, visitorId }: AppProvidersProps): ReactN
     return attachButtonClickTracking();
   }, [visitorId]);
 
-  return children;
+  return (
+    <>
+      {children}
+      {/* Mide si, tras entrar con el enlace, llegó a donde iba. No pinta nada. */}
+      <ReturnToOriginTracker />
+    </>
+  );
 }

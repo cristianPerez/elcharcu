@@ -7,6 +7,7 @@ import {
   serverSupabaseUrl,
 } from '@/shared/api/supabase/serverConfig';
 import { attachVisitorCookie, ensureVisitorId } from '@/shared/api/visitor';
+import { ROUTE_HEADER } from '@/shared/config';
 
 /**
  * Dos cosas en cada navegación:
@@ -24,6 +25,14 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   // el layout de este mismo render todavía no la vería y el visitante
   // estrenaría identificador en cada recarga.
   request.cookies.set('elcharcu_vid', visitorId);
+
+  // La ruta pedida, para que el layout de la app sepa A DÓNDE iba quien llega
+  // sin sesión y se lo pase a `/entrar` (medición del embudo, 2026-10-07).
+  // Un layout de Next no recibe la ruta; esta cabecera es la forma de dársela.
+  request.headers.set(
+    ROUTE_HEADER,
+    `${request.nextUrl.pathname}${request.nextUrl.search}`,
+  );
 
   let response = NextResponse.next({ request });
 

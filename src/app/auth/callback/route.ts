@@ -1,5 +1,7 @@
 import { type EmailOtpType } from '@supabase/supabase-js';
-import { NextResponse, type NextRequest } from 'next/server';
+import { after, NextResponse, type NextRequest } from 'next/server';
+
+import { authLanding, type AuthLanding } from '@/features/auth-by-email/server';
 
 import { linkVisitorToUser } from '@/entities/usage-quota/server';
 
@@ -54,13 +56,20 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   const supabase = await createSupabaseServerClient();
 
+  // Solo mide: nada de lo que hace `landing` cambia a dónde se redirige.
+  const landing = authLanding(
+    request,
+    code !== null ? 'pkce' : tokenHash !== null ? 'token_hash' : 'ninguno',
+  );
+
   if (code !== null) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
-      return NextResponse.redirect(`${origin}/entrar?error=enlace-vencido`);
+      landing.failed(error.code ?? error.name);
+      return withTracking(landing, `${origin}/entrar?error=enlace-vencido`);
     }
     await adoptAnonymousTrail(request, data.user?.id ?? null);
-    return NextResponse.redirect(`${origin}${conEntrada(next, data.user)}`);
+    return withTracking(landing, `${origin}${conEntrada(next, data.user)}`, data.user);
   }
 
   if (tokenHash !== null && isEmailOtpType(type)) {
@@ -69,13 +78,39 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       token_hash: tokenHash,
     });
     if (error) {
-      return NextResponse.redirect(`${origin}/entrar?error=enlace-vencido`);
+      landing.failed(error.code ?? error.name);
+      return withTracking(landing, `${origin}/entrar?error=enlace-vencido`);
     }
     await adoptAnonymousTrail(request, data.user?.id ?? null);
-    return NextResponse.redirect(`${origin}${conEntrada(next, data.user)}`);
+    return withTracking(landing, `${origin}${conEntrada(next, data.user)}`, data.user);
   }
 
-  return NextResponse.redirect(`${origin}/entrar?error=sin-codigo`);
+  // Sin `code` ni `token_hash`: lo normal es que Supabase rechazara el enlace
+  // antes (vencido o ya usado). El motivo lo deja en el FRAGMENTO de la URL,
+  // que aquí no se ve; lo mide `/entrar` como `auth_link_error`.
+  landing.failed(searchParams.get('error_code') ?? 'sin_codigo');
+  return withTracking(landing, `${origin}/entrar?error=sin-codigo`);
+}
+
+/**
+ * La redirección de siempre, más la medición (2026-10-07).
+ *
+ * Los eventos salen con `after()`: no hacen esperar a nadie para entrar. Y si
+ * entró, deja la cookie con la que el navegador mide si llegó a donde iba
+ * (`returned_to_origin`).
+ */
+function withTracking(
+  landing: AuthLanding,
+  to: string,
+  user?: { readonly created_at?: string } | null,
+): NextResponse {
+  const response = NextResponse.redirect(to);
+  if (user !== undefined) {
+    landing.completed(esCuentaNueva(user));
+    landing.markDone(response);
+  }
+  after(landing.flush);
+  return response;
 }
 
 /**
@@ -95,16 +130,22 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
  * hora, que es precisamente ser nuevo.
  */
 function conEntrada(next: string, user: { created_at?: string } | null): string {
-  if (user?.created_at === undefined) {
+  const esNueva = esCuentaNueva(user);
+  if (esNueva === null) {
     return next;
   }
-
-  const nacio = new Date(user.created_at).getTime();
-  const esNueva = Number.isFinite(nacio) && Date.now() - nacio < 60 * 60 * 1000;
 
   const url = new URL(next, 'https://x.invalid');
   url.searchParams.set('entrada', esNueva ? 'nueva' : 'vuelve');
   return `${url.pathname}${url.search}`;
+}
+
+function esCuentaNueva(user: { created_at?: string } | null | undefined): boolean | null {
+  if (user?.created_at === undefined) {
+    return null;
+  }
+  const nacio = new Date(user.created_at).getTime();
+  return Number.isFinite(nacio) && Date.now() - nacio < 60 * 60 * 1000;
 }
 
 /**
