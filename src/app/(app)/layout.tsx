@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { type ReactNode } from 'react';
 
@@ -11,7 +12,7 @@ import { readQuota } from '@/entities/usage-quota/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
 import { readVisitorIdFromCookies } from '@/shared/api/visitor/server';
-import { appRoutes } from '@/shared/config';
+import { appRoutes, ROUTE_HEADER } from '@/shared/config';
 import { initialsOf } from '@/shared/lib';
 
 interface AppLayoutProps {
@@ -50,7 +51,14 @@ export default async function AppLayout({
   const user = await currentUser();
 
   if (user === null) {
-    redirect(appRoutes.login);
+    // `desde` solo sirve para medir de dónde viene quien tiene que entrar
+    // (cápsula, curso…). A dónde se le manda al entrar no cambia.
+    const desde = (await headers()).get(ROUTE_HEADER);
+    redirect(
+      desde === null || desde === ''
+        ? appRoutes.login
+        : `${appRoutes.login}?desde=${encodeURIComponent(desde)}`,
+    );
   }
 
   /*

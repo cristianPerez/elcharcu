@@ -4,6 +4,7 @@ export {
   initMixpanel,
   track,
   attachButtonClickTracking,
+  flushPendingEvents,
   adoptVisitorId,
   rememberedVisitorId,
   identifyAccount,
