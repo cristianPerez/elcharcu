@@ -3,6 +3,13 @@
 import { useCallback, useState } from 'react';
 
 import { createSupabaseBrowserClient, isSupabaseConfigured } from '@/shared/api/supabase';
+import {
+  ANALYTICS_EVENTS,
+  attemptRedirectParams,
+  attemptVisitorId,
+  ensureAuthAttempt,
+  trackAuthStep,
+} from '@/shared/lib/analytics';
 
 export type EmailAuthState =
   | { readonly status: 'idle' }
@@ -42,11 +49,15 @@ export function useEmailAuth(): EmailAuthController {
     setState({ status: 'sending' });
 
     const supabase = createSupabaseBrowserClient();
+    // El intento une este paso con el aterrizaje, aunque el enlace se abra en
+    // otro navegador. Sus parámetros SE SUMAN a `next`, no lo cambian.
+    const attempt = ensureAuthAttempt('menu_entrar');
+    const tracking = attemptRedirectParams(attempt, attemptVisitorId()).toString();
     const { error } = await supabase.auth.signInWithOtp({
       email: trimmed,
       // Quien entra por `/entrar` también cae dentro de la app.
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=%2Fcharcu`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=%2Fcharcu&${tracking}`,
       },
     });
 
@@ -58,6 +69,7 @@ export function useEmailAuth(): EmailAuthController {
       return;
     }
 
+    trackAuthStep(ANALYTICS_EVENTS.magicLinkRequested, attempt);
     setState({ status: 'sent', email: trimmed });
   }, []);
 

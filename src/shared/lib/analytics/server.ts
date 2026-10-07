@@ -47,3 +47,17 @@ export async function trackServer(
     // Sin red hacia Mixpanel: el evento se pierde y la entrada sigue.
   }
 }
+
+export {
+  ATTEMPT_PARAMS,
+  AUTH_ATTEMPT_COOKIE,
+  AUTH_DONE_COOKIE,
+  decodeAttempt,
+  encodeAttempt,
+  isAuthTrigger,
+  safeAttemptId,
+  safeOrigin,
+} from './authAttempt';
+export type { AuthAttempt, AuthTrigger } from './authAttempt';
+export { browserContextOf } from './userAgent';
+export { ANALYTICS_EVENTS } from './events';
