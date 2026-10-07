@@ -34,7 +34,7 @@ const ITEMS: readonly Item[] = [
 /** El bloque verde "Qué incluye El Charcu" (diseño final 01/02), con su grano. */
 export function IncludesBlock(): ReactNode {
   return (
-    <section className="mx-auto max-w-app px-5 md:px-8">
+    <section className="mx-auto w-full max-w-app px-5 md:px-8">
       <div className="bg-grain rounded-[20px] bg-forest px-6 py-7 md:rounded-[24px] md:px-10 md:py-10">
         <Eyebrow className="text-sage-light">Qué incluye El Charcu</Eyebrow>
         <h2 className="mt-3 max-w-xl font-serif text-[26px] font-semibold leading-tight text-cream-white md:text-[32px]">

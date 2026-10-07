@@ -31,7 +31,7 @@ export function CharcuDemo(): ReactNode {
   };
 
   return (
-    <section className="mx-auto grid max-w-app gap-6 px-5 md:grid-cols-[1fr_1.25fr] md:items-center md:gap-12 md:px-8">
+    <section className="mx-auto grid w-full max-w-app gap-6 px-5 md:grid-cols-[1fr_1.25fr] md:items-center md:gap-12 md:px-8">
       <div>
         <Eyebrow className="text-brasa-tinta">Pruébalo ahora</Eyebrow>
         <h2 className="mt-3 font-serif text-[26px] font-semibold leading-tight text-forest md:text-[30px]">

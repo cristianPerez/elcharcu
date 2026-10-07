@@ -118,7 +118,10 @@ export function PlansSection(): ReactNode {
   const [activeId, setActiveId] = useState<Plan['id']>('pro');
 
   return (
-    <section aria-labelledby="planes-title" className="mx-auto max-w-app px-5 md:px-8">
+    <section
+      aria-labelledby="planes-title"
+      className="mx-auto w-full max-w-app px-5 md:px-8"
+    >
       <h2
         id="planes-title"
         className="font-serif text-2xl font-semibold text-forest md:text-center md:text-[32px]"

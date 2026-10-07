@@ -34,7 +34,10 @@ export function MasterCoursesPreview({
   }
 
   return (
-    <section aria-labelledby="maestros-title" className="mx-auto max-w-app px-5 md:px-8">
+    <section
+      aria-labelledby="maestros-title"
+      className="mx-auto w-full max-w-app px-5 md:px-8"
+    >
       <div className="flex items-baseline justify-between gap-3">
         <div className="flex flex-col md:flex-row md:items-baseline md:gap-3">
           <h2

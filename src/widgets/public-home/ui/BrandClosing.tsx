@@ -9,7 +9,7 @@ const STATS = [
 /** El cierre de marca de la portada (diseño final 01/02). */
 export function BrandClosing(): ReactNode {
   return (
-    <section className="mx-auto max-w-app px-5 text-center md:px-8">
+    <section className="mx-auto w-full max-w-app px-5 text-center md:px-8">
       <blockquote className="font-serif text-[26px] italic leading-snug text-forest md:text-[30px]">
         “El tiempo también es un ingrediente.”
       </blockquote>

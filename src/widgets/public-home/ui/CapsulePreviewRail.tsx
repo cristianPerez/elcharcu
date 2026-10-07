@@ -17,7 +17,10 @@ export function CapsulePreviewRail({ capsules }: CapsulePreviewRailProps): React
   }
 
   return (
-    <section aria-labelledby="empieza-title" className="mx-auto max-w-app px-5 md:px-8">
+    <section
+      aria-labelledby="empieza-title"
+      className="mx-auto w-full max-w-app px-5 md:px-8"
+    >
       <div className="flex flex-col gap-1 md:flex-row md:items-baseline md:gap-3">
         <h2 id="empieza-title" className="font-serif text-2xl font-semibold text-forest">
           Empieza por aquí
