@@ -35,6 +35,11 @@ export interface SignupRequest {
   readonly returnLabel: string;
   /** "Crea tu cuenta gratis para empezar", salvo en la 3.ª pregunta o Avísame. */
   readonly heading?: string | undefined;
+  /**
+   * `entrar`: quien ya tiene cuenta ("Entrar" del menú). Es el MISMO paso —el
+   * enlace al correo—, pero sin la lista de lo que trae la cuenta gratis.
+   */
+  readonly intent?: 'crear' | 'entrar' | undefined;
 }
 
 interface SignupPromptValue {

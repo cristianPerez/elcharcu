@@ -83,6 +83,7 @@ export function SignupDialog(): ReactNode {
       ) : (
         <SignupStepEmail
           heading={request.heading ?? DEFAULT_HEADING}
+          isSignIn={request.intent === 'entrar'}
           initialEmail={email}
           isSending={state.status === 'sending'}
           error={state.status === 'error' ? state.message : null}

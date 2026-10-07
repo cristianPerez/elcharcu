@@ -81,6 +81,7 @@ function AccountArea({ viewer }: { readonly viewer: ResolvedViewer }): ReactNode
       <div className="flex items-center gap-2">
         <Link
           href={appRoutes.login}
+          data-signup-trigger="menu_entrar"
           className="flex min-h-11 items-center rounded-full px-4 text-sm font-semibold text-brasa-tinta hover:bg-cream-white"
         >
           Entrar

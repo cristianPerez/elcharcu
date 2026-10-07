@@ -15,6 +15,23 @@ const CREATE_ACCOUNT: SignupRequest = {
   returnLabel: 'tus cursos',
 };
 
+/**
+ * "Entrar" del menú (la pestaña en el celular, el enlace en escritorio): la
+ * misma hoja, en modo entrar, y el enlace vuelve a la página donde estaba. Así
+ * en el celular no se sale de la app ni pierde las pestañas (2026-10-07).
+ */
+function signInRequest(): SignupRequest {
+  return {
+    trigger: 'menu_entrar',
+    intent: 'entrar',
+    eyebrow: 'El Charcu',
+    title: 'Entrar a tu cuenta',
+    heading: 'Entra con tu correo',
+    destination: `${window.location.pathname}${window.location.search}`,
+    returnLabel: 'donde estabas',
+  };
+}
+
 interface SignupInterceptorProps {
   /** Solo sin sesión: con cuenta, los enlaces llevan a donde dicen. */
   readonly isActive: boolean;
@@ -76,9 +93,12 @@ export function SignupInterceptor({
       return;
     }
 
+    const trigger = anchor.dataset.signupTrigger;
     const request =
-      targets.get(url.pathname) ??
-      (anchor.dataset.signupTrigger === 'crear_cuenta' ? CREATE_ACCOUNT : undefined);
+      trigger === 'menu_entrar'
+        ? signInRequest()
+        : (targets.get(url.pathname) ??
+          (trigger === 'crear_cuenta' ? CREATE_ACCOUNT : undefined));
     if (request === undefined) {
       return;
     }

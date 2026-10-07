@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type ReactNode } from 'react';
 
+import { appRoutes } from '@/shared/config';
 import { cn } from '@/shared/lib';
 import { NavPending } from '@/shared/ui';
 
@@ -33,7 +34,8 @@ export function BottomNav({ viewer }: BottomNavProps): ReactNode {
   // Mientras se resuelve la sesión en una página estática, la cuarta pestaña
   // dice "Cuenta" y no "Entrar": invitar a entrar a quien ya entró es peor que
   // el caso contrario, que se corrige en un instante.
-  const tabs = [...MAIN_TABS, accountTab(viewer.isSignedIn || viewer.isPending)];
+  const isAnonymous = !viewer.isSignedIn && !viewer.isPending;
+  const tabs = [...MAIN_TABS, accountTab(!isAnonymous)];
 
   return (
     <nav
@@ -48,6 +50,11 @@ export function BottomNav({ viewer }: BottomNavProps): ReactNode {
             <Link
               key={href}
               href={href}
+              // Sin sesión, "Entrar" abre la hoja aquí mismo (SignupInterceptor):
+              // no se sale de la app. El enlace a /entrar queda de respaldo.
+              data-signup-trigger={
+                isAnonymous && href === appRoutes.login ? 'menu_entrar' : undefined
+              }
               aria-current={isActive ? 'page' : undefined}
               className={cn(
                 'relative flex min-w-16 flex-1 flex-col items-center justify-center gap-1',

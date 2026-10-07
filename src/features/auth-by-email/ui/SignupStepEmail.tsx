@@ -12,6 +12,8 @@ const PERKS = [
 
 interface SignupStepEmailProps {
   readonly heading: string;
+  /** Entrar a una cuenta que ya existe: sin la lista de lo que trae. */
+  readonly isSignIn: boolean;
   readonly initialEmail: string;
   readonly isSending: boolean;
   readonly error: string | null;
@@ -21,6 +23,7 @@ interface SignupStepEmailProps {
 /** Paso 1 (diseño final 03/05): qué trae la cuenta, el correo y el botón. */
 export function SignupStepEmail({
   heading,
+  isSignIn,
   initialEmail,
   isSending,
   error,
@@ -39,14 +42,20 @@ export function SignupStepEmail({
       <p className="font-serif text-[28px] font-semibold leading-tight text-forest md:text-[26px]">
         {heading}
       </p>
-      <ul className="mt-4 flex flex-col gap-2.5">
-        {PERKS.map((perk) => (
-          <li key={perk} className="flex gap-2.5 text-[15px] text-cocoa">
-            <IconCheck size={17} className="mt-0.5 shrink-0 text-forest" />
-            {perk}
-          </li>
-        ))}
-      </ul>
+      {isSignIn ? (
+        <p className="mt-2 text-[15px] text-cocoa-soft">
+          Te mandamos un enlace para entrar, sin contraseña.
+        </p>
+      ) : (
+        <ul className="mt-4 flex flex-col gap-2.5">
+          {PERKS.map((perk) => (
+            <li key={perk} className="flex gap-2.5 text-[15px] text-cocoa">
+              <IconCheck size={17} className="mt-0.5 shrink-0 text-forest" />
+              {perk}
+            </li>
+          ))}
+        </ul>
+      )}
       <label htmlFor={inputId} className="mt-5 block text-sm text-cocoa-soft">
         Tu correo
       </label>
@@ -76,7 +85,9 @@ export function SignupStepEmail({
         {isSending ? 'Enviando…' : 'Enviarme el enlace'}
       </button>
       <p className="mt-4 text-center text-sm text-cocoa-soft">
-        No pedimos contraseña ni tarjeta. Si ya tienes cuenta, es el mismo paso.
+        {isSignIn
+          ? '¿Aún no tienes cuenta? Se crea gratis con este mismo paso.'
+          : 'No pedimos contraseña ni tarjeta. Si ya tienes cuenta, es el mismo paso.'}
       </p>
     </form>
   );
