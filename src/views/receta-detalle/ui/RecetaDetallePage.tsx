@@ -1,8 +1,8 @@
 import { type ReactNode } from 'react';
 
+import { AppFooter } from '@/widgets/app-footer';
 import { AppFrame } from '@/widgets/app-frame';
 import { RecipeDetail } from '@/widgets/recipe-detail';
-import { SiteFooter } from '@/widgets/site-footer';
 
 import { type Recipe } from '@/entities/recipe';
 
@@ -21,7 +21,7 @@ export function RecetaDetallePage({ recipe }: RecetaDetallePageProps): ReactNode
   return (
     <AppFrame viewer={{ kind: 'client' }} layout="bleed">
       <RecipeDetail recipe={recipe} />
-      <SiteFooter />
+      <AppFooter />
     </AppFrame>
   );
 }

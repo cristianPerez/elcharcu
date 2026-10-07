@@ -783,7 +783,7 @@ export type Database = {
         Returns: undefined;
       };
       registrar_receta_recibida: {
-        Args: { p_slug: string; p_user_id: string; p_visitor_id: string };
+        Args: { p_slug: string; p_user_id?: string; p_visitor_id?: string };
         Returns: undefined;
       };
       save_lesson_progress: {

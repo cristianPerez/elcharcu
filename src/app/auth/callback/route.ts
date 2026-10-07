@@ -3,6 +3,7 @@ import { after, NextResponse, type NextRequest } from 'next/server';
 
 import { authLanding, type AuthLanding } from '@/features/auth-by-email/server';
 
+import { linkReceivedRecipes } from '@/entities/recipe/server';
 import { linkVisitorToUser } from '@/entities/usage-quota/server';
 
 import { createSupabaseServerClient } from '@/shared/api/supabase/server';
@@ -179,4 +180,8 @@ async function adoptAnonymousTrail(
     detrás del login en la 0016. Desde entonces no la escribía nadie.
   */
   await linkVisitorToUser(visitorId, userId);
+
+  // Y las recetas que abrió por link sin cuenta pasan a "Las que te llegaron"
+  // de su cuenta (2026-10-07). Si falla, no corta la entrada.
+  await linkReceivedRecipes(visitorId, userId).catch(() => {});
 }

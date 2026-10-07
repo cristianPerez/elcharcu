@@ -1,15 +1,21 @@
 import { type ReactNode } from 'react';
 
-import { publishedCourseSlugs } from '@/entities/course/server';
+import { SignupTargets } from '@/features/auth-by-email';
+
+import { publicCatalog } from '@/entities/course/server';
 import { type Recipe } from '@/entities/recipe';
+import { getRecetarioEntry } from '@/entities/recipe/server';
 
 import { recipeDoubts } from '../lib/recipeDoubts';
+import { recipeSignupTargets } from '../lib/recipeSignupTargets';
 import { RecipeAssistantProvider } from '../model/RecipeAssistantProvider';
 
-import { RecipeClosing } from './RecipeClosing';
+import { RecipeCapsuleCard } from './RecipeCapsuleCard';
 import { RecipeCooking } from './RecipeCooking';
+import { RecipeCourseWidget } from './RecipeCourseWidget';
 import { RecipeHero } from './RecipeHero';
 import { RecipeIngredients } from './RecipeIngredients';
+import { RecipeLinkTracker } from './RecipeLinkTracker';
 import { RecipeOverview } from './RecipeOverview';
 import { RecipePreparation } from './RecipePreparation';
 import { RecipeQuote } from './RecipeQuote';
@@ -23,15 +29,29 @@ interface RecipeDetailProps {
 /** Cuerpo completo de la página de receta, compuesto por secciones. */
 export async function RecipeDetail({ recipe }: RecipeDetailProps): Promise<ReactNode> {
   /*
-    Qué cursos están grabados se resuelve al COMPILAR, no en cada visita.
-
-    Se lee una sola vez para las 45 recetas (`cache()` de React) y sin tocar
-    cookies, que es lo que permite que estas páginas sigan siendo estáticas.
-    Si no hay curso grabado para esta receta, `courseSlug` es `null` y el cierre
-    ofrece la cuenta en su lugar.
+    El curso y la cápsula de esta receta se resuelven al COMPILAR (y al
+    regenerar), no en cada visita: el recetario sale de su caché y el
+    catálogo, de memoria, los dos sin tocar cookies. Así la página sigue
+    siendo estática (diseño final 07, 2026-10-07).
   */
-  const publicados = await publishedCourseSlugs();
-  const courseSlug = publicados.has(recipe.slug) ? recipe.slug : null;
+  const [entry, catalog] = await Promise.all([
+    getRecetarioEntry(recipe.slug),
+    publicCatalog(),
+  ]);
+  const course = catalog.masters.find((item) => item.slug === entry?.courseSlug) ?? null;
+  const capsuleIndex = catalog.capsules.findIndex(
+    (item) => item.slug === entry?.capsuleSlug,
+  );
+  const capsule = capsuleIndex === -1 ? null : (catalog.capsules[capsuleIndex] ?? null);
+
+  // Sin cuenta, el curso y la cápsula abren la hoja de crear cuenta aquí
+  // mismo, y al entrar vuelven a ellos.
+  const signupTargets = recipeSignupTargets(
+    course,
+    capsule,
+    capsuleIndex,
+    catalog.capsules.length,
+  );
 
   // Se calculan aquí, en el servidor, y bajan ya resueltas: las dos secciones
   // solo reciben la frase que les toca y no tienen que saber nada de cómo se
@@ -42,6 +62,8 @@ export async function RecipeDetail({ recipe }: RecipeDetailProps): Promise<React
     <RecipeAssistantProvider slug={recipe.slug} name={recipe.name}>
       <article>
         <RecipeViewTracker slug={recipe.slug} name={recipe.name} tags={recipe.tags} />
+        <RecipeLinkTracker slug={recipe.slug} />
+        <SignupTargets targets={signupTargets} />
         <RecipeHero
           eyebrow={recipe.eyebrow}
           name={recipe.name}
@@ -86,11 +108,27 @@ export async function RecipeDetail({ recipe }: RecipeDetailProps): Promise<React
             size="md"
           />
 
-          {/* La oferta va LA ÚLTIMA y solo una vez: ya leyó la receta entera,
-              así que es el único punto de la página donde pedir algo no
-              interrumpe nada. */}
-          <div className="mt-10">
-            <RecipeClosing recipeName={recipe.name} courseSlug={courseSlug} />
+          {/* El final de la receta (diseño final 07): el curso que la enseña y
+              la cápsula que ayuda a hacerla. Sin Pro no hay "recetas
+              parecidas": termina en lo que enseña, no en más recetas. */}
+          <div className="mt-10 flex flex-col gap-4">
+            <RecipeCourseWidget
+              recipeSlug={recipe.slug}
+              recipeName={recipe.name}
+              recipeImage={recipe.image}
+              course={
+                course === null
+                  ? null
+                  : { slug: course.slug, title: course.title, coverUrl: course.coverUrl }
+              }
+            />
+            {capsule === null ? null : (
+              <RecipeCapsuleCard
+                slug={capsule.slug}
+                title={capsule.title}
+                number={capsuleIndex + 1}
+              />
+            )}
           </div>
         </RecipeSection>
       </article>

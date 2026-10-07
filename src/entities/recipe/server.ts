@@ -16,3 +16,8 @@ export {
   recetarioOrLastGood,
   RECETARIO_CACHE_TAG,
 } from './api/recipeApi';
+export {
+  linkReceivedRecipes,
+  receivedRecipeSlugs,
+  recordReceivedRecipe,
+} from './api/receivedApi';
