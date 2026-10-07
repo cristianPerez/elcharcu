@@ -13,7 +13,7 @@ export function IngredientRow({ ingredient }: IngredientRowProps): ReactNode {
       <span className="text-sm text-cocoa">{ingredient.name}</span>
       <span className="flex shrink-0 gap-2.5 text-[15px] text-cocoa/70">
         <span>{ingredient.amount}</span>
-        <span className="font-semibold text-terracota">{ingredient.pct}</span>
+        <span className="font-semibold text-brasa-tinta">{ingredient.pct}</span>
       </span>
     </div>
   );
