@@ -244,23 +244,46 @@ export const publishedCourseSlugs = cache(async (): Promise<ReadonlySet<string>>
  * administración porque esa persona todavía no tiene sesión; solo salen dos
  * campos que el catálogo público ya enseña.
  */
-export const courseKindBySlug = cache(
-  async (
-    slug: string,
-  ): Promise<{ readonly kind: CourseKind; readonly access: CourseAccess } | null> => {
+type CourseKindInfo = { readonly kind: CourseKind; readonly access: CourseAccess };
+
+/** Cada cuánto se vuelve a leer qué es cada curso. Cambia casi nunca. */
+const KIND_TTL_MS = 5 * 60 * 1000;
+
+let kindMemo: {
+  readonly at: number;
+  readonly bySlug: ReadonlyMap<string, CourseKindInfo>;
+} | null = null;
+
+export async function courseKindBySlug(slug: string): Promise<CourseKindInfo | null> {
+  /*
+    ⚠️ Una consulta por TODOS los cursos, recordada 5 minutos, y no una por
+    visita. La primera versión consultaba el curso cada vez que alguien caía
+    en `/entrar?desde=…` y le sumaba unos 300 ms a esa pantalla, que es
+    justo la que no puede ir lenta (2026-10-07).
+  */
+  const now = Date.now();
+  if (kindMemo === null || now - kindMemo.at >= KIND_TTL_MS) {
     if (!isSupabaseAdminConfigured()) {
       return null;
     }
-    const { data } = await createSupabaseAdminClient()
+    const { data, error } = await createSupabaseAdminClient()
       .from('courses')
-      .select('kind, access')
-      .eq('slug', slug)
-      .maybeSingle();
-    return data === null
-      ? null
-      : { kind: toKind(data.kind), access: toAccess(data.access) };
-  },
-);
+      .select('slug, kind, access');
+    if (error !== null || data === null) {
+      return kindMemo?.bySlug.get(slug) ?? null;
+    }
+    kindMemo = {
+      at: now,
+      bySlug: new Map(
+        data.map((row) => [
+          row.slug,
+          { kind: toKind(row.kind), access: toAccess(row.access) },
+        ]),
+      ),
+    };
+  }
+  return kindMemo.bySlug.get(slug) ?? null;
+}
 
 /** Lo que El Charcu necesita saber de un curso para poder recomendarlo. */
 export interface AssistantCourse {
