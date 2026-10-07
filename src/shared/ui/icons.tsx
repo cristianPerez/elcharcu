@@ -343,3 +343,23 @@ export function IconPencil(props: IconProps): ReactNode {
     </Svg>
   );
 }
+
+/** Un sobre: "Revisa tu correo" (hoja de crear cuenta, 2026-10-07). */
+export function IconMail(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" />
+      <path d="m4.5 7.5 7.5 5.5 7.5-5.5" />
+    </Svg>
+  );
+}
+
+/** Una "i" en un círculo: avisos que explican, no que alarman. */
+export function IconInfo(props: IconProps): ReactNode {
+  return (
+    <Svg {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 11v5M12 8h.01" />
+    </Svg>
+  );
+}

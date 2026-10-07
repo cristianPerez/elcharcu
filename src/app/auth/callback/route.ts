@@ -7,7 +7,7 @@ import { linkVisitorToUser } from '@/entities/usage-quota/server';
 
 import { createSupabaseServerClient } from '@/shared/api/supabase/server';
 import { readVisitorId } from '@/shared/api/visitor';
-import { appRoutes } from '@/shared/config';
+import { safeDestination } from '@/shared/lib/access';
 
 const EMAIL_OTP_TYPES: readonly EmailOtpType[] = [
   'email',
@@ -30,10 +30,9 @@ function isEmailOtpType(value: string | null): value is EmailOtpType {
  * fuera del dominio — con la sesión recién creada, que es lo peor posible.
  */
 function safeNext(value: string | null): string {
-  if (value === null || !value.startsWith('/') || value.startsWith('//')) {
-    return appRoutes.appAssistant;
-  }
-  return value;
+  // Desde el 2026-10-07 la regla vive en `shared/lib/access` y además rechaza
+  // `/\otro.co`, que algunos navegadores leen como `//otro.co`.
+  return safeDestination(value);
 }
 
 /**

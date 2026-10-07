@@ -49,6 +49,12 @@ interface AppLayoutProps {
 /** Las rutas de la app que se ven sin cuenta. */
 const PUBLIC_APP_ROUTES: ReadonlySet<string> = new Set(['/', appRoutes.appCourses]);
 
+/** `/cursos/<slug>` y sus lecciones (no la búsqueda ni "Ver todos"). */
+function isCourseRoute(route: string | null): boolean {
+  const pathname = (route ?? '').split('?')[0] ?? '';
+  return /^\/cursos\/(?!buscar(\/|$)|maestros(\/|$))[a-z0-9-]+/.test(pathname);
+}
+
 function isPublicAppRoute(route: string | null): boolean {
   const pathname = (route ?? '').split('?')[0] ?? '';
   return PUBLIC_APP_ROUTES.has(pathname);
@@ -72,8 +78,14 @@ export default async function AppLayout({
       );
     }
 
+    // Una cápsula o un curso abierto directo (un enlace compartido): a la
+    // portada, que abre la hoja de crear cuenta con ese destino.
+    if (isCourseRoute(desde)) {
+      redirect(`${appRoutes.appCourses}?abrir=${encodeURIComponent(desde ?? '')}`);
+    }
+
     // El resto pide cuenta. `desde` solo sirve para medir de dónde viene
-    // quien tiene que entrar (cápsula, curso…).
+    // quien tiene que entrar.
     redirect(
       desde === null || desde === ''
         ? appRoutes.login

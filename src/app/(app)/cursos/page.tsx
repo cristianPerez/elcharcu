@@ -15,6 +15,7 @@ import {
 import { hasActiveSubscription } from '@/entities/subscription/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
+import { safeDestination } from '@/shared/lib/access';
 
 /**
  * Cursos es el inicio (diseño final, 2026-10-07): sin sesión se ve la portada
@@ -32,13 +33,25 @@ export async function generateMetadata(): Promise<Metadata> {
     : { title: 'Mis cursos · El Charcu' };
 }
 
-export default async function CursosPage(): Promise<ReactNode> {
+export default async function CursosPage({
+  searchParams,
+}: {
+  readonly searchParams: Promise<{ readonly abrir?: string | string[] }>;
+}): Promise<ReactNode> {
   // Sin viaje extra: el layout ya preguntó quién es y `currentUser()` está
   // deduplicado dentro de la misma petición.
   const userId = (await currentUser())?.id ?? null;
 
   if (userId === null) {
-    return <PublicCursosView catalog={await publicCatalog()} />;
+    // `?abrir=` lo pone el layout cuando alguien sin cuenta llega directo a una
+    // cápsula o un curso: la portada abre la hoja con ese destino.
+    const { abrir } = await searchParams;
+    return (
+      <PublicCursosView
+        catalog={await publicCatalog()}
+        openOnMount={typeof abrir === 'string' ? safeDestination(abrir) : null}
+      />
+    );
   }
 
   // Todo a la vez: son independientes y encadenarlas solo suma espera en un

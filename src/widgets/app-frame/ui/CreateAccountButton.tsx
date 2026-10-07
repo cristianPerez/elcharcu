@@ -10,8 +10,8 @@ interface CreateAccountButtonProps {
 }
 
 /**
- * "Crear cuenta gratis" del menú. Por ahora lleva a `/entrar`; con la hoja de
- * crear cuenta (bloque 3) la abre en el sitio.
+ * "Crear cuenta gratis" del menú. Es un enlace a `/entrar`, pero sin sesión
+ * `SignupInterceptor` lo detiene y abre la hoja de crear cuenta en el sitio.
  */
 export function CreateAccountButton({
   label,
@@ -20,6 +20,7 @@ export function CreateAccountButton({
   return (
     <Link
       href={appRoutes.login}
+      data-signup-trigger="crear_cuenta"
       className={cn(
         'inline-flex min-h-11 items-center rounded-full bg-brasa px-5 text-sm font-semibold text-cocoa transition-colors hover:bg-brasa-dark',
         className,

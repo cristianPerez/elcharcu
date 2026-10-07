@@ -11,8 +11,8 @@ interface SignupLinkProps {
 }
 
 /**
- * El botón de crear cuenta de la portada. Lleva a `/entrar`; la hoja de crear
- * cuenta (bloque 3) lo intercepta y la abre en el sitio.
+ * El botón de crear cuenta de la portada. Es un enlace a `/entrar`; sin sesión
+ * `SignupInterceptor` lo detiene y abre la hoja de crear cuenta en el sitio.
  */
 export function SignupLink({
   children,

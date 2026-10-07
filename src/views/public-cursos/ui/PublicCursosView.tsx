@@ -10,12 +10,17 @@ import {
   MobileTopBar,
   PlansSection,
   PublicHero,
+  signupTargetsFor,
 } from '@/widgets/public-home';
+
+import { SignupTargets } from '@/features/auth-by-email';
 
 import { type PublicCatalog } from '@/entities/course/server';
 
 interface PublicCursosViewProps {
   readonly catalog: PublicCatalog;
+  /** `?abrir=`: llegó a una cápsula o curso sin cuenta; se abre la hoja. */
+  readonly openOnMount: string | null;
 }
 
 /**
@@ -25,9 +30,16 @@ interface PublicCursosViewProps {
  *
  * Solo composición: cada sección es un widget.
  */
-export function PublicCursosView({ catalog }: PublicCursosViewProps): ReactNode {
+export function PublicCursosView({
+  catalog,
+  openOnMount,
+}: PublicCursosViewProps): ReactNode {
   return (
     <div className="flex flex-col gap-12 md:gap-20">
+      <SignupTargets
+        targets={signupTargetsFor(catalog.capsules, catalog.masters)}
+        openOnMount={openOnMount}
+      />
       <div>
         <MobileTopBar />
         <PublicHero

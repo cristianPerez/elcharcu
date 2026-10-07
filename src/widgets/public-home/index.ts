@@ -6,3 +6,4 @@ export { IncludesBlock } from './ui/IncludesBlock';
 export { CharcuDemo } from './ui/CharcuDemo';
 export { PlansSection } from './ui/PlansSection';
 export { BrandClosing } from './ui/BrandClosing';
+export { signupTargetsFor } from './lib/signupTargets';

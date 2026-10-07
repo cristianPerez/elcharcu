@@ -35,6 +35,7 @@ export type AuthTrigger =
   | 'tercera_pregunta'
   | 'avisame'
   | 'menu_entrar'
+  | 'crear_cuenta'
   | 'app';
 
 const TRIGGERS: readonly AuthTrigger[] = [
@@ -44,6 +45,7 @@ const TRIGGERS: readonly AuthTrigger[] = [
   'tercera_pregunta',
   'avisame',
   'menu_entrar',
+  'crear_cuenta',
   'app',
 ];
 

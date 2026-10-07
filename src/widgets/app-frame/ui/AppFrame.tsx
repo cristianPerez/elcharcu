@@ -2,6 +2,12 @@
 
 import { type ReactNode } from 'react';
 
+import {
+  SignupDialog,
+  SignupInterceptor,
+  SignupPromptProvider,
+} from '@/features/auth-by-email';
+
 import { type FrameViewer, useFrameViewer } from '../model/viewer';
 
 import { BottomNav } from './BottomNav';
@@ -29,10 +35,17 @@ export function AppFrame({
   const resolved = useFrameViewer(viewer);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-cream">
-      <TopNav viewer={resolved} />
-      <FrameMain layout={layout}>{children}</FrameMain>
-      <BottomNav viewer={resolved} />
-    </div>
+    // La hoja de crear cuenta vive aquí, en lo común a todas las pantallas:
+    // la abre una cápsula, la 3.ª pregunta, "Avísame" o el menú.
+    <SignupPromptProvider>
+      <SignupInterceptor isActive={!resolved.isSignedIn && !resolved.isPending}>
+        <div className="flex min-h-dvh flex-col bg-cream">
+          <TopNav viewer={resolved} />
+          <FrameMain layout={layout}>{children}</FrameMain>
+          <BottomNav viewer={resolved} />
+        </div>
+      </SignupInterceptor>
+      <SignupDialog />
+    </SignupPromptProvider>
   );
 }
