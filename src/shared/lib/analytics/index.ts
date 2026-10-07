@@ -1,4 +1,9 @@
-export { initMixpanel, track, attachButtonClickTracking } from './mixpanel';
+export {
+  initMixpanel,
+  track,
+  attachButtonClickTracking,
+  flushPendingEvents,
+} from './mixpanel';
 export type { AnalyticsProperties } from './mixpanel';
 export { adoptVisitorId, rememberedVisitorId, identifyAccount } from './identity';
 export { ANALYTICS_EVENTS } from './events';
@@ -10,7 +15,8 @@ export {
   currentAuthAttempt,
   ensureAuthAttempt,
   startAuthAttempt,
-  takeAuthDone,
+  peekAuthDone,
+  clearAuthDone,
   trackAuthStep,
 } from './authAttemptClient';
 export { attemptRedirectParams, isAuthTrigger, safeOrigin } from './authAttempt';

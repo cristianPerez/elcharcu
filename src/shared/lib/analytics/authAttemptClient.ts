@@ -83,27 +83,25 @@ export function attemptVisitorId(): string | null {
 }
 
 /**
- * Lo que dejó el callback al entrar: a dónde quería ir y cómo entró. Se lee una
- * vez y se borra.
+ * Lo que dejó el callback al entrar: a dónde quería ir y si entró en el mismo
+ * navegador. Se LEE sin borrar: la primera página tras entrar hoy es siempre
+ * `/charcu`, y lo que se quiere saber es si en algún momento llega a su origen.
  */
-export function takeAuthDone(): {
+export function peekAuthDone(): {
   readonly attempt: AuthAttempt;
   readonly sameBrowser: boolean | null;
 } | null {
   const raw = readCookie(AUTH_DONE_COOKIE);
-  if (raw === null) {
+  if (raw === null || raw === '') {
     return null;
   }
-  writeCookie(AUTH_DONE_COOKIE, '', 0);
   try {
     const parsed: unknown = JSON.parse(decodeURIComponent(raw));
     if (typeof parsed !== 'object' || parsed === null) {
       return null;
     }
     const { attempt, sameBrowser } = parsed as Record<string, unknown>;
-    const decoded = decodeAttempt(
-      typeof attempt === 'string' ? attempt : encodeURIComponent(JSON.stringify(attempt)),
-    );
+    const decoded = decodeAttempt(encodeURIComponent(JSON.stringify(attempt)));
     if (decoded === null) {
       return null;
     }
@@ -114,4 +112,9 @@ export function takeAuthDone(): {
   } catch {
     return null;
   }
+}
+
+/** Ya se midió (o ya no se va a medir): se borra. */
+export function clearAuthDone(): void {
+  writeCookie(AUTH_DONE_COOKIE, '', 0);
 }
