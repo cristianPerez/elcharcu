@@ -79,12 +79,16 @@ export default async function AppLayout({
       // El Charcu sin cuenta necesita su cupo (el del visitante): las dos
       // preguntas gratis se cuentan por navegador.
       // Solo ahí: la portada no paga una consulta que no usa.
-      const isChat = (desde ?? '').split('?')[0] === appRoutes.appAssistant;
+      const pathname = (desde ?? '').split('?')[0] ?? '';
+      const isChat = pathname === appRoutes.appAssistant;
+      // Solo la portada va a sangre; el resto (Cursos maestros) lleva los
+      // márgenes de siempre, como con sesión. El chat se pone a sangre solo.
+      const isHome = pathname === '/' || pathname === appRoutes.appCourses;
       const anonVisitor = isChat ? await readVisitorIdFromCookies() : null;
       const anonQuota = anonVisitor === null ? null : await readQuota(anonVisitor, null);
       return (
         <QuotaProvider initial={anonQuota}>
-          <AppFrame viewer={{ kind: 'anon' }} layout="bleed">
+          <AppFrame viewer={{ kind: 'anon' }} layout={isHome ? 'bleed' : 'contained'}>
             {children}
           </AppFrame>
         </QuotaProvider>
