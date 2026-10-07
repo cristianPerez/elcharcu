@@ -111,7 +111,7 @@ export async function RecipeDetail({ recipe }: RecipeDetailProps): Promise<React
           {/* El final de la receta (diseño final 07): el curso que la enseña y
               la cápsula que ayuda a hacerla. Sin Pro no hay "recetas
               parecidas": termina en lo que enseña, no en más recetas. */}
-          <div className="mt-10 flex flex-col gap-4">
+          <div data-testid="recipe-ending" className="mt-10 flex flex-col gap-4">
             <RecipeCourseWidget
               recipeSlug={recipe.slug}
               recipeName={recipe.name}

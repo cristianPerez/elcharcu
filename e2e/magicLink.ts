@@ -28,14 +28,17 @@ export function canReadEmailTokens(): boolean {
 }
 
 async function sql(query: string): Promise<unknown> {
-  const res = await fetch(`https://api.supabase.com/v1/projects/${QA_REF}/database/query`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN ?? ''}`,
-      'Content-Type': 'application/json',
+  const res = await fetch(
+    `https://api.supabase.com/v1/projects/${QA_REF}/database/query`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN ?? ''}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query, read_only: true }),
     },
-    body: JSON.stringify({ query, read_only: true }),
-  });
+  );
   return res.json();
 }
 
@@ -71,7 +74,8 @@ export async function requestMagicLink(page: Page, email: string): Promise<strin
   });
 
   for (let intento = 0; intento < 2; intento += 1) {
-    await page.locator('#email').fill(email);
+    // Sirve en `/entrar` y en la hoja de crear cuenta (diseño final 03–06).
+    await page.locator('input[type="email"]:visible').fill(email);
     await page.getByRole('button', { name: /enlace/i }).click();
     const sent = await page
       .getByText('Revisa tu correo')
@@ -98,7 +102,9 @@ export async function emailLinkFor(email: string, redirectTo: string): Promise<s
         from auth.one_time_tokens t join auth.users u on u.id = t.user_id
        where u.email = '${email.replace(/'/g, "''")}'
        order by t.created_at desc limit 1`);
-    const row = Array.isArray(rows) ? (rows[0] as Record<string, unknown> | undefined) : undefined;
+    const row = Array.isArray(rows)
+      ? (rows[0] as Record<string, unknown> | undefined)
+      : undefined;
     if (row !== undefined && typeof row.token_hash === 'string') {
       const type = row.token_type === 'confirmation_token' ? 'signup' : 'magiclink';
       const base = process.env.SUPABASE_URL ?? '';

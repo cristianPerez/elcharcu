@@ -74,6 +74,7 @@ export function Dialog({
         }
       }}
       aria-labelledby={titleId}
+      aria-modal="true"
       className={cn(
         'bg-cream-white p-0 text-cocoa backdrop:bg-cocoa/40',
         placement === 'center' && 'w-[min(92vw,460px)] rounded-card',
