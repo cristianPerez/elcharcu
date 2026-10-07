@@ -3,119 +3,31 @@
 import { useState, type ReactNode } from 'react';
 
 import {
-  formatUsd,
+  DEFAULT_BILLING_CYCLE,
   freePlan,
   maestroPlan,
-  planWhatsappHref,
   priceFor,
   proPlan,
+  type BillingCycle,
   type Plan,
 } from '@/entities/plan';
 
 import { cn } from '@/shared/lib';
-import { IconCheck } from '@/shared/ui';
 
-import { SignupLink } from './SignupLink';
-
-/** "US$ 7,49" → "US$7,49", como en el diseño. */
-function money(amount: number): string {
-  return formatUsd(amount).replace('US$ ', 'US$');
-}
-
-/** Lo que trae cada plan, con los cupos de `plans.ts` (los mismos que cumple la base). */
-function featuresOf(plan: Plan): readonly string[] {
-  const quota = `${String(plan.quota.questionsPerMonth)} preguntas y ${String(plan.quota.imagesPerMonth)} fotos al mes`;
-  if (plan.id === 'aprendiz') {
-    return ['Las 5 cápsulas', 'El curso de lomo de cerdo curado', quota];
-  }
-  if (plan.id === 'pro') {
-    return ['Todos los cursos maestros en video', 'El recetario completo', quota];
-  }
-  return ['Todo lo de Pro', quota, 'Costo por porción y precio sugerido para vender'];
-}
-
-function PlanCard({ plan }: { readonly plan: Plan }): ReactNode {
-  const yearly = priceFor(plan, 'anual');
-  const isPro = plan.id === 'pro';
-
-  return (
-    <article
-      className={cn(
-        'flex h-full flex-col rounded-[20px] p-6',
-        isPro
-          ? 'bg-grain bg-forest text-cream-white'
-          : 'border border-cocoa/10 bg-cream-white',
-      )}
-    >
-      {isPro ? (
-        <span className="mb-3 self-start rounded-full bg-brasa px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-cocoa">
-          El más elegido
-        </span>
-      ) : null}
-      <h3
-        className={cn(
-          'font-serif text-lg font-semibold',
-          isPro ? 'text-cream-white' : 'text-forest',
-        )}
-      >
-        {plan.name}
-      </h3>
-      {yearly === null ? (
-        <p className="mt-3 font-serif text-3xl font-semibold text-forest">Gratis</p>
-      ) : (
-        <>
-          <p className="mt-3">
-            <span className="font-serif text-3xl font-semibold">
-              {money(yearly.perMonthUsd)}
-            </span>{' '}
-            <span className={cn('text-sm', isPro ? 'text-cream/80' : 'text-cocoa-soft')}>
-              /mes
-            </span>
-          </p>
-          <p className={cn('mt-1 text-xs', isPro ? 'text-cream/75' : 'text-cocoa-soft')}>
-            Se cobra {money(yearly.priceUsd)} una vez al año
-          </p>
-        </>
-      )}
-      <ul className="mt-4 flex flex-1 flex-col gap-2 text-sm">
-        {featuresOf(plan).map((feature) => (
-          <li key={feature} className="flex gap-2">
-            <IconCheck size={15} className="mt-0.5 shrink-0" />
-            {feature}
-          </li>
-        ))}
-      </ul>
-      {yearly === null ? (
-        <SignupLink variant="outline" className="mt-6 w-full">
-          Crear cuenta gratis
-        </SignupLink>
-      ) : (
-        <a
-          href={planWhatsappHref(plan, yearly)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={cn(
-            'mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-full text-[15px] font-semibold transition-colors',
-            isPro
-              ? 'bg-brasa text-cocoa hover:bg-brasa-dark'
-              : 'border border-forest text-forest hover:bg-cream',
-          )}
-        >
-          Suscribirme
-        </a>
-      )}
-    </article>
-  );
-}
+import { BillingToggle } from './BillingToggle';
+import { PlanCard } from './PlanCard';
 
 const PLANS: readonly Plan[] = [freePlan, proPlan, maestroPlan];
 
 /**
  * "Elige cómo aprender" (diseño final 01/02). En escritorio, las tres
  * tarjetas; en el celular, pestañas y una tarjeta (abre en Pro, como la 02).
+ * Encima, anual o mensual: abre en anual y el cambio se ve en los precios.
  */
 export function PlansSection(): ReactNode {
   const [activeId, setActiveId] = useState<Plan['id']>('pro');
+  const [cycle, setCycle] = useState<BillingCycle>(DEFAULT_BILLING_CYCLE);
+  const yearlySaving = priceFor(proPlan, 'anual')?.savingPercent ?? 0;
 
   return (
     <section
@@ -131,6 +43,14 @@ export function PlansSection(): ReactNode {
       <p className="mt-2 hidden text-center text-cocoa-soft md:block">
         Cursos en video, El Charcu a tu lado y el recetario completo.
       </p>
+
+      <div className="mt-5 flex justify-center md:mt-6">
+        <BillingToggle
+          cycle={cycle}
+          onChange={setCycle}
+          yearlySavingPercent={yearlySaving}
+        />
+      </div>
 
       <div
         role="tablist"
@@ -162,7 +82,7 @@ export function PlansSection(): ReactNode {
             key={plan.id}
             className={cn(activeId === plan.id ? 'block' : 'hidden', 'md:block')}
           >
-            <PlanCard plan={plan} />
+            <PlanCard plan={plan} cycle={cycle} />
           </li>
         ))}
       </ul>

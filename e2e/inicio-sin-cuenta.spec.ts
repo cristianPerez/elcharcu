@@ -93,6 +93,28 @@ test.describe('Cursos sin sesión', () => {
     }
   });
 
+  test('los planes abren en anual y cambian a mensual', async ({ page }) => {
+    await page.goto('/cursos');
+    const plans = page.locator('section[aria-labelledby="planes-title"]');
+    await plans.scrollIntoViewIfNeeded();
+    const yearly = plans.getByRole('button', { name: /Anual/ });
+    const monthly = plans.getByRole('button', { name: 'Mensual' });
+    const proCard = plans.locator('article').filter({ hasText: 'El Charcu Pro' });
+
+    await expect(yearly).toHaveAttribute('aria-pressed', 'true');
+    await expect(proCard).toContainText('US$7,49');
+    await expect(proCard).toContainText('una vez al año');
+
+    await monthly.click();
+    await expect(monthly).toHaveAttribute('aria-pressed', 'true');
+    await expect(proCard).toContainText('US$9,99');
+    await expect(proCard).toContainText('cada mes');
+    await expect(proCard.getByRole('link', { name: 'Suscribirme' })).toHaveAttribute(
+      'href',
+      /mensual/,
+    );
+  });
+
   test('/ muestra lo mismo que /cursos', async ({ page }) => {
     await page.goto('/');
     await expect(
