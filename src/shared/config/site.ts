@@ -90,6 +90,8 @@ export const appRoutes = {
   appMasterCourses: '/cursos/maestros',
   appAssistant: '/charcu',
   appAccount: '/cuenta',
+  /** La pestaña Recetas: el recetario (Pro) o la vitrina con candado. */
+  recipes: '/recetas',
   /**
    * El curso gratis, el que se enseña desde la web pública.
    *

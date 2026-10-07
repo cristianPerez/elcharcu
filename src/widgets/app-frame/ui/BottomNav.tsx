@@ -7,7 +7,10 @@ import { type ReactNode } from 'react';
 import { cn } from '@/shared/lib';
 import { NavPending } from '@/shared/ui';
 
-import { APP_TABS, isTabActive } from './tabs';
+import { type ResolvedViewer } from '../model/viewer';
+
+import { activePath } from './activePath';
+import { MAIN_TABS, accountTab, isTabActive } from './tabs';
 
 /**
  * Barra de abajo, como una app del celular. Solo por debajo de 768 px: más
@@ -21,8 +24,16 @@ import { APP_TABS, isTabActive } from './tabs';
  * toque, sin esperar al servidor. Antes, entre el toque y el esqueleto había un
  * hueco mudo y la gente tocaba dos veces.
  */
-export function BottomNav(): ReactNode {
-  const pathname = usePathname();
+interface BottomNavProps {
+  readonly viewer: ResolvedViewer;
+}
+
+export function BottomNav({ viewer }: BottomNavProps): ReactNode {
+  const pathname = activePath(usePathname());
+  // Mientras se resuelve la sesión en una página estática, la cuarta pestaña
+  // dice "Cuenta" y no "Entrar": invitar a entrar a quien ya entró es peor que
+  // el caso contrario, que se corrige en un instante.
+  const tabs = [...MAIN_TABS, accountTab(viewer.isSignedIn || viewer.isPending)];
 
   return (
     <nav
@@ -30,7 +41,7 @@ export function BottomNav(): ReactNode {
       className="fixed inset-x-0 bottom-0 z-30 border-t border-cocoa/10 bg-cream-white pb-[env(safe-area-inset-bottom)] md:hidden"
     >
       <div className="mx-auto flex h-16 max-w-md items-stretch justify-around px-2">
-        {APP_TABS.map(({ href, label, Icon }) => {
+        {tabs.map(({ href, label, Icon }) => {
           const isActive = isTabActive(pathname, href);
 
           return (

@@ -7,6 +7,7 @@ import { AppFrame } from '@/widgets/app-frame';
 import { OnboardingFlow } from '@/features/onboarding';
 
 import { readProfile } from '@/entities/curing-profile/server';
+import { planOf } from '@/entities/plan';
 import { QuotaProvider } from '@/entities/usage-quota';
 import { readQuota } from '@/entities/usage-quota/server';
 
@@ -90,7 +91,13 @@ export default async function AppLayout({
 
   return (
     <QuotaProvider initial={quota}>
-      <AppFrame initials={initialsOf(profile.fullName, user.email ?? null)}>
+      <AppFrame
+        viewer={{
+          kind: 'user',
+          initials: initialsOf(profile.fullName, user.email ?? null),
+          isPro: quota !== null && planOf(quota.plan).plan.id !== 'aprendiz',
+        }}
+      >
         {children}
       </AppFrame>
     </QuotaProvider>

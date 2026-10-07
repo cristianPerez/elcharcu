@@ -12,7 +12,7 @@ test('la navegación de la app cambia de abajo a arriba según el ancho', async 
 
   const nav = page.getByRole('navigation', { name: 'Navegación de la app' });
   await expect(nav).toBeVisible();
-  await expect(nav.getByRole('link', { name: /Mis cursos/ })).toHaveAttribute(
+  await expect(nav.getByRole('link', { name: /Cursos/ })).toHaveAttribute(
     'aria-current',
     'page',
   );
@@ -23,6 +23,13 @@ test('la navegación de la app cambia de abajo a arriba según el ancho', async 
     ).toBeVisible();
   }
 
-  await nav.getByRole('link', { name: /Mi cuenta/ }).click();
+  // Las cuatro pestañas para todos (diseño final): en el celular "Cuenta" va
+  // en la barra; en escritorio son las iniciales, a la derecha del menú.
+  await expect(nav.getByRole('link', { name: /Recetas/ })).toBeVisible();
+  await page
+    .getByRole('link', { name: 'Cuenta', exact: true })
+    .locator('visible=true')
+    .first()
+    .click();
   await expect(page).toHaveURL(/\/cuenta/);
 });

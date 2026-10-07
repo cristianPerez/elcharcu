@@ -1,8 +1,8 @@
 import { type ReactNode } from 'react';
 
+import { AppFrame } from '@/widgets/app-frame';
 import { RecipeSearch } from '@/widgets/recipe-search';
 import { SiteFooter } from '@/widgets/site-footer';
-import { SiteHeader } from '@/widgets/site-header';
 import { TablasStrip } from '@/widgets/tablas-strip';
 
 import { getRecipeSummaries } from '@/entities/recipe/server';
@@ -15,16 +15,13 @@ export async function RecetasPage(): Promise<ReactNode> {
   const recipes = await getRecipeSummaries();
 
   return (
-    <>
-      <SiteHeader />
-      <main>
-        <RecipeSearch recipes={recipes} />
-        {/* Las tablas viven aquí desde que dejaron de tener ítem propio en el
+    <AppFrame viewer={{ kind: 'client' }} layout="bleed">
+      <RecipeSearch recipes={recipes} />
+      {/* Las tablas viven aquí desde que dejaron de tener ítem propio en el
             menú. Van DESPUÉS del buscador: quien llega busca una receta, y la
             tabla es lo que se encuentra de paso. */}
-        <TablasStrip />
-      </main>
+      <TablasStrip />
       <SiteFooter />
-    </>
+    </AppFrame>
   );
 }
