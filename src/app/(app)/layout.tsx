@@ -46,15 +46,34 @@ interface AppLayoutProps {
  * Y va SIN `AppFrame`: la barra de abajo invita a irse a otra pestaña, y de
  * este formulario no se sale hasta completarlo.
  */
+/** Las rutas de la app que se ven sin cuenta. */
+const PUBLIC_APP_ROUTES: ReadonlySet<string> = new Set(['/', appRoutes.appCourses]);
+
+function isPublicAppRoute(route: string | null): boolean {
+  const pathname = (route ?? '').split('?')[0] ?? '';
+  return PUBLIC_APP_ROUTES.has(pathname);
+}
+
 export default async function AppLayout({
   children,
 }: AppLayoutProps): Promise<ReactNode> {
   const user = await currentUser();
 
   if (user === null) {
-    // `desde` solo sirve para medir de dónde viene quien tiene que entrar
-    // (cápsula, curso…). A dónde se le manda al entrar no cambia.
     const desde = (await headers()).get(ROUTE_HEADER);
+
+    // Lo que se ve SIN cuenta (diseño final, 2026-10-07): la portada de
+    // Cursos, que también es `/`. Con el marco de la app y "Entrar".
+    if (isPublicAppRoute(desde)) {
+      return (
+        <AppFrame viewer={{ kind: 'anon' }} layout="bleed">
+          {children}
+        </AppFrame>
+      );
+    }
+
+    // El resto pide cuenta. `desde` solo sirve para medir de dónde viene
+    // quien tiene que entrar (cápsula, curso…).
     redirect(
       desde === null || desde === ''
         ? appRoutes.login

@@ -13,6 +13,7 @@ export {
   lessonNumberIn,
   assistantCourseCatalog,
   courseKindBySlug,
+  publicCatalog,
 } from './api/courseApi';
-export type { AssistantCourse } from './api/courseApi';
+export type { AssistantCourse, PublicCatalog } from './api/courseApi';
 export { courseCatalogBrief } from './lib/courseCatalogBrief';

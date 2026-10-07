@@ -59,6 +59,8 @@ interface CourseCardProps {
   readonly plainTitle: string;
   readonly coverUrl: string | null;
   readonly variant: CourseCardVariant;
+  /** Para cambiar el texto de la etiqueta sin cambiar su forma ("Gratis con cuenta"). */
+  readonly badgeLabel?: string | undefined;
   /** "Curados · Para empezar", encima del título. */
   readonly eyebrow?: string | undefined;
   /** "7 lecciones", "Aún no está grabado". */
@@ -92,6 +94,7 @@ export function CourseCard({
   plainTitle,
   coverUrl,
   variant,
+  badgeLabel,
   eyebrow,
   meta,
   summary,
@@ -124,7 +127,7 @@ export function CourseCard({
             tone={badge.tone}
             className={cn('absolute left-3 top-3', styles.coverBadge)}
           >
-            {badge.label}
+            {badgeLabel ?? badge.label}
           </Badge>
         )}
       </CoverPanel>
@@ -137,7 +140,7 @@ export function CourseCard({
             }
             className={cn('mb-1 self-start', styles.bodyBadge)}
           >
-            {variant === 'proximo' ? 'En preparación' : badge.label}
+            {variant === 'proximo' ? 'En preparación' : (badgeLabel ?? badge.label)}
           </Badge>
         )}
         {eyebrow === undefined ? null : (
