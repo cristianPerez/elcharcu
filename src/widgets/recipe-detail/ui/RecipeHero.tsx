@@ -24,7 +24,7 @@ interface RecipeHeroProps {
  */
 export function RecipeHero({ eyebrow, name, subtitle }: RecipeHeroProps): ReactNode {
   return (
-    <section className="bg-grain bg-forest pb-9 pt-6 text-cream md:pb-14 md:pt-10">
+    <section className="bg-grain bg-forest pb-7 pt-5 text-cream md:pb-14 md:pt-10">
       <Container>
         <Link
           href="/recetas"
@@ -32,11 +32,18 @@ export function RecipeHero({ eyebrow, name, subtitle }: RecipeHeroProps): ReactN
         >
           ← Recetas
         </Link>
-        <Eyebrow className="mt-5 text-sage">{eyebrow}</Eyebrow>
-        <h1 className="mt-3 font-serif text-[34px] font-semibold leading-[1.1] md:text-[46px]">
+        <Eyebrow className="mt-4 text-sage md:mt-5">
+          {/* En el celular, más junta y más chica: cabe en una línea. */}
+          <span className="text-[11px] tracking-[0.12em] md:text-xs md:tracking-eyebrow">
+            {eyebrow}
+          </span>
+        </Eyebrow>
+        {/* 26 px en el celular, como el título de la portada de Cursos: a 34 px
+            un nombre largo ocupaba 4 líneas y media pantalla (2026-10-07). */}
+        <h1 className="mt-2 font-serif text-[26px] font-semibold leading-[1.15] md:mt-3 md:text-[46px] md:leading-[1.1]">
           {name}
         </h1>
-        <p className="mt-3 font-serif text-[17px] italic text-terracota md:text-lg">
+        <p className="mt-2 font-serif text-[15px] italic text-brasa-light md:mt-3 md:text-lg">
           {subtitle}
         </p>
       </Container>
