@@ -49,19 +49,26 @@ export function isBunnyConfigured(): boolean {
  * Reels es arrancar solo y en silencio, pero aquí el audio ES el contenido
  * —Cristian explicando— y un video que se enciende solo en una cocina con
  * gente alrededor molesta más de lo que ayuda.
+ *
+ * La excepción es el video de la portada (`autoplay: true`, 2026-10-07): arranca
+ * solo, SIN audio y en bucle, como un Reel. Los navegadores solo dejan
+ * arrancar solo un video silenciado; el audio se activa desde el reproductor.
  */
-export function bunnyEmbedUrl(videoId: string): string | null {
+export function bunnyEmbedUrl(
+  videoId: string,
+  { autoplay = false }: { readonly autoplay?: boolean } = {},
+): string | null {
   const library = bunnyLibraryId();
   if (library === '' || videoId.trim() === '') {
     return null;
   }
 
   const params = new URLSearchParams({
-    autoplay: 'false',
-    preload: 'false',
+    autoplay: String(autoplay),
+    preload: String(autoplay),
     responsive: 'true',
-    loop: 'false',
-    muted: 'false',
+    loop: String(autoplay),
+    muted: String(autoplay),
   });
 
   return `https://iframe.mediadelivery.net/embed/${library}/${videoId}?${params.toString()}`;

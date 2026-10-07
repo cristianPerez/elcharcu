@@ -1,10 +1,10 @@
 import { type ReactNode } from 'react';
 
-import { bunnyEmbedUrl, TRAILER_VIDEO_ID } from '@/shared/config';
+import { bunnyEmbedUrl, HOME_VIDEO_ID } from '@/shared/config';
 import { Eyebrow } from '@/shared/ui';
 
+import { HomeVideo } from './HomeVideo';
 import { SignupLink } from './SignupLink';
-import { TrailerCard } from './TrailerCard';
 
 interface PublicHeroProps {
   /** Los `[N]` del diseño: números reales de la base. */
@@ -37,8 +37,8 @@ function Stat({
 
 /**
  * El héroe de la portada sin cuenta (diseño final 01/02): qué es, el botón de
- * empezar, el tráiler y lo que hay grabado. En el celular el tráiler va entre
- * el título y el botón; en escritorio, a la derecha.
+ * empezar, el video y lo que hay grabado. Un solo video vertical: en el
+ * celular va entre el título y el botón; en escritorio, a la derecha.
  */
 export function PublicHero({
   masterCount,
@@ -46,32 +46,34 @@ export function PublicHero({
   lessonCount,
 }: PublicHeroProps): ReactNode {
   // En el servidor, donde existe el id de la biblioteca de Bunny.
-  const trailerUrl = bunnyEmbedUrl(TRAILER_VIDEO_ID);
+  const videoUrl = bunnyEmbedUrl(HOME_VIDEO_ID, { autoplay: true });
 
   return (
-    <section className="mx-auto grid max-w-app gap-6 px-5 pt-6 md:grid-cols-2 md:items-center md:gap-12 md:px-8 md:pt-12">
-      <div className="flex flex-col">
-        <Eyebrow className="text-brasa-tinta">Academia de charcutería artesanal</Eyebrow>
-        <h1 className="mt-3 font-serif text-[34px] font-semibold leading-[1.08] text-forest md:text-[52px]">
+    <section className="mx-auto grid w-full max-w-app gap-x-16 px-5 pt-6 md:grid-cols-[1fr_auto] md:items-center md:px-8 md:pt-12">
+      <div className="md:col-start-1 md:self-end">
+        <Eyebrow className="text-brasa-tinta">
+          <span className="md:hidden">Charcutería artesanal</span>
+          <span className="hidden md:inline">Academia de charcutería artesanal</span>
+        </Eyebrow>
+        <h1 className="mt-2 font-serif text-[26px] font-semibold leading-[1.12] text-forest md:mt-3 md:text-[52px] md:leading-[1.08]">
           Aprende el oficio en video, paso a paso.
         </h1>
         <p className="mt-4 hidden text-[17px] leading-relaxed text-cocoa-soft md:block">
           Cursos maestros de chorizos, jamones y curados, con El Charcu a tu lado para
           cada duda.
         </p>
+      </div>
 
-        <TrailerCard embedUrl={trailerUrl} className="mt-5 md:hidden" />
+      <HomeVideo
+        embedUrl={videoUrl}
+        className="-mx-2 mt-4 md:col-start-2 md:row-span-2 md:row-start-1 md:mx-0 md:mt-0 md:w-[300px] lg:w-[340px]"
+      />
 
-        <div className="mt-5 flex flex-col gap-3 md:mt-7 md:flex-row">
+      <div className="md:col-start-1 md:self-start">
+        <div className="mt-5 md:mt-7">
           <SignupLink className="w-full md:w-auto">
             Crear cuenta gratis y empezar
           </SignupLink>
-          <a
-            href="#trailer"
-            className="hidden min-h-12 items-center justify-center gap-2 rounded-full border border-forest px-6 text-[15px] font-semibold text-forest hover:bg-cream-white md:inline-flex"
-          >
-            <span aria-hidden="true">▸</span> Ver el tráiler
-          </a>
         </div>
         <p className="mt-4 text-center text-sm text-cocoa-soft md:text-left">
           <span className="md:hidden">
@@ -89,8 +91,6 @@ export function PublicHero({
           <Stat value={lessonCount} label="Lecciones en video" short="Lecciones" />
         </dl>
       </div>
-
-      <TrailerCard embedUrl={trailerUrl} className="hidden md:block" />
     </section>
   );
 }
