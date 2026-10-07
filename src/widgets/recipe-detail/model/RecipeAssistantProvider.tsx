@@ -185,7 +185,7 @@ export function RecipeAssistantProvider({
         }}
         aria-label={`Pregúntale a El Charcu sobre ${name}`}
         className={cn(
-          'fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full bg-brasa px-5 py-3.5 text-[14px] font-semibold text-cocoa shadow-raised ring-1 ring-brasa-tinta/20 transition-colors hover:bg-brasa-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brasa-tinta focus-visible:ring-offset-2 active:scale-95 md:bottom-5 md:right-5 md:px-6 md:py-4 md:text-[15px]',
+          'fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom))] right-4 z-40 flex items-center gap-2 rounded-full bg-brasa px-5 py-3.5 text-[14px] font-semibold text-cocoa shadow-raised ring-1 ring-brasa-tinta/20 transition-colors hover:bg-brasa-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brasa-tinta focus-visible:ring-offset-2 active:scale-95 md:bottom-5 md:right-5 md:px-6 md:py-4 md:text-[15px]',
           hop && 'animate-brasa-hop',
           isOpen && 'pointer-events-none opacity-0',
         )}
