@@ -6,7 +6,7 @@ import { TiendaPage } from '@/views/tienda';
 export const metadata: Metadata = {
   title: 'Tienda · El Charcu',
   description:
-    'Embutidos y curados hechos a mano en Manizales. Lotes pequeños, venta directa por WhatsApp.',
+    'Embutidos y curados hechos a mano en Colombia. Lotes pequeños, venta directa por WhatsApp.',
 };
 
 export default function Page(): ReactNode {

@@ -39,7 +39,7 @@ export const site = {
   name: 'El Charcu',
   tagline: 'Artesanal',
   slogan: 'Sin aditivos · Sin atajos',
-  location: 'Manizales, Colombia',
+  location: 'Colombia',
   since: 2026,
   homeUrl: 'https://elcharcu.co',
   whatsappUrl: `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`,

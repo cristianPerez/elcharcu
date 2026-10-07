@@ -29,13 +29,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(site.homeUrl),
   title: 'El Charcu · Charcutería Artesanal',
   description:
-    'Charcutería artesanal curada con técnica europea en Manizales, Colombia. Sin aditivos, sin atajos. Producto artesanal y Cursos Maestros del oficio.',
+    'Charcutería artesanal curada con técnica europea en Colombia. Sin aditivos, sin atajos. Producto artesanal y Cursos Maestros del oficio.',
   keywords: [
     'charcutería artesanal',
     'embutidos curados',
     'chorizo ahumado',
     'lomo curado',
-    'Manizales',
+    'Colombia',
     'cursos de charcutería',
   ],
   openGraph: {

@@ -4,7 +4,7 @@ import { type NextRequest } from 'next/server';
  * De dónde escribe, sin preguntárselo.
  *
  * El asistente necesita el país para dos cosas reales: el vocabulario y el
- * clima ("Manizales no es Buenos Aires"). Hasta hoy salía de una pantalla del
+ * clima ("la montaña no es la costa"). Hasta hoy salía de una pantalla del
  * onboarding, y esa pantalla se quitó (Cristian, 2026-08-29) porque el dato ya
  * llega solo: Vercel pone `x-vercel-ip-country` en cada petición.
  *
