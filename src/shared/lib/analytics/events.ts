@@ -116,6 +116,25 @@ export const ANALYTICS_EVENTS = {
    * Si aparece, o hay mucho uso real o alguien está abusando: hay que mirarlo.
    */
   aiBudgetExhausted: 'ai_budget_exhausted',
+
+  /*
+    El embudo del enlace mágico (2026-10-07). Todos llevan `in_app_browser`,
+    `device`, `os` y el `intento` que los une, para poder seguir a la misma
+    persona aunque pida el enlace en un navegador y lo abra en otro. Ver
+    docs/auth-magic-link-dropoff.md.
+  */
+  /** Se le pidió la cuenta. `trigger` dice por qué: cápsula, tercera pregunta… */
+  authModalOpened: 'auth_modal_opened',
+  /** Supabase aceptó el correo y mandó el enlace. */
+  magicLinkRequested: 'magic_link_requested',
+  /** Abrió el enlace y llegó a `/auth/callback`. Se mide en el servidor. */
+  magicLinkLanded: 'magic_link_landed',
+  /** El callback abrió la sesión. Se mide en el servidor. */
+  authCompleted: 'auth_completed',
+  /** El callback NO abrió la sesión. Lleva `reason`. Se mide en el servidor. */
+  authFailed: 'auth_failed',
+  /** Después de entrar, llegó a la página que había elegido antes de que se le pidiera la cuenta. */
+  returnedToOrigin: 'returned_to_origin',
 } as const;
 
 export type AnalyticsEvent = (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];
