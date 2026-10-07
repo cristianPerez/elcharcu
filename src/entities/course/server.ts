@@ -12,6 +12,7 @@ export {
   requestedCategories,
   lessonNumberIn,
   assistantCourseCatalog,
+  courseKindBySlug,
 } from './api/courseApi';
 export type { AssistantCourse } from './api/courseApi';
 export { courseCatalogBrief } from './lib/courseCatalogBrief';

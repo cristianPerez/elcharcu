@@ -236,6 +236,32 @@ export const publishedCourseSlugs = cache(async (): Promise<ReadonlySet<string>>
   return new Set(data.map((row) => row.slug));
 });
 
+/**
+ * Qué es un curso por su slug —cápsula o curso, libre o de pago— sin sesión.
+ *
+ * Para medir desde dónde se le pidió la cuenta a alguien que llegó a
+ * `/cursos/<slug>` sin haber entrado (2026-10-07). Lee con el cliente de
+ * administración porque esa persona todavía no tiene sesión; solo salen dos
+ * campos que el catálogo público ya enseña.
+ */
+export const courseKindBySlug = cache(
+  async (
+    slug: string,
+  ): Promise<{ readonly kind: CourseKind; readonly access: CourseAccess } | null> => {
+    if (!isSupabaseAdminConfigured()) {
+      return null;
+    }
+    const { data } = await createSupabaseAdminClient()
+      .from('courses')
+      .select('kind, access')
+      .eq('slug', slug)
+      .maybeSingle();
+    return data === null
+      ? null
+      : { kind: toKind(data.kind), access: toAccess(data.access) };
+  },
+);
+
 /** Lo que El Charcu necesita saber de un curso para poder recomendarlo. */
 export interface AssistantCourse {
   readonly title: string;

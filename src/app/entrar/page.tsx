@@ -4,6 +4,8 @@ import { type ReactNode } from 'react';
 
 import { EntrarPage } from '@/views/entrar';
 
+import { authTriggerFrom } from '@/features/auth-by-email/server';
+
 import { currentUser } from '@/shared/api/supabase/server';
 import { appRoutes } from '@/shared/config';
 
@@ -25,10 +27,21 @@ export const metadata: Metadata = {
  * un instante. La cabecera hace lo mismo en el cliente cambiando su botón, pero
  * eso es cosmético — esto es lo que de verdad cierra la puerta.
  */
-export default async function Page(): Promise<ReactNode> {
+export default async function Page({
+  searchParams,
+}: {
+  readonly searchParams: Promise<{ readonly desde?: string | string[] }>;
+}): Promise<ReactNode> {
   if ((await currentUser()) !== null) {
     redirect(appRoutes.appAssistant);
   }
 
-  return <EntrarPage />;
+  // `desde` lo pone el layout de la app al expulsar a alguien sin sesión.
+  // Solo sirve para medir por qué se le pidió la cuenta (2026-10-07).
+  const { desde } = await searchParams;
+  const { trigger, origin } = await authTriggerFrom(
+    typeof desde === 'string' ? desde : null,
+  );
+
+  return <EntrarPage trigger={trigger} origin={origin} />;
 }
