@@ -32,7 +32,12 @@ test('la 3.ª pregunta sin cuenta abre la hoja y no llega a la API', async ({
   await page.waitForLoadState('networkidle');
 
   const box = page.getByRole('textbox', { name: 'Tu pregunta' });
-  const answers = page.getByText('RESPUESTA SIMULADA');
+  // Se cuentan en la CONVERSACIÓN: los títulos de la lista de recetas también
+  // llevan el texto simulado y harían saltar la cuenta (como en asistente.spec).
+  const answers = page
+    .locator('[aria-live="polite"]')
+    .first()
+    .getByText('RESPUESTA SIMULADA');
   for (const [index, question] of ['¿Cuánta sal de cura?', '¿Y la humedad?'].entries()) {
     await box.fill(question);
     await page.getByRole('button', { name: 'Enviar' }).click();
