@@ -22,6 +22,8 @@ interface AppCursosMaestrosViewProps {
   readonly progress: ReadonlyMap<string, CourseProgress>;
   readonly requested: ReadonlySet<CourseCategory>;
   readonly isSubscribed: boolean;
+  /** Sin cuenta, "Avísame" pide crearla. */
+  readonly isSignedIn: boolean;
 }
 
 type View = 'todos' | 'disponibles' | 'proximos';
@@ -46,6 +48,7 @@ export function AppCursosMaestrosView({
   progress,
   requested,
   isSubscribed,
+  isSignedIn,
 }: AppCursosMaestrosViewProps): ReactNode {
   const base = appRoutes.appMasterCourses;
   const view = currentView(query);
@@ -128,6 +131,7 @@ export function AppCursosMaestrosView({
         progress={progress}
         requested={requested}
         isSubscribed={isSubscribed}
+        isSignedIn={isSignedIn}
       />
 
       <ProposeCourse />

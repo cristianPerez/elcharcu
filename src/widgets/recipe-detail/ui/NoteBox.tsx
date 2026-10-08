@@ -22,7 +22,7 @@ export function NoteBox({ title, children, tone = 'light' }: NoteBoxProps): Reac
       <div
         className={cn(
           'mb-2.5 text-[11px] uppercase tracking-eyebrow',
-          isDark ? 'text-sage' : 'text-terracota',
+          isDark ? 'text-sage' : 'text-brasa-tinta',
         )}
       >
         {title}

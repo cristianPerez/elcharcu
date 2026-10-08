@@ -7,6 +7,7 @@ import { AppFrame } from '@/widgets/app-frame';
 import { OnboardingFlow } from '@/features/onboarding';
 
 import { readProfile } from '@/entities/curing-profile/server';
+import { planOf } from '@/entities/plan';
 import { QuotaProvider } from '@/entities/usage-quota';
 import { readQuota } from '@/entities/usage-quota/server';
 
@@ -45,15 +46,63 @@ interface AppLayoutProps {
  * Y va SIN `AppFrame`: la barra de abajo invita a irse a otra pestaña, y de
  * este formulario no se sale hasta completarlo.
  */
+/** Las rutas de la app que se ven sin cuenta. */
+const PUBLIC_APP_ROUTES: ReadonlySet<string> = new Set([
+  '/',
+  appRoutes.appCourses,
+  appRoutes.appAssistant,
+  appRoutes.appMasterCourses,
+]);
+
+/** `/cursos/<slug>` y sus lecciones (no la búsqueda ni "Ver todos"). */
+function isCourseRoute(route: string | null): boolean {
+  const pathname = (route ?? '').split('?')[0] ?? '';
+  return /^\/cursos\/(?!buscar(\/|$)|maestros(\/|$))[a-z0-9-]+/.test(pathname);
+}
+
+function isPublicAppRoute(route: string | null): boolean {
+  const pathname = (route ?? '').split('?')[0] ?? '';
+  return PUBLIC_APP_ROUTES.has(pathname);
+}
+
 export default async function AppLayout({
   children,
 }: AppLayoutProps): Promise<ReactNode> {
   const user = await currentUser();
 
   if (user === null) {
-    // `desde` solo sirve para medir de dónde viene quien tiene que entrar
-    // (cápsula, curso…). A dónde se le manda al entrar no cambia.
     const desde = (await headers()).get(ROUTE_HEADER);
+
+    // Lo que se ve SIN cuenta (diseño final, 2026-10-07): la portada de
+    // Cursos, que también es `/`. Con el marco de la app y "Entrar".
+    if (isPublicAppRoute(desde)) {
+      // El Charcu sin cuenta necesita su cupo (el del visitante): las dos
+      // preguntas gratis se cuentan por navegador.
+      // Solo ahí: la portada no paga una consulta que no usa.
+      const pathname = (desde ?? '').split('?')[0] ?? '';
+      const isChat = pathname === appRoutes.appAssistant;
+      // Solo la portada va a sangre; el resto (Cursos maestros) lleva los
+      // márgenes de siempre, como con sesión. El chat se pone a sangre solo.
+      const isHome = pathname === '/' || pathname === appRoutes.appCourses;
+      const anonVisitor = isChat ? await readVisitorIdFromCookies() : null;
+      const anonQuota = anonVisitor === null ? null : await readQuota(anonVisitor, null);
+      return (
+        <QuotaProvider initial={anonQuota}>
+          <AppFrame viewer={{ kind: 'anon' }} layout={isHome ? 'bleed' : 'contained'}>
+            {children}
+          </AppFrame>
+        </QuotaProvider>
+      );
+    }
+
+    // Una cápsula o un curso abierto directo (un enlace compartido): a la
+    // portada, que abre la hoja de crear cuenta con ese destino.
+    if (isCourseRoute(desde)) {
+      redirect(`${appRoutes.appCourses}?abrir=${encodeURIComponent(desde ?? '')}`);
+    }
+
+    // El resto pide cuenta. `desde` solo sirve para medir de dónde viene
+    // quien tiene que entrar.
     redirect(
       desde === null || desde === ''
         ? appRoutes.login
@@ -90,7 +139,13 @@ export default async function AppLayout({
 
   return (
     <QuotaProvider initial={quota}>
-      <AppFrame initials={initialsOf(profile.fullName, user.email ?? null)}>
+      <AppFrame
+        viewer={{
+          kind: 'user',
+          initials: initialsOf(profile.fullName, user.email ?? null),
+          isPro: quota !== null && planOf(quota.plan).plan.id !== 'aprendiz',
+        }}
+      >
         {children}
       </AppFrame>
     </QuotaProvider>

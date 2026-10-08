@@ -28,6 +28,12 @@ export interface AppChatProps {
   readonly remaining: { readonly questions: number; readonly images: number } | null;
   /** El aviso de cupo que se pinta sobre la caja ("te quedan 2 preguntas"). */
   readonly notice?: ReactNode | undefined;
+  /**
+   * Se pregunta antes de mandar. Si devuelve `false`, no sale y el texto se
+   * queda en la caja (la 3.ª pregunta sin cuenta abre la hoja de crear cuenta;
+   * lo decide quien monta el chat, que este no conoce la cuenta).
+   */
+  readonly onBeforeSend?: ((text: string) => boolean) | undefined;
 }
 
 // Fuera del componente: un objeto nuevo en cada render rehacería `send`.
@@ -56,6 +62,7 @@ export function AppChat({
   usage,
   remaining,
   notice,
+  onBeforeSend,
 }: AppChatProps): ReactNode {
   const chat = useAssistantChat(APP_PARAMS, pendingPrompt);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -156,6 +163,9 @@ export function AppChat({
               }
               prefill={prefill}
               onSend={(text, file) => {
+                if (onBeforeSend !== undefined && !onBeforeSend(text)) {
+                  return false;
+                }
                 void chat.send(text, file);
                 return true;
               }}

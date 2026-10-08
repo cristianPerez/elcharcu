@@ -9,11 +9,11 @@ import { SiteFooter } from '@/widgets/site-footer';
 import { SiteHeader } from '@/widgets/site-header';
 
 /**
- * La charcutería de verdad: lo que se hace a mano en Manizales y se vende por
+ * La charcutería de verdad: lo que se hace a mano en Colombia y se vende por
  * WhatsApp.
  *
  * Vive aparte del home desde el 2026-08-14. Son dos negocios con dos públicos
- * distintos: el que compra un salami en Manizales y el que cura en su casa en
+ * distintos: el que compra un salami en Colombia y el que cura en su casa en
  * cualquier parte de LATAM. Mezclados en una sola página, cada uno estorbaba
  * al otro.
  */

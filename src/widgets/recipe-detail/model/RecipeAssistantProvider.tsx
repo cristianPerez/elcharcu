@@ -3,7 +3,8 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 import { AssistantChat } from '@/features/assistant-chat';
-import { LeadCaptureModal, useLeadWall } from '@/features/lead-capture';
+import { useSignupPrompt } from '@/features/auth-by-email';
+import { useLeadWall } from '@/features/lead-capture';
 import { QuotaNotice } from '@/features/quota-wall';
 
 import { useUsageQuota } from '@/entities/usage-quota';
@@ -68,6 +69,27 @@ export function RecipeAssistantProvider({
 }: RecipeAssistantProviderProps): ReactNode {
   const { quota, status, isKnown } = useUsageQuota();
   const wall = useLeadWall({ place: 'receta', recipeSlug: slug });
+
+  /*
+    La 3.ª pregunta sin cuenta abre la hoja de crear cuenta del diseño final
+    (2026-10-07), no el modal viejo. Cuándo se pide lo sigue decidiendo
+    `useLeadWall`; al entrar, vuelve a esta receta.
+  */
+  const { openSignup } = useSignupPrompt();
+  useEffect(() => {
+    if (!wall.isOpen) {
+      return;
+    }
+    wall.close();
+    openSignup({
+      trigger: 'tercera_pregunta',
+      eyebrow: 'El Charcu',
+      title: 'Tu tercera pregunta',
+      heading: 'Crea tu cuenta gratis para seguir preguntando',
+      destination: `/recetas/${slug}`,
+      returnLabel: 'esta receta',
+    });
+  }, [wall, openSignup, slug]);
   const [isOpen, setIsOpen] = useState(false);
 
   /* Se calla en cuanto el panel se abre por primera vez: ya cumplió. */
@@ -163,7 +185,7 @@ export function RecipeAssistantProvider({
         }}
         aria-label={`Pregúntale a El Charcu sobre ${name}`}
         className={cn(
-          'fixed bottom-4 right-4 z-40 flex items-center gap-2 rounded-full bg-brasa px-5 py-3.5 text-[14px] font-semibold text-cocoa shadow-raised ring-1 ring-brasa-tinta/20 transition-colors hover:bg-brasa-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brasa-tinta focus-visible:ring-offset-2 active:scale-95 md:bottom-5 md:right-5 md:px-6 md:py-4 md:text-[15px]',
+          'fixed bottom-[calc(4.75rem+env(safe-area-inset-bottom))] right-4 z-40 flex items-center gap-2 rounded-full bg-brasa px-5 py-3.5 text-[14px] font-semibold text-cocoa shadow-raised ring-1 ring-brasa-tinta/20 transition-colors hover:bg-brasa-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brasa-tinta focus-visible:ring-offset-2 active:scale-95 md:bottom-5 md:right-5 md:px-6 md:py-4 md:text-[15px]',
           hop && 'animate-brasa-hop',
           isOpen && 'pointer-events-none opacity-0',
         )}
@@ -256,14 +278,6 @@ export function RecipeAssistantProvider({
           />
         </div>
       </div>
-
-      {wall.isOpen && !isExhausted ? (
-        <LeadCaptureModal
-          questionsLimit={quota.questionsLimit}
-          onClose={wall.close}
-          source={wall.source}
-        />
-      ) : null}
     </RecipeAssistantContext.Provider>
   );
 }

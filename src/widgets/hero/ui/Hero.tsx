@@ -25,7 +25,7 @@ export function Hero(): ReactNode {
           <p className="mt-4 font-serif text-2xl italic text-terracota">{site.slogan}.</p>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-cream/80">
-            Embutidos y curados hechos a mano en Manizales, con la técnica de España e
+            Embutidos y curados hechos a mano en Colombia, con la técnica de España e
             Italia y la obsesión por hacer las cosas bien. Nada de aditivos innecesarios,
             nada de atajos industriales — solo oficio.
           </p>

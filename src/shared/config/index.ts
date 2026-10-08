@@ -4,3 +4,4 @@ export { bunnyLibraryId, isBunnyConfigured, bunnyEmbedUrl } from './video';
 export { INTERESTS, MAX_INTERESTS, parseInterests } from './interests';
 export type { InterestId } from './interests';
 export { ROUTE_HEADER } from './routeHeader';
+export { HOME_VIDEO_ID, PLACEHOLDER_IMAGES } from './placeholderImages';

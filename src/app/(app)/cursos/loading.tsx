@@ -23,9 +23,10 @@ export default function CursosLoading(): ReactNode {
           <Skeleton className="h-[52px] w-full rounded-full md:w-[420px]" />
         </div>
         <div className="flex gap-2 overflow-hidden">
-          {[64, 92, 140, 140].map((width) => (
+          {/* Dos píldoras miden igual: la clave es la posición (lista fija). */}
+          {[64, 92, 140, 140].map((width, position) => (
             <Skeleton
-              key={width}
+              key={position}
               className="h-11 shrink-0 rounded-full"
               style={{ width }}
             />

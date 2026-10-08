@@ -22,6 +22,12 @@ interface WaitlistButtonProps {
   readonly variant?: 'pill' | 'link' | undefined;
   /** El texto de la llamada, si no es el de siempre. */
   readonly label?: string | undefined;
+  /**
+   * Sin cuenta: el botón no apunta a nadie, abre la hoja de crear cuenta.
+   * Lo hace `SignupInterceptor` leyendo los `data-signup-*` (este botón no
+   * conoce la cuenta: es otra funcionalidad).
+   */
+  readonly asksForAccount?: boolean | undefined;
 }
 
 /**
@@ -39,6 +45,7 @@ export function WaitlistButton({
   canJoin,
   variant = 'pill',
   label = 'Avísame',
+  asksForAccount = false,
 }: WaitlistButtonProps): ReactNode {
   const { joined, isSaving, error, showUpsell, toggle, closeUpsell } = useWaitlist({
     courseId,
@@ -58,11 +65,16 @@ export function WaitlistButton({
         aria-label={accessibleName}
         aria-pressed={joined}
         disabled={isSaving}
+        data-signup-trigger={asksForAccount ? 'avisame' : undefined}
+        data-signup-title={asksForAccount ? courseTitle : undefined}
+        data-signup-destination={asksForAccount ? `/cursos/${courseSlug}` : undefined}
         onClick={(event) => {
           // Puede vivir dentro de una tarjeta que es un enlace.
           event.preventDefault();
           event.stopPropagation();
-          toggle();
+          if (!asksForAccount) {
+            toggle();
+          }
         }}
         className={cn(
           'inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold transition-colors disabled:opacity-60',

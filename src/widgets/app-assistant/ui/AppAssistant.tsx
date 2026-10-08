@@ -4,11 +4,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import { AppChat } from '@/features/assistant-chat';
+import { useSignupPrompt, type SignupRequest } from '@/features/auth-by-email';
 import { QuotaNotice } from '@/features/quota-wall';
 
 import { useUsageQuota } from '@/entities/usage-quota';
 
 import { appRoutes } from '@/shared/config';
+import { ANONYMOUS_QUESTIONS, canAskWithoutAccount } from '@/shared/lib/access';
 
 /**
  * El asistente dentro de la app, para quien ya entró con su cuenta.
@@ -27,8 +29,30 @@ import { appRoutes } from '@/shared/config';
  * vas quedando sin uso. Lo único que se cierra es la caja de escribir, y con el
  * motivo escrito dentro.
  */
-export function AppAssistant(): ReactNode {
+/** La hoja de crear cuenta de la 3.ª pregunta: al entrar, la pregunta se manda sola. */
+function thirdQuestionSignup(question: string): SignupRequest {
+  const withQuestion = `${appRoutes.appAssistant}?pregunta=${encodeURIComponent(question.trim())}`;
+  return {
+    trigger: 'tercera_pregunta',
+    eyebrow: 'El Charcu',
+    title: 'Tu tercera pregunta',
+    heading: 'Crea tu cuenta gratis para seguir preguntando',
+    // Una pregunta muy larga no cabe en el enlace: se vuelve al chat sin ella.
+    destination: withQuestion.length <= 300 ? withQuestion : appRoutes.appAssistant,
+    returnLabel: 'tu pregunta',
+  };
+}
+
+interface AppAssistantProps {
+  /** Sin cuenta se contestan 2 preguntas; la 3.ª abre la hoja de crear cuenta. */
+  readonly isSignedIn: boolean;
+}
+
+export function AppAssistant({ isSignedIn }: AppAssistantProps): ReactNode {
   const { quota, status, isKnown } = useUsageQuota();
+  const { openSignup } = useSignupPrompt();
+  const needsAccount =
+    !isSignedIn && !canAskWithoutAccount('anonimo', quota.questionsUsed);
 
   /**
    * La duda que llega de una lección (`/charcu?pregunta=…`).
@@ -59,10 +83,16 @@ export function AppAssistant(): ReactNode {
     }
     alreadyTaken.current = true;
     if (fromUrl !== null) {
-      setPendingPrompt(fromUrl);
+      // La pregunta que viene de la portada: si ya gastó las dos gratis, en
+      // vez de mandarla se le pide la cuenta (y vuelve con ella al entrar).
+      if (needsAccount) {
+        openSignup(thirdQuestionSignup(fromUrl));
+      } else {
+        setPendingPrompt(fromUrl);
+      }
     }
     router.replace(appRoutes.appAssistant, { scroll: false });
-  }, [fromUrl, draft, router]);
+  }, [fromUrl, draft, router, needsAccount, openSignup]);
 
   // Solo se avisa si SABEMOS cómo va el cupo. Si no se pudo leer, se deja
   // pasar: quien protege el bolsillo es el tope diario de gasto, que es global
@@ -71,7 +101,8 @@ export function AppAssistant(): ReactNode {
 
   // Se avisa ANTES de que se acabe. Enterarte de que te quedaba una pregunta
   // cuando ya la gastaste no te sirve de nada.
-  const showNotice = isKnown && status.questionsLeft <= 2;
+  const showNotice = isSignedIn && isKnown && status.questionsLeft <= 2;
+  const anonymousLeft = Math.max(0, ANONYMOUS_QUESTIONS - quota.questionsUsed);
 
   return (
     <AppChat
@@ -81,9 +112,11 @@ export function AppAssistant(): ReactNode {
       blockedReason={isExhausted ? 'Sin preguntas este mes. Vuelven el día 1.' : null}
       usage={isKnown ? { used: quota.questionsUsed, limit: quota.questionsLimit } : null}
       remaining={
-        isKnown && !isExhausted
-          ? { questions: status.questionsLeft, images: status.imagesLeft }
-          : null
+        !isSignedIn
+          ? { questions: anonymousLeft, images: status.imagesLeft }
+          : isKnown && !isExhausted
+            ? { questions: status.questionsLeft, images: status.imagesLeft }
+            : null
       }
       notice={
         showNotice ? (
@@ -95,6 +128,13 @@ export function AppAssistant(): ReactNode {
           </div>
         ) : undefined
       }
+      onBeforeSend={(text) => {
+        if (!needsAccount) {
+          return true;
+        }
+        openSignup(thirdQuestionSignup(text));
+        return false;
+      }}
     />
   );
 }

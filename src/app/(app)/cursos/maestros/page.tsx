@@ -50,6 +50,7 @@ export default async function MaestrosPage({
       progress={progress}
       requested={requested}
       isSubscribed={isSubscribed}
+      isSignedIn={userId !== null}
     />
   );
 }

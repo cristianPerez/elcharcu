@@ -10,7 +10,7 @@ interface StepRowProps {
 export function StepRow({ step }: StepRowProps): ReactNode {
   return (
     <li className="flex gap-5 border-b border-cocoa/10 py-5 last:border-b-0">
-      <span className="w-12 shrink-0 font-serif text-3xl font-semibold text-terracota/40">
+      <span className="w-12 shrink-0 font-serif text-3xl font-semibold text-brasa-tinta/70">
         {step.n}
       </span>
       {/*

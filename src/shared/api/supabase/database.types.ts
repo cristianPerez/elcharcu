@@ -432,6 +432,101 @@ export type Database = {
         };
         Relationships: [];
       };
+      recetario: {
+        Row: {
+          capsule_slug: string | null;
+          category: string;
+          content: Json;
+          course_slug: string | null;
+          created_at: string;
+          image: string;
+          name: string;
+          origin: string | null;
+          position: number;
+          published: boolean;
+          slug: string;
+          tags: string[];
+          updated_at: string;
+        };
+        Insert: {
+          capsule_slug?: string | null;
+          category: string;
+          content: Json;
+          course_slug?: string | null;
+          created_at?: string;
+          image: string;
+          name: string;
+          origin?: string | null;
+          position?: number;
+          published?: boolean;
+          slug: string;
+          tags?: string[];
+          updated_at?: string;
+        };
+        Update: {
+          capsule_slug?: string | null;
+          category?: string;
+          content?: Json;
+          course_slug?: string | null;
+          created_at?: string;
+          image?: string;
+          name?: string;
+          origin?: string | null;
+          position?: number;
+          published?: boolean;
+          slug?: string;
+          tags?: string[];
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'recetario_capsule_slug_fkey';
+            columns: ['capsule_slug'];
+            isOneToOne: false;
+            referencedRelation: 'courses';
+            referencedColumns: ['slug'];
+          },
+          {
+            foreignKeyName: 'recetario_course_slug_fkey';
+            columns: ['course_slug'];
+            isOneToOne: false;
+            referencedRelation: 'courses';
+            referencedColumns: ['slug'];
+          },
+        ];
+      };
+      recetas_recibidas: {
+        Row: {
+          first_opened_at: string;
+          id: string;
+          recipe_slug: string;
+          user_id: string | null;
+          visitor_id: string | null;
+        };
+        Insert: {
+          first_opened_at?: string;
+          id?: string;
+          recipe_slug: string;
+          user_id?: string | null;
+          visitor_id?: string | null;
+        };
+        Update: {
+          first_opened_at?: string;
+          id?: string;
+          recipe_slug?: string;
+          user_id?: string | null;
+          visitor_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'recetas_recibidas_recipe_slug_fkey';
+            columns: ['recipe_slug'];
+            isOneToOne: false;
+            referencedRelation: 'recetario';
+            referencedColumns: ['slug'];
+          },
+        ];
+      };
       recipes: {
         Row: {
           closed_at: string | null;
@@ -615,6 +710,10 @@ export type Database = {
       has_active_subscription: { Args: { p_user_id: string }; Returns: boolean };
       is_in_waitlist: { Args: { p_course_id: string }; Returns: boolean };
       join_waitlist: { Args: { p_course_id: string }; Returns: number };
+      link_received_recipes_to_user: {
+        Args: { p_user_id: string; p_visitor_id: string };
+        Returns: undefined;
+      };
       link_visitor_to_user: {
         Args: { p_user_id: string; p_visitor_id: string };
         Returns: undefined;
@@ -629,6 +728,39 @@ export type Database = {
           questions_used: number;
           recipes_limit: number;
           recipes_used: number;
+        }[];
+      };
+      receta_por_link: {
+        Args: { p_slug: string };
+        Returns: {
+          capsule_slug: string | null;
+          category: string;
+          content: Json;
+          course_slug: string | null;
+          created_at: string;
+          image: string;
+          name: string;
+          origin: string | null;
+          position: number;
+          published: boolean;
+          slug: string;
+          tags: string[];
+          updated_at: string;
+        }[];
+        SetofOptions: {
+          from: '*';
+          to: 'recetario';
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
+      };
+      recetario_vitrina: {
+        Args: never;
+        Returns: {
+          category: string;
+          image: string;
+          name: string;
+          tiene_curso: boolean;
         }[];
       };
       record_ai_spend: {
@@ -648,6 +780,10 @@ export type Database = {
           p_user_id: string;
           p_visitor_id: string;
         };
+        Returns: undefined;
+      };
+      registrar_receta_recibida: {
+        Args: { p_slug: string; p_user_id?: string; p_visitor_id?: string };
         Returns: undefined;
       };
       save_lesson_progress: {

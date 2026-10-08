@@ -142,6 +142,20 @@ export const ANALYTICS_EVENTS = {
   authLinkError: 'auth_link_error',
   /** Después de entrar, llegó a la página que había elegido antes de que se le pidiera la cuenta. */
   returnedToOrigin: 'returned_to_origin',
+
+  /*
+    Recetas del diseño final (2026-10-07). La cuenta se mide con los auth_*
+    de arriba (`auth_modal_opened` con su trigger, `auth_completed` con el
+    destino), no con eventos de "signup" aparte.
+  */
+  /** Abrió una receta llegando por su link (no navegando dentro de la app). */
+  recipeOpenedByLink: 'recipe_opened_by_link',
+  /** Tocó una receta con candado en la pestaña Recetas. */
+  lockedRecipeTapped: 'locked_recipe_tapped',
+  /** Se le enseñó la hoja "Pasar a Pro". Lleva desde dónde. */
+  upgradeSheetShown: 'upgrade_sheet_shown',
+  /** Tocó "Ver el curso" o "Avísame cuando salga" al final de una receta. */
+  recipeCourseCtaClicked: 'recipe_course_cta_clicked',
 } as const;
 
 export type AnalyticsEvent = (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];

@@ -1,9 +1,3 @@
-export {
-  getRecipes,
-  getRecipeBySlug,
-  getRecipeSummaries,
-  getAllTags,
-} from './model/recipes';
 export { recipeBrief } from './lib/recipeBrief';
 export { recipeCatalogBrief } from './lib/recipeCatalogBrief';
 export { findMentionedRecipe } from './lib/findMentionedRecipe';
@@ -17,3 +11,9 @@ export type {
   LabelValue,
   TitleDescription,
 } from './model/types';
+export { RECIPE_CATEGORIES, isRecipeCategory } from './model/recetario.types';
+export type {
+  RecetarioEntry,
+  RecipeCategory,
+  RecipeTeaser,
+} from './model/recetario.types';

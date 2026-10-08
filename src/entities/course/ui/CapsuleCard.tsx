@@ -9,7 +9,43 @@ import { type CapsuleIcon } from '../model/catalog';
 
 import { CapsuleDrawing } from './CapsuleDrawing';
 
-export type CapsuleState = CapsuleStep;
+/**
+ * `vista` es la tarjeta de quien todavía no tiene cuenta (diseño final 01/02):
+ * número, título y su pastel, sin candado ni "Hecha". No hay ruta que seguir
+ * todavía; al tocarla se le pide la cuenta.
+ */
+export type CapsuleState = CapsuleStep | 'vista';
+
+/** Los pasteles de la ruta sin cuenta, en orden: verde, verde, crema, durazno. */
+const PREVIEW_TONES = [
+  {
+    card: 'bg-capsule-done',
+    number: 'text-forest',
+    drawing: 'text-forest-light opacity-30',
+  },
+  {
+    card: 'bg-capsule-done-alt',
+    number: 'text-forest',
+    drawing: 'text-forest-light opacity-30',
+  },
+  {
+    card: 'bg-capsule-locked',
+    number: 'text-cocoa-soft',
+    drawing: 'text-cocoa-muted opacity-[0.22]',
+  },
+  {
+    card: 'bg-capsule-locked-alt',
+    number: 'text-brasa-tinta',
+    drawing: 'text-brasa-tinta opacity-[0.22]',
+  },
+] as const;
+
+function previewTone(position: number): (typeof PREVIEW_TONES)[number] {
+  return (
+    PREVIEW_TONES[(position - 2 + PREVIEW_TONES.length) % PREVIEW_TONES.length] ??
+    PREVIEW_TONES[0]
+  );
+}
 
 interface CapsuleCardProps {
   readonly slug: string;
@@ -45,6 +81,10 @@ function palette(
   readonly drawing: string;
 } {
   const isOdd = position % 2 === 1;
+  if (state === 'vista') {
+    const tone = previewTone(position);
+    return { card: tone.card, drawing: tone.drawing };
+  }
   if (state === 'completada') {
     return {
       card: isOdd ? 'bg-capsule-done' : 'bg-capsule-done-alt',
@@ -124,6 +164,26 @@ export function CapsuleCard({
           </span>
         </span>
       </div>
+    );
+  }
+
+  if (state === 'vista') {
+    return (
+      <Link href={`/cursos/${slug}`} className={classes}>
+        {drawing}
+        <span
+          aria-hidden="true"
+          className={cn(
+            'relative font-serif text-4xl font-semibold leading-none',
+            previewTone(position).number,
+          )}
+        >
+          {position}
+        </span>
+        <span className="relative font-serif text-base font-semibold leading-tight text-cocoa">
+          {title}
+        </span>
+      </Link>
     );
   }
 

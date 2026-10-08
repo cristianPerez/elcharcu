@@ -285,6 +285,80 @@ export async function courseKindBySlug(slug: string): Promise<CourseKindInfo | n
   return kindMemo.bySlug.get(slug) ?? null;
 }
 
+/** Lo que enseña la portada sin cuenta: el catálogo y cuánto hay grabado. */
+export interface PublicCatalog {
+  readonly capsules: readonly Course[];
+  /** Cursos publicados (los de lista de espera no salen en la portada). */
+  readonly masters: readonly Course[];
+  /** Lecciones de cada curso o cápsula, por id. */
+  readonly lessonsByCourse: Readonly<Record<string, number>>;
+  /** Lecciones en video de los cursos maestros publicados: el `[N]` del héroe. */
+  readonly masterLessons: number;
+}
+
+const PUBLIC_CATALOG_TTL_MS = 5 * 60 * 1000;
+let publicCatalogMemo: { readonly at: number; readonly value: PublicCatalog } | null =
+  null;
+
+/**
+ * El catálogo para quien NO tiene cuenta (diseño final 01/02, 2026-10-07).
+ *
+ * Con la clave de servicio: desde la 0044 un anónimo no puede leer lecciones
+ * (ni las de los cursos libres), y la portada igual necesita contarlas — el
+ * `[N]` del diseño es un número real, nunca inventado. Solo salen cuentas y lo
+ * que ya enseña la lista pública de cursos; ningún contenido.
+ *
+ * Recordado 5 minutos: es la portada, no puede esperar a la base en cada
+ * visita. Si falla, la última buena o un catálogo vacío.
+ */
+export async function publicCatalog(): Promise<PublicCatalog> {
+  const now = Date.now();
+  if (publicCatalogMemo !== null && now - publicCatalogMemo.at < PUBLIC_CATALOG_TTL_MS) {
+    return publicCatalogMemo.value;
+  }
+  const empty: PublicCatalog = {
+    capsules: [],
+    masters: [],
+    lessonsByCourse: {},
+    masterLessons: 0,
+  };
+  if (!isSupabaseAdminConfigured()) {
+    return publicCatalogMemo?.value ?? empty;
+  }
+
+  const { data, error } = await createSupabaseAdminClient()
+    .from('courses')
+    .select(`${COURSE_COLUMNS}, modules(lessons(id))`)
+    .eq('status', 'publicado')
+    .order('position');
+
+  if (error !== null || data === null) {
+    return publicCatalogMemo?.value ?? empty;
+  }
+
+  const lessonsByCourse: Record<string, number> = {};
+  for (const row of data) {
+    lessonsByCourse[row.id] = row.modules.reduce(
+      (sum, mod) => sum + mod.lessons.length,
+      0,
+    );
+  }
+
+  const courses = data.map((row) => toCourse(row, row.access !== 'libre'));
+  const masters = courses.filter((course) => course.kind === 'curso');
+  const value: PublicCatalog = {
+    capsules: courses.filter((course) => course.kind === 'capsula'),
+    masters,
+    lessonsByCourse,
+    masterLessons: masters.reduce(
+      (sum, course) => sum + (lessonsByCourse[course.id] ?? 0),
+      0,
+    ),
+  };
+  publicCatalogMemo = { at: now, value };
+  return value;
+}
+
 /** Lo que El Charcu necesita saber de un curso para poder recomendarlo. */
 export interface AssistantCourse {
   readonly title: string;

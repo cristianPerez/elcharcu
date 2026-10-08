@@ -146,6 +146,18 @@ export default async function globalSetup(config: FullConfig): Promise<void> {
       await seedCourseInProgress(charcu, userId);
     }
 
+    // El cupo del mes a cero: la IA va simulada (no se llama a Gemini), pero el
+    // contador de preguntas es el de verdad. Con varias corridas en un día la
+    // cuenta pro llegó a sus 200, el chat se bloqueó ("Sin preguntas este mes")
+    // y cayeron tests que no tenían nada que ver (2026-10-07).
+    await charcu.from('usage_counters').delete().eq('user_id', userId);
+
+    // El cupo del mes a cero: cada corrida gasta preguntas (la IA va simulada,
+    // pero el contador es el de verdad) y, con varias corridas en un día, la
+    // cuenta pro llegó a sus 200 y el chat se bloqueó ("Sin preguntas este
+    // mes"), tumbando tests que no tenían nada que ver (2026-10-07).
+    await charcu.from('usage_counters').delete().eq('user_id', userId);
+
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto(

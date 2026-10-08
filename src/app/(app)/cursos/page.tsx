@@ -2,24 +2,57 @@ import { type Metadata } from 'next';
 import { type ReactNode } from 'react';
 
 import { AppCursosView } from '@/views/app-cursos';
+import { PublicCursosView } from '@/views/public-cursos';
 
 import { pickContinueCourse, type CourseProgress } from '@/entities/course';
 import {
   lessonNumberIn,
   listCourses,
   progressByCourse,
+  publicCatalog,
   recentCourseIds,
 } from '@/entities/course/server';
 import { hasActiveSubscription } from '@/entities/subscription/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
+import { safeDestination } from '@/shared/lib/access';
 
-export const metadata: Metadata = { title: 'Mis cursos · El Charcu' };
+/**
+ * Cursos es el inicio (diseño final, 2026-10-07): sin sesión se ve la portada
+ * pública; con sesión, el Mis cursos de siempre, sin cambios. Se decide AQUÍ,
+ * en el servidor, así que no hay parpadeo de una versión a la otra.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  return (await currentUser()) === null
+    ? {
+        title: 'El Charcu · Aprende charcutería artesanal en video',
+        description:
+          'Cursos maestros de chorizos, jamones y curados, con El Charcu a tu lado para cada duda. Empieza gratis con las cápsulas y el curso de lomo.',
+        alternates: { canonical: '/cursos' },
+      }
+    : { title: 'Mis cursos · El Charcu' };
+}
 
-export default async function CursosPage(): Promise<ReactNode> {
+export default async function CursosPage({
+  searchParams,
+}: {
+  readonly searchParams: Promise<{ readonly abrir?: string | string[] }>;
+}): Promise<ReactNode> {
   // Sin viaje extra: el layout ya preguntó quién es y `currentUser()` está
   // deduplicado dentro de la misma petición.
   const userId = (await currentUser())?.id ?? null;
+
+  if (userId === null) {
+    // `?abrir=` lo pone el layout cuando alguien sin cuenta llega directo a una
+    // cápsula o un curso: la portada abre la hoja con ese destino.
+    const { abrir } = await searchParams;
+    return (
+      <PublicCursosView
+        catalog={await publicCatalog()}
+        openOnMount={typeof abrir === 'string' ? safeDestination(abrir) : null}
+      />
+    );
+  }
 
   // Todo a la vez: son independientes y encadenarlas solo suma espera en un
   // celular con mala señal.

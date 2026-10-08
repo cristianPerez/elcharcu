@@ -18,7 +18,7 @@ export function EntrarPage({ trigger, origin }: EntrarPageProps): ReactNode {
   return (
     <AppShell centered>
       <AuthOpenTracker trigger={trigger} origin={origin} />
-      <EmailAuthForm />
+      <EmailAuthForm next={origin} />
     </AppShell>
   );
 }

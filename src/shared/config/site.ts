@@ -39,7 +39,7 @@ export const site = {
   name: 'El Charcu',
   tagline: 'Artesanal',
   slogan: 'Sin aditivos · Sin atajos',
-  location: 'Manizales, Colombia',
+  location: 'Colombia',
   since: 2026,
   homeUrl: 'https://elcharcu.co',
   whatsappUrl: `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`,
@@ -90,6 +90,8 @@ export const appRoutes = {
   appMasterCourses: '/cursos/maestros',
   appAssistant: '/charcu',
   appAccount: '/cuenta',
+  /** La pestaña Recetas: el recetario (Pro) o la vitrina con candado. */
+  recipes: '/recetas',
   /**
    * El curso gratis, el que se enseña desde la web pública.
    *

@@ -25,7 +25,7 @@ export function RecipePreparation({
 }: RecipePreparationProps): ReactNode {
   return (
     <RecipeSection>
-      <Eyebrow className="text-terracota">Manos a la obra</Eyebrow>
+      <Eyebrow className="text-brasa-tinta">Manos a la obra</Eyebrow>
       <h2 className="mt-4 font-serif text-2xl font-semibold text-cocoa md:text-4xl">
         Preparación
       </h2>

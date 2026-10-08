@@ -1,6 +1,6 @@
 ---
 name: create-recipe
-description: Crea una receta nueva de El Charcu a partir de un post, un vídeo o unas notas — escribe el JSON, lo registra, genera la foto con fal.ai, la comprime al estándar del sitio y la verifica en el navegador. Úsala siempre que pidan "crea una receta", "nueva receta", "añade esta receta" o peguen el texto de un post de Instagram con ingredientes.
+description: Crea una receta nueva de El Charcu a partir de un post, un vídeo o unas notas — la escribe como migración de `charcu.recetario`, la aplica en QA, genera la foto con fal.ai, la comprime al estándar del sitio y la verifica en el navegador. Úsala siempre que pidan "crea una receta", "nueva receta", "añade esta receta" o peguen el texto de un post de Instagram con ingredientes.
 ---
 
 Eres el charcutero que pasa un post a receta publicable. El sitio ya tiene 45+
@@ -17,22 +17,52 @@ cosas a revisar. Nunca lo deslices como si viniera del post.
 
 ## 1. Lee una receta parecida antes de escribir
 
-Elige la más cercana en técnica, no en país:
+Desde el 2026-10-07 las recetas viven en la base (`charcu.recetario`, columna
+`content`), no en JSON del repo. Elige la más cercana en técnica, no en país, y
+léela de QA:
 
-- Cocido / ahumado cocido → `src/entities/recipe/recipes/kielbasa-de-pollo.json`
-- Fresco u oreado corto → `chistorra.json`
-- Curado largo → `salchichon-iberico.json`
-- Sin tripa ni ahumador → `mortadela-de-pollo-casera.json`
+- Cocido / ahumado cocido → `kielbasa-de-pollo`
+- Fresco u oreado corto → `chistorra`
+- Curado largo → `salchichon-iberico`
+- Sin tripa ni ahumador → `mortadela-de-pollo-casera`
 
-El contrato de campos está en `src/entities/recipe/model/types.ts`. Todos los
-campos de `Recipe` son obligatorios salvo `doubts`.
+```bash
+set -a; source .env.local; set +a; curl -s "$SUPABASE_URL/rest/v1/recetario?slug=eq.chistorra&select=content,category,capsule_slug" -H "apikey: $SUPABASE_SECRET_KEY" -H "Authorization: Bearer $SUPABASE_SECRET_KEY" -H "Accept-Profile: charcu" | python3 -m json.tool
+```
 
-## 2. Escribe `src/entities/recipe/recipes/<slug>.json`
+El contrato de `content` está en `src/entities/recipe/model/types.ts`. Todos
+los campos de `Recipe` son obligatorios salvo `doubts`; si falta uno, la
+receta no aparece (`isRecipe` la descarta).
+
+## 2. Escribe la receta como migración
+
+Un archivo nuevo `supabase/migrations/<AAAAMMDDhhmmss>_<NNNN>_receta_<slug>.sql`
+(el siguiente número de la lista) con un `insert` en `charcu.recetario`:
+
+```sql
+insert into charcu.recetario
+  (slug, name, category, tags, image, origin, capsule_slug, content, position)
+values
+  ('tu-slug', 'Nombre', 'chorizos', '{"Colombia","Fresco"}', '/recipes/tu-slug.jpg',
+   'Colombia · 1 kg', 'embutir-un-chorizo',
+   $receta${ …el JSON completo de la receta… }$receta$::jsonb,
+   (select coalesce(max(position), 0) + 10 from charcu.recetario));
+
+-- Si ya hay un curso con el mismo slug, se enlaza solo:
+update charcu.recetario r set course_slug = c.slug
+  from charcu.courses c where c.slug = r.slug and c.kind = 'curso' and r.slug = 'tu-slug';
+```
 
 - `slug`: kebab-case, es la URL `/recetas/<slug>`.
+- `category`: una de `chorizos`, `jamones-curados`, `jamones-cocidos`,
+  `embutidos-frescos`, `quesos` (los filtros del recetario).
+- `capsule_slug`: la cápsula con la que termina. Embutidos →
+  `embutir-un-chorizo`; piezas que se bridan → `bridar-un-jamon`; otros
+  curados → `sal-de-cura`; si no aplica, `null`.
+- `origin`: país y rendimiento, como en la tarjeta (`Colombia · 1 kg`).
 - `image`: `/recipes/<slug>.jpg` (aunque aún no exista; la generas en el paso 4).
 - `tags`: reutiliza los que ya existen. Míralos con
-  `grep -h '"tags"' src/entities/recipe/recipes/*.json | sort | uniq -c`.
+  `select distinct unnest(tags) from charcu.recetario order by 1;`.
   País primero, luego técnica (`Fresco`, `Curado`, `Semicurado`, `Ahumado`,
   `Cocido`, `Parrillero`, `Picante`, `Pollo`, `Bajo sodio`…).
 - `eyebrow`: `"Receta · Chorizos del mundo"`.
@@ -55,15 +85,16 @@ campos de `Recipe` son obligatorios salvo `doubts`.
 - Nada de humo frío en embutidos que se comen cocidos: 80–150 °C hasta la
   temperatura interna que diga el post (normalmente 72–75 °C).
 
-## 3. Regístrala en `src/entities/recipe/model/recipes.ts`
+## 3. Aplícala en QA (producción, solo con aprobación de Cristian)
 
-Dos ediciones, ambas en orden alfabético / temático:
+```bash
+set -a; source .env.local; set +a; npx supabase db push
+```
 
-1. El `import` estático, entre los demás (alfabético por ruta).
-2. La entrada en el array `recipes`, junto a las de su familia (los chorizos
-   con los chorizos, los curados con los curados).
-
-Sin esto, la receta no existe para el sitio.
+El sitio lee el recetario de una caché de una hora: la receta aparece sola en
+como mucho una hora, o en el siguiente despliegue. La página
+`/recetas/<slug>` se genera en su primera visita aunque no existiera al
+compilar.
 
 ## 4. Genera la foto con fal.ai
 

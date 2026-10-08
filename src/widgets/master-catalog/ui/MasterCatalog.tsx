@@ -22,6 +22,7 @@ interface MasterCatalogProps {
   readonly progress: ReadonlyMap<string, CourseProgress>;
   readonly requested: ReadonlySet<CourseCategory>;
   readonly isSubscribed: boolean;
+  readonly isSignedIn: boolean;
 }
 
 /**
@@ -38,6 +39,7 @@ export function MasterCatalog({
   progress,
   requested,
   isSubscribed,
+  isSignedIn,
 }: MasterCatalogProps): ReactNode {
   const groups = COURSE_CATEGORIES.map((category) => ({
     ...category,
@@ -94,6 +96,7 @@ export function MasterCatalog({
                       course={course}
                       progress={progress.get(course.id)}
                       isSubscribed={isSubscribed}
+                      isSignedIn={isSignedIn}
                     />
                   </li>
                 ))}

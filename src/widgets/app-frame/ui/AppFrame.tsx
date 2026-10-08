@@ -1,36 +1,51 @@
+'use client';
+
 import { type ReactNode } from 'react';
 
+import {
+  SignupDialog,
+  SignupInterceptor,
+  SignupPromptProvider,
+} from '@/features/auth-by-email';
+
+import { type FrameViewer, useFrameViewer } from '../model/viewer';
+
 import { BottomNav } from './BottomNav';
-import { FrameMain } from './FrameMain';
+import { FrameMain, type FrameLayout } from './FrameMain';
 import { TopNav } from './TopNav';
 
 interface AppFrameProps {
   readonly children: ReactNode;
-  readonly initials: string;
+  /** Quién mira: decide "Entrar" o "Cuenta" (ver `FrameViewer`). */
+  readonly viewer: FrameViewer;
+  readonly layout?: FrameLayout | undefined;
 }
 
 /**
- * El marco de la app de quien ya entró.
- *
- * Es deliberadamente otra cosa que `AppShell` (el marco del embudo): aquí no
- * hay salidas al sitio público, porque el que ya entró no viene a que le
- * vendan otra vez. Viene a hacer algo.
- *
- * ⚠️ Cambió el 2026-10 con el rediseño. Antes era `max-w-md` en cualquier
- * pantalla —una app de celular estirada nunca—; ahora en escritorio la barra
- * de abajo pasa a menú arriba y el contenido se abre hasta 1200 px. Las
- * pantallas que todavía no se rediseñaron (el curso, la lección) se encogen
- * ellas solas a una columna, así que este marco no decide su ancho.
- *
- * El hueco de la barra fija de abajo lo reserva `FrameMain`, que también deja
- * al asistente ir a sangre.
+ * El marco de la app para TODOS, con o sin cuenta (diseño final, 2026-10-07):
+ * menú arriba en escritorio, barra abajo en el celular, y en medio la
+ * pantalla. Antes solo existía detrás del login; ahora también lo usan la
+ * portada sin cuenta y las recetas.
  */
-export function AppFrame({ children, initials }: AppFrameProps): ReactNode {
+export function AppFrame({
+  children,
+  viewer,
+  layout = 'contained',
+}: AppFrameProps): ReactNode {
+  const resolved = useFrameViewer(viewer);
+
   return (
-    <div className="flex min-h-dvh flex-col bg-cream">
-      <TopNav initials={initials} />
-      <FrameMain>{children}</FrameMain>
-      <BottomNav />
-    </div>
+    // La hoja de crear cuenta vive aquí, en lo común a todas las pantallas:
+    // la abre una cápsula, la 3.ª pregunta, "Avísame" o el menú.
+    <SignupPromptProvider>
+      <SignupInterceptor isActive={!resolved.isSignedIn && !resolved.isPending}>
+        <div className="flex min-h-dvh flex-col bg-cream">
+          <TopNav viewer={resolved} />
+          <FrameMain layout={layout}>{children}</FrameMain>
+          <BottomNav viewer={resolved} />
+        </div>
+      </SignupInterceptor>
+      <SignupDialog />
+    </SignupPromptProvider>
   );
 }

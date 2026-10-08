@@ -1,3 +1,5 @@
+import { ANONYMOUS_QUESTIONS } from '@/shared/lib/access';
+
 /**
  * Cupo de uso, medido en PREGUNTAS e IMÁGENES (D15).
  *
@@ -52,7 +54,7 @@ export interface QuotaStatus {
  * (~0,011 USD la tanda). Lo frena el tope diario de gasto, que es global. Si
  * este número sube más, hay que medir antes.
  */
-export const QUESTIONS_BEFORE_LEAD = 2;
+export const QUESTIONS_BEFORE_LEAD = ANONYMOUS_QUESTIONS;
 
 /** Cupo vacío, para el primer render antes de que conteste el servidor. */
 export const EMPTY_QUOTA: QuotaSnapshot = {

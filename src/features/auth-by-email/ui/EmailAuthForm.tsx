@@ -7,13 +7,18 @@ import { Eyebrow } from '@/shared/ui';
 import { useEmailAuth } from '../model/useEmailAuth';
 
 /** Entrar con un enlace al correo. Sin contraseña. */
-export function EmailAuthForm(): ReactNode {
+interface EmailAuthFormProps {
+  /** A dónde vuelve al tocar el enlace (la página de la que vino). */
+  readonly next?: string | null | undefined;
+}
+
+export function EmailAuthForm({ next }: EmailAuthFormProps): ReactNode {
   const { state, sendLink, reset } = useEmailAuth();
   const [email, setEmail] = useState('');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-    void sendLink(email);
+    void sendLink(email, { next: next ?? undefined });
   };
 
   if (state.status === 'sent') {

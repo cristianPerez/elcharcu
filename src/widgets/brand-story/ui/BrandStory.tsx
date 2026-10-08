@@ -19,7 +19,7 @@ export function BrandStory(): ReactNode {
 
           <div className="space-y-5 text-base leading-relaxed text-cocoa/80">
             <p>
-              El Charcu nace en Manizales de la obsesión por hacer embutidos y curados con
+              El Charcu nace en Colombia de la obsesión por hacer embutidos y curados con
               la calidad de España e Italia — sin los aditivos ni los atajos de la
               industria. Lo que empezó como afición se convirtió en oficio, y el oficio en
               marca.

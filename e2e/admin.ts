@@ -69,3 +69,40 @@ export async function nextLessonOf(userId: string, slug: string): Promise<string
   const { data } = await admin().rpc('course_progress', { p_user_id: userId });
   return (data ?? []).find((row) => row.course_id === course?.id)?.next_lesson_id ?? null;
 }
+
+/**
+ * Un token de sesión de una cuenta de prueba, sin correo: `generateLink` da el
+ * mismo `token_hash` del enlace y se canjea con la clave pública.
+ */
+export async function accessTokenFor(email: string): Promise<string> {
+  const { data } = await admin().auth.admin.generateLink({ type: 'magiclink', email });
+  const tokenHash = data.properties?.hashed_token;
+  if (tokenHash === undefined) {
+    throw new Error(`Sin enlace para ${email}`);
+  }
+  const { data: verified } = await publicClient().auth.verifyOtp({
+    token_hash: tokenHash,
+    type: 'magiclink',
+  });
+  const token = verified.session?.access_token;
+  if (token === undefined) {
+    throw new Error(`Sin sesión para ${email}`);
+  }
+  return token;
+}
+
+/** Un cliente con la clave pública, como el del navegador; con token, como esa cuenta. */
+export function publicClient(accessToken?: string): AdminClient {
+  loadLocalEnv();
+  return createClient<Database, 'charcu'>(
+    process.env.SUPABASE_URL ?? '',
+    process.env.SUPABASE_PUBLISHABLE_KEY ?? '',
+    {
+      db: { schema: 'charcu' },
+      auth: { persistSession: false, autoRefreshToken: false },
+      ...(accessToken === undefined
+        ? {}
+        : { global: { headers: { Authorization: `Bearer ${accessToken}` } } }),
+    },
+  );
+}
