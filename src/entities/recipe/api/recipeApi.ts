@@ -100,6 +100,21 @@ export async function getRecipes(): Promise<readonly Recipe[]> {
   return (await getRecetario()).map((entry) => entry.recipe);
 }
 
+/**
+ * Los slugs que se pre-generan en el build (`generateStaticParams`).
+ *
+ * Sin configuración de Supabase —el job de calidad de CI compila sin claves, a
+ * propósito— no hay recetario que leer: se devuelve vacío y cada receta se
+ * genera al pedirla (ISR). Con claves, como en Vercel, si la base falla el
+ * build falla: mejor eso que publicar un sitio sin recetas.
+ */
+export async function staticRecipeSlugs(): Promise<readonly string[]> {
+  if (!isSupabaseAdminConfigured()) {
+    return [];
+  }
+  return (await getRecipes()).map((recipe) => recipe.slug);
+}
+
 export async function getRecetarioEntry(
   slug: string,
 ): Promise<RecetarioEntry | undefined> {

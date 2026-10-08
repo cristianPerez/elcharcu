@@ -4,7 +4,7 @@ import { type ReactNode } from 'react';
 
 import { RecetaDetallePage } from '@/views/receta-detalle';
 
-import { getRecipeBySlug, getRecipes } from '@/entities/recipe/server';
+import { getRecipeBySlug, staticRecipeSlugs } from '@/entities/recipe/server';
 
 interface RecetaRouteProps {
   readonly params: Promise<{ readonly slug: string }>;
@@ -19,7 +19,7 @@ interface RecetaRouteProps {
 export const revalidate = 3600;
 
 export async function generateStaticParams(): Promise<Array<{ slug: string }>> {
-  return (await getRecipes()).map((recipe) => ({ slug: recipe.slug }));
+  return (await staticRecipeSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: RecetaRouteProps): Promise<Metadata> {

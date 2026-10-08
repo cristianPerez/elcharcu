@@ -15,6 +15,7 @@ export {
   getRecipeTeasers,
   recetarioOrLastGood,
   RECETARIO_CACHE_TAG,
+  staticRecipeSlugs,
 } from './api/recipeApi';
 export {
   linkReceivedRecipes,
