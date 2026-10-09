@@ -14,6 +14,8 @@ interface SignupStepEmailProps {
   readonly heading: string;
   /** Entrar a una cuenta que ya existe: sin la lista de lo que trae. */
   readonly isSignIn: boolean;
+  /** Escribió algo en el campo (para medir el abandono; no recibe el texto). */
+  readonly onTyped: () => void;
   readonly initialEmail: string;
   readonly isSending: boolean;
   readonly error: string | null;
@@ -24,6 +26,7 @@ interface SignupStepEmailProps {
 export function SignupStepEmail({
   heading,
   isSignIn,
+  onTyped,
   initialEmail,
   isSending,
   error,
@@ -66,7 +69,10 @@ export function SignupStepEmail({
         autoComplete="email"
         inputMode="email"
         value={email}
-        onChange={(event) => setEmail(event.target.value)}
+        onChange={(event) => {
+          setEmail(event.target.value);
+          onTyped();
+        }}
         placeholder="tunombre@correo.com"
         aria-invalid={error !== null}
         aria-describedby={error === null ? undefined : `${inputId}-error`}

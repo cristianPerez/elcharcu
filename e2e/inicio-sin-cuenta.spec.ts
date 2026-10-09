@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 import { admin } from './admin';
 import {
+  captureMixpanel,
   hasHorizontalScroll,
   isDesktop,
   mockOtp,
@@ -213,6 +214,39 @@ test.describe('Crear cuenta', () => {
     expect(new URL(sentTo() ?? 'http://x').searchParams.get('disparador')).toBe(
       'crear_cuenta',
     );
+  });
+
+  test('cerrar la hoja sin entrar mide el abandono, sin mandar el correo', async ({
+    page,
+  }) => {
+    const { firstCapsule } = await publicCounts();
+    const events = await captureMixpanel(page);
+    await page.goto('/cursos');
+
+    const card = page.locator(`a[href="/cursos/${firstCapsule.slug}"]`).first();
+    await card.scrollIntoViewIfNeeded();
+    await card.click();
+    await dialog(page).getByLabel('Tu correo').fill('abandono@elcharcu.test');
+    await page.keyboard.press('Escape');
+    await expect(dialog(page)).toBeHidden();
+
+    await expect
+      .poll(() => events.find((e) => e.event === 'auth_modal_closed'), {
+        timeout: 20_000,
+      })
+      .toBeDefined();
+    const closed = events.find((e) => e.event === 'auth_modal_closed');
+    const opened = events.find((e) => e.event === 'auth_modal_opened');
+    expect(closed?.properties).toMatchObject({
+      paso: 'correo',
+      escribio_correo: true,
+      hubo_error: false,
+      trigger: 'capsula',
+      origen: `/cursos/${firstCapsule.slug}`,
+    });
+    // El mismo intento que la apertura, y nunca el correo escrito.
+    expect(closed?.properties.intento).toBe(opened?.properties.intento);
+    expect(JSON.stringify(closed?.properties)).not.toContain('abandono@');
   });
 
   test('Esc cierra y el foco vuelve a lo que la abrió', async ({ page }) => {

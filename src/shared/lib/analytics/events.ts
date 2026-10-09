@@ -125,6 +125,15 @@ export const ANALYTICS_EVENTS = {
   */
   /** Se le pidió la cuenta. `trigger` dice por qué: cápsula, tercera pregunta… */
   authModalOpened: 'auth_modal_opened',
+  /**
+   * Cerró la hoja de crear cuenta / entrar SIN entrar (la X, Esc o el fondo).
+   * Lleva `paso` (`correo`: no lo mandó · `revisa_correo`: lo mandó y cerró
+   * esperando), `escribio_correo` (si llegó a escribir algo, nunca el correo),
+   * `hubo_error` y `segundos_abierta`, además del intento, el `trigger` y el
+   * `origen` de `auth_modal_opened`. Entrar con éxito no lo dispara
+   * (2026-10-08). Mide el abandono sin depender de los clics automáticos.
+   */
+  authModalClosed: 'auth_modal_closed',
   /** Supabase aceptó el correo y mandó el enlace. */
   magicLinkRequested: 'magic_link_requested',
   /** Abrió el enlace y llegó a `/auth/callback`. Se mide en el servidor. */
