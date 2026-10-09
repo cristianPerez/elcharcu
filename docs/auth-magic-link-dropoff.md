@@ -88,17 +88,18 @@ suponía.**
 
 ## Qué se agregó para medir
 
-Seis eventos, sin datos personales: ids aleatorios, el `visitor_id` anónimo y
+Siete eventos, sin datos personales: ids aleatorios, el `visitor_id` anónimo y
 rutas de la web. Ningún evento lleva correo.
 
-| Evento                           | Dónde                   | Cuándo                                                                                                       |
-| -------------------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `auth_modal_opened`              | navegador               | Se le pide la cuenta: muro de la 3.ª pregunta, o `/entrar`.                                                  |
-| `magic_link_requested`           | navegador               | Supabase aceptó el correo.                                                                                   |
-| `magic_link_landed`              | **servidor** (callback) | Abrió el enlace y llegó al callback.                                                                         |
-| `auth_completed` / `auth_failed` | **servidor**            | Abrió sesión / no. `auth_failed` lleva `reason`.                                                             |
-| `returned_to_origin`             | navegador               | Tras entrar, llegó a la página que había elegido (máx. 30 min después). Lleva `pasos`.                       |
-| `auth_link_error`                | navegador (`/entrar`)   | Supabase rechazó el enlace antes del callback. Lleva el `reason` real (ver abajo). No es un paso del embudo. |
+| Evento                           | Dónde                   | Cuándo                                                                                                                           |
+| -------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `auth_modal_opened`              | navegador               | Se le pide la cuenta: muro de la 3.ª pregunta, o `/entrar`.                                                                      |
+| `magic_link_requested`           | navegador               | Supabase aceptó el correo.                                                                                                       |
+| `magic_link_landed`              | **servidor** (callback) | Abrió el enlace y llegó al callback.                                                                                             |
+| `auth_completed` / `auth_failed` | **servidor**            | Abrió sesión / no. `auth_failed` lleva `reason`.                                                                                 |
+| `returned_to_origin`             | navegador               | Tras entrar, llegó a la página que había elegido (máx. 30 min después). Lleva `pasos`.                                           |
+| `auth_link_error`                | navegador (`/entrar`)   | Supabase rechazó el enlace antes del callback. Lleva el `reason` real (ver abajo). No es un paso del embudo.                     |
+| `auth_modal_closed`              | navegador (la hoja)     | Cerró la hoja sin entrar (2026-10-08). `paso` (`correo` / `revisa_correo`), `escribio_correo`, `hubo_error`, `segundos_abierta`. |
 
 Todos llevan:
 
