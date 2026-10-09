@@ -26,7 +26,8 @@ La app detrás de elcharcu.co: un **asistente de charcutería con IA** +
   de las suscripciones en dólares.
 - **Respuesta:** ayuda real en el momento de la duda, atada a una persona real.
 
-**Mercado:** Colombia primero (Manizales), LATAM y España después.
+**Mercado:** Colombia primero, LATAM y España después. La marca dice
+"Colombia", nunca la ciudad (Cristian, 2026-10-07).
 
 **En producción** desde el 2026-08-31: `www.elcharcu.co` (rama `main`), con su
 propia base de Supabase. QA es `qa.elcharcu.co` (rama `develop`), base aparte.
@@ -80,6 +81,53 @@ planes abren WhatsApp con el plan escrito y la suscripción se activa a mano.
 **OnePay (D21)** está investigado pero sin integrar. La primera lectura
 (2026-08-29) sigue en `git show 6a644b2:ESTADO.md`, sección _"1. Pagos —
 OnePay"_: autenticación, estados y las reglas del webhook siguen valiendo.
+
+### 🟠 Diseño final — inicio sin cuenta, crear cuenta y recetas (2026-10-07)
+
+En producción desde el 2026-10-08, con sus migraciones 0042–0046. Falta:
+
+- **Mezclado a `main` (PR #29, 2026-10-08).** Revisar en elcharcu.co `/recetas`
+  y una receta por link si no se hizo.
+- **Las fotos de las recetas con candado delatan su slug** (`/recipes/<slug>.jpg`).
+  El contenido está protegido por RLS, pero se ve qué recetas hay. Arreglo
+  propuesto: copias de las imágenes con nombre cifrado para la vitrina.
+- **Quedó fuera del diseño, a propósito:** recetas parecidas para Pro, el pago
+  automático (OnePay, abajo), la cabecera verde con compartir de la receta en
+  el celular y plegar los ingredientes a 5.
+- **Decisión abierta:** sin sesión, la miga de pan de Cursos maestros dice
+  "Mis cursos". ¿Pasa a "Cursos"?
+- **En el celular, la hoja de "Entrar" tapa la barra de pestañas** mientras
+  está abierta. Se puede subir por encima de la barra si molesta.
+- **En el celular, el video de la portada empuja "Crear cuenta gratis" bajo el
+  primer pantallazo.** Achicarlo tiene un límite: por debajo de ~300 px de ancho
+  la barra de controles de Bunny no cabe y el play queda fuera.
+- **"Pasar a Pro" en Recetas solo enseña el precio anual.** Los planes de la
+  portada ya tienen el selector anual/mensual; la hoja de Recetas no.
+- **`/entrar` sigue viva** para los enlaces de error del correo y las rutas
+  privadas sin sesión, pero con sesión manda a `/charcu`, no a donde iba.
+
+### 🟠 Por qué la gente no crea la cuenta — medirlo (2026-10-08)
+
+En Mixpanel (producción), el tablero **"Embudo de cuenta"** tiene el embudo
+visita → hoja → enlace → entra (desglosado por `trigger`) y `auth_failed` por
+día y motivo. La primera lectura, con el diseño anterior y pocos datos:
+**17 de 20 abrieron la hoja y no mandaron el correo** (14 de esos 20 venían de
+"Entrar"), y los 3 que tuvieron un `auth_failed` (`otp_expired`,
+`pkce_code_verifier_not_found`) nunca llegaron a tener cuenta.
+
+- **Volver a mirarlo tras una semana con el diseño nuevo** (en producción desde
+  el 2026-10-08).
+- **`auth_modal_closed`** (PR #30) mide el abandono de la hoja: en qué `paso`,
+  si escribió, cuánto tardó. Cuando haya datos, sumar al tablero un reporte por
+  `paso` y `trigger`. El plan gratis de Mixpanel deja 5 reportes guardados
+  por persona; van 2.
+- **Lo que arreglaría los `auth_failed`** está en
+  `docs/auth-magic-link-dropoff.md`: explicar el error en `/entrar` (poco
+  trabajo) y el código de 6 dígitos en el correo (cambia el flujo de entrada:
+  decisión de Cristian).
+- **Mixpanel no une** lo de antes y después del registro
+  (`errAnonDistinctIdAssignedAlready`): para seguir a una persona hay que mirar
+  el perfil de su `visitor_id` y el de su cuenta.
 
 ### 🟠 Miniplan — suscripciones con OnePay (empezado el 2026-09-27)
 
@@ -181,12 +229,9 @@ Mis cursos, búsqueda, Cursos maestros, El Charcu y Mi cuenta ya siguen
   En proceso / Terminadas, por `recipes.status`). La propuesta está en el plan
   del rediseño: `responseSchema` de Gemini, validado con type guards, y las
   dosis de la tarjeta auditadas contra `MAX_CURE_1_G_PER_KG`.
-- **Migraciones solo en QA: 0029, 0030, 0031 y 0032.** Ninguna está en producción.
-  - **0029**: categoría y técnicas de cada curso. El relleno es una propuesta
-    por slug **para revisar**: la longaniza va en "Embutidos frescos" (su
-    resumen lo dice) y bridar un jamón en "Jamones curados".
-  - **0030**: `course_requests` ("Quiero un curso de…" y "Propón un curso").
-  - **0031**: los tres avisos del perfil.
+- **Revisar las categorías de 0029** (ya en producción): el relleno fue una
+  propuesta por slug. La longaniza va en "Embutidos frescos" (su resumen lo
+  dice) y bridar un jamón en "Jamones curados".
 - **Los avisos no envían nada.** Recordatorios de pasos, cursos nuevos y el
   correo de novedades solo guardan la preferencia: no existe ningún canal.
 - **Avísame sigue cerrado a quien no paga (0021).** Al usuario gratis se le
@@ -194,15 +239,18 @@ Mis cursos, búsqueda, Cursos maestros, El Charcu y Mi cuenta ya siguen
   producción, hoy nadie puede apuntarse desde la app.
 - **Fotos de los cursos.** Encendidas. Las de `public/curso/` se comprimieron
   al estándar (600 px, calidad 65) y el paisa toma prestada la del chorizo
-  parrillero (0032, solo QA). Las cápsulas no llevan foto: la maqueta no la
-  pinta.
+  parrillero (0032). Las cápsulas no llevan foto: la maqueta no la pinta.
 - **"Gestionar plan" y "Pagos y facturas" abren WhatsApp** hasta que exista
   OnePay.
 - **Escritorio con una receta en curso** queda con la columna de recetas y
   la conversación; la vista de 3 columnas con "Ficha" está fuera de alcance.
-- **Los e2e** (`pnpm test:e2e`) corren contra QA con dos cuentas de prueba
-  (`e2e-gratis@`, `e2e-pro@elcharcu.test`) y la IA simulada, en el Chrome
-  instalado: la 1.63 de Playwright ya no trae Chromium para macOS 13.
+- **Los e2e** (`pnpm test:e2e`) corren contra QA con tres cuentas de prueba
+  (`e2e-gratis@`, `e2e-pro@`, `e2e-capsulas@elcharcu.test`) y la IA simulada
+  (`AI_SIMULAR_IA`: no se llama a Gemini ni se gasta), en el Chrome instalado:
+  la 1.63 de Playwright ya no trae Chromium para macOS 13. El contador de
+  preguntas sí es real, por eso el setup lo pone a cero en cada corrida.
+  En CI la app lleva un token de Mixpanel FALSO (`e2e.yml`): así los tests que
+  miden eventos los pueden leer, y nada llega al proyecto de QA.
 
 ### 🟡 Un hueco conocido en la auditoría de seguridad
 
@@ -244,22 +292,22 @@ que hace falta es otra cosa.
 Las cinco fases de los CTA están hechas. Lo único que quedó abierto es una
 decisión: hoy las cuatro preguntas de cada receta se generan de sus datos
 —rendimiento, tipo de sal de cura, semanas de curado— y salen específicas sin
-escribir nada. El campo `doubts` del JSON permite escribir a mano la que se
-quiera y esa gana.
+escribir nada. El campo `doubts` del contenido de la receta (hoy en
+`charcu.recetario.content`) permite escribir a mano la que se quiera y esa gana.
 
 **Falta decidir si merece la pena** redactar a mano las de las recetas con más
-tráfico. Unas cinco, no 45. Y para saber cuáles son hace falta que corra la
+tráfico. Unas cinco, no 48. Y para saber cuáles son hace falta que corra la
 medición unos días.
 
 ### ⚠️ Tres cosas que el sistema hace y conviene no olvidar
 
 Salen de las fases 3, 4 y 5. No son pendientes: son cómo se comporta.
 
-- **Publicar un curso no se refleja en las recetas hasta el siguiente
-  despliegue.** Qué cursos están grabados se lee al COMPILAR, para no volver
-  dinámicas las 45 recetas. Falla del lado seguro —deja de ofrecer algo que
-  existe, nunca ofrece algo que no— pero grabar la longaniza y publicarla **no
-  basta**: hay que redesplegar.
+- **Los cambios en recetas y cursos tardan hasta una hora en verse.** Desde el
+  2026-10-07 el recetario vive en la base (`charcu.recetario`) con caché de 1 h
+  (etiqueta `recetario`) y las páginas de receta se regeneran cada hora (ISR).
+  Ya no hace falta redesplegar, pero tampoco es instantáneo. Una receta nueva
+  o corregida es una migración (lo hace la skill `create-recipe`).
 - **Los dos presupuestos de IA son globales POR PÚBLICO, no por persona.** Un
   solo suscriptor puede agotar el de `pro` para los demás. Hoy da igual porque
   `subscriptions` está vacía; cuando haya varios pagando hay que decidir si el
@@ -289,45 +337,21 @@ Se revisa si algún día el gasto duele y hay repeticiones reales medidas. La
 condición mínima para volver a mirarlo: misma receta, sin foto, sin números,
 primer turno de la conversación, y la respuesta sin ninguna dosis dentro.
 
-### 🟡 Volver a la receta desde el enlace del correo
+### 🟡 El enlace del correo — lo que queda
 
-Hoy el enlace del correo siempre cae en `/charcu`, así que quien deja su correo
-leyendo una receta entra a la app y **pierde de vista lo que estaba haciendo**.
-Debería volver a esa receta.
+Desde el diseño final (2026-10-07) la hoja de crear cuenta y "Entrar" mandan el
+destino y el enlace vuelve ahí (la cápsula, la receta, la página donde estaba),
+validado con `safeDestination`. Queda:
 
-⚠️ **El mecanismo ya existe, solo está fijo.** `sendAccountLink` escribe
-`emailRedirectTo: …/auth/callback?next=%2Fcharcu` a pelo, y `/auth/callback` ya
-lee `next` y lo pasa por `safeNext`, que es la guarda contra el redirect abierto
-—un `next` que llega por correo y se pega detrás del origen convierte
-`//otro-sitio.co` en una redirección a otra casa—. Falta pasar la ruta actual en
-vez de la constante.
-
-Dos cosas a decidir al hacerlo:
-
-- **Qué pasa con la conversación anónima.** Cuelga de la cookie de ese
-  navegador: si abre el enlace en el teléfono habiendo preguntado en el
-  computador, vuelve a la receta pero sin el hilo. Ya está aceptado, pero al
-  volver a la receta se va a notar más.
-- **`safeNext` tiene que seguir mandando.** La ruta viaja por correo, así que es
-  entrada de fuera aunque la escribamos nosotros.
-
-### 🟡 Los cursos en la portada no invitan a nada
-
-La sección de cursos del home debería invitar a entrar y enseñar el curso
-gratuito, en vez de quedarse en catálogo.
-
-⚠️ **Y hay que aclarar cuál.** Cristian lo pidió como "el curso gratuito de
-**Jamón curado**" (2026-09-01) y ese curso NO existe. Comprobado en producción:
-
-| lo que hay                                     | qué es                                                         |
-| ---------------------------------------------- | -------------------------------------------------------------- |
-| `lomo-curado` · "Lomo de cerdo curado"         | el ÚNICO curso publicado, 7 lecciones, el único con video real |
-| `bridar-un-jamon` · "Cómo bridar un jamón"     | una CÁPSULA de 4 lecciones (2 en video), no un curso           |
-| longaniza, santarrosano, paisa, chorizo de ajo | los cuatro en lista de espera, sin grabar                      |
-
-Lo más probable es que se refiera al **lomo curado**, que es el que está
-publicado y grabado. Pero "jamón" aparece en la cápsula de bridar, así que no se
-adivina: hay que preguntarle antes de construirlo.
+- **La portada vieja `/asistente`** sigue con `LeadCaptureModal` →
+  `sendAccountLink`, que escribe `next=%2Fcharcu` a pelo.
+- **Pedido en un navegador y abierto en otro** (el de Instagram → Safari) no
+  entra: el `code_verifier` de PKCE vive en el navegador que lo pidió. Está
+  medido y documentado en `docs/auth-magic-link-dropoff.md`; el arreglo cambia
+  el flujo de entrada y espera su visto bueno.
+- **La conversación anónima** cuelga de la cookie de ese navegador: si abre el
+  enlace en otro aparato, vuelve a la receta pero sin el hilo. Aceptado.
+- **Sospecha sin probar:** que el correo no llegue bien a Hotmail/Outlook.
 
 ### 🟡 Contenido, que solo puede dar Cristian
 
@@ -338,7 +362,8 @@ adivina: hay que preguntarle antes de construirlo.
 
 ### ⚠️ Revisar el salami de res — lo más urgente de esta lista
 
-`salami-de-res.json` se publicó **sin que Cristian revisara las cantidades**, y
+La receta `salami-de-res` (hoy en `charcu.recetario`) se publicó **sin que
+Cristian revisara las cantidades**, y
 es el contenido de más riesgo del sitio: lleva sal de cura #2 y las cifras se
 cruzaron contra fuentes, no contra su criterio.
 
@@ -349,7 +374,7 @@ altavoz a un número sin revisar.
 ### 🔴 El asistente no sabe qué está haciendo quien le escribe en la app
 
 Dentro de `/charcu` va `recipe: null`: el único contexto viene del `recipeSlug`,
-o sea solo desde las 45 páginas del sitio. Lo llevaba `product`, retirada el
+o sea solo desde las páginas de receta del sitio. Lo llevaba `product`, retirada el
 2026-09-01 con el agujero de inyección — y nada la reemplazó por ese camino.
 **29 de 29 sesiones con `product` en null, y otras 29 con `summary` en null.**
 
@@ -403,6 +428,14 @@ Mientras no se arregle, **bloquea PRs a main de vez en cuando**; el remedio de
 hoy es relanzar el trabajo fallido (`gh run rerun <id> --failed`). Para
 investigarlo: el informe de Playwright de la corrida 37411457358 tiene las
 trazas, y probar con `next build && next start` o un servidor por proyecto.
+El 2026-10-07 volvió a pasar en local ("Continuar lección" de Mis cursos, en
+móvil): pasó al repetirlo.
+
+Ese día salieron otras tres causas de fallos en CI, estas sí con arreglo y ya
+resueltas: el cupo de la cuenta pro agotado (ahora se pone a cero), un test que
+contaba un texto en toda la página, y el build que leía el recetario sin claves
+de Supabase. Y una más, una sola vez: `next/font` no pudo bajar las fuentes de
+Google. Si se repite, valdría servirlas locales.
 
 ### 🟢 Sueltos
 
@@ -416,6 +449,8 @@ trazas, y probar con `next build && next start` o un servidor por proyecto.
   `reportError` / `reportWarning` ya centralizan todo fallo técnico en JSON, así
   que el día que haga falta un proveedor se cablea **en ese único archivo**.
 - **`QuotaWall` quedó sin usar** y sigue exportado. Lo sustituyó `QuotaNotice`.
+- **`LeadCaptureModal` solo queda en la portada vieja `/asistente`**: las
+  recetas y El Charcu ya usan la hoja de crear cuenta.
 - **`FreeSession` es una pantalla de transición** que sobrevive a su modelo. Se
   va cuando exista "Mis recetas" de verdad.
 
@@ -433,6 +468,11 @@ npx supabase migration new nombre_en_snake_case
 npx supabase link --project-ref lcvmsbfnnpviumsqcxip && npx supabase db push
 ```
 
+Con su aprobación, a producción: enlazar `dpooajrgqjwetttberdo`, `db push
+--dry-run` (que liste solo las esperadas), `db push`, y **volver a enlazar a QA
+en el mismo paso**: `supabase/.temp/project-ref` decide adónde va el siguiente
+push.
+
 **Un cambio de esquema = un archivo nuevo.** Nunca SQL suelto en el panel, y
 nunca por el MCP (además rompe las tildes). Toda migración tiene que aguantar un
 `db push` sobre una base vacía.
@@ -446,12 +486,13 @@ despliegue.
 **Ninguna clave se pega en el chat.** Van a `.env.local`, que no se sube. Si
 alguna vez se pega una, hay que rotarla.
 
-**Antes de `pnpm build`, parar el servidor de desarrollo.** El build reescribe
-`.next` y deja al servidor sin sus archivos. Si pasa: parar, `rm -rf .next`,
-arrancar otra vez.
+**Compilar sin pisar el servidor de desarrollo:** `NEXT_DIST_DIR=.next-build
+pnpm build`. Un `pnpm build` a secas reescribe `.next` y deja al servidor sin
+sus archivos; si pasa: parar, `rm -rf .next`, arrancar otra vez.
 
-**`git push` NO despliega nada** por sí solo, y no hay forma de avisar al
-celular. "Subido" y "desplegado" no son lo mismo.
+**Un push a `develop` despliega QA y uno a `main`, producción** (Vercel). Pero
+no hay forma de avisar al celular, y "subido" no es "desplegado": esperar a que
+el despliegue diga `success` antes de darlo por hecho.
 
 ---
 
