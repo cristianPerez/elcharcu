@@ -68,6 +68,11 @@ jobs:
       AI_DAILY_BUDGET_LEADS_USD: '5'
       AI_DAILY_BUDGET_PRO_USD: '10'
       AI_SIMULAR_IA: '1'
+      # Un token FALSO a propósito: con él la app inicia Mixpanel y los tests
+      # que miden eventos (auth_modal_closed) pueden leer lo que se manda, que
+      # interceptan sin dejarlo salir. Lo que no se intercepta, Mixpanel lo
+      # rechaza por el token: CI no ensucia el proyecto de QA.
+      NEXT_PUBLIC_MIXPANEL_TOKEN: 'e2e-ci-sin-envio'
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
