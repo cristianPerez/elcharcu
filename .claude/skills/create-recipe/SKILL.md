@@ -3,7 +3,7 @@ name: create-recipe
 description: Crea una receta nueva de El Charcu a partir de un post, un vídeo o unas notas — la escribe como migración de `charcu.recetario`, la aplica en QA, genera la foto con fal.ai, la comprime al estándar del sitio y la verifica en el navegador. Úsala siempre que pidan "crea una receta", "nueva receta", "añade esta receta" o peguen el texto de un post de Instagram con ingredientes.
 ---
 
-Eres el charcutero que pasa un post a receta publicable. El sitio ya tiene 45+
+Eres el charcutero que pasa un post a receta publicable. El sitio ya tiene 48+
 recetas con una forma muy concreta: tu trabajo es **imitarla**, no inventar una
 nueva.
 
@@ -46,7 +46,11 @@ values
   ('tu-slug', 'Nombre', 'chorizos', '{"Colombia","Fresco"}', '/recipes/tu-slug.jpg',
    'Colombia · 1 kg', 'embutir-un-chorizo',
    $receta${ …el JSON completo de la receta… }$receta$::jsonb,
-   (select coalesce(max(position), 0) + 10 from charcu.recetario));
+   (select coalesce(max(position), 0) + 10 from charcu.recetario))
+on conflict (slug) do update set
+  name = excluded.name, category = excluded.category, tags = excluded.tags,
+  image = excluded.image, origin = excluded.origin,
+  capsule_slug = excluded.capsule_slug, content = excluded.content;
 
 -- Si ya hay un curso con el mismo slug, se enlaza solo:
 update charcu.recetario r set course_slug = c.slug
@@ -87,12 +91,46 @@ update charcu.recetario r set course_slug = c.slug
 
 ## 3. Aplícala en QA (producción, solo con aprobación de Cristian)
 
+Antes, comprueba que el JSON pasa `isRecipe` (si no, la receta no aparece y
+no hay ningún error que lo diga):
+
 ```bash
-set -a; source .env.local; set +a; npx supabase db push
+cat > /tmp/check-recipe.mts <<'TS'
+import { readFileSync } from 'node:fs';
+import { isRecipe } from './src/entities/recipe/lib/parseRecipe.ts';
+const sql = readFileSync(process.argv[2] ?? '', 'utf8');
+console.log('isRecipe:', isRecipe(JSON.parse(sql.split('$receta$')[1] ?? 'null')));
+TS
+npx tsx /tmp/check-recipe.mts supabase/migrations/<archivo>.sql
 ```
 
+**Mira adónde apunta la CLI antes de empujar.** `supabase/.temp/project-ref`
+decide la base: tiene que decir `lcvmsbfnnpviumsqcxip` (QA). Si dice otra
+cosa, enlaza QA primero; un `db push` a ciegas puede caer en producción.
+
+```bash
+cat supabase/.temp/project-ref   # → lcvmsbfnnpviumsqcxip
+npx supabase db push --dry-run   # que liste SOLO tu migración
+npx supabase db push
+```
+
+**Corregir una receta ya aplicada que aún no está commiteada:** edita el mismo
+archivo (por eso el `insert` lleva `on conflict … do update`), márcalo como
+revertido y vuelve a empujar. Nunca SQL suelto en el panel.
+
+```bash
+npx supabase migration repair --status reverted <AAAAMMDDhhmmss>
+npx supabase db push
+```
+
+Si ya entró a `develop`, la corrección es una migración nueva.
+
+Mira también que los `stats` sean cortos: van en tarjetas de media pantalla en
+el celular, y un valor de más de ~20 caracteres ocupa 3–4 líneas.
+
 El sitio lee el recetario de una caché de una hora: la receta aparece sola en
-como mucho una hora, o en el siguiente despliegue. La página
+como mucho una hora, o en el siguiente despliegue. Lo mismo vale para una
+corrección: la página puede seguir enseñando la versión vieja hasta una hora. La página
 `/recetas/<slug>` se genera en su primera visita aunque no existiera al
 compilar.
 
