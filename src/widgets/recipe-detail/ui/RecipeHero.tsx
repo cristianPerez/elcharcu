@@ -28,7 +28,7 @@ export function RecipeHero({ eyebrow, name, subtitle }: RecipeHeroProps): ReactN
       <Container>
         <Link
           href="/recetas"
-          className="text-sm text-cream/75 transition-colors hover:text-cream"
+          className="block w-fit text-sm text-cream/75 transition-colors hover:text-cream"
         >
           ← Recetas
         </Link>
