@@ -8,6 +8,7 @@
 /.next/
 /.next-e2e/
 /.next-build/
+/.next-preview/
 /out/
 next-env.d.ts
 
