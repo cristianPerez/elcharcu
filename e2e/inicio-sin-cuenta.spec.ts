@@ -94,7 +94,9 @@ test.describe('Cursos sin sesión', () => {
     }
   });
 
-  test('los planes abren en anual y cambian a mensual', async ({ page }) => {
+  test('los planes abren en anual, cambian a mensual y llevan a OnePay', async ({
+    page,
+  }) => {
     await page.goto('/cursos');
     const plans = page.locator('section[aria-labelledby="planes-title"]');
     await plans.scrollIntoViewIfNeeded();
@@ -102,17 +104,30 @@ test.describe('Cursos sin sesión', () => {
     const monthly = plans.getByRole('button', { name: 'Mensual' });
     const proCard = plans.locator('article').filter({ hasText: 'El Charcu Pro' });
 
+    const proLink = proCard.getByRole('link', { name: 'Suscribirme' });
+    // Maestro todavía no tiene plan en OnePay: sigue yendo a WhatsApp.
+    const maestroLink = plans
+      .locator('article')
+      .filter({ hasText: 'El Charcu Maestro' })
+      .locator('a', { hasText: 'Suscribirme' });
+
     await expect(yearly).toHaveAttribute('aria-pressed', 'true');
     await expect(proCard).toContainText('US$7,49');
     await expect(proCard).toContainText('una vez al año');
+    // Fuera de producción, los planes del MODO DE PRUEBAS de OnePay (0050).
+    await expect(proLink).toHaveAttribute(
+      'href',
+      'https://pagos.onepay.la/plan/01a14cee-febf-710f-a088-04e89a5721d2',
+    );
+    await expect(maestroLink).toHaveAttribute('href', /wa\.me/);
 
     await monthly.click();
     await expect(monthly).toHaveAttribute('aria-pressed', 'true');
     await expect(proCard).toContainText('US$9,99');
     await expect(proCard).toContainText('cada mes');
-    await expect(proCard.getByRole('link', { name: 'Suscribirme' })).toHaveAttribute(
+    await expect(proLink).toHaveAttribute(
       'href',
-      /mensual/,
+      'https://pagos.onepay.la/plan/01a14ceb-bf2b-72da-acc3-2080ada79db0',
     );
   });
 

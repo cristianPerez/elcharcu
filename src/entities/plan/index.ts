@@ -16,6 +16,8 @@ export type {
 export { formatCop } from './lib/formatCop';
 export { formatUsd } from './lib/formatUsd';
 export { planWhatsappHref } from './lib/planWhatsappHref';
+export { checkoutHref } from './lib/checkoutHref';
+export type { CheckoutLinks } from './lib/checkoutHref';
 export { PlanCard } from './ui/PlanCard';
 export { BillingToggle } from './ui/BillingToggle';
 export { planOf } from './lib/planOf';

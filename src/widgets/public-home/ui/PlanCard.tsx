@@ -1,10 +1,11 @@
 import { type ReactNode } from 'react';
 
 import {
+  checkoutHref,
   formatUsd,
-  planWhatsappHref,
   priceFor,
   type BillingCycle,
+  type CheckoutLinks,
   type Plan,
 } from '@/entities/plan';
 
@@ -34,10 +35,12 @@ interface PlanCardProps {
   readonly plan: Plan;
   /** Anual o mensual: lo que eligió en el selector de la sección. */
   readonly cycle: BillingCycle;
+  /** El checkout de OnePay de cada ciclo; sin enlace, el botón va a WhatsApp. */
+  readonly checkoutLinks: CheckoutLinks;
 }
 
 /** Una tarjeta de plan, con el precio del ciclo elegido. */
-export function PlanCard({ plan, cycle }: PlanCardProps): ReactNode {
+export function PlanCard({ plan, cycle, checkoutLinks }: PlanCardProps): ReactNode {
   const price = priceFor(plan, cycle);
   const isPro = plan.id === 'pro';
 
@@ -96,7 +99,7 @@ export function PlanCard({ plan, cycle }: PlanCardProps): ReactNode {
         </SignupLink>
       ) : (
         <a
-          href={planWhatsappHref(plan, price)}
+          href={checkoutHref(plan, price, checkoutLinks)}
           target="_blank"
           rel="noopener noreferrer"
           className={cn(

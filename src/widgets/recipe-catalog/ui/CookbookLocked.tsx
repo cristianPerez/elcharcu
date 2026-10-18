@@ -2,6 +2,8 @@
 
 import { useMemo, useState, type ReactNode } from 'react';
 
+import { type CheckoutLinks } from '@/entities/plan';
+
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
 import { Eyebrow } from '@/shared/ui';
 
@@ -16,6 +18,7 @@ interface CookbookLockedProps {
   readonly received: readonly CookbookCard[];
   readonly locked: readonly LockedCard[];
   readonly total: number;
+  readonly checkoutLinks: CheckoutLinks;
 }
 
 /**
@@ -27,6 +30,7 @@ export function CookbookLocked({
   received,
   locked,
   total,
+  checkoutLinks,
 }: CookbookLockedProps): ReactNode {
   const [query, setQuery] = useState('');
   const [open, setOpen] = useState<LockedCard | null>(null);
@@ -109,7 +113,11 @@ export function CookbookLocked({
         ))}
       </ul>
 
-      <UpgradeSheet recipe={open} onClose={() => setOpen(null)} />
+      <UpgradeSheet
+        recipe={open}
+        onClose={() => setOpen(null)}
+        checkoutLinks={checkoutLinks}
+      />
     </section>
   );
 }
