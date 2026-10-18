@@ -2,6 +2,8 @@ import { type ReactNode } from 'react';
 
 import { QuotaWallPlans, UpsellTracker } from '@/features/quota-wall';
 
+import { type CheckoutLinks } from '@/entities/plan';
+
 import { site } from '@/shared/config';
 import { Container, Eyebrow } from '@/shared/ui';
 
@@ -16,9 +18,11 @@ import { Container, Eyebrow } from '@/shared/ui';
 interface PaywallProps {
   /** De dónde llegó a esta página, para medir qué camino convierte. */
   readonly source: string;
+  /** Los enlaces de OnePay de cada plan (los que no tienen, van a WhatsApp). */
+  readonly checkoutLinks: CheckoutLinks;
 }
 
-export function Paywall({ source }: PaywallProps): ReactNode {
+export function Paywall({ source, checkoutLinks }: PaywallProps): ReactNode {
   return (
     <Container className="py-16 md:py-24">
       <UpsellTracker source={source} />
@@ -35,7 +39,7 @@ export function Paywall({ source }: PaywallProps): ReactNode {
           que vale una pieza echada a perder, el plan se paga solo.
         </p>
 
-        <QuotaWallPlans />
+        <QuotaWallPlans checkoutLinks={checkoutLinks} />
       </div>
 
       <p className="mt-8 text-sm leading-relaxed text-cocoa/65">

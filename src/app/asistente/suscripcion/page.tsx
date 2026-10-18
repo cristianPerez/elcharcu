@@ -3,6 +3,8 @@ import { type ReactNode } from 'react';
 
 import { SuscripcionPage } from '@/views/suscripcion';
 
+import { checkoutLinks } from '@/entities/plan/server';
+
 export const metadata: Metadata = {
   title: 'Suscríbete · El Charcu',
   description:
@@ -20,5 +22,10 @@ export default async function Page({ searchParams }: PageProps): Promise<ReactNo
   const params = await searchParams;
   const de = params['de'];
 
-  return <SuscripcionPage source={typeof de === 'string' ? de : 'directo'} />;
+  return (
+    <SuscripcionPage
+      source={typeof de === 'string' ? de : 'directo'}
+      checkoutLinks={await checkoutLinks()}
+    />
+  );
 }
