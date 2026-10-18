@@ -47,12 +47,18 @@ probado de punta a punta. Desde el 2026-10-17.
 2. Copiar el **secret** (se ve una sola vez) y el **token** a Vercel, en ese
    entorno: `ONEPAY_WEBHOOK_SECRET` y `ONEPAY_WEBHOOK_TOKEN`. Hay que redesplegar
    para que la app los lea.
-3. ⚠️ **QA está detrás del inicio de sesión de Vercel** (Deployment
-   Protection). OnePay no puede pasar ese login, así que sus avisos recibirían
-   un 401 de Vercel antes de llegar a la app. Hay que usar el **Protection
-   Bypass for Automation** de Vercel y poner la URL del webhook con
-   `?x-vercel-protection-bypass=<secreto>`. La otra opción es quitar la
-   protección de esa ruta.
+3. ⚠️ **QA tiene que estar abierta para que lleguen los avisos.** Detrás del
+   login de Vercel (Deployment Protection), OnePay recibe un 302 y el aviso no
+   llega a la app. Se resolvió como en Manos Creadoras: **QA abierta al
+   público, pero fuera de Google**:
+   - `src/app/robots.ts`: fuera de producción, `Disallow: /`;
+   - `next.config.ts`: fuera de producción, `X-Robots-Tag: noindex, nofollow`
+     en TODA respuesta (robots.txt solo impide rastrear; el `noindex` saca del
+     índice una página que alguien haya enlazado).
+
+   Las dos condiciones van al revés: solo `VERCEL_ENV === 'production'` se
+   indexa. La alternativa sería mantener la protección y usar el "Protection
+   Bypass for Automation" de Vercel en la URL del webhook.
 
 ## Probarlo
 

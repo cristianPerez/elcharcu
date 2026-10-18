@@ -1,7 +1,34 @@
 import type { NextConfig } from 'next';
 
+/**
+ * ¿Es elcharcu.co? Solo producción se deja indexar (2026-10-17). Va al revés de
+ * lo intuitivo a propósito: QA, las previews, local o un entorno nuevo sin
+ * configurar quedan FUERA de Google. Si esto se equivoca, se equivoca
+ * escondiendo algo que debía verse —se nota y se arregla en minutos—, no
+ * publicando el sitio de pruebas, que tarda semanas en limpiarse de Google.
+ */
+const isProduction = process.env.VERCEL_ENV === 'production';
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  /**
+   * Fuera de producción, `noindex` en TODA respuesta (páginas, API, imágenes).
+   * `robots.txt` (src/app/robots.ts) solo impide RASTREAR: si alguien enlaza
+   * una página de QA, Google puede listar la URL igual. Este encabezado es el
+   * que la saca del índice. Hace falta desde que QA se abre al público para
+   * que el webhook de OnePay pueda llegar (docs/pagos-onepay.md).
+   */
+  headers: () =>
+    Promise.resolve(
+      isProduction
+        ? []
+        : [
+            {
+              source: '/:path*',
+              headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+            },
+          ],
+    ),
   // Los e2e compilan en otra carpeta para no pisar el servidor de desarrollo.
   distDir: process.env.NEXT_DIST_DIR ?? '.next',
   typescript: {
