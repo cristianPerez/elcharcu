@@ -18,3 +18,12 @@ export function loadLocalEnv(): void {
  */
 export const BROWSER_CHANNEL: { channel?: 'chrome' } =
   process.env.CI === undefined ? { channel: 'chrome' } : {};
+
+/**
+ * Las claves del webhook de OnePay EN LOS E2E (2026-10-17). Son de prueba y
+ * solo existen aquí: el servidor de los e2e arranca con ellas
+ * (playwright.config / e2e.yml) y `webhook-onepay.spec.ts` firma con ellas.
+ * Las de verdad viven en Vercel y nunca en el repo.
+ */
+export const E2E_WEBHOOK_SECRET = 'e2e-webhook-secret-de-prueba';
+export const E2E_WEBHOOK_TOKEN = 'e2e-webhook-token-de-prueba';
