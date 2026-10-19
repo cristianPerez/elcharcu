@@ -5,11 +5,12 @@ import { useState, type ReactNode } from 'react';
 import {
   BillingToggle,
   DEFAULT_BILLING_CYCLE,
+  checkoutHref,
   formatUsd,
-  planWhatsappHref,
   priceFor,
   proPlan,
   type BillingCycle,
+  type CheckoutLinks,
 } from '@/entities/plan';
 
 import { ANALYTICS_EVENTS, track } from '@/shared/lib';
@@ -26,7 +27,12 @@ import { ANALYTICS_EVENTS, track } from '@/shared/lib';
  * falta KYC, su SDK de tokenización y 3DS. Cuando entre, aquí se cambia el
  * `href` por el checkout y el evento pasa a llevar `rail: 'onepay'`.
  */
-export function QuotaWallPlans(): ReactNode {
+export function QuotaWallPlans({
+  checkoutLinks,
+}: {
+  /** El checkout de OnePay de cada ciclo; sin enlace, el botón va a WhatsApp. */
+  readonly checkoutLinks: CheckoutLinks;
+}): ReactNode {
   const [cycle, setCycle] = useState<BillingCycle>(DEFAULT_BILLING_CYCLE);
   const price = priceFor(proPlan, cycle);
   const yearly = priceFor(proPlan, 'anual');
@@ -65,7 +71,7 @@ export function QuotaWallPlans(): ReactNode {
         </p>
 
         <a
-          href={planWhatsappHref(proPlan, price)}
+          href={checkoutHref(proPlan, price, checkoutLinks)}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => {

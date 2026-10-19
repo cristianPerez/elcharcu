@@ -6,18 +6,24 @@ import {
   BillingToggle,
   DEFAULT_BILLING_CYCLE,
   PlanCard,
-  planWhatsappHref,
+  checkoutHref,
   plans,
   priceFor,
   proPlan,
   type BillingCycle,
+  type CheckoutLinks,
 } from '@/entities/plan';
 
 import { appRoutes, site } from '@/shared/config';
 import { Container, Eyebrow } from '@/shared/ui';
 
 /** Dos planes —gratis y de pago— y un toggle para elegir mes o año. */
-export function Pricing(): ReactNode {
+export function Pricing({
+  checkoutLinks,
+}: {
+  /** El checkout de OnePay de cada plan y ciclo; sin enlace, a WhatsApp. */
+  readonly checkoutLinks: CheckoutLinks;
+}): ReactNode {
   const [cycle, setCycle] = useState<BillingCycle>(DEFAULT_BILLING_CYCLE);
   const yearly = priceFor(proPlan, 'anual');
 
@@ -63,7 +69,7 @@ export function Pricing(): ReactNode {
               href={
                 plan.id === 'aprendiz'
                   ? appRoutes.start
-                  : planWhatsappHref(plan, priceFor(plan, cycle))
+                  : checkoutHref(plan, priceFor(plan, cycle), checkoutLinks)
               }
             />
           ))}

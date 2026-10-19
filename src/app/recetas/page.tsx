@@ -6,6 +6,7 @@ import { RecetasPage } from '@/views/recetas';
 import { toCookbookCards, toLockedCards } from '@/widgets/recipe-catalog';
 
 import { readProfile } from '@/entities/curing-profile/server';
+import { checkoutLinks } from '@/entities/plan/server';
 import { getRecetario, receivedRecipeSlugs } from '@/entities/recipe/server';
 import { hasActiveSubscription } from '@/entities/subscription/server';
 
@@ -74,6 +75,7 @@ export default async function Page(): Promise<ReactNode> {
       received={toCookbookCards(entries.filter((e) => receivedSlugs.has(e.recipe.slug)))}
       locked={toLockedCards(entries.filter((e) => !receivedSlugs.has(e.recipe.slug)))}
       total={entries.length}
+      checkoutLinks={await checkoutLinks()}
     />
   );
 }

@@ -11,12 +11,18 @@ import { Pricing } from '@/widgets/pricing';
 import { SiteFooter } from '@/widgets/site-footer';
 import { SiteHeader } from '@/widgets/site-header';
 
+import { type CheckoutLinks } from '@/entities/plan';
+
 /**
  * Página de ventas del asistente — primer paso de la secuencia de construcción.
  * Orden deliberado: el miedo, la solución, la objeción, la prueba, el precio.
  * Solo composición: la lógica vive en las capas de abajo.
  */
-export function AsistentePage(): ReactNode {
+export function AsistentePage({
+  checkoutLinks,
+}: {
+  readonly checkoutLinks: CheckoutLinks;
+}): ReactNode {
   return (
     <>
       <SiteHeader />
@@ -26,7 +32,7 @@ export function AsistentePage(): ReactNode {
         <AssistantHow />
         <AssistantTrust />
         <AssistantCourses />
-        <Pricing />
+        <Pricing checkoutLinks={checkoutLinks} />
         <AssistantFaq />
         <AssistantCta />
       </main>

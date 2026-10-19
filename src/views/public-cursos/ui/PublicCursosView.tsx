@@ -16,9 +16,12 @@ import {
 import { SignupTargets } from '@/features/auth-by-email';
 
 import { type PublicCatalog } from '@/entities/course/server';
+import { type CheckoutLinks } from '@/entities/plan';
 
 interface PublicCursosViewProps {
   readonly catalog: PublicCatalog;
+  /** Los enlaces de OnePay de cada plan (los que no tienen, van a WhatsApp). */
+  readonly checkoutLinks: CheckoutLinks;
   /** `?abrir=`: llegó a una cápsula o curso sin cuenta; se abre la hoja. */
   readonly openOnMount: string | null;
 }
@@ -32,6 +35,7 @@ interface PublicCursosViewProps {
  */
 export function PublicCursosView({
   catalog,
+  checkoutLinks,
   openOnMount,
 }: PublicCursosViewProps): ReactNode {
   return (
@@ -55,7 +59,7 @@ export function PublicCursosView({
       />
       <IncludesBlock />
       <CharcuDemo />
-      <PlansSection />
+      <PlansSection checkoutLinks={checkoutLinks} />
       <BrandClosing />
       <AppFooter />
     </div>

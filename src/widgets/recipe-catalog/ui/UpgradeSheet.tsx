@@ -2,7 +2,13 @@
 
 import { type ReactNode } from 'react';
 
-import { formatUsd, planWhatsappHref, priceFor, proPlan } from '@/entities/plan';
+import {
+  checkoutHref,
+  formatUsd,
+  priceFor,
+  proPlan,
+  type CheckoutLinks,
+} from '@/entities/plan';
 
 import { Dialog, IconCheck } from '@/shared/ui';
 
@@ -22,15 +28,21 @@ function money(amount: number): string {
 interface UpgradeSheetProps {
   readonly recipe: LockedCard | null;
   readonly onClose: () => void;
+  /** El checkout de OnePay; sin enlace, "Pasar a Pro" va a WhatsApp. */
+  readonly checkoutLinks: CheckoutLinks;
 }
 
 /**
  * "Pasar a Pro" al tocar una receta con candado (diseño final 09). Hoja desde
  * abajo en el celular, modal en escritorio. El precio sale de `plans.ts`.
- * "Pasar a Pro" lleva a WhatsApp, como el resto de planes mientras no haya
- * pago automático.
+ * "Pasar a Pro" lleva al checkout de OnePay del plan anual (2026-10-17); si el
+ * plan no tiene enlace todavía, a WhatsApp.
  */
-export function UpgradeSheet({ recipe, onClose }: UpgradeSheetProps): ReactNode {
+export function UpgradeSheet({
+  recipe,
+  onClose,
+  checkoutLinks,
+}: UpgradeSheetProps): ReactNode {
   if (recipe === null) {
     return null;
   }
@@ -87,7 +99,7 @@ export function UpgradeSheet({ recipe, onClose }: UpgradeSheetProps): ReactNode 
           </p>
         )}
         <a
-          href={planWhatsappHref(proPlan, yearly)}
+          href={checkoutHref(proPlan, yearly, checkoutLinks)}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-4 flex min-h-14 items-center justify-center rounded-full bg-brasa text-base font-semibold text-cocoa hover:bg-brasa-dark"

@@ -3,6 +3,8 @@ import { type ReactNode } from 'react';
 
 import { AsistentePage } from '@/views/asistente';
 
+import { checkoutLinks } from '@/entities/plan/server';
+
 export const metadata: Metadata = {
   title: 'Asistente de charcutería · El Charcu',
   description:
@@ -23,6 +25,6 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Page(): ReactNode {
-  return <AsistentePage />;
+export default async function Page(): Promise<ReactNode> {
+  return <AsistentePage checkoutLinks={await checkoutLinks()} />;
 }

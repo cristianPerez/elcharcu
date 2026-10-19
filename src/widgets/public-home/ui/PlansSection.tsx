@@ -9,6 +9,7 @@ import {
   priceFor,
   proPlan,
   type BillingCycle,
+  type CheckoutLinks,
   type Plan,
 } from '@/entities/plan';
 
@@ -24,7 +25,11 @@ const PLANS: readonly Plan[] = [freePlan, proPlan, maestroPlan];
  * tarjetas; en el celular, pestañas y una tarjeta (abre en Pro, como la 02).
  * Encima, anual o mensual: abre en anual y el cambio se ve en los precios.
  */
-export function PlansSection(): ReactNode {
+export function PlansSection({
+  checkoutLinks,
+}: {
+  readonly checkoutLinks: CheckoutLinks;
+}): ReactNode {
   const [activeId, setActiveId] = useState<Plan['id']>('pro');
   const [cycle, setCycle] = useState<BillingCycle>(DEFAULT_BILLING_CYCLE);
   const yearlySaving = priceFor(proPlan, 'anual')?.savingPercent ?? 0;
@@ -82,7 +87,7 @@ export function PlansSection(): ReactNode {
             key={plan.id}
             className={cn(activeId === plan.id ? 'block' : 'hidden', 'md:block')}
           >
-            <PlanCard plan={plan} cycle={cycle} />
+            <PlanCard plan={plan} cycle={cycle} checkoutLinks={checkoutLinks} />
           </li>
         ))}
       </ul>

@@ -12,6 +12,7 @@ import {
   publicCatalog,
   recentCourseIds,
 } from '@/entities/course/server';
+import { checkoutLinks } from '@/entities/plan/server';
 import { hasActiveSubscription } from '@/entities/subscription/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
@@ -49,6 +50,7 @@ export default async function CursosPage({
     return (
       <PublicCursosView
         catalog={await publicCatalog()}
+        checkoutLinks={await checkoutLinks()}
         openOnMount={typeof abrir === 'string' ? safeDestination(abrir) : null}
       />
     );

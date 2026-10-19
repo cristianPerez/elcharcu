@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 
-import { BROWSER_CHANNEL } from './e2e/env';
+import { BROWSER_CHANNEL, E2E_WEBHOOK_SECRET, E2E_WEBHOOK_TOKEN } from './e2e/env';
 
 /**
  * Los e2e del rediseño de la app (2026-10).
@@ -70,7 +70,13 @@ export default defineConfig({
     url: `http://localhost:${String(PORT)}/api/salud`,
     reuseExistingServer: !IS_CI,
     timeout: 300_000,
-    env: { AI_SIMULAR_IA: '1', NEXT_DIST_DIR: '.next-e2e' },
+    env: {
+      AI_SIMULAR_IA: '1',
+      NEXT_DIST_DIR: '.next-e2e',
+      // Claves de PRUEBA del webhook de OnePay: el spec firma con ellas.
+      ONEPAY_WEBHOOK_SECRET: E2E_WEBHOOK_SECRET,
+      ONEPAY_WEBHOOK_TOKEN: E2E_WEBHOOK_TOKEN,
+    },
     // En CI se ve lo que dice el servidor: sin esto, un fallo del servidor
     // solo se nota como una página que no termina de cargar.
     stdout: IS_CI ? 'pipe' : 'ignore',

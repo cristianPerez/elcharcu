@@ -9,6 +9,7 @@ import {
   type LockedCard,
 } from '@/widgets/recipe-catalog';
 
+import { type CheckoutLinks } from '@/entities/plan';
 import { RECIPE_CATEGORIES } from '@/entities/recipe';
 
 type RecetasPageProps = {
@@ -20,6 +21,8 @@ type RecetasPageProps = {
       readonly received: readonly CookbookCard[];
       readonly locked: readonly LockedCard[];
       readonly total: number;
+      /** Los enlaces de OnePay: "Pasar a Pro" va al checkout si el plan lo tiene. */
+      readonly checkoutLinks: CheckoutLinks;
     }
 );
 
@@ -38,6 +41,7 @@ export function RecetasPage(props: RecetasPageProps): ReactNode {
           received={props.received}
           locked={props.locked}
           total={props.total}
+          checkoutLinks={props.checkoutLinks}
         />
       )}
       <AppFooter />

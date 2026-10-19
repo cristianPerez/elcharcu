@@ -5,7 +5,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: '14.5';
+    PostgrestVersion: '14.15';
   };
   charcu: {
     Tables: {
@@ -369,6 +369,30 @@ export type Database = {
           },
         ];
       };
+      plan_checkout: {
+        Row: {
+          actualizado_en: string;
+          external_plan_id: string;
+          modo: string;
+          plan_id: string;
+          url: string;
+        };
+        Insert: {
+          actualizado_en?: string;
+          external_plan_id: string;
+          modo: string;
+          plan_id: string;
+          url: string;
+        };
+        Update: {
+          actualizado_en?: string;
+          external_plan_id?: string;
+          modo?: string;
+          plan_id?: string;
+          url?: string;
+        };
+        Relationships: [];
+      };
       plan_quotas: {
         Row: {
           images_per_month: number;
@@ -568,33 +592,45 @@ export type Database = {
       };
       subscriptions: {
         Row: {
+          canceled_at: string | null;
           country: string | null;
           created_at: string;
           current_period_end: string | null;
+          external_customer_id: string | null;
+          external_subscription_id: string | null;
           id: string;
           plan_id: string | null;
+          provider: string | null;
           rail: string | null;
           status: string;
           updated_at: string;
           user_id: string;
         };
         Insert: {
+          canceled_at?: string | null;
           country?: string | null;
           created_at?: string;
           current_period_end?: string | null;
+          external_customer_id?: string | null;
+          external_subscription_id?: string | null;
           id?: string;
           plan_id?: string | null;
+          provider?: string | null;
           rail?: string | null;
           status?: string;
           updated_at?: string;
           user_id: string;
         };
         Update: {
+          canceled_at?: string | null;
           country?: string | null;
           created_at?: string;
           current_period_end?: string | null;
+          external_customer_id?: string | null;
+          external_subscription_id?: string | null;
           id?: string;
           plan_id?: string | null;
+          provider?: string | null;
           rail?: string | null;
           status?: string;
           updated_at?: string;
@@ -635,6 +671,54 @@ export type Database = {
           updated_at?: string;
           user_id?: string | null;
           visitor_id?: string;
+        };
+        Relationships: [];
+      };
+      webhook_eventos: {
+        Row: {
+          cuerpo: Json;
+          duracion_ms: number | null;
+          estado: string;
+          evento: string;
+          huella: string;
+          id: string;
+          nota: string | null;
+          procesado_en: string | null;
+          proveedor: string;
+          recibido_en: string;
+          recurso_id: string;
+          tipo: string;
+          traza: string | null;
+        };
+        Insert: {
+          cuerpo: Json;
+          duracion_ms?: number | null;
+          estado?: string;
+          evento: string;
+          huella: string;
+          id?: string;
+          nota?: string | null;
+          procesado_en?: string | null;
+          proveedor: string;
+          recibido_en?: string;
+          recurso_id: string;
+          tipo: string;
+          traza?: string | null;
+        };
+        Update: {
+          cuerpo?: Json;
+          duracion_ms?: number | null;
+          estado?: string;
+          evento?: string;
+          huella?: string;
+          id?: string;
+          nota?: string | null;
+          procesado_en?: string | null;
+          proveedor?: string;
+          recibido_en?: string;
+          recurso_id?: string;
+          tipo?: string;
+          traza?: string | null;
         };
         Relationships: [];
       };
@@ -805,6 +889,8 @@ export type Database = {
         }[];
       };
       today_ai_spend: { Args: { p_audience: string }; Returns: number };
+      user_id_by_email: { Args: { p_email: string }; Returns: string };
+      user_id_by_phone: { Args: { p_phone: string }; Returns: string };
     };
     Enums: {
       [_ in never]: never;
