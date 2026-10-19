@@ -56,6 +56,12 @@ export interface NormalizedPaymentEvent {
   readonly marca: string | null;
 }
 
+/** Cómo terminó un evento: va a `webhook_eventos.estado` (migraciones 0050 y 0053). */
+export type CloseEvent = (
+  estado: 'procesado' | 'huerfano' | 'plan_desconocido',
+  nota?: string,
+) => Promise<void>;
+
 export type VerificationResult =
   { readonly valido: true } | { readonly valido: false; readonly motivo: string };
 

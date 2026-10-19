@@ -1,18 +1,12 @@
 import { type SupabaseAdminClient } from '@/shared/api/supabase/server';
 import { reportWarning } from '@/shared/lib';
 
-import { periodEnd } from '../lib/periodEnd';
 import { type Trace } from '../lib/trace';
-import { type NormalizedPaymentEvent } from '../model/types';
+import { type CloseEvent, type NormalizedPaymentEvent } from '../model/types';
 
+import { applyPaid } from './applyPaid';
 import { createPayerAccount } from './createPayerAccount';
-import { findUser, planIdOf } from './lookup';
-import { sendWelcome } from './sendWelcome';
-
-/** El plan si la pasarela no dice cuál: el que se vende. */
-const FALLBACK_PLAN = 'pro-mensual';
-
-type Close = (estado: 'procesado' | 'huerfano', nota?: string) => Promise<void>;
+import { findUser } from './lookup';
 
 /**
  * Lleva el evento a la suscripción. `has_active_subscription` solo cuenta
@@ -24,7 +18,7 @@ export async function applyPaymentEvent(
   proveedor: string,
   event: NormalizedPaymentEvent,
   trace: Trace,
-  close: Close,
+  close: CloseEvent,
 ): Promise<void> {
   if (event.tipo === 'desconocido') {
     await close('procesado', 'evento que no nos afecta');
@@ -59,32 +53,7 @@ export async function applyPaymentEvent(
   }
 
   if (event.tipo === 'suscripcion.pagada') {
-    const planId = (await planIdOf(db, event.planExternoId)) ?? FALLBACK_PLAN;
-    const vence = periodEnd(event.venceEl, event.pagadoEl, planId);
-    // `upsert`: la primera vez puede no haber fila. Y se guarda el id de la
-    // suscripción: el PRÓXIMO evento se encuentra sin depender del correo.
-    await db.from('subscriptions').upsert(
-      {
-        user_id: userId,
-        status: 'active',
-        plan_id: planId,
-        rail: proveedor,
-        provider: proveedor,
-        external_subscription_id: event.recursoId,
-        external_customer_id: event.clienteId,
-        canceled_at: null,
-        // Si no dijo hasta cuándo, se deja la fecha que hubiera: mejor eso que
-        // borrarla y dejar a la persona sin acceso.
-        ...(vence === null ? {} : { current_period_end: vence }),
-      },
-      { onConflict: 'user_id' },
-    );
-    trace.step('suscripcion activada', {
-      plan: planId,
-      vence: vence ?? 'sin cambio',
-    });
-    await sendWelcome(db, userId, trace);
-    await close('procesado');
+    await applyPaid(db, proveedor, userId, event, trace, close);
     return;
   }
 

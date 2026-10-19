@@ -69,18 +69,58 @@ superadas se tachan y se apunta quién las sustituye.
 
 ## Lo que falta
 
-### 🔴 El negocio todavía no cobra
+### 🟠 OnePay ya cobra el Pro — lo que falta (2026-10-19)
 
-`charcu.subscriptions` está **vacía en producción** (comprobado el 2026-09-01), y
-`has_active_subscription` y `effective_plan` leen de ahí. Así que hoy **todo el
-mundo es `aprendiz`** y ningún curso de pago es visible para nadie.
+En producción desde el 2026-10-18 (migraciones 0050–0052). El primer aviso en
+producción (2026-10-19) fue una **prueba**: un plan de US$ 1 ("Prueba
+produccion") que no está en `plan_checkout`. `webhook_eventos` lo tiene
+`procesado` y dejó una suscripción `rail = 'onepay'` activa como `pro-mensual`.
+Todavía no ha pagado ningún cliente. Cómo funciona, cómo se configura por
+entorno y cómo se sigue un pago: **[docs/pagos-onepay.md](docs/pagos-onepay.md)**.
 
-No está sin usar: está esperando la pasarela. Mientras tanto, los botones de los
-planes abren WhatsApp con el plan escrito y la suscripción se activa a mano.
+No es el miniplan de septiembre (Links de Captura + `POST /subscriptions` desde
+nuestro servidor). Se hizo como en Manos Creadoras: los botones van al **enlace
+del plan** en `pagos.onepay.la` (`charcu.plan_checkout`, por modo) y solo el
+webhook activa. Sin cliente de la API de OnePay, sin cédula de nuestro lado.
 
-**OnePay (D21)** está investigado pero sin integrar. La primera lectura
-(2026-08-29) sigue en `git show 6a644b2:ESTADO.md`, sección _"1. Pagos —
-OnePay"_: autenticación, estados y las reglas del webhook siguen valiendo.
+- **Comprobar el correo de bienvenida en producción.** Esa primera suscripción
+  tiene `bienvenida_enviada_el` en null. Puede ser que el pago llegara antes del
+  despliegue de 0052, o que falten `RESEND_API_KEY` / `RESEND_FROM` en Vercel
+  (`/api/salud` no los lista).
+- **Crear el Maestro en OnePay** (siguiente, decidido el 2026-10-19). Hoy sigue
+  en WhatsApp: no tiene planes en OnePay ni filas en `plan_checkout`.
+- **Medir la sección de planes: dónde toca la gente y cuándo** (decidido el
+  2026-10-19). Hoy solo se sabe que alguien eligió un plan, no qué vio ni en qué
+  orden:
+  - `plan_selected` (`PlanCard`) no dice desde qué pantalla (portada,
+    `Pricing`, Recetas, muro de cupo) ni cuánto tardó desde que la vio.
+  - No hay evento de **planes vistos**, así que no hay denominador.
+  - El selector **anual/mensual** (`PlansSection`, `Pricing`) no manda nada.
+  - `QuotaWallPlans` manda `subscription_started` **al tocar el botón**, con
+    `rail: 'whatsapp'` escrito a mano, aunque ya va a OnePay. Ese nombre promete
+    un pago que no ha pasado.
+  - El **pago de verdad** solo lo sabe el webhook, que no le avisa a Mixpanel.
+    Con `trackServer` desde `applyPaymentEvent` se cerraría el embudo
+    vio → tocó → pagó.
+- **"Gestionar plan", "Pagos y facturas" y cancelar desde la app** siguen en
+  WhatsApp. El plan promete _"cancelas cuando quieras, desde la app"_.
+- **Más redes para quien pagó y no entra:** "¿Pagaste y no puedes entrar?" en
+  `/entrar` (por WhatsApp → reenvía el enlace, enmascarado) y una lista diaria
+  de quienes pagaron y no han entrado en 24 h.
+- **Pasar a OnePay las de `rail = 'whatsapp'`**, activadas a mano.
+- **Decisión de Cristian: los precios.** La web enseña US$ 9,99 / 89,90 (D18).
+  Se creía que OnePay solo cobra en pesos, pero la prueba del 2026-10-19 cobró
+  un plan en `USD`. Falta saber en qué moneda están los dos planes Pro de
+  producción. Lo que se decida entra como D22.
+- **Un plan de OnePay que no está en `plan_checkout` ya no se adivina**
+  (2026-10-19, migración 0053, ya en QA y producción). Queda
+  `plan_desconocido`, sin acceso y con el plan en
+  `subscriptions.external_plan_id`. El código todavía no está en `main`.
+- **La prueba de US$ 1 del 2026-10-19 sigue activa como `pro-mensual`** en
+  producción, de cuando se adivinaba. Hay que cortarla a mano.
+- **Los huérfanos se activan a mano.** El checkout de OnePay pide WhatsApp y
+  manda `hola@onepay.ai` como correo; si el teléfono no coincide con un único
+  perfil, el pago queda `huerfano`. La consulta está en el doc.
 
 ### 🟠 Diseño final — inicio sin cuenta, crear cuenta y recetas (2026-10-07)
 
@@ -91,8 +131,8 @@ En producción desde el 2026-10-08, con sus migraciones 0042–0046. Falta:
 - **Las fotos de las recetas con candado delatan su slug** (`/recipes/<slug>.jpg`).
   El contenido está protegido por RLS, pero se ve qué recetas hay. Arreglo
   propuesto: copias de las imágenes con nombre cifrado para la vitrina.
-- **Quedó fuera del diseño, a propósito:** recetas parecidas para Pro, el pago
-  automático (OnePay, abajo), la cabecera verde con compartir de la receta en
+- **Quedó fuera del diseño, a propósito:** recetas parecidas para Pro, la
+  cabecera verde con compartir de la receta en
   el celular y plegar los ingredientes a 5.
 - **Decisión abierta:** sin sesión, la miga de pan de Cursos maestros dice
   "Mis cursos". ¿Pasa a "Cursos"?
@@ -122,100 +162,12 @@ día y motivo. La primera lectura, con el diseño anterior y pocos datos:
   `paso` y `trigger`. El plan gratis de Mixpanel deja 5 reportes guardados
   por persona; van 2.
 - **Lo que arreglaría los `auth_failed`** está en
-  `docs/auth-magic-link-dropoff.md`: explicar el error en `/entrar` (poco
-  trabajo) y el código de 6 dígitos en el correo (cambia el flujo de entrada:
-  decisión de Cristian).
+  `docs/auth-magic-link-dropoff.md`. Ya explica el error en `/entrar`
+  (2026-10-18); queda el código de 6 dígitos en el correo, que cambia el flujo
+  de entrada: decisión de Cristian.
 - **Mixpanel no une** lo de antes y después del registro
   (`errAnonDistinctIdAssignedAlready`): para seguir a una persona hay que mirar
   el perfil de su `visitor_id` y el de su cuenta.
-
-### 🟠 Miniplan — suscripciones con OnePay (empezado el 2026-09-27)
-
-**Lo que cambia respecto a agosto: el bloqueo nº1 desaparece.** Entonces se
-creía que el `card_id` solo salía de integrar el SDK Elements + 3DS en nuestro
-frontend. No: OnePay tiene **Links de Captura** (`POST /connect-links`), una
-página alojada en `pagos.onepay.la` donde el cliente mete tarjeta, cuenta o
-Nequi, y nos avisa con el webhook `connect_link.completed`. Nada de PCI ni de
-SDK de nuestro lado.
-
-**El flujo, de punta a punta:**
-
-```
-[Suscribirme] ─► formulario corto (cédula; nombre y WhatsApp ya los tenemos)
-   ─► POST /api/pagos/onepay/checkout   (servidor, sk_* por env)
-        1. POST /customers         (una vez por persona; se guarda el id)
-        2. POST /connect-links     (single_use, external_id = user_id)
-   ─► redirect a pagos.onepay.la/connect-link/…  ─► vuelve a /asistente/suscripcion
-webhook connect_link.completed
-   ─► POST /subscriptions  (customer_id + price_id + card_id|account_id)
-webhook subscription.active|paid|unpaid|pass_due|frozen|canceled|finished
-   ─► UPDATE charcu.subscriptions  (status, current_period_end)
-```
-
-**Fases, en orden.** Cada una se puede cerrar y probar sola.
-
-1. **Cuenta y contrato** — KYC aprobado, claves `sk_test`/`sk_live`, webhook
-   creado en el panel (el `secret` se ve UNA vez). Pedirle a soporte **el cuerpo
-   real de `POST /subscriptions`** y qué métodos tiene habilitados la cuenta
-   (`allows`). _Solo Cristian._
-2. **Catálogo** — un producto por plan (Pro, Maestro) y **cuatro precios** con
-   `lookup_key` estable (`pro_mensual`, `pro_anual`, `maestro_mensual`,
-   `maestro_anual`), creados una sola vez con un script, no en caliente. El
-   código apunta al `lookup_key`, no al id: los precios son inmutables y así se
-   cambia el monto sin redesplegar.
-3. **Base** (migración, solo QA) — en `charcu.subscriptions`: `provider`,
-   `provider_customer_id`, `provider_subscription_id`, `provider_payment_method_id`.
-   Tabla `charcu.payment_events` (cuerpo crudo + clave única armada: tipo de
-   evento + id del recurso; en `connect_link.completed`, además el
-   `payment_method.id`). Tabla o columnas para el checkout pendiente: qué
-   `lookup_key` eligió quien abrió el link. Todo lo escribe solo `service_role`
-   (D12).
-4. **Cliente tipado** — `src/shared/api/onepay/`, cero `any`, `x-idempotency`
-   en todo POST, respuestas validadas con type guards (el doc y la API no
-   siempre coinciden: ver abajo).
-5. **Webhook** — `POST /api/pagos/onepay/webhook`: cuerpo crudo, `x-webhook-token`
-   siempre y `Signature` (HMAC-SHA256 hex) si hay secret, en tiempo constante.
-   Guardar el evento, contestar 200 en <10 s y procesar con `after()`. Rechazar
-   eventos con `event.environment` que no toca (un `test` en producción).
-6. **Checkout** — botón de `QuotaWallPlans`/`Pricing`, formulario de cédula,
-   ruta de checkout, página de vuelta que diga _"estamos confirmando tu pago"_
-   hasta que llegue el webhook (el `redirect_url` NO prueba que pagó).
-7. **Cancelar desde la app** — `DELETE /subscriptions/{id}`, conservando el
-   acceso hasta `current_period_end`. El plan ya promete _"cancelas cuando
-   quieras, desde la app"_.
-8. **Migrar a las de `rail = 'whatsapp'`** y quitar el WhatsApp de los botones.
-
-**Mapa de estados** (el de agosto, sin cambios): `active`/`paid` → `active` ·
-`unpaid`, `frozen` → `past_due` · `pass_due`, `canceled`, `finished` → `canceled`.
-`current_period_end` se mueve con cada `subscription.paid`.
-
-**⚠️ Decisiones que faltan — de Cristian, antes de la fase 2:**
-
-- **Los cuatro precios en COP.** OnePay solo cobra en pesos y D18 los tiene en
-  dólares. Esto sustituye a D18: cuando se decida, entra como D22.
-- **Cómo se hace el anual.** `POST /prices` solo acepta `interval: day | month`
-  (`year` devuelve 422). Anual = `month` con `interval_count: 12`, pero hay que
-  confirmar con soporte que se cobra **una vez** y no doce.
-- **Pedir la cédula.** `POST /customers` exige `document_type` + `document_number`
-  y teléfono con prefijo. Es fricción nueva justo antes de pagar; no se puede
-  esquivar.
-- **Prueba gratis sí o no** (`trial_period_days` en el precio).
-
-**⚠️ La documentación de OnePay está en obras, y se contradice:**
-
-- La página "Crear suscripción" avisa ella misma de que su cuerpo **ya no se
-  acepta**: hoy pide `plan_id` **o** `price_id`, `customer_id`,
-  `payment_method_type` y `payment_method_id` — pero la introducción de la
-  misma sección usa `card_id`. Hay que probar en `sk_test` cuál vale.
-- La página "Crear plan" es **una copia de la de crear cliente**. Por eso el
-  plan va con productos + precios, que sí están documentados y son más nuevos.
-- Los estados salen en minúscula en unas páginas y en MAYÚSCULA en otras: se
-  normalizan antes de comparar.
-- La guía de webhooks lista solo tres eventos de suscripción; la referencia
-  (`/client/webhooks/index`) tiene los ocho. Manda la referencia.
-- Un 4xx nuestro dispara reintentos, pero la reconciliación lo da por
-  definitivo. Un endpoint que falla seguido **se desactiva solo** y lo que pasa
-  mientras está apagado no se reenvía.
 
 ### 🟠 Rediseño de la app — lo que quedó pendiente (2026-10-03)
 
@@ -235,13 +187,11 @@ Mis cursos, búsqueda, Cursos maestros, El Charcu y Mi cuenta ya siguen
 - **Los avisos no envían nada.** Recordatorios de pasos, cursos nuevos y el
   correo de novedades solo guardan la preferencia: no existe ningún canal.
 - **Avísame sigue cerrado a quien no paga (0021).** Al usuario gratis se le
-  explica que la lista es de El Charcu Pro. Con `subscriptions` vacía en
-  producción, hoy nadie puede apuntarse desde la app.
+  explica que la lista es de El Charcu Pro. Con OnePay cobrando, ya pueden
+  apuntarse quienes pagan.
 - **Fotos de los cursos.** Encendidas. Las de `public/curso/` se comprimieron
   al estándar (600 px, calidad 65) y el paisa toma prestada la del chorizo
   parrillero (0032). Las cápsulas no llevan foto: la maqueta no la pinta.
-- **"Gestionar plan" y "Pagos y facturas" abren WhatsApp** hasta que exista
-  OnePay.
 - **Escritorio con una receta en curso** queda con la columna de recetas y
   la conversación; la vista de 3 columnas con "Ficha" está fuera de alcance.
 - **Los e2e** (`pnpm test:e2e`) corren contra QA con tres cuentas de prueba
@@ -309,9 +259,9 @@ Salen de las fases 3, 4 y 5. No son pendientes: son cómo se comporta.
   Ya no hace falta redesplegar, pero tampoco es instantáneo. Una receta nueva
   o corregida es una migración (lo hace la skill `create-recipe`).
 - **Los dos presupuestos de IA son globales POR PÚBLICO, no por persona.** Un
-  solo suscriptor puede agotar el de `pro` para los demás. Hoy da igual porque
-  `subscriptions` está vacía; cuando haya varios pagando hay que decidir si el
-  tope pasa a ser por cuenta.
+  solo suscriptor puede agotar el de `pro` para los demás. Con OnePay cobrando
+  (el 2026-10-19 hay tres activas: dos de cortesía y una prueba), cuando haya varios pagando hay
+  que decidir si el tope pasa a ser por cuenta.
 - **`lead_captured` no es "contacto nuevo".** El muro le sale a cualquiera sin
   sesión, así que quien vuelve tras cerrar sesión queda contado. Los contactos
   nuevos de verdad son `account_created`.
