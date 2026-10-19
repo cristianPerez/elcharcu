@@ -30,7 +30,10 @@ export const metadata: Metadata = {
 export default async function Page({
   searchParams,
 }: {
-  readonly searchParams: Promise<{ readonly desde?: string | string[] }>;
+  readonly searchParams: Promise<{
+    readonly desde?: string | string[];
+    readonly error?: string | string[];
+  }>;
 }): Promise<ReactNode> {
   if ((await currentUser()) !== null) {
     redirect(appRoutes.appAssistant);
@@ -38,10 +41,17 @@ export default async function Page({
 
   // `desde` lo pone el layout de la app al expulsar a alguien sin sesión.
   // Solo sirve para medir por qué se le pidió la cuenta (2026-10-07).
-  const { desde } = await searchParams;
+  const { desde, error } = await searchParams;
   const { trigger, origin } = await authTriggerFrom(
     typeof desde === 'string' ? desde : null,
   );
 
-  return <EntrarPage trigger={trigger} origin={origin} />;
+  // `error` lo pone `/auth/callback` cuando el enlace del correo ya no sirve.
+  return (
+    <EntrarPage
+      trigger={trigger}
+      origin={origin}
+      linkFailed={typeof error === 'string'}
+    />
+  );
 }
