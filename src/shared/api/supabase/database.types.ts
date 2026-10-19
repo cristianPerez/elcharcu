@@ -890,6 +890,7 @@ export type Database = {
       };
       today_ai_spend: { Args: { p_audience: string }; Returns: number };
       user_id_by_email: { Args: { p_email: string }; Returns: string };
+      user_id_by_phone: { Args: { p_phone: string }; Returns: string };
     };
     Enums: {
       [_ in never]: never;

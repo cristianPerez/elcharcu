@@ -1,6 +1,7 @@
 import { type SupabaseAdminClient } from '@/shared/api/supabase/server';
 import { reportWarning } from '@/shared/lib';
 
+import { periodEnd } from '../lib/periodEnd';
 import { type Trace } from '../lib/trace';
 import { type NormalizedPaymentEvent } from '../model/types';
 
@@ -30,14 +31,17 @@ export async function applyPaymentEvent(
 
   const userId = await findUser(db, proveedor, event, trace);
   if (userId === null) {
+    // Del teléfono, solo los últimos 4 dígitos: basta para reconocerlo.
+    const phoneTail = event.telefono?.replace(/\D/g, '').slice(-4) ?? null;
     trace.step('huerfano', {
-      motivo: event.correo === null ? 'sin correo' : 'correo desconocido',
+      con_correo: event.correo !== null,
+      con_telefono: phoneTail !== null,
     });
     await close(
       'huerfano',
-      event.correo === null
-        ? `la pasarela no mandó correo (suscripción ${event.recursoId})`
-        : `nadie con el correo ${event.correo} (suscripción ${event.recursoId})`,
+      `nadie con el correo ${event.correo ?? '(sin correo)'} ni el WhatsApp ` +
+        `${phoneTail === null ? '(sin teléfono)' : `…${phoneTail}`} ` +
+        `(suscripción ${event.recursoId})`,
     );
     reportWarning('pagos', 'pago sin dueño conocido', {
       traza: trace.traza,
@@ -49,6 +53,7 @@ export async function applyPaymentEvent(
 
   if (event.tipo === 'suscripcion.pagada') {
     const planId = (await planIdOf(db, event.planExternoId)) ?? FALLBACK_PLAN;
+    const vence = periodEnd(event.venceEl, event.pagadoEl, planId);
     // `upsert`: la primera vez puede no haber fila. Y se guarda el id de la
     // suscripción: el PRÓXIMO evento se encuentra sin depender del correo.
     await db.from('subscriptions').upsert(
@@ -63,13 +68,13 @@ export async function applyPaymentEvent(
         canceled_at: null,
         // Si no dijo hasta cuándo, se deja la fecha que hubiera: mejor eso que
         // borrarla y dejar a la persona sin acceso.
-        ...(event.venceEl === null ? {} : { current_period_end: event.venceEl }),
+        ...(vence === null ? {} : { current_period_end: vence }),
       },
       { onConflict: 'user_id' },
     );
     trace.step('suscripcion activada', {
       plan: planId,
-      vence: event.venceEl ?? 'sin cambio',
+      vence: vence ?? 'sin cambio',
     });
     await close('procesado');
     return;

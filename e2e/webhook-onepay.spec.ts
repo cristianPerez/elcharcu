@@ -166,3 +166,54 @@ test('un pago de un correo sin cuenta queda huérfano, guardado', async ({ reque
     await admin().from('webhook_eventos').delete().eq('recurso_id', subscriptionId);
   }
 });
+
+/** La forma REAL del aviso de OnePay (QA, 2026-10-18): sin correo útil ni próxima cobranza. */
+function paidLikeOnePay(
+  subscriptionId: string,
+  paymentId: string,
+  phone: string,
+): unknown {
+  return {
+    event: { type: 'subscription.paid', environment: 'test' },
+    payment: { id: paymentId, paid_at: '2026-10-18T17:26:08.000000Z' },
+    subscription: {
+      id: subscriptionId,
+      plan_id: PRO_ANUAL_PRUEBAS,
+      customer: { id: 'cus_e2e', email: 'hola@onepay.ai', phone },
+    },
+  };
+}
+
+test('sin correo, se encuentra la cuenta por el WhatsApp y vence en un año', async ({
+  request,
+}) => {
+  const email = 'e2e-pagos-telefono@elcharcu.test';
+  await ensureTestAccount(email);
+  const userId = await userIdOf(email);
+  const subscriptionId = `sub_e2e_${randomUUID()}`;
+  // Diez dígitos que no tiene nadie más: la búsqueda exige una única cuenta.
+  const digits = `3${String(Date.now()).slice(-9)}`;
+  await cleanup(userId, subscriptionId);
+  await admin().from('profiles').update({ whatsapp: digits }).eq('id', userId);
+
+  try {
+    const first = paidLikeOnePay(subscriptionId, randomUUID(), `+57 ${digits}`);
+    expect(await send(request, first)).toEqual({ ok: true });
+    const { data: sub } = await admin()
+      .from('subscriptions')
+      .select('status, plan_id, current_period_end')
+      .eq('user_id', userId)
+      .single();
+    expect(sub).toMatchObject({ status: 'active', plan_id: 'pro-anual' });
+    expect(sub?.current_period_end?.slice(0, 10)).toBe('2027-10-18');
+
+    // El mismo cobro reintentado se descarta; el cobro siguiente (otro id), no.
+    expect(await send(request, first)).toEqual({ ok: true, repetido: true });
+    expect(
+      await send(request, paidLikeOnePay(subscriptionId, randomUUID(), digits)),
+    ).toEqual({ ok: true });
+  } finally {
+    await admin().from('profiles').update({ whatsapp: null }).eq('id', userId);
+    await cleanup(userId, subscriptionId);
+  }
+});

@@ -34,16 +34,24 @@ export interface NormalizedPaymentEvent {
    * hasta la cuenta la primera vez: el enlace de cobro es genérico.
    */
   readonly correo: string | null;
+  /**
+   * El teléfono del checkout. ⚠️ El checkout de OnePay pide WhatsApp y NO el
+   * correo (llega `hola@onepay.ai`), así que es el segundo puente: se cruza
+   * con el WhatsApp del perfil.
+   */
+  readonly telefono: string | null;
   /** El id del cliente EN LA PASARELA. No es nuestro `user_id`. */
   readonly clienteId: string | null;
   /** El id del plan en la pasarela: con él se sabe si es el mensual o el anual. */
   readonly planExternoId: string | null;
   /** Hasta cuándo está pagado (la próxima cobranza). Solo en un pago. */
   readonly venceEl: string | null;
+  /** Cuándo se cobró. Si no llega `venceEl`, el vencimiento se calcula de aquí. */
+  readonly pagadoEl: string | null;
   /**
    * ⚠️ Lo que distingue una ocurrencia de un reintento: cambia entre el pago
    * de enero y el de febrero de la MISMA suscripción, pero no entre los
-   * reintentos de uno solo. La fecha de la próxima cobranza cumple las dos.
+   * reintentos de uno solo. La próxima cobranza o el id del cobro cumplen las dos.
    */
   readonly marca: string | null;
 }

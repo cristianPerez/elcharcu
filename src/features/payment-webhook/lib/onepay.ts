@@ -124,18 +124,26 @@ export const onepay: PaymentProvider = {
     const plan = asFields(datos.plan);
     const tipo = TYPES[evento] ?? 'desconocido';
     const proximaCobranza = asString(datos.next_billing_at);
+    // ⚠️ El aviso real (2026-10-18) NO trae `next_billing_at`: trae el cobro
+    // aparte, en `payment`, con un id distinto en cada cobro.
+    const payment = asFields(body.payment);
+    const telefono = [datos.phone, customer?.phone, asFields(body.customer)?.phone]
+      .map(asString)
+      .find((value) => value !== null && /\d/.test(value));
 
     return {
       evento,
       tipo,
       recursoId,
       correo: correo?.toLowerCase().trim() ?? null,
+      telefono: telefono ?? null,
       clienteId: asString(datos.customer_id) ?? asString(customer?.id),
       planExternoId: asString(datos.plan_id) ?? asString(plan?.id),
       // ⚠️ SOLO UN PAGO MUEVE EL VENCIMIENTO: quien cancela conserva el acceso
       // hasta el final del período que ya pagó.
       venceEl: tipo === 'suscripcion.pagada' ? proximaCobranza : null,
-      marca: proximaCobranza ?? asString(datos.canceled_at),
+      pagadoEl: tipo === 'suscripcion.pagada' ? asString(payment?.paid_at) : null,
+      marca: proximaCobranza ?? asString(payment?.id) ?? asString(datos.canceled_at),
     };
   },
 };
