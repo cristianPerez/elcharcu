@@ -105,7 +105,7 @@ test.describe('Cursos sin sesión', () => {
     const proCard = plans.locator('article').filter({ hasText: 'El Charcu Pro' });
 
     const proLink = proCard.getByRole('link', { name: 'Suscribirme' });
-    // Maestro todavía no tiene plan en OnePay: sigue yendo a WhatsApp.
+    // El Maestro también va a OnePay desde 0054.
     const maestroLink = plans
       .locator('article')
       .filter({ hasText: 'El Charcu Maestro' })
@@ -114,12 +114,15 @@ test.describe('Cursos sin sesión', () => {
     await expect(yearly).toHaveAttribute('aria-pressed', 'true');
     await expect(proCard).toContainText('US$7,49');
     await expect(proCard).toContainText('una vez al año');
-    // Fuera de producción, los planes del MODO DE PRUEBAS de OnePay (0050).
+    // Fuera de producción, los planes del MODO DE PRUEBAS de OnePay (0050 y 0054).
     await expect(proLink).toHaveAttribute(
       'href',
       'https://pagos.onepay.la/plan/01a14cee-febf-710f-a088-04e89a5721d2',
     );
-    await expect(maestroLink).toHaveAttribute('href', /wa\.me/);
+    await expect(maestroLink).toHaveAttribute(
+      'href',
+      'https://pagos.onepay.la/plan/01a15490-7a2f-7264-b9e3-fd0b923c992e',
+    );
 
     await monthly.click();
     await expect(monthly).toHaveAttribute('aria-pressed', 'true');
@@ -128,6 +131,10 @@ test.describe('Cursos sin sesión', () => {
     await expect(proLink).toHaveAttribute(
       'href',
       'https://pagos.onepay.la/plan/01a14ceb-bf2b-72da-acc3-2080ada79db0',
+    );
+    await expect(maestroLink).toHaveAttribute(
+      'href',
+      'https://pagos.onepay.la/plan/01a1548f-49ec-7203-af12-095f3731f380',
     );
   });
 
