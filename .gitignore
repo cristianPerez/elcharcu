@@ -61,3 +61,6 @@ yarn-error.log*
 
 #desig refs
 design-refs/
+
+# graphify
+/graphify-out
