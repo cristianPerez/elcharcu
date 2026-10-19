@@ -7,8 +7,8 @@ export type CheckoutLinks = Readonly<Record<string, string>>;
 
 /**
  * A dónde lleva el botón de pagar: al checkout de OnePay si ese plan y ciclo ya
- * tienen enlace (`charcu.plan_checkout`, 2026-10-17); si no —el Maestro, por
- * ahora—, a WhatsApp como hasta hoy, para no mandar a nadie a un pago que no
+ * tienen enlace (`charcu.plan_checkout`: el Pro desde 0050, el Maestro desde
+ * 0054); si no, a WhatsApp como antes, para no mandar a nadie a un pago que no
  * existe.
  */
 export function checkoutHref(
