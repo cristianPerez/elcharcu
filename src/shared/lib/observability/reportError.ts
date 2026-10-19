@@ -26,7 +26,8 @@ export type ErrorArea =
   | 'pedidos-de-cursos'
   | 'config'
   | 'navegador'
-  | 'pagos';
+  | 'pagos'
+  | 'correo';
 
 export interface ErrorContext {
   /** Datos que ayudan a entenderlo. Ver el aviso de abajo sobre qué NO poner. */

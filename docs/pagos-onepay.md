@@ -40,6 +40,23 @@ probado de punta a punta. Desde el 2026-10-17.
 subscription:{id, plan_id, customer:{email, phone}}}`, sin próxima
    cobranza. La huella usa `payment.id`: cada cobro es distinto, un reintento no.
 
+   **Si pagó alguien sin cuenta** (2026-10-19), el webhook la **crea** con el
+   correo que guardó OnePay, sin verificar y con el Pro activo. Nunca con un
+   correo de OnePay (`hola@onepay.ai`): eso juntaría a todos en una cuenta.
+   Solo un pago crea cuenta.
+
+   **Correo de bienvenida** (`sendWelcome.ts`, por Resend), una sola vez por
+   cuenta (`subscriptions.bienvenida_enviada_el`, migración 0052). Su botón es
+   un enlace mágico de Supabase que aterriza en `/auth/callback?token_hash=…`:
+   verifica el correo y abre la sesión. Si el envío falla, la marca vuelve a
+   null y lo intenta el siguiente aviso. Necesita `RESEND_API_KEY` y
+   `RESEND_FROM` en el entorno.
+
+   **Si nunca ve el correo o el enlace caduca:** la cuenta es del CORREO.
+   Entra por `/entrar` con el correo con el que pagó y le llega otro enlace.
+   Lo dicen el propio correo y `/entrar`, que desde el 2026-10-19 avisa cuando
+   se llega con un enlace vencido (`?error=…`).
+
 4. **Casi todo responde 200.** OnePay reintenta ante un 4xx y **desactiva el
    endpoint** si falla seguido. Solo una firma mala da 401, y un fallo nuestro
    al guardar, 500.
@@ -98,8 +115,9 @@ select recibido_en, traza, evento, estado, nota
 
 ## Lo que falta
 
-- **Correo de bienvenida al activarse.** Manos Creadoras lo manda; aquí no se
-  copió, porque El Charcu no tiene todavía ese correo.
+- **Más redes para quien pagó y no entra:** "¿Pagaste y no puedes entrar?"
+  en `/entrar` (por WhatsApp → reenvía el enlace al correo de la cuenta,
+  enmascarado) y una lista diaria de quienes pagaron y no han entrado en 24 h.
 - **El Maestro en OnePay**: sus botones siguen en WhatsApp hasta que existan
   sus planes y sus filas en `plan_checkout`.
 - **"Gestionar plan" y cancelar desde la app** siguen en WhatsApp.

@@ -5,7 +5,9 @@ import { periodEnd } from '../lib/periodEnd';
 import { type Trace } from '../lib/trace';
 import { type NormalizedPaymentEvent } from '../model/types';
 
+import { createPayerAccount } from './createPayerAccount';
 import { findUser, planIdOf } from './lookup';
+import { sendWelcome } from './sendWelcome';
 
 /** El plan si la pasarela no dice cuál: el que se vende. */
 const FALLBACK_PLAN = 'pro-mensual';
@@ -29,7 +31,12 @@ export async function applyPaymentEvent(
     return;
   }
 
-  const userId = await findUser(db, proveedor, event, trace);
+  // Solo un PAGO crea cuenta: una cancelación de alguien desconocido no.
+  const userId =
+    (await findUser(db, proveedor, event, trace)) ??
+    (event.tipo === 'suscripcion.pagada'
+      ? await createPayerAccount(db, event.correo, trace)
+      : null);
   if (userId === null) {
     // Del teléfono, solo los últimos 4 dígitos: basta para reconocerlo.
     const phoneTail = event.telefono?.replace(/\D/g, '').slice(-4) ?? null;
@@ -76,6 +83,7 @@ export async function applyPaymentEvent(
       plan: planId,
       vence: vence ?? 'sin cambio',
     });
+    await sendWelcome(db, userId, trace);
     await close('procesado');
     return;
   }
