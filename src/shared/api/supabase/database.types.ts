@@ -592,6 +592,7 @@ export type Database = {
       };
       subscriptions: {
         Row: {
+          bienvenida_enviada_el: string | null;
           canceled_at: string | null;
           country: string | null;
           created_at: string;
@@ -607,6 +608,7 @@ export type Database = {
           user_id: string;
         };
         Insert: {
+          bienvenida_enviada_el?: string | null;
           canceled_at?: string | null;
           country?: string | null;
           created_at?: string;
@@ -622,6 +624,7 @@ export type Database = {
           user_id: string;
         };
         Update: {
+          bienvenida_enviada_el?: string | null;
           canceled_at?: string | null;
           country?: string | null;
           created_at?: string;

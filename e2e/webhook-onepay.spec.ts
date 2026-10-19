@@ -144,17 +144,13 @@ test('un pago activa el plan; el reintento no se repite; cancelar conserva el ac
   }
 });
 
-test('un pago de un correo sin cuenta queda huérfano, guardado', async ({ request }) => {
+test('un pago sin correo ni teléfono conocidos queda huérfano, guardado', async ({
+  request,
+}) => {
   const subscriptionId = `sub_e2e_${randomUUID()}`;
   try {
-    await send(
-      request,
-      paid(
-        subscriptionId,
-        new Date().toISOString(),
-        `nadie-${randomUUID()}@elcharcu.test`,
-      ),
-    );
+    // El correo de OnePay (modo de pruebas) NO crea cuenta: juntaría a todos.
+    await send(request, paid(subscriptionId, new Date().toISOString(), 'hola@onepay.ai'));
     const { data } = await admin()
       .from('webhook_eventos')
       .select('estado, nota')
@@ -164,6 +160,39 @@ test('un pago de un correo sin cuenta queda huérfano, guardado', async ({ reque
     expect(data?.nota).toContain('nadie con el correo');
   } finally {
     await admin().from('webhook_eventos').delete().eq('recurso_id', subscriptionId);
+  }
+});
+
+test('un pago de un correo sin cuenta crea la cuenta, sin verificar, con el Pro activo', async ({
+  request,
+}) => {
+  const email = `e2e-pago-nuevo-${randomUUID()}@elcharcu.test`;
+  const subscriptionId = `sub_e2e_${randomUUID()}`;
+  const nextYear = new Date(Date.now() + 365 * 86_400_000).toISOString();
+  let userId: string | null = null;
+  try {
+    expect(await send(request, paid(subscriptionId, nextYear, email))).toEqual({
+      ok: true,
+    });
+    userId = await userIdOf(email);
+    const { data: user } = await admin().auth.admin.getUserById(userId);
+    expect(user.user?.email_confirmed_at ?? null).toBeNull();
+
+    const { data: sub } = await admin()
+      .from('subscriptions')
+      .select('status, plan_id, bienvenida_enviada_el')
+      .eq('user_id', userId)
+      .single();
+    expect(sub).toMatchObject({ status: 'active', plan_id: 'pro-anual' });
+    // Resend rechaza la clave falsa de los e2e: la bienvenida queda pendiente
+    // para el próximo aviso, no marcada como enviada.
+    expect(sub?.bienvenida_enviada_el).toBeNull();
+  } finally {
+    await admin().from('webhook_eventos').delete().eq('recurso_id', subscriptionId);
+    if (userId !== null) {
+      await admin().from('subscriptions').delete().eq('user_id', userId);
+      await admin().auth.admin.deleteUser(userId);
+    }
   }
 });
 

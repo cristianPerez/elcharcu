@@ -10,9 +10,14 @@ import { useEmailAuth } from '../model/useEmailAuth';
 interface EmailAuthFormProps {
   /** A dónde vuelve al tocar el enlace (la página de la que vino). */
   readonly next?: string | null | undefined;
+  /** Llegó desde un enlace que ya no sirve (`/entrar?error=…`). */
+  readonly linkFailed?: boolean;
 }
 
-export function EmailAuthForm({ next }: EmailAuthFormProps): ReactNode {
+export function EmailAuthForm({
+  next,
+  linkFailed = false,
+}: EmailAuthFormProps): ReactNode {
   const { state, sendLink, reset } = useEmailAuth();
   const [email, setEmail] = useState('');
 
@@ -52,6 +57,22 @@ export function EmailAuthForm({ next }: EmailAuthFormProps): ReactNode {
   return (
     <div>
       <Eyebrow className="text-terracota-dark">Tu cuenta</Eyebrow>
+
+      {/*
+        ⚠️ Antes (hasta 2026-10-19) el callback mandaba aquí `?error=…` y la
+        pantalla no decía nada: quien abría un enlace vencido caía en el
+        formulario sin saber por qué. Y desde los pagos con OnePay importa más:
+        la cuenta de quien pagó se crea con el correo del pago.
+      */}
+      {linkFailed ? (
+        <p
+          role="status"
+          className="mt-6 rounded-2xl bg-terracota/10 px-5 py-4 text-sm leading-relaxed text-forest"
+        >
+          Ese enlace ya se usó o caducó. Escribe tu correo y te mandamos otro. Si pagaste
+          tu suscripción, usa el correo con el que pagaste.
+        </p>
+      ) : null}
 
       <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-forest md:text-4xl">
         Guarda tus recetas.

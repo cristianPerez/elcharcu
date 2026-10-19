@@ -76,6 +76,11 @@ export default defineConfig({
       // Claves de PRUEBA del webhook de OnePay: el spec firma con ellas.
       ONEPAY_WEBHOOK_SECRET: E2E_WEBHOOK_SECRET,
       ONEPAY_WEBHOOK_TOKEN: E2E_WEBHOOK_TOKEN,
+      // ⚠️ Ningún correo de verdad desde los e2e: el webhook manda la
+      // bienvenida a cuentas `@elcharcu.test`, que rebotarían y dañarían la
+      // reputación del remitente. Una clave falsa (no vacía: Next rellenaría
+      // la vacía con la de `.env.local`) hace que Resend lo rechace.
+      RESEND_API_KEY: 'e2e-sin-envio',
     },
     // En CI se ve lo que dice el servidor: sin esto, un fallo del servidor
     // solo se nota como una página que no termina de cargar.

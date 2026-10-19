@@ -11,14 +11,16 @@ interface EntrarPageProps {
   readonly trigger: AuthTrigger;
   /** La página a la que iba. Solo para medir. */
   readonly origin: string | null;
+  /** Llegó desde un enlace del correo que ya no sirve. */
+  readonly linkFailed: boolean;
 }
 
 /** Pantalla de entrada. Solo composición. */
-export function EntrarPage({ trigger, origin }: EntrarPageProps): ReactNode {
+export function EntrarPage({ trigger, origin, linkFailed }: EntrarPageProps): ReactNode {
   return (
     <AppShell centered>
       <AuthOpenTracker trigger={trigger} origin={origin} />
-      <EmailAuthForm next={origin} />
+      <EmailAuthForm next={origin} linkFailed={linkFailed} />
     </AppShell>
   );
 }
