@@ -29,6 +29,14 @@ probado de punta a punta. Desde el 2026-10-17.
    | impagada / vencida      | si quedan días pagados, los conserva; si no, `past_due`                                             |
    | `subscription.created`  | nada: el acceso lo abre el **pago**                                                                 |
 
+   **El plan sale de `subscription.plan_id`**, buscado en
+   `plan_checkout.external_plan_id`, y se guarda en
+   `subscriptions.external_plan_id`. ⚠️ **Si no está, no se adivina**
+   (migración 0053): se guarda de quién es y qué plan compró, **sin dar
+   acceso**, y el evento queda `plan_desconocido`. Antes caía en `pro-mensual`.
+   Para resolverlo: añadir el plan a `plan_checkout` (el siguiente cobro ya se
+   reconoce solo) y activar a mano el período ya pagado.
+
    **Para saber de quién es el pago**, primero se busca la suscripción ya
    conocida. Si es nueva, se busca el **correo del checkout** y después el
    **teléfono**, contra el WhatsApp del perfil (migración 0051: últimos 10
@@ -109,7 +117,7 @@ OnePay corta a los 10 s.
 -- Lo que necesita atención
 select recibido_en, traza, evento, estado, nota
   from charcu.webhook_eventos
- where estado in ('huerfano', 'error')
+ where estado in ('huerfano', 'plan_desconocido', 'error')
  order by recibido_en desc;
 ```
 

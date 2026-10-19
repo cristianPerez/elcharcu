@@ -45,13 +45,18 @@ async function send(
   return (await response.json()) as Record<string, unknown>;
 }
 
-function paid(subscriptionId: string, nextBilling: string, email = EMAIL): unknown {
+function paid(
+  subscriptionId: string,
+  nextBilling: string,
+  email = EMAIL,
+  planId = PRO_ANUAL_PRUEBAS,
+): unknown {
   return {
     event: 'subscription.paid',
     data: {
       id: subscriptionId,
       customer_id: 'cus_e2e',
-      plan_id: PRO_ANUAL_PRUEBAS,
+      plan_id: planId,
       email,
       next_billing_at: nextBilling,
     },
@@ -92,7 +97,9 @@ test('un pago activa el plan; el reintento no se repite; cancelar conserva el ac
 
     const { data: sub } = await admin()
       .from('subscriptions')
-      .select('status, plan_id, provider, external_subscription_id, current_period_end')
+      .select(
+        'status, plan_id, provider, external_subscription_id, external_plan_id, current_period_end',
+      )
       .eq('user_id', userId)
       .single();
     expect(sub).toMatchObject({
@@ -100,6 +107,7 @@ test('un pago activa el plan; el reintento no se repite; cancelar conserva el ac
       plan_id: 'pro-anual',
       provider: 'onepay',
       external_subscription_id: subscriptionId,
+      external_plan_id: PRO_ANUAL_PRUEBAS,
     });
     expect(new Date(sub?.current_period_end ?? 0).getTime()).toBeGreaterThan(Date.now());
     const { data: isActive } = await admin().rpc('has_active_subscription', {
@@ -139,6 +147,51 @@ test('un pago activa el plan; el reintento no se repite; cancelar conserva el ac
       expect(row.estado).toBe('procesado');
       expect(row.traza).toMatch(/^[0-9a-f]{8}$/);
     }
+  } finally {
+    await cleanup(userId, subscriptionId);
+  }
+});
+
+test('un plan que no está en plan_checkout no se adivina: queda para revisar', async ({
+  request,
+}) => {
+  await ensureTestAccount(EMAIL);
+  const userId = await userIdOf(EMAIL);
+  const subscriptionId = `sub_e2e_${randomUUID()}`;
+  // Como la prueba de US$ 1 del 2026-10-19: un plan de OnePay sin fila nuestra.
+  const unknownPlan = `plan_e2e_${randomUUID()}`;
+  await cleanup(userId, subscriptionId);
+
+  try {
+    const nextYear = new Date(Date.now() + 365 * 86_400_000).toISOString();
+    expect(
+      await send(request, paid(subscriptionId, nextYear, EMAIL, unknownPlan)),
+    ).toEqual({ ok: true });
+
+    const { data: row } = await admin()
+      .from('webhook_eventos')
+      .select('estado, nota')
+      .eq('recurso_id', subscriptionId)
+      .single();
+    expect(row?.estado).toBe('plan_desconocido');
+    expect(row?.nota).toContain(unknownPlan);
+
+    // Se guarda de quién es y qué compró, pero sin dar acceso.
+    const { data: sub } = await admin()
+      .from('subscriptions')
+      .select('status, plan_id, external_subscription_id, external_plan_id')
+      .eq('user_id', userId)
+      .single();
+    expect(sub).toEqual({
+      status: 'free',
+      plan_id: null,
+      external_subscription_id: subscriptionId,
+      external_plan_id: unknownPlan,
+    });
+    const { data: isActive } = await admin().rpc('has_active_subscription', {
+      p_user_id: userId,
+    });
+    expect(isActive).toBe(false);
   } finally {
     await cleanup(userId, subscriptionId);
   }

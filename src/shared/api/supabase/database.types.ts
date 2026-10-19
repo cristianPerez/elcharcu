@@ -598,6 +598,7 @@ export type Database = {
           created_at: string;
           current_period_end: string | null;
           external_customer_id: string | null;
+          external_plan_id: string | null;
           external_subscription_id: string | null;
           id: string;
           plan_id: string | null;
@@ -614,6 +615,7 @@ export type Database = {
           created_at?: string;
           current_period_end?: string | null;
           external_customer_id?: string | null;
+          external_plan_id?: string | null;
           external_subscription_id?: string | null;
           id?: string;
           plan_id?: string | null;
@@ -630,6 +632,7 @@ export type Database = {
           created_at?: string;
           current_period_end?: string | null;
           external_customer_id?: string | null;
+          external_plan_id?: string | null;
           external_subscription_id?: string | null;
           id?: string;
           plan_id?: string | null;
