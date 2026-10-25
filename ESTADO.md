@@ -87,8 +87,11 @@ webhook activa. Sin cliente de la API de OnePay, sin cédula de nuestro lado.
   tiene `bienvenida_enviada_el` en null. Puede ser que el pago llegara antes del
   despliegue de 0052, o que falten `RESEND_API_KEY` / `RESEND_FROM` en Vercel
   (`/api/salud` no los lista).
-- **Crear el Maestro en OnePay** (siguiente, decidido el 2026-10-19). Hoy sigue
-  en WhatsApp: no tiene planes en OnePay ni filas en `plan_checkout`.
+- **El Maestro en OnePay: falta producción.** Sus dos planes ya existen en
+  OnePay, en pruebas y en producción (2026-10-19), y 0054 está aplicada en QA.
+  ⚠️ En producción, primero el código (`periodEnd` reconoce `maestro-anual`) y
+  después 0054: la migración sola cambia los botones al momento, y sin el código
+  un pago del Maestro anual daría un mes de acceso.
 - **Medir la sección de planes: dónde toca la gente y cuándo** (decidido el
   2026-10-19). Hoy solo se sabe que alguien eligió un plan, no qué vio ni en qué
   orden:
@@ -108,10 +111,10 @@ webhook activa. Sin cliente de la API de OnePay, sin cédula de nuestro lado.
   `/entrar` (por WhatsApp → reenvía el enlace, enmascarado) y una lista diaria
   de quienes pagaron y no han entrado en 24 h.
 - **Pasar a OnePay las de `rail = 'whatsapp'`**, activadas a mano.
-- **Decisión de Cristian: los precios.** La web enseña US$ 9,99 / 89,90 (D18).
-  Se creía que OnePay solo cobra en pesos, pero la prueba del 2026-10-19 cobró
-  un plan en `USD`. Falta saber en qué moneda están los dos planes Pro de
-  producción. Lo que se decida entra como D22.
+- **Decisión de Cristian: los precios (D22).** Los planes de OnePay están en
+  USD, como la web (D18): se creía que OnePay solo cobraba en pesos, y no. Lo
+  que queda por decidir es si se pasa a pesos para atacar la desconfianza a los
+  dólares (D21).
 - **Un plan de OnePay que no está en `plan_checkout` ya no se adivina**
   (2026-10-19, migración 0053, ya en QA y producción). Queda
   `plan_desconocido`, sin acceso y con el plan en

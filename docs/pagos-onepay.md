@@ -7,12 +7,15 @@ probado de punta a punta. Desde el 2026-10-17.
 
 1. El botón **Suscribirme** (planes de la portada) y **Pasar a Pro** (Recetas)
    llevan al checkout de OnePay del plan. Los enlaces viven en
-   `charcu.plan_checkout` (migración 0050), por `modo`:
+   `charcu.plan_checkout` (Pro en 0050, Maestro en 0054), por `modo`:
    - **pruebas** → QA, previews y local (los planes del modo de pruebas de OnePay);
    - **produccion** → elcharcu.co.
 
-   Lo decide `VERCEL_ENV`, no una variable. Un plan sin enlace (hoy, el
-   Maestro) sigue yendo a WhatsApp.
+   Lo decide `VERCEL_ENV`, no una variable. Un plan sin enlace sigue yendo a
+   WhatsApp.
+
+   Los cuatro planes están en **USD**, con impuesto 0 %, frecuencia mensual y
+   el anual con 12 ciclos. Su "ID interno" en OnePay es nuestro `plan_id`.
 
 2. Cuando alguien paga, OnePay avisa a **`/api/webhooks/onepay`**. Ese aviso es
    lo ÚNICO que activa la suscripción: si se pierde, alguien pagó y se quedó
@@ -126,6 +129,4 @@ select recibido_en, traza, evento, estado, nota
 - **Más redes para quien pagó y no entra:** "¿Pagaste y no puedes entrar?"
   en `/entrar` (por WhatsApp → reenvía el enlace al correo de la cuenta,
   enmascarado) y una lista diaria de quienes pagaron y no han entrado en 24 h.
-- **El Maestro en OnePay**: sus botones siguen en WhatsApp hasta que existan
-  sus planes y sus filas en `plan_checkout`.
 - **"Gestionar plan" y cancelar desde la app** siguen en WhatsApp.

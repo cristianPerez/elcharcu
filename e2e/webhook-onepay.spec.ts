@@ -18,6 +18,8 @@ import { ensureTestAccount } from './magicLink';
 const EMAIL = 'e2e-pagos@elcharcu.test';
 /** El plan anual del MODO DE PRUEBAS de OnePay (migración 0050). */
 const PRO_ANUAL_PRUEBAS = '01a14cee-febf-710f-a088-04e89a5721d2';
+/** El Maestro anual del MODO DE PRUEBAS (migración 0054). */
+const MAESTRO_ANUAL_PRUEBAS = '01a15490-7a2f-7264-b9e3-fd0b923c992e';
 
 test.beforeEach(({}, testInfo) => {
   test.skip(testInfo.project.name !== 'mobile', 'No depende del ancho');
@@ -254,13 +256,14 @@ function paidLikeOnePay(
   subscriptionId: string,
   paymentId: string,
   phone: string,
+  planId = PRO_ANUAL_PRUEBAS,
 ): unknown {
   return {
     event: { type: 'subscription.paid', environment: 'test' },
     payment: { id: paymentId, paid_at: '2026-10-18T17:26:08.000000Z' },
     subscription: {
       id: subscriptionId,
-      plan_id: PRO_ANUAL_PRUEBAS,
+      plan_id: planId,
       customer: { id: 'cus_e2e', email: 'hola@onepay.ai', phone },
     },
   };
@@ -294,6 +297,40 @@ test('sin correo, se encuentra la cuenta por el WhatsApp y vence en un año', as
     expect(
       await send(request, paidLikeOnePay(subscriptionId, randomUUID(), digits)),
     ).toEqual({ ok: true });
+  } finally {
+    await admin().from('profiles').update({ whatsapp: null }).eq('id', userId);
+    await cleanup(userId, subscriptionId);
+  }
+});
+
+test('el Maestro anual también vence en un año, no en un mes', async ({ request }) => {
+  const email = 'e2e-pagos-telefono@elcharcu.test';
+  await ensureTestAccount(email);
+  const userId = await userIdOf(email);
+  const subscriptionId = `sub_e2e_${randomUUID()}`;
+  const digits = `3${String(Date.now()).slice(-9)}`;
+  await cleanup(userId, subscriptionId);
+  await admin().from('profiles').update({ whatsapp: digits }).eq('id', userId);
+
+  try {
+    const body = paidLikeOnePay(
+      subscriptionId,
+      randomUUID(),
+      digits,
+      MAESTRO_ANUAL_PRUEBAS,
+    );
+    expect(await send(request, body)).toEqual({ ok: true });
+    const { data: sub } = await admin()
+      .from('subscriptions')
+      .select('status, plan_id, external_plan_id, current_period_end')
+      .eq('user_id', userId)
+      .single();
+    expect(sub).toMatchObject({
+      status: 'active',
+      plan_id: 'maestro-anual',
+      external_plan_id: MAESTRO_ANUAL_PRUEBAS,
+    });
+    expect(sub?.current_period_end?.slice(0, 10)).toBe('2027-10-18');
   } finally {
     await admin().from('profiles').update({ whatsapp: null }).eq('id', userId);
     await cleanup(userId, subscriptionId);

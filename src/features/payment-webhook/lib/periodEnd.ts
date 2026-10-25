@@ -1,6 +1,7 @@
 /**
  * Hasta cuándo queda pagado. La pasarela puede decirlo (`venceEl`); si no,
- * se cuenta desde el cobro: un año el anual, un mes el resto.
+ * se cuenta desde el cobro: un año los anuales (`pro-anual`, `maestro-anual`),
+ * un mes el resto.
  *
  * ⚠️ OnePay en el aviso real (2026-10-18) no manda la próxima cobranza. Sin
  * esto, la suscripción quedaría `active` pero sin fecha, y
@@ -19,7 +20,7 @@ export function periodEnd(
     return null;
   }
   const end = new Date(paid);
-  if (planId === 'pro-anual') {
+  if (planId.endsWith('-anual')) {
     end.setUTCFullYear(end.getUTCFullYear() + 1);
   } else {
     end.setUTCMonth(end.getUTCMonth() + 1);
