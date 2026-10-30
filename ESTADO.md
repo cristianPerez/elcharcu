@@ -171,9 +171,9 @@ día y motivo. La primera lectura, con el diseño anterior y pocos datos:
   botón se quitó. QA tiene las plantillas, los asuntos y `Email OTP Length = 6`
   (puestos por la API de administración; la copia de antes quedó en
   `/tmp/qa-auth-config-backup.json`). Para producción, en este orden y con su
-  visto bueno: plantillas, asuntos y 6 dígitos en el panel de
-  `dpooajrgqjwetttberdo` (ver `supabase/templates/README.md`); DESPUÉS el código
-  a `main`. Luego medir una semana `auth_completed` con `flow: 'codigo'`
+  visto bueno: PRIMERO el código a `main`; con el despliegue en `success`,
+  plantillas, asuntos y 6 dígitos en el panel de `dpooajrgqjwetttberdo` (ver
+  `supabase/templates/README.md`). Al revés, nadie podría entrar. Luego medir una semana `auth_completed` con `flow: 'codigo'`
   contra `magic_link_requested` (antes: 2 de 7).
 - **Volver a tener un botón de un toque**, si se echa de menos: solo como
   enlace a una página nuestra que no verifica al abrirse y pide un clic en

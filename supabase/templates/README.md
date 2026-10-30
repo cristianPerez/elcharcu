@@ -40,10 +40,13 @@ clic en «Entrar» (opción 2a de `docs/auth-magic-link-dropoff.md`).
 | Confirm signup | `Tu código para El Charcu`          |
 | Magic Link     | `Tu código para entrar a El Charcu` |
 
-⚠️ **Orden al desplegar, en cada entorno:** primero estas dos plantillas, sus
-asuntos y **Email OTP Length = 6** en el panel; después el código de la app. Al
-revés, la hoja pediría un código que el correo todavía no trae. La app acepta de
-6 a 8 dígitos, así que el largo no la rompe.
+⚠️ **Orden al desplegar, en cada entorno: PRIMERO el código de la app, y en
+cuanto el despliegue diga `success`, estas dos plantillas, sus asuntos y
+**Email OTP Length = 6** en el panel.** Al revés, el correo traería solo un
+código y la app vieja no tiene dónde escribirlo ni enlace: nadie podría entrar.
+En este orden, mientras tanto el correo viejo sigue trayendo su enlace, que
+funciona; lo único raro es que la hoja dice "te enviamos un código". La app
+acepta de 6 a 8 dígitos, así que el largo no la rompe.
 
 `change-email.html` sigue con enlace: ese cambio se confirma así y no pasa por
 la hoja.
