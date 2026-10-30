@@ -11,6 +11,7 @@ import {
 import { Dialog } from '@/shared/ui';
 
 import { useSignupPrompt } from '../model/signupPrompt';
+import { useCodeSignIn } from '../model/useCodeSignIn';
 import { useEmailAuth } from '../model/useEmailAuth';
 import { useSessionWatcher } from '../model/useSessionWatcher';
 
@@ -28,13 +29,16 @@ const DEFAULT_HEADING = 'Crea tu cuenta gratis para empezar';
  * Paso 1, el correo; paso 2, "Revisa tu correo". El enlace vuelve a lo que
  * eligió (`destination`), no al inicio.
  *
- * ⚠️ Reusa el flujo de entrada tal cual (`signInWithOtp`, callback, PKCE):
- * solo le pasa el destino.
+ * El correo trae un código de 6 dígitos y un enlace (2026-10-30). El código
+ * entra aquí mismo (`useCodeSignIn`); el enlace sigue el flujo de siempre
+ * (`signInWithOtp`, callback, PKCE) y esta hoja lo detecta sola si se abre en
+ * otra pestaña del mismo navegador.
  */
 export function SignupDialog(): ReactNode {
   const router = useRouter();
   const { request, closeSignup } = useSignupPrompt();
   const { state, sendLink, reset } = useEmailAuth();
+  const code = useCodeSignIn();
   const [email, setEmail] = useState('');
 
   // Para medir el abandono (`auth_modal_closed`): cuándo se abrió y si llegó
@@ -60,7 +64,12 @@ export function SignupDialog(): ReactNode {
     }
   }, [closeSignup, destination, router]);
 
-  useSessionWatcher(request !== null && state.status === 'sent', onSignedIn);
+  // Mientras se verifica el código, la sesión aparece en este navegador: la
+  // navegación la hace `useCodeSignIn`, no el vigilante.
+  useSessionWatcher(
+    request !== null && state.status === 'sent' && code.state.status !== 'checking',
+    onSignedIn,
+  );
 
   if (request === null) {
     return null;
@@ -105,6 +114,9 @@ export function SignupDialog(): ReactNode {
           returnLabel={request.returnLabel}
           onChangeEmail={reset}
           onResend={() => void sendLink(state.email, { next: request.destination })}
+          onCode={(value) => void code.verify(state.email, value, request.destination)}
+          isCheckingCode={code.state.status === 'checking'}
+          codeError={code.state.status === 'error' ? code.state.message : null}
         />
       ) : (
         <SignupStepEmail

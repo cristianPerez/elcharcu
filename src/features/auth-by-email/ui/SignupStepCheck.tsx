@@ -4,6 +4,8 @@ import { useEffect, useState, type ReactNode } from 'react';
 
 import { IconInfo, IconMail } from '@/shared/ui';
 
+import { CodeEntry } from './CodeEntry';
+
 /**
  * Cuánto hay que esperar para reenviar. Es el mismo límite de Supabase: un
  * enlace por minuto para el mismo correo. Reenviar antes daría un error.
@@ -21,6 +23,10 @@ interface SignupStepCheckProps {
   readonly returnLabel: string;
   readonly onChangeEmail: () => void;
   readonly onResend: () => void;
+  /** El código de 6 dígitos del mismo correo (2026-10-30). */
+  readonly onCode: (code: string) => void;
+  readonly isCheckingCode: boolean;
+  readonly codeError: string | null;
 }
 
 function useCountdown(seconds: number): readonly [number, () => void] {
@@ -35,12 +41,21 @@ function useCountdown(seconds: number): readonly [number, () => void] {
   return [left, () => setLeft(seconds)];
 }
 
-/** Paso 2 (diseño final 04/06): revisa tu correo, cambiarlo, reenviar. */
+/**
+ * Paso 2 (diseño final 04/06): revisa tu correo, cambiarlo, reenviar.
+ *
+ * Desde el 2026-10-30 lo primero es la casilla del código: entra aquí mismo,
+ * sin salir del navegador donde está (el de Instagram, por ejemplo). El enlace
+ * del correo sigue sirviendo y queda explicado debajo.
+ */
 export function SignupStepCheck({
   email,
   returnLabel,
   onChangeEmail,
   onResend,
+  onCode,
+  isCheckingCode,
+  codeError,
 }: SignupStepCheckProps): ReactNode {
   const [left, restart] = useCountdown(RESEND_AFTER_S);
   const clock = `${String(Math.floor(left / 60))}:${String(left % 60).padStart(2, '0')}`;
@@ -57,7 +72,7 @@ export function SignupStepCheck({
         Revisa tu correo
       </p>
       <p className="mt-2 text-[15px] leading-relaxed text-cocoa-soft">
-        Te enviamos un enlace para entrar a{' '}
+        Te enviamos un código a{' '}
         <strong className="font-semibold text-cocoa">{email}</strong> ·{' '}
         <button
           type="button"
@@ -68,17 +83,15 @@ export function SignupStepCheck({
         </button>
       </p>
 
+      <div className="mt-5 w-full text-left">
+        <CodeEntry onSubmit={onCode} isChecking={isCheckingCode} error={codeError} />
+      </div>
+
       <p className="mt-5 flex w-full gap-3 rounded-2xl bg-cream p-4 text-left text-sm leading-relaxed text-cocoa">
         <IconInfo size={18} className="mt-0.5 shrink-0 text-forest" />
         <span>
-          <span className="md:hidden">
-            Al tocarlo, vuelves directo a <strong>{returnLabel}</strong>, ya con tu
-            cuenta.
-          </span>
-          <span className="hidden md:inline">
-            Puedes dejar esta pestaña abierta: cuando toques el enlace, se abre{' '}
-            <strong>{returnLabel}</strong> y esta pestaña también entra sola.
-          </span>
+          También trae un botón: al tocarlo vuelves a <strong>{returnLabel}</strong>, ya
+          con tu cuenta.
         </span>
       </p>
 

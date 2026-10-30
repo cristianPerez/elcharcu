@@ -97,7 +97,7 @@ test('hoy: pedido en Instagram y abierto en otro navegador, no entra, no se le e
   await expect(other).toHaveURL(/\/entrar\?error=enlace-vencido/);
   expect(await hasSession(safari)).toBe(false);
   // Y hoy `/entrar` no lee `error`: vuelve a pedir el correo sin decir por qué.
-  await expect(other.getByRole('button', { name: /enlace/i })).toBeVisible();
+  await expect(other.getByRole('button', { name: /código/i })).toBeVisible();
   await expect(other.getByText(/otro navegador|venci|no pudimos/i)).toHaveCount(0);
   await safari.close();
 

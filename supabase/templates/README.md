@@ -18,6 +18,21 @@ convertir.
 
 No se incluye **Reset Password**: aquí no hay contraseñas.
 
+## El código de 6 dígitos (2026-10-30)
+
+`confirm-signup.html` y `magic-link.html` llevan **el código (`{{ .Token }}`)
+arriba y el botón debajo**. El código se escribe en la misma hoja donde se pidió
+la cuenta y abre sesión ahí, aunque sea el navegador de Instagram; el enlace
+falla si se abre en otro navegador (PKCE) o si el filtro del correo lo gasta
+antes. Por qué, con datos: `docs/auth-magic-link-dropoff.md`.
+
+⚠️ **Orden al desplegar, en cada entorno:** primero estas dos plantillas y
+**Email OTP Length = 6** en el panel; después el código de la app. Al revés, la
+hoja pediría un código que el correo todavía no trae. La app acepta de 6 a 8
+dígitos, así que el largo no la rompe.
+
+`change-email.html` no lleva código: ese cambio se confirma con el enlace.
+
 ## Por qué el HTML se ve así
 
 Los clientes de correo rompen casi todo lo que se da por hecho en la web:

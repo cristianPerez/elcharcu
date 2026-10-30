@@ -41,7 +41,7 @@
         overflow: hidden;
       "
     >
-      Confirma tu correo y entra. El enlace caduca en una hora.
+      Tu código para entrar: {{ .Token }}. Caduca en una hora.
       &#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;&#8203;
     </div>
 
@@ -131,9 +131,75 @@
                     color: #1e1612;
                   "
                 >
-                  Confirma tu correo y quedas dentro, con tu historial de curados
-                  guardado. No hay contraseña que recordar.
+                  Escribe este código donde pusiste tu correo, o toca el botón, y quedas
+                  dentro con tus curados guardados. No hay contraseña que recordar.
                 </p>
+              </td>
+            </tr>
+
+            <!--
+              Código (2026-10-30). Va ANTES del botón y en grande porque es el
+              camino que siempre funciona: se escribe en la misma pantalla donde
+              se pidió, aunque sea el navegador de Instagram, y no lo gastan los
+              filtros de Outlook/Hotmail que abren los enlaces para revisarlos.
+              `{{ .Token }}` es el mismo código para cuentas nuevas y viejas.
+            -->
+            <tr>
+              <td
+                align="left"
+                style="
+                  background-color: #ffffff;
+                  padding: 24px 32px 0 32px;
+                  border-left: 1px solid #e8e8e7;
+                  border-right: 1px solid #e8e8e7;
+                "
+              >
+                <table
+                  role="presentation"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  width="100%"
+                  style="background-color: #f4f1eb; border-radius: 16px"
+                >
+                  <tr>
+                    <td align="center" style="padding: 20px 16px">
+                      <div
+                        style="
+                          font-family: Arial, Helvetica, sans-serif;
+                          font-size: 13px;
+                          line-height: 1.4;
+                          color: #787371;
+                        "
+                      >
+                        Tu código para entrar
+                      </div>
+                      <div
+                        style="
+                          padding-top: 8px;
+                          font-family: 'Courier New', Courier, monospace;
+                          font-size: 34px;
+                          font-weight: 700;
+                          letter-spacing: 0.3em;
+                          color: #2d4a3e;
+                        "
+                      >
+                        {{ .Token }}
+                      </div>
+                      <div
+                        style="
+                          padding-top: 8px;
+                          font-family: Arial, Helvetica, sans-serif;
+                          font-size: 13px;
+                          line-height: 1.4;
+                          color: #787371;
+                        "
+                      >
+                        Escríbelo en El Charcu, donde pusiste tu correo.
+                      </div>
+                    </td>
+                  </tr>
+                </table>
               </td>
             </tr>
 
@@ -227,9 +293,9 @@
                     color: #787371;
                   "
                 >
-                  El enlace caduca en una hora y sirve una sola vez. Si no fuiste tú quien
-                  pidió esta cuenta, ignora este correo: sin tocar el enlace, no se crea
-                  nada.
+                  El código y el enlace caducan en una hora y sirven una sola vez. Si no
+                  fuiste tú quien pidió esta cuenta, ignora este correo: sin tocar el
+                  enlace, no se crea nada.
                 </p>
               </td>
             </tr>

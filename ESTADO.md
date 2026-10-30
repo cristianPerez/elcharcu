@@ -164,10 +164,15 @@ día y motivo. La primera lectura, con el diseño anterior y pocos datos:
   si escribió, cuánto tardó. Cuando haya datos, sumar al tablero un reporte por
   `paso` y `trigger`. El plan gratis de Mixpanel deja 5 reportes guardados
   por persona; van 2.
-- **Lo que arreglaría los `auth_failed`** está en
-  `docs/auth-magic-link-dropoff.md`. Ya explica el error en `/entrar`
-  (2026-10-18); queda el código de 6 dígitos en el correo, que cambia el flujo
-  de entrada: decisión de Cristian.
+- **Código de 6 dígitos en el correo: aprobado (2026-10-30), en QA, falta
+  producción.** Rama `feature/codigo-entrada`. QA ya tiene las plantillas
+  nuevas y `Email OTP Length = 6` (puesto por la API de administración; la
+  copia de antes quedó en `/tmp/qa-auth-config-backup.json`). Para producción,
+  en este orden y con su visto bueno: pegar `confirm-signup.html` y
+  `magic-link.html` y poner 6 dígitos en el panel de `dpooajrgqjwetttberdo`;
+  DESPUÉS el código a `main`. Luego medir una semana `auth_completed` por
+  `flow` (`codigo` / `pkce`) contra `magic_link_requested` (antes: 2 de 7).
+  La portada vieja `/asistente` (`LeadCaptureModal`) sigue solo con enlace.
 - **Mixpanel no une** lo de antes y después del registro
   (`errAnonDistinctIdAssignedAlready`): para seguir a una persona hay que mirar
   el perfil de su `visitor_id` y el de su cuenta.

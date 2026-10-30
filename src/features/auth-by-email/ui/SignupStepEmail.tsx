@@ -47,7 +47,7 @@ export function SignupStepEmail({
       </p>
       {isSignIn ? (
         <p className="mt-2 text-[15px] text-cocoa-soft">
-          Te mandamos un enlace para entrar, sin contraseña.
+          Te mandamos un código para entrar, sin contraseña.
         </p>
       ) : (
         <ul className="mt-4 flex flex-col gap-2.5">
@@ -88,7 +88,7 @@ export function SignupStepEmail({
         disabled={isSending}
         className="mt-4 min-h-14 w-full rounded-full bg-brasa text-base font-semibold text-cocoa transition-colors hover:bg-brasa-dark disabled:opacity-60"
       >
-        {isSending ? 'Enviando…' : 'Enviarme el enlace'}
+        {isSending ? 'Enviando…' : 'Enviarme el código'}
       </button>
       <p className="mt-4 text-center text-sm text-cocoa-soft">
         {isSignIn

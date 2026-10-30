@@ -14,7 +14,11 @@ import {
   trackServer,
 } from '@/shared/lib/analytics/server';
 
-type Flow = 'pkce' | 'token_hash' | 'ninguno';
+/**
+ * Por dónde entró. `codigo` (2026-10-30) es el de 6 dígitos del correo: no
+ * aterriza ningún enlace, así que no cuenta `magic_link_landed`.
+ */
+type Flow = 'pkce' | 'token_hash' | 'ninguno' | 'codigo';
 type Props = Record<string, string | number | boolean | undefined>;
 
 export interface AuthLanding {
@@ -52,8 +56,13 @@ export function authLanding(request: NextRequest, flow: Flow): AuthLanding {
   const linkTrigger = params.get(ATTEMPT_PARAMS.trigger);
   const cookieAttempt = decodeAttempt(request.cookies.get(AUTH_ATTEMPT_COOKIE)?.value);
 
+  // Con el código se entra, por definición, donde se pidió.
   const sameBrowser =
-    linkAttemptId === null ? undefined : cookieAttempt?.id === linkAttemptId;
+    flow === 'codigo'
+      ? true
+      : linkAttemptId === null
+        ? undefined
+        : cookieAttempt?.id === linkAttemptId;
 
   const attempt =
     linkAttemptId === null
@@ -76,9 +85,8 @@ export function authLanding(request: NextRequest, flow: Flow): AuthLanding {
     origen: attempt?.origin ?? undefined,
   };
 
-  const queue: { readonly event: string; readonly props: Props }[] = [
-    { event: ANALYTICS_EVENTS.magicLinkLanded, props: base },
-  ];
+  const queue: { readonly event: string; readonly props: Props }[] =
+    flow === 'codigo' ? [] : [{ event: ANALYTICS_EVENTS.magicLinkLanded, props: base }];
 
   return {
     failed: (reason) => {
