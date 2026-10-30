@@ -15,7 +15,10 @@ import { hasSession } from './magicLink';
  * de administración: ningún test manda correos.
  */
 
-const EMAIL = 'e2e-gratis@elcharcu.test';
+// Cuenta propia: cada `generateLink` anula el código anterior de esa cuenta, y
+// otros specs piden tokens de `e2e-gratis` en paralelo (`accessTokenFor`). Si
+// no existe, el primer `generateLink` la crea sin confirmar, como un registro.
+const EMAIL = 'e2e-codigo@elcharcu.test';
 const CAPSULA = '/cursos/sal-de-cura';
 
 function dialog(page: Page): ReturnType<Page['getByRole']> {

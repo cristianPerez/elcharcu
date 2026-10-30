@@ -9,7 +9,8 @@ import { type Email } from '@/shared/api/email';
  * ya no sirve, cómo entrar igual. ⚠️ Esa tercera es la red: el enlace mágico
  * caduca y sirve una vez (y algunos filtros de Outlook lo gastan al revisarlo),
  * pero la cuenta es del CORREO, así que `/entrar` con el mismo correo siempre
- * funciona.
+ * funciona: desde el 2026-10-30 allí se entra con un código de 6 dígitos, que
+ * ningún filtro gasta porque el correo de Supabase ya no trae enlace.
  */
 interface WelcomeInput {
   readonly to: string;
@@ -32,7 +33,7 @@ export function welcomeEmail({ to, entrarUrl, magicLink }: WelcomeInput): Email 
     `Entra aquí (verifica tu correo y quedas dentro): ${magicLink}`,
     '',
     'El enlace caduca y sirve una sola vez. Si ya no funciona, entra en',
-    `${entrarUrl} con este mismo correo (${to}) y te llega uno nuevo.`,
+    `${entrarUrl} con este mismo correo (${to}) y te mandamos un código para entrar.`,
     '',
     'El Charcu · Charcutería artesanal · Manizales, Colombia',
   ].join('\n');
@@ -61,7 +62,7 @@ ${paragraph('Toca el botón: verificas tu correo y quedas dentro. No hay contras
 </td></tr>
 <tr><td style="background-color:#ffffff;padding:16px 32px 32px 32px;border-left:1px solid #e8e8e7;border-right:1px solid #e8e8e7">
 <p style="margin:24px 0 0 0;padding-top:20px;border-top:1px solid #e8e8e7;font-family:${FONT};font-size:13px;line-height:1.6;color:#787371">
-El botón caduca y sirve una sola vez. Si ya no funciona, entra en <a href="${entrarUrl}" style="color:#a8664a">${entrarUrl.replace(/^https?:\/\//, '')}</a> con este mismo correo (<strong style="color:#2d4a3e">${to}</strong>) y te llega uno nuevo.</p>
+El botón caduca y sirve una sola vez. Si ya no funciona, entra en <a href="${entrarUrl}" style="color:#a8664a">${entrarUrl.replace(/^https?:\/\//, '')}</a> con este mismo correo (<strong style="color:#2d4a3e">${to}</strong>) y te mandamos un código para entrar.</p>
 </td></tr>
 <tr><td style="background-color:#f4f1eb;border:1px solid #e8e8e7;border-top:0;border-radius:0 0 16px 16px;padding:24px 32px">
 <p style="margin:0;font-family:${FONT};font-size:12px;line-height:1.6;color:#787371"><strong style="color:#2d4a3e">El Charcu</strong> &middot; Charcutería artesanal<br />Manizales, Colombia &middot; Sin aditivos, sin atajos</p>

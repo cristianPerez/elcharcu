@@ -18,20 +18,35 @@ convertir.
 
 No se incluye **Reset Password**: aquí no hay contraseñas.
 
-## El código de 6 dígitos (2026-10-30)
+## Solo el código de 6 dígitos, sin enlace (2026-10-30)
 
-`confirm-signup.html` y `magic-link.html` llevan **el código (`{{ .Token }}`)
-arriba y el botón debajo**. El código se escribe en la misma hoja donde se pidió
-la cuenta y abre sesión ahí, aunque sea el navegador de Instagram; el enlace
-falla si se abre en otro navegador (PKCE) o si el filtro del correo lo gasta
-antes. Por qué, con datos: `docs/auth-magic-link-dropoff.md`.
+`confirm-signup.html` y `magic-link.html` traen **solo el código
+(`{{ .Token }}`)**. Se escribe en la misma hoja donde se pidió la cuenta y abre
+sesión ahí, aunque sea el navegador de Instagram.
 
-⚠️ **Orden al desplegar, en cada entorno:** primero estas dos plantillas y
-**Email OTP Length = 6** en el panel; después el código de la app. Al revés, la
-hoja pediría un código que el correo todavía no trae. La app acepta de 6 a 8
-dígitos, así que el largo no la rompe.
+⚠️ **No vuelvas a poner `{{ .ConfirmationURL }}` en estas dos.** El enlace y el
+código son el MISMO token de un solo uso. Los filtros de Outlook/Hotmail abren
+los enlaces para revisarlos, lo gastan, y el código llega muerto: comprobado en
+QA el 2026-10-30 (abrir el enlace sin seguir la redirección → `verifyOtp` con el
+código da `otp_expired`). Y si la persona toca el enlace en otro navegador, no
+entra (PKCE) y además mata el código. Un botón de un toque solo volvería sin
+peligro como enlace a una página nuestra que NO verifica al abrirse y pide un
+clic en «Entrar» (opción 2a de `docs/auth-magic-link-dropoff.md`).
 
-`change-email.html` no lleva código: ese cambio se confirma con el enlace.
+**Asuntos** (no viven en estos archivos; se ponen en el mismo panel):
+
+| Plantilla      | Asunto                              |
+| -------------- | ----------------------------------- |
+| Confirm signup | `Tu código para El Charcu`          |
+| Magic Link     | `Tu código para entrar a El Charcu` |
+
+⚠️ **Orden al desplegar, en cada entorno:** primero estas dos plantillas, sus
+asuntos y **Email OTP Length = 6** en el panel; después el código de la app. Al
+revés, la hoja pediría un código que el correo todavía no trae. La app acepta de
+6 a 8 dígitos, así que el largo no la rompe.
+
+`change-email.html` sigue con enlace: ese cambio se confirma así y no pasa por
+la hoja.
 
 ## Por qué el HTML se ve así
 

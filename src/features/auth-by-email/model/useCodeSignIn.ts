@@ -54,10 +54,11 @@ function messageFor(code: string | undefined): string {
  *
  * Es la puerta que abre sesión DONDE SE PIDIÓ —también en el navegador de
  * Instagram— y que no gastan los filtros de Outlook/Hotmail: la razón está en
- * `docs/auth-magic-link-dropoff.md`. El enlace del mismo correo sigue sirviendo.
+ * `docs/auth-magic-link-dropoff.md`. El correo no trae enlace: compartía el
+ * token con el código y, si un filtro lo abría, el código llegaba gastado.
  *
  * El navegador verifica con Supabase (el límite de intentos va por IP, o sea
- * por persona); luego `/auth/entro` hace lo que el callback del enlace.
+ * por persona); luego `/auth/entro` hace lo que hacía el callback del enlace.
  */
 export function useCodeSignIn(): CodeSignInController {
   const [state, setState] = useState<CodeSignInState>({ status: 'idle' });

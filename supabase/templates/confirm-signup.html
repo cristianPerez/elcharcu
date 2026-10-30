@@ -11,7 +11,7 @@
     -->
     <meta name="color-scheme" content="light" />
     <meta name="supported-color-schemes" content="light" />
-    <title>Confirma tu correo · El Charcu</title>
+    <title>Tu código para El Charcu</title>
   </head>
 
   <body
@@ -131,17 +131,19 @@
                     color: #1e1612;
                   "
                 >
-                  Escribe este código donde pusiste tu correo, o toca el botón, y quedas
+                  Escribe este código en El Charcu, donde pusiste tu correo, y quedas
                   dentro con tus curados guardados. No hay contraseña que recordar.
                 </p>
               </td>
             </tr>
 
             <!--
-              Código (2026-10-30). Va ANTES del botón y en grande porque es el
-              camino que siempre funciona: se escribe en la misma pantalla donde
-              se pidió, aunque sea el navegador de Instagram, y no lo gastan los
-              filtros de Outlook/Hotmail que abren los enlaces para revisarlos.
+              Código (2026-10-30). Es lo ÚNICO que trae el correo, a propósito:
+              un enlace es un token de un solo uso compartido con el código, y
+              los filtros de Outlook/Hotmail lo "abren" para revisarlo, lo gastan
+              y el código llega muerto (comprobado en QA: otp_expired). Además
+              el enlace no entra si se abre en otro navegador (PKCE). El código
+              se escribe donde se pidió, aunque sea el navegador de Instagram.
               `{{ .Token }}` es el mismo código para cuentas nuevas y viejas.
             -->
             <tr>
@@ -186,72 +188,18 @@
                       >
                         {{ .Token }}
                       </div>
-                      <div
-                        style="
-                          padding-top: 8px;
-                          font-family: Arial, Helvetica, sans-serif;
-                          font-size: 13px;
-                          line-height: 1.4;
-                          color: #787371;
-                        "
-                      >
-                        Escríbelo en El Charcu, donde pusiste tu correo.
-                      </div>
                     </td>
                   </tr>
                 </table>
               </td>
             </tr>
 
-            <!-- Botón -->
-            <tr>
-              <td
-                align="left"
-                style="
-                  background-color: #ffffff;
-                  padding: 24px 32px 8px 32px;
-                  border-left: 1px solid #e8e8e7;
-                  border-right: 1px solid #e8e8e7;
-                "
-              >
-                <!--
-                  Botón "a prueba de balas": una tabla con relleno, no un <a>
-                  con padding. Outlook ignora el padding de los enlaces y el
-                  botón quedaría como texto suelto.
-                -->
-                <table role="presentation" cellpadding="0" cellspacing="0" border="0">
-                  <tr>
-                    <td align="center" bgcolor="#A8664A" style="border-radius: 999px">
-                      <a
-                        href="{{ .ConfirmationURL }}"
-                        target="_blank"
-                        style="
-                          display: inline-block;
-                          padding: 16px 34px;
-                          font-family: Arial, Helvetica, sans-serif;
-                          font-size: 16px;
-                          font-weight: bold;
-                          line-height: 1;
-                          color: #ffffff;
-                          text-decoration: none;
-                          border-radius: 999px;
-                          mso-padding-alt: 0;
-                        "
-                      >
-                        Confirmar y entrar
-                      </a>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-
-            <!-- Enlace de respaldo -->
+            <!-- Nota -->
             <tr>
               <td
                 style="
                   background-color: #ffffff;
-                  padding: 16px 32px 32px 32px;
+                  padding: 20px 32px 32px 32px;
                   border-left: 1px solid #e8e8e7;
                   border-right: 1px solid #e8e8e7;
                 "
@@ -265,37 +213,8 @@
                     color: #787371;
                   "
                 >
-                  ¿No se ve el botón? Copia y pega esta dirección en tu navegador:
-                </p>
-                <p style="margin: 8px 0 0 0; word-break: break-all">
-                  <a
-                    href="{{ .ConfirmationURL }}"
-                    target="_blank"
-                    style="
-                      font-family: Arial, Helvetica, sans-serif;
-                      font-size: 13px;
-                      line-height: 1.6;
-                      color: #a8664a;
-                      text-decoration: underline;
-                    "
-                    >{{ .ConfirmationURL }}</a
-                  >
-                </p>
-
-                <p
-                  style="
-                    margin: 24px 0 0 0;
-                    padding-top: 20px;
-                    border-top: 1px solid #e8e8e7;
-                    font-family: Arial, Helvetica, sans-serif;
-                    font-size: 13px;
-                    line-height: 1.6;
-                    color: #787371;
-                  "
-                >
-                  El código y el enlace caducan en una hora y sirven una sola vez. Si no
-                  fuiste tú quien pidió esta cuenta, ignora este correo: sin tocar el
-                  enlace, no se crea nada.
+                  El código caduca en una hora y sirve una sola vez. Si no fuiste tú quien
+                  pidió esta cuenta, ignora este correo: sin el código, no se crea nada.
                 </p>
               </td>
             </tr>

@@ -22,7 +22,7 @@ interface SignupStepEmailProps {
   readonly onSubmit: (email: string) => void;
 }
 
-/** Paso 1 (diseño final 03/05): qué trae la cuenta, el correo y el botón. */
+/** Paso 1 (diseño final 03/05): qué trae la cuenta, el correo y "Enviarme el código". */
 export function SignupStepEmail({
   heading,
   isSignIn,

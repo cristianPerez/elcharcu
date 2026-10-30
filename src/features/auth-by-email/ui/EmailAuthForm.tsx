@@ -9,11 +9,11 @@ import { useEmailAuth } from '../model/useEmailAuth';
 
 import { CodeEntry } from './CodeEntry';
 
-/** Entrar con el código (o el enlace) del correo. Sin contraseña. */
+/** Entrar con el código de 6 dígitos del correo. Sin contraseña. */
 interface EmailAuthFormProps {
-  /** A dónde vuelve al tocar el enlace (la página de la que vino). */
+  /** A dónde vuelve al entrar (la página de la que vino). */
   readonly next?: string | null | undefined;
-  /** Llegó desde un enlace que ya no sirve (`/entrar?error=…`). */
+  /** Llegó desde un enlace viejo que ya no sirve (`/entrar?error=…`). */
   readonly linkFailed?: boolean;
 }
 
@@ -39,7 +39,7 @@ export function EmailAuthForm({
         </h1>
         <p className="mt-4 text-base leading-relaxed text-cocoa/65">
           Abre el correo que llegó a <span className="text-forest">{state.email}</span> y
-          escribe aquí el código, o toca el botón del correo.
+          escribe aquí el código. No hay contraseña que recordar.
         </p>
         <div className="mt-6">
           <CodeEntry
@@ -80,8 +80,8 @@ export function EmailAuthForm({
           role="status"
           className="mt-6 rounded-2xl bg-terracota/10 px-5 py-4 text-sm leading-relaxed text-forest"
         >
-          Ese enlace ya se usó o caducó. Escribe tu correo y te mandamos otro. Si pagaste
-          tu suscripción, usa el correo con el que pagaste.
+          Ese enlace ya se usó o caducó. Escribe tu correo y te mandamos un código. Si
+          pagaste tu suscripción, usa el correo con el que pagaste.
         </p>
       ) : null}
 

@@ -8,7 +8,7 @@ import { CodeEntry } from './CodeEntry';
 
 /**
  * Cuánto hay que esperar para reenviar. Es el mismo límite de Supabase: un
- * enlace por minuto para el mismo correo. Reenviar antes daría un error.
+ * correo por minuto para la misma dirección. Reenviar antes daría un error.
  */
 const RESEND_AFTER_S = 60;
 
@@ -23,7 +23,7 @@ interface SignupStepCheckProps {
   readonly returnLabel: string;
   readonly onChangeEmail: () => void;
   readonly onResend: () => void;
-  /** El código de 6 dígitos del mismo correo (2026-10-30). */
+  /** El código de 6 dígitos del correo (2026-10-30). */
   readonly onCode: (code: string) => void;
   readonly isCheckingCode: boolean;
   readonly codeError: string | null;
@@ -44,9 +44,9 @@ function useCountdown(seconds: number): readonly [number, () => void] {
 /**
  * Paso 2 (diseño final 04/06): revisa tu correo, cambiarlo, reenviar.
  *
- * Desde el 2026-10-30 lo primero es la casilla del código: entra aquí mismo,
- * sin salir del navegador donde está (el de Instagram, por ejemplo). El enlace
- * del correo sigue sirviendo y queda explicado debajo.
+ * Desde el 2026-10-30 el correo trae solo un código, y esta casilla es la
+ * única forma de entrar: aquí mismo, sin salir del navegador donde está (el de
+ * Instagram, por ejemplo). Por qué no hay enlace: `docs/auth-magic-link-dropoff.md`.
  */
 export function SignupStepCheck({
   email,
@@ -90,8 +90,7 @@ export function SignupStepCheck({
       <p className="mt-5 flex w-full gap-3 rounded-2xl bg-cream p-4 text-left text-sm leading-relaxed text-cocoa">
         <IconInfo size={18} className="mt-0.5 shrink-0 text-forest" />
         <span>
-          También trae un botón: al tocarlo vuelves a <strong>{returnLabel}</strong>, ya
-          con tu cuenta.
+          Al entrar, vuelves a <strong>{returnLabel}</strong>, ya con tu cuenta.
         </span>
       </p>
 

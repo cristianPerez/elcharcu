@@ -1,3 +1,4 @@
+export { CodeSignIn } from './ui/CodeSignIn';
 export { EmailAuthForm } from './ui/EmailAuthForm';
 export { SignOutButton } from './ui/SignOutButton';
 export { AuthOpenTracker } from './ui/AuthOpenTracker';

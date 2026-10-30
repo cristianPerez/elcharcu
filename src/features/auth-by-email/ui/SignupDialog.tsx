@@ -1,7 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 import {
   ANALYTICS_EVENTS,
@@ -13,7 +12,6 @@ import { Dialog } from '@/shared/ui';
 import { useSignupPrompt } from '../model/signupPrompt';
 import { useCodeSignIn } from '../model/useCodeSignIn';
 import { useEmailAuth } from '../model/useEmailAuth';
-import { useSessionWatcher } from '../model/useSessionWatcher';
 
 import { SignupHeader } from './SignupHeader';
 import { SignupStepCheck } from './SignupStepCheck';
@@ -26,16 +24,16 @@ const DEFAULT_HEADING = 'Crea tu cuenta gratis para empezar';
  * desde abajo por debajo de 768 px, modal centrado por encima— que pone el
  * `Dialog` nativo (foco atrapado, Esc cierra, el foco vuelve a quien la abrió).
  *
- * Paso 1, el correo; paso 2, "Revisa tu correo". El enlace vuelve a lo que
- * eligió (`destination`), no al inicio.
+ * Paso 1, el correo; paso 2, "Revisa tu correo" con la casilla del código.
+ * Al entrar vuelve a lo que eligió (`destination`), no al inicio.
  *
- * El correo trae un código de 6 dígitos y un enlace (2026-10-30). El código
- * entra aquí mismo (`useCodeSignIn`); el enlace sigue el flujo de siempre
- * (`signInWithOtp`, callback, PKCE) y esta hoja lo detecta sola si se abre en
- * otra pestaña del mismo navegador.
+ * Desde el 2026-10-30 el correo trae SOLO un código de 6 dígitos, que entra
+ * aquí mismo (`useCodeSignIn`). Se fue el enlace, y con él el vigilante que
+ * hacía entrar esta pestaña cuando el enlace se abría en otra: el enlace
+ * gastaba el código (filtros de Outlook/Hotmail) y no entraba en otro
+ * navegador. Ver `docs/auth-magic-link-dropoff.md`.
  */
 export function SignupDialog(): ReactNode {
-  const router = useRouter();
   const { request, closeSignup } = useSignupPrompt();
   const { state, sendLink, reset } = useEmailAuth();
   const code = useCodeSignIn();
@@ -54,22 +52,6 @@ export function SignupDialog(): ReactNode {
       hasTyped.current = false;
     }
   }, [request, reset]);
-
-  const destination = request?.destination ?? null;
-  const onSignedIn = useCallback((): void => {
-    closeSignup();
-    if (destination !== null) {
-      router.push(destination);
-      router.refresh();
-    }
-  }, [closeSignup, destination, router]);
-
-  // Mientras se verifica el código, la sesión aparece en este navegador: la
-  // navegación la hace `useCodeSignIn`, no el vigilante.
-  useSessionWatcher(
-    request !== null && state.status === 'sent' && code.state.status !== 'checking',
-    onSignedIn,
-  );
 
   if (request === null) {
     return null;
