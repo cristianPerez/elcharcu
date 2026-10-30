@@ -3,6 +3,7 @@
 import { type ReactNode } from 'react';
 
 import { AssistantChat } from '@/features/assistant-chat';
+import { CodeSignIn } from '@/features/auth-by-email';
 import { LeadCaptureModal, useLeadWall } from '@/features/lead-capture';
 import { QuotaNotice } from '@/features/quota-wall';
 
@@ -125,6 +126,7 @@ export function AssistantHero(): ReactNode {
           questionsLimit={quota.questionsLimit}
           onClose={wall.close}
           source={wall.source}
+          renderCodeEntry={(email) => <CodeSignIn email={email} next="/charcu" />}
         />
       ) : null}
     </>

@@ -22,6 +22,12 @@ interface LeadCaptureModalProps {
    * decidir nada.
    */
   readonly source: LeadWallSource;
+  /**
+   * La casilla del código de 6 dígitos (2026-10-30), para el paso "revisa tu
+   * correo". La pone quien compone el muro: vive en `auth-by-email` y este
+   * slice no puede importar de otro.
+   */
+  readonly renderCodeEntry: (email: string) => ReactNode;
 }
 
 /**
@@ -32,7 +38,7 @@ interface LeadCaptureModalProps {
  *
  * Antes pedía nombre, correo y WhatsApp y NO creaba cuenta, así que el correo
  * se volvía a pedir en `/entrar` y otra vez en Hotmart. Ahora este formulario
- * crea la cuenta: guarda el lead y manda el enlace de entrada. Nombre y
+ * crea la cuenta: guarda el lead y manda el código de entrada. Nombre y
  * WhatsApp se piden después, cuando haya algo que dar a cambio.
  *
  * ⚠️ SE PUEDE CERRAR (2026-09-01, pedido de Cristian). Hasta hoy no tenía
@@ -44,19 +50,20 @@ interface LeadCaptureModalProps {
  * preguntar, y el muro vuelve en cuanto lo intente. El correo se pide, no se
  * cobra.
  *
- * Lo que NO se cierra solo es el aviso de "te mandamos un enlace": eso lo
- * retira la sesión al aparecer, que es lo único que prueba que la cuenta
- * existe. Antes se cerraba en cuanto se enviaba el correo, así que ni siquiera
+ * Lo que NO se cierra solo es el paso "te mandamos un código": de ahí se sale
+ * escribiéndolo, que es lo único que prueba que la cuenta existe (2026-10-30:
+ * el correo ya no trae enlace). Antes se cerraba en cuanto se enviaba el correo, así que ni siquiera
  * se llegaba a leer el "míralo en spam".
  *
- * La conversación anterior NO se recupera si abre el enlace en otro
- * dispositivo: la receta anónima cuelga de la cookie de este navegador. Es
- * consciente y aceptado para el lanzamiento — se entra a un chat limpio.
+ * Con el código se entra en ESTE navegador, así que la conversación anónima,
+ * que cuelga de su cookie, sigue ahí. Con el enlace se perdía si se abría en
+ * otro aparato.
  */
 export function LeadCaptureModal({
   questionsLimit,
   onClose,
   source,
+  renderCodeEntry,
 }: LeadCaptureModalProps): ReactNode {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -108,7 +115,7 @@ export function LeadCaptureModal({
     });
 
     if (!sent) {
-      setError('No pudimos mandarte el enlace. Revisa el correo e inténtalo otra vez.');
+      setError('No pudimos mandarte el código. Revisa el correo e inténtalo otra vez.');
       setPhase('form');
       return;
     }
@@ -150,14 +157,13 @@ export function LeadCaptureModal({
         {wasSent ? (
           <>
             <h2 className="font-serif text-2xl font-semibold text-forest md:text-3xl">
-              Te mandamos un enlace
+              Te mandamos un código
             </h2>
             <p className="mt-3 text-base leading-relaxed text-cocoa/70">
-              Ábrelo{' '}
-              <strong className="font-medium text-cocoa">en este mismo aparato</strong> y
-              entras directo a seguir preguntando. Si no llega en un minuto, mira en spam.
+              Escríbelo aquí y sigues preguntando. Si no llega en un minuto, mira en spam.
             </p>
             <p className="mt-4 text-sm font-medium text-cocoa">{email.trim()}</p>
+            <div className="mt-5">{renderCodeEntry(email.trim())}</div>
             <button
               type="button"
               onClick={() => {
@@ -175,7 +181,7 @@ export function LeadCaptureModal({
             </h2>
             <p className="mt-3 text-base leading-relaxed text-cocoa/70">
               Déjanos tu correo y sigues con {questionsLimit} preguntas al mes, gratis.
-              Sin contraseña: te mandamos un enlace, lo abres y listo.
+              Sin contraseña: te mandamos un código y listo.
             </p>
 
             <form
@@ -215,7 +221,7 @@ export function LeadCaptureModal({
                 disabled={isSending}
                 className="mt-4 w-full rounded-full bg-brasa px-6 py-3 font-medium text-cocoa shadow-surface transition-shadow hover:shadow-raised focus:outline-none focus:ring-2 focus:ring-terracota focus:ring-offset-2 active:scale-[0.97] disabled:opacity-50"
               >
-                {isSending ? 'Enviando…' : 'Mandarme el enlace'}
+                {isSending ? 'Enviando…' : 'Mandarme el código'}
               </button>
 
               {/* La salida dicha con palabras. La X de la esquina la ve quien

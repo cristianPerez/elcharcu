@@ -24,13 +24,17 @@ export interface SendLinkOptions {
 
 export interface EmailAuthController {
   readonly state: EmailAuthState;
-  /** `next`: a dónde vuelve al tocar el enlace. Solo rutas internas. */
+  /** `next`: a dónde vuelve al entrar. Solo rutas internas. */
   readonly sendLink: (email: string, options?: SendLinkOptions) => Promise<void>;
   readonly reset: () => void;
 }
 
 /**
- * Entrar con un enlace enviado al correo — sin contraseña que memorizar.
+ * Pide el código de 6 dígitos al correo — sin contraseña que memorizar.
+ *
+ * Desde el 2026-10-30 el correo trae SOLO el código (lo verifica
+ * `useCodeSignIn`). `emailRedirectTo` se sigue mandando: lo usan los enlaces
+ * de correos viejos que aún no han caducado, y el `/auth/callback` sigue vivo.
  * Es la menor fricción posible para un público móvil que no quiere otra clave.
  */
 export function useEmailAuth(): EmailAuthController {

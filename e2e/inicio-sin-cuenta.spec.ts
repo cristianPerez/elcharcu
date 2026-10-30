@@ -188,7 +188,7 @@ test.describe('Crear cuenta', () => {
     expect(await seriousA11yViolations(page)).toEqual([]);
 
     await dialog(page).getByLabel('Tu correo').fill('e2e-hoja@elcharcu.test');
-    await dialog(page).getByRole('button', { name: 'Enviarme el enlace' }).click();
+    await dialog(page).getByRole('button', { name: 'Enviarme el código' }).click();
 
     // Paso 2: revisa tu correo, con cambiar y el reenvío en cuenta atrás.
     await expect(dialog(page).getByText('Revisa tu correo')).toBeVisible();
@@ -231,7 +231,7 @@ test.describe('Crear cuenta', () => {
 
     await expect(dialog(page)).toHaveAccessibleName('El Charcu · Tu cuenta gratis');
     await dialog(page).getByLabel('Tu correo').fill('e2e-hoja@elcharcu.test');
-    await dialog(page).getByRole('button', { name: 'Enviarme el enlace' }).click();
+    await dialog(page).getByRole('button', { name: 'Enviarme el código' }).click();
     await expect(dialog(page).getByText('Revisa tu correo')).toBeVisible();
     expect(new URL(sentTo() ?? 'http://x').searchParams.get('disparador')).toBe(
       'crear_cuenta',

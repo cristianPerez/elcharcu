@@ -91,6 +91,20 @@ export async function accessTokenFor(email: string): Promise<string> {
   return token;
 }
 
+/**
+ * El código de 6 dígitos que iría en el correo (2026-10-30), sin mandar el
+ * correo: `generateLink` lo devuelve como `email_otp`. Es el último emitido, el
+ * que vale en ese momento.
+ */
+export async function emailCodeFor(email: string): Promise<string> {
+  const { data } = await admin().auth.admin.generateLink({ type: 'magiclink', email });
+  const code = data.properties?.email_otp;
+  if (code === undefined) {
+    throw new Error(`Sin código para ${email}`);
+  }
+  return code;
+}
+
 /** Un cliente con la clave pública, como el del navegador; con token, como esa cuenta. */
 export function publicClient(accessToken?: string): AdminClient {
   loadLocalEnv();

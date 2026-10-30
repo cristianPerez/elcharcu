@@ -4,13 +4,16 @@ import { useState, type FormEvent, type ReactNode } from 'react';
 
 import { Eyebrow } from '@/shared/ui';
 
+import { useCodeSignIn } from '../model/useCodeSignIn';
 import { useEmailAuth } from '../model/useEmailAuth';
 
-/** Entrar con un enlace al correo. Sin contraseña. */
+import { CodeEntry } from './CodeEntry';
+
+/** Entrar con el código de 6 dígitos del correo. Sin contraseña. */
 interface EmailAuthFormProps {
-  /** A dónde vuelve al tocar el enlace (la página de la que vino). */
+  /** A dónde vuelve al entrar (la página de la que vino). */
   readonly next?: string | null | undefined;
-  /** Llegó desde un enlace que ya no sirve (`/entrar?error=…`). */
+  /** Llegó desde un enlace viejo que ya no sirve (`/entrar?error=…`). */
   readonly linkFailed?: boolean;
 }
 
@@ -19,6 +22,7 @@ export function EmailAuthForm({
   linkFailed = false,
 }: EmailAuthFormProps): ReactNode {
   const { state, sendLink, reset } = useEmailAuth();
+  const code = useCodeSignIn();
   const [email, setEmail] = useState('');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
@@ -31,12 +35,19 @@ export function EmailAuthForm({
       <div>
         <Eyebrow className="text-terracota-dark">Revisa tu correo</Eyebrow>
         <h1 className="mt-6 font-serif text-3xl font-semibold leading-tight text-forest md:text-4xl">
-          Te mandamos un enlace.
+          Te mandamos un código.
         </h1>
         <p className="mt-4 text-base leading-relaxed text-cocoa/65">
           Abre el correo que llegó a <span className="text-forest">{state.email}</span> y
-          toca el enlace. Con eso entras — no hay contraseña que recordar.
+          escribe aquí el código. No hay contraseña que recordar.
         </p>
+        <div className="mt-6">
+          <CodeEntry
+            onSubmit={(value) => void code.verify(state.email, value, next ?? undefined)}
+            isChecking={code.state.status === 'checking'}
+            error={code.state.status === 'error' ? code.state.message : null}
+          />
+        </div>
         <p className="mt-6 text-sm text-cocoa/65">
           ¿No llegó? Mira en spam, o{' '}
           <button
@@ -69,8 +80,8 @@ export function EmailAuthForm({
           role="status"
           className="mt-6 rounded-2xl bg-terracota/10 px-5 py-4 text-sm leading-relaxed text-forest"
         >
-          Ese enlace ya se usó o caducó. Escribe tu correo y te mandamos otro. Si pagaste
-          tu suscripción, usa el correo con el que pagaste.
+          Ese enlace ya se usó o caducó. Escribe tu correo y te mandamos un código. Si
+          pagaste tu suscripción, usa el correo con el que pagaste.
         </p>
       ) : null}
 
@@ -105,7 +116,7 @@ export function EmailAuthForm({
           disabled={isSending}
           className="mt-4 inline-flex w-full items-center justify-center rounded-full bg-brasa px-6 py-4 text-sm font-medium tracking-wide text-cocoa shadow-surface transition-shadow hover:shadow-raised focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota focus-visible:ring-offset-2 disabled:opacity-60"
         >
-          {isSending ? 'Enviando…' : 'Enviarme el enlace'}
+          {isSending ? 'Enviando…' : 'Enviarme el código'}
         </button>
       </form>
 

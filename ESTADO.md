@@ -164,10 +164,20 @@ día y motivo. La primera lectura, con el diseño anterior y pocos datos:
   si escribió, cuánto tardó. Cuando haya datos, sumar al tablero un reporte por
   `paso` y `trigger`. El plan gratis de Mixpanel deja 5 reportes guardados
   por persona; van 2.
-- **Lo que arreglaría los `auth_failed`** está en
-  `docs/auth-magic-link-dropoff.md`. Ya explica el error en `/entrar`
-  (2026-10-18); queda el código de 6 dígitos en el correo, que cambia el flujo
-  de entrada: decisión de Cristian.
+- **El correo trae SOLO un código de 6 dígitos, sin enlace (2026-10-30), en
+  QA; falta producción.** Rama `feature/codigo-entrada`. Primero llevaba código
+  y botón, pero en QA se comprobó que abrir el enlace gasta el código
+  (`otp_expired`): los filtros de Outlook/Hotmail lo habrían matado. Por eso el
+  botón se quitó. QA tiene las plantillas, los asuntos y `Email OTP Length = 6`
+  (puestos por la API de administración; la copia de antes quedó en
+  `/tmp/qa-auth-config-backup.json`). Para producción, en este orden y con su
+  visto bueno: PRIMERO el código a `main`; con el despliegue en `success`,
+  plantillas, asuntos y 6 dígitos en el panel de `dpooajrgqjwetttberdo` (ver
+  `supabase/templates/README.md`). Al revés, nadie podría entrar. Luego medir una semana `auth_completed` con `flow: 'codigo'`
+  contra `magic_link_requested` (antes: 2 de 7).
+- **Volver a tener un botón de un toque**, si se echa de menos: solo como
+  enlace a una página nuestra que no verifica al abrirse y pide un clic en
+  «Entrar» con `token_hash` (opción 2a del doc). Nunca `{{ .ConfirmationURL }}`.
 - **Mixpanel no une** lo de antes y después del registro
   (`errAnonDistinctIdAssignedAlready`): para seguir a una persona hay que mirar
   el perfil de su `visitor_id` y el de su cuenta.

@@ -92,6 +92,11 @@ enable_signup = true
 double_confirm_changes = true
 # If enabled, users need to confirm their email address before signing in.
 enable_confirmations = false
+# El correo lleva un código (`{{ .Token }}`) además del enlace (2026-10-30).
+# 6 dígitos, como en QA y producción: se configura A MANO en cada panel
+# (Authentication → Providers → Email → Email OTP Length).
+otp_length = 6
+otp_expiry = 3600
 
 # Uncomment to customize email template
 # [auth.email.template.invite]

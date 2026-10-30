@@ -180,9 +180,32 @@ Lo que estos eventos destaparon y ya quedó arreglado:
 Antes de leer cifras hacen falta **una o dos semanas de producción** con esta
 medición desplegada. Hoy solo está en esta rama.
 
+## Decisión (2026-10-30): el correo trae SOLO un código
+
+Una semana de producción (23–29 oct): 8 personas llegaron desde el enlace, 7
+tuvieron `auth_failed` (14 `otp_expired`, 3 `pkce_code_verifier_not_found`) y 2
+entraron. Cristian aprobó la opción 4 (código).
+
+Se hizo primero con código **y** botón en el mismo correo, y en QA salió esto:
+
+| Caso                                                                                                     | Resultado     |
+| -------------------------------------------------------------------------------------------------------- | ------------- |
+| Nadie abre el enlace; se escribe el código                                                               | entra         |
+| Se abre el enlace (GET, sin seguir la redirección, como un filtro de correo); luego se escribe el código | `otp_expired` |
+
+El enlace y el código son **el mismo token de un solo uso**: quien abre el
+enlace primero —un filtro de Outlook/Hotmail, o la persona en otro navegador—
+mata también el código. Por eso el correo quedó **solo con el código** y la
+hoja, `/entrar` y el muro de `/asistente` tienen la casilla. El callback sigue
+vivo para los correos viejos.
+
+Si algún día se quiere el botón de un toque, solo como la opción 2 con su
+mitigación: un enlace con `token_hash` a una página nuestra que **no verifica
+al abrirse** y pide un clic en «Entrar».
+
 ## Opciones de solución
 
-Ordenadas por impacto entre esfuerzo. **Ninguna está implementada.**
+Ordenadas por impacto entre esfuerzo. **Implementadas:** la 3 (2026-10-18) y la 4, sin enlace (2026-10-30).
 
 | #   | Opción                                            | Impacto    | Esfuerzo   | Notas                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | --- | ------------------------------------------------- | ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

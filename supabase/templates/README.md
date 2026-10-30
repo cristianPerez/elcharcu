@@ -18,6 +18,39 @@ convertir.
 
 No se incluye **Reset Password**: aquí no hay contraseñas.
 
+## Solo el código de 6 dígitos, sin enlace (2026-10-30)
+
+`confirm-signup.html` y `magic-link.html` traen **solo el código
+(`{{ .Token }}`)**. Se escribe en la misma hoja donde se pidió la cuenta y abre
+sesión ahí, aunque sea el navegador de Instagram.
+
+⚠️ **No vuelvas a poner `{{ .ConfirmationURL }}` en estas dos.** El enlace y el
+código son el MISMO token de un solo uso. Los filtros de Outlook/Hotmail abren
+los enlaces para revisarlos, lo gastan, y el código llega muerto: comprobado en
+QA el 2026-10-30 (abrir el enlace sin seguir la redirección → `verifyOtp` con el
+código da `otp_expired`). Y si la persona toca el enlace en otro navegador, no
+entra (PKCE) y además mata el código. Un botón de un toque solo volvería sin
+peligro como enlace a una página nuestra que NO verifica al abrirse y pide un
+clic en «Entrar» (opción 2a de `docs/auth-magic-link-dropoff.md`).
+
+**Asuntos** (no viven en estos archivos; se ponen en el mismo panel):
+
+| Plantilla      | Asunto                              |
+| -------------- | ----------------------------------- |
+| Confirm signup | `Tu código para El Charcu`          |
+| Magic Link     | `Tu código para entrar a El Charcu` |
+
+⚠️ **Orden al desplegar, en cada entorno: PRIMERO el código de la app, y en
+cuanto el despliegue diga `success`, estas dos plantillas, sus asuntos y
+**Email OTP Length = 6** en el panel.** Al revés, el correo traería solo un
+código y la app vieja no tiene dónde escribirlo ni enlace: nadie podría entrar.
+En este orden, mientras tanto el correo viejo sigue trayendo su enlace, que
+funciona; lo único raro es que la hoja dice "te enviamos un código". La app
+acepta de 6 a 8 dígitos, así que el largo no la rompe.
+
+`change-email.html` sigue con enlace: ese cambio se confirma así y no pasa por
+la hoja.
+
 ## Por qué el HTML se ve así
 
 Los clientes de correo rompen casi todo lo que se da por hecho en la web:
