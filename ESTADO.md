@@ -164,17 +164,10 @@ día y motivo. La primera lectura, con el diseño anterior y pocos datos:
   si escribió, cuánto tardó. Cuando haya datos, sumar al tablero un reporte por
   `paso` y `trigger`. El plan gratis de Mixpanel deja 5 reportes guardados
   por persona; van 2.
-- **El correo trae SOLO un código de 6 dígitos, sin enlace (2026-10-30), en
-  QA; falta producción.** Rama `feature/codigo-entrada`. Primero llevaba código
-  y botón, pero en QA se comprobó que abrir el enlace gasta el código
-  (`otp_expired`): los filtros de Outlook/Hotmail lo habrían matado. Por eso el
-  botón se quitó. QA tiene las plantillas, los asuntos y `Email OTP Length = 6`
-  (puestos por la API de administración; la copia de antes quedó en
-  `/tmp/qa-auth-config-backup.json`). Para producción, en este orden y con su
-  visto bueno: PRIMERO el código a `main`; con el despliegue en `success`,
-  plantillas, asuntos y 6 dígitos en el panel de `dpooajrgqjwetttberdo` (ver
-  `supabase/templates/README.md`). Al revés, nadie podría entrar. Luego medir una semana `auth_completed` con `flow: 'codigo'`
-  contra `magic_link_requested` (antes: 2 de 7).
+- **Entrar con un código de 6 dígitos, sin enlace: en producción desde el
+  2026-10-30** (PR #37; plantillas, asuntos y `Email OTP Length = 6` puestos en
+  QA y producción por la API de administración). Falta **medirlo hasta el ~6
+  nov**: `auth_completed` por `flow` contra `magic_link_requested` (antes, 2 de 7) y que baje `otp_expired`. Lo pide la skill `analisis-usuarios`.
 - **Volver a tener un botón de un toque**, si se echa de menos: solo como
   enlace a una página nuestra que no verifica al abrirse y pide un clic en
   «Entrar» con `token_hash` (opción 2a del doc). Nunca `{{ .ConfirmationURL }}`.
@@ -300,20 +293,17 @@ Se revisa si algún día el gasto duele y hay repeticiones reales medidas. La
 condición mínima para volver a mirarlo: misma receta, sin foto, sin números,
 primer turno de la conversación, y la respuesta sin ninguna dosis dentro.
 
-### 🟡 El enlace del correo — lo que queda
+### 🟡 La entrada por correo — lo que queda
 
-Desde el diseño final (2026-10-07) la hoja de crear cuenta y "Entrar" mandan el
-destino y el enlace vuelve ahí (la cápsula, la receta, la página donde estaba),
-validado con `safeDestination`. Queda:
+Desde el 2026-10-30 el correo trae solo un código, que se escribe donde se pidió
+la cuenta: ya no importa en qué navegador se abra el correo, y la conversación
+anónima sigue ahí porque se entra en el mismo navegador. Queda:
 
-- **La portada vieja `/asistente`** sigue con `LeadCaptureModal` →
-  `sendAccountLink`, que escribe `next=%2Fcharcu` a pelo.
-- **Pedido en un navegador y abierto en otro** (el de Instagram → Safari) no
-  entra: el `code_verifier` de PKCE vive en el navegador que lo pidió. Está
-  medido y documentado en `docs/auth-magic-link-dropoff.md`; el arreglo cambia
-  el flujo de entrada y espera su visto bueno.
-- **La conversación anónima** cuelga de la cookie de ese navegador: si abre el
-  enlace en otro aparato, vuelve a la receta pero sin el hilo. Aceptado.
+- **La portada vieja `/asistente`** pasa `next=/charcu` a pelo
+  (`AssistantHero` → `CodeSignIn`, y `sendAccountLink`).
+- **El correo de bienvenida de OnePay** sigue con su botón (`token_hash` a
+  `/auth/callback`, verificado con el GET): un filtro de Outlook lo puede gastar.
+  La red es `/entrar`, que ya manda un código.
 - **Sospecha sin probar:** que el correo no llegue bien a Hotmail/Outlook.
 
 ### 🟡 Contenido, que solo puede dar Cristian

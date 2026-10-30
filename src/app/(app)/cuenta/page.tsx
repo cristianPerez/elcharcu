@@ -9,6 +9,7 @@ import { type CourseProgress } from '@/entities/course';
 import { listCourses, progressByCourse } from '@/entities/course/server';
 import { readProfile } from '@/entities/curing-profile/server';
 import { planOf } from '@/entities/plan';
+import { checkoutLinks } from '@/entities/plan/server';
 import { recipeCounts } from '@/entities/recipe-chat/server';
 import { readSubscription } from '@/entities/subscription/server';
 import { readQuota } from '@/entities/usage-quota/server';
@@ -31,7 +32,7 @@ export default async function CuentaPage(): Promise<ReactNode> {
   const user = await currentUser();
   const userId = user?.id ?? null;
 
-  const [profile, subscription, courses, progress, recipes, visitorId] =
+  const [profile, subscription, courses, progress, recipes, visitorId, links] =
     await Promise.all([
       userId === null ? null : readProfile(userId),
       userId === null ? null : readSubscription(userId),
@@ -39,6 +40,7 @@ export default async function CuentaPage(): Promise<ReactNode> {
       userId === null ? new Map<string, CourseProgress>() : progressByCourse(userId),
       userId === null ? { active: 0, finished: 0 } : recipeCounts(userId),
       readVisitorIdFromCookies(),
+      checkoutLinks(),
     ]);
   const quota = visitorId === null ? null : await readQuota(visitorId, userId);
 
@@ -69,6 +71,7 @@ export default async function CuentaPage(): Promise<ReactNode> {
             }
       }
       progress={accountProgress(courses, progress, recipes)}
+      checkoutLinks={links}
     />
   );
 }

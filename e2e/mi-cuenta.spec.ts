@@ -83,5 +83,15 @@ test('una cuenta gratis no tiene fecha de renovación y ve el plan Maestro', asy
   const plan = page.getByRole('region', { name: 'Aprendiz' });
   await expect(plan).toContainText('Gratis');
   await expect(plan).not.toContainText(/se renueva el \d+ de/);
-  await expect(page.getByRole('link', { name: /El Charcu Maestro/ })).toBeVisible();
+  await expect(page.getByText('Pásate a El Charcu Maestro')).toBeVisible();
+  // Directo al checkout de OnePay del Maestro, en modo de pruebas (QA), no a la
+  // página de suscripción, que solo ofrece el Pro (2026-10-30).
+  await expect(page.getByRole('link', { name: /^Anual/ })).toHaveAttribute(
+    'href',
+    'https://pagos.onepay.la/plan/01a15490-7a2f-7264-b9e3-fd0b923c992e',
+  );
+  await expect(page.getByRole('link', { name: /^Mensual/ })).toHaveAttribute(
+    'href',
+    'https://pagos.onepay.la/plan/01a1548f-49ec-7203-af12-095f3731f380',
+  );
 });

@@ -17,7 +17,7 @@ import {
   type NotificationValues,
 } from '@/features/edit-profile';
 
-import { type CurrentPlan } from '@/entities/plan';
+import { type CheckoutLinks, type CurrentPlan } from '@/entities/plan';
 
 import { type InterestId } from '@/shared/config';
 import { PageTitle } from '@/shared/ui';
@@ -38,6 +38,8 @@ interface AppCuentaViewProps {
     readonly imagesLimit: number;
   } | null;
   readonly progress: AccountProgress;
+  /** Para que "Pásate a Maestro" vaya directo a OnePay. */
+  readonly checkoutLinks: CheckoutLinks;
 }
 
 const CARD = 'rounded-card border border-cocoa/10 bg-cream-white';
@@ -91,7 +93,7 @@ export function AppCuentaView(props: AppCuentaViewProps): ReactNode {
               usage={props.usage}
             />
           </div>
-          {isMaestro ? null : <MaestroUpsell />}
+          {isMaestro ? null : <MaestroUpsell checkoutLinks={props.checkoutLinks} />}
         </div>
 
         <ProgressSummary progress={props.progress} />
