@@ -1,6 +1,9 @@
-/** Un trozo del texto de una lección: prosa tal cual, o una tabla. */
+import { LIST_ITEM, type ListBlock, toList } from './bodyList';
+
+/** Un trozo del texto de una lección: prosa tal cual, una tabla o una lista. */
 export type BodyBlock =
   | { readonly kind: 'text'; readonly text: string }
+  | ListBlock
   | {
       readonly kind: 'table';
       readonly header: readonly string[];
@@ -56,11 +59,16 @@ function toTable(lines: readonly string[]): BodyBlock | null {
  *
  * Si las líneas con `|` no traen la fila de `---`, no son tabla: se quedan
  * como texto. Así un texto viejo nunca cambia de aspecto por accidente.
+ *
+ * Las líneas seguidas que empiezan por `- ` son una lista de viñetas
+ * (2026-11-09, pasos del chorizo de jalapeño: un ítem por cosa que se hace en
+ * el video, sin número). Ningún texto anterior usa `- `, así que no cambia.
  */
 export function bodyBlocks(body: string): BodyBlock[] {
   const blocks: BodyBlock[] = [];
   let prose: string[] = [];
   let tableLines: string[] = [];
+  let listLines: string[] = [];
 
   const flushProse = (): void => {
     const text = prose.join('\n').trim();
@@ -84,15 +92,35 @@ export function bodyBlocks(body: string): BodyBlock[] {
     tableLines = [];
   };
 
+  const flushList = (): void => {
+    if (listLines.length === 0) {
+      return;
+    }
+    const list = toList(listLines);
+    if (list === null) {
+      prose.push(...listLines);
+    } else {
+      flushProse();
+      blocks.push(list);
+    }
+    listLines = [];
+  };
+
   for (const line of body.split('\n')) {
     if (line.trim().startsWith('|')) {
+      flushList();
       tableLines.push(line);
+    } else if (LIST_ITEM.test(line)) {
+      flushTable();
+      listLines.push(line);
     } else {
       flushTable();
+      flushList();
       prose.push(line);
     }
   }
   flushTable();
+  flushList();
   flushProse();
 
   return blocks;

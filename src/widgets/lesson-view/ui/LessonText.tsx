@@ -33,6 +33,17 @@ export function LessonText({ body }: LessonTextProps): ReactNode {
       {bodyBlocks(body).map((block, index) =>
         block.kind === 'table' ? (
           <LessonTable key={index} block={block} />
+        ) : block.kind === 'list' ? (
+          <ul
+            key={index}
+            className="list-disc space-y-2 pl-6 text-base leading-relaxed text-cocoa/80 marker:text-forest"
+          >
+            {block.items.map((item, itemIndex) => (
+              <li key={itemIndex} className="pl-1">
+                <Inline text={item} />
+              </li>
+            ))}
+          </ul>
         ) : (
           <p
             key={index}
