@@ -7,7 +7,9 @@ import { E2E_USERS, storageStateFor } from './global-setup';
 test.describe('Mis cursos — cuenta gratis', () => {
   test.use({ storageState: storageStateFor('gratis') });
 
-  test('enseña la ruta de cápsulas, las técnicas y los próximos', async ({ page }) => {
+  test('enseña la ruta de cápsulas, las técnicas y los cursos con su estreno', async ({
+    page,
+  }) => {
     await page.goto('/cursos');
 
     await expect(
@@ -17,7 +19,9 @@ test.describe('Mis cursos — cuenta gratis', () => {
     await expect(
       page.getByRole('heading', { name: 'Explora por técnica' }),
     ).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Próximamente' })).toBeVisible();
+    // Desde 2026-11-10 los próximos van en la misma lista, con su fecha.
+    await expect(page.getByRole('heading', { name: 'Cursos maestros' })).toBeVisible();
+    await expect(page.getByText(/^Sale el /).first()).toBeVisible();
     expect(await hasHorizontalScroll(page)).toBe(false);
   });
 

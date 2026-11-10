@@ -74,6 +74,7 @@ interface CourseRow {
   readonly kind: string;
   readonly status: string;
   readonly waitlist_goal: number | null;
+  readonly releases_on: string | null;
   readonly category: string | null;
   readonly techniques: readonly string[];
   readonly icon: string | null;
@@ -81,7 +82,7 @@ interface CourseRow {
 
 /** Las columnas que pide toda consulta de curso. En un sitio, no en cuatro. */
 const COURSE_COLUMNS =
-  'id, slug, title, summary, cover_url, level, access, position, kind, status, waitlist_goal, category, techniques, icon';
+  'id, slug, title, summary, cover_url, level, access, position, kind, status, waitlist_goal, releases_on, category, techniques, icon';
 
 /**
  * El curso con sus módulos y lecciones dentro, en UNA consulta.
@@ -118,6 +119,7 @@ function toCourse(
     kind: toKind(row.kind),
     status: toStatus(row.status),
     waitlistGoal: row.waitlist_goal,
+    releasesOn: row.releases_on,
     waitlistCount: waitlist.count,
     isInWaitlist: waitlist.isIn,
     category: isCourseCategory(row.category) ? row.category : null,
@@ -366,6 +368,8 @@ export interface AssistantCourse {
   readonly kind: CourseKind;
   readonly access: CourseAccess;
   readonly status: CourseStatus;
+  /** `AAAA-MM-DD` del estreno, para que El Charcu pueda decir cuándo sale. */
+  readonly releasesOn: string | null;
 }
 
 /** Cada cuánto se vuelve a leer el catálogo para el asistente. */
@@ -408,7 +412,7 @@ export async function assistantCourseCatalog(): Promise<readonly AssistantCourse
 
   const { data, error } = await createSupabaseAdminClient()
     .from('courses')
-    .select('title, summary, kind, access, status')
+    .select('title, summary, kind, access, status, releases_on')
     .in('status', ['publicado', 'lista-de-espera'])
     .order('position');
 
@@ -422,6 +426,7 @@ export async function assistantCourseCatalog(): Promise<readonly AssistantCourse
     kind: toKind(row.kind),
     access: toAccess(row.access),
     status: toStatus(row.status),
+    releasesOn: row.releases_on,
   }));
   assistantCatalogMemo = { at: now, courses };
   return courses;

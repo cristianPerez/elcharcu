@@ -144,6 +144,7 @@ export type Database = {
           kind: string;
           level: string;
           position: number;
+          releases_on: string | null;
           slug: string;
           status: string;
           summary: string;
@@ -163,6 +164,7 @@ export type Database = {
           kind?: string;
           level?: string;
           position?: number;
+          releases_on?: string | null;
           slug: string;
           status?: string;
           summary?: string;
@@ -182,6 +184,7 @@ export type Database = {
           kind?: string;
           level?: string;
           position?: number;
+          releases_on?: string | null;
           slug?: string;
           status?: string;
           summary?: string;

@@ -1,9 +1,13 @@
 import { type AssistantCourse } from '../api/courseApi';
 
+import { releaseDateLong } from './releaseDate';
+
 function courseLine(course: AssistantCourse): string {
   const access =
     course.status === 'lista-de-espera'
-      ? 'todavía no está grabado: se puede apuntar a la lista de espera'
+      ? course.releasesOn === null
+        ? 'todavía no está grabado: se puede apuntar a la lista de espera'
+        : `todavía no está grabado: sale el ${releaseDateLong(course.releasesOn)} y se puede apuntar para que le avisen`
       : course.access === 'libre'
         ? 'GRATIS, solo hay que registrarse'
         : 'incluido en la suscripción';

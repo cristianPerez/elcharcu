@@ -6,6 +6,7 @@ import {
   courseCardVariant,
   lessonCountLabel,
   levelLabel,
+  releaseDateShort,
   type Course,
   type CourseProgress,
 } from '@/entities/course';
@@ -14,7 +15,7 @@ import { appRoutes } from '@/shared/config';
 import { SectionHeader } from '@/shared/ui';
 
 interface MasterCoursesStripProps {
-  /** Solo los cursos publicados; los que esperan van en "Próximamente". */
+  /** Los publicados y, detrás, los que se estrenan pronto: misma tarjeta, con su fecha. */
   readonly courses: readonly Course[];
   readonly progress: ReadonlyMap<string, CourseProgress>;
 }
@@ -60,6 +61,11 @@ export function MasterCoursesStrip({
                 plainTitle={course.title}
                 coverUrl={course.coverUrl}
                 variant={variant}
+                badgeLabel={
+                  course.releasesOn === null || course.status !== 'lista-de-espera'
+                    ? undefined
+                    : `Sale el ${releaseDateShort(course.releasesOn)}`
+                }
                 eyebrow={eyebrow}
                 summary={course.summary}
                 meta={[count, variant === 'en-curso' ? 'En curso' : null]

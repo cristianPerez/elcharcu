@@ -3,7 +3,13 @@ import { type ReactNode } from 'react';
 
 import { CourseOutline } from '@/widgets/course-outline';
 
-import { type CourseProgress, type CourseWithModules } from '@/entities/course';
+import { WaitlistButton } from '@/features/join-waitlist';
+
+import {
+  type CourseProgress,
+  type CourseWithModules,
+  releaseDateLong,
+} from '@/entities/course';
 
 import { appRoutes } from '@/shared/config';
 import { IconChevron, IconLock, Reveal } from '@/shared/ui';
@@ -111,13 +117,29 @@ export function AppCursoView({
       {showNotRecorded ? (
         <Reveal delay={0.06}>
           {/* Sin candado ni botón de pagar: no hay nada que comprar todavía.
-              Se dice la verdad y se enseña el temario, que es lo que hay. */}
+              Se dice la fecha, se deja leer lo que ya hay (ingredientes y
+              pasos) y se ofrece el aviso del estreno (2026-11-10). */}
           <section className="mt-6 rounded-2xl border border-cocoa/[0.12] bg-cream p-5">
-            <h2 className="font-medium text-forest">Todavía no está grabado</h2>
+            <h2 className="font-medium text-forest">
+              {course.releasesOn === null
+                ? 'Todavía no está grabado'
+                : `Sale el ${releaseDateLong(course.releasesOn)}`}
+            </h2>
             <p className="mt-2 text-base leading-relaxed text-cocoa/70">
-              Este es el temario que va a tener. Se está preparando; cuando esté listo
-              aparece aquí completo.
+              {course.releasesOn === null
+                ? 'Este es el temario que va a tener. Se está preparando; cuando esté listo aparece aquí completo.'
+                : 'Ya puedes leer los ingredientes y los pasos. Los videos llegan ese día.'}
             </p>
+            <div className="mt-4">
+              <WaitlistButton
+                courseId={course.id}
+                courseSlug={course.slug}
+                courseTitle={course.title}
+                initiallyJoined={course.isInWaitlist}
+                canJoin={isSubscribed}
+                label="Avísame cuando salga"
+              />
+            </div>
           </section>
         </Reveal>
       ) : null}
@@ -227,7 +249,7 @@ export function AppCursoView({
             completedIds={completedIds}
             openModuleId={openModuleId}
             isLocked={isLocked}
-            isWaiting={showNotRecorded}
+            isWaiting={showNotRecorded && isLocked}
           />
         </section>
       </Reveal>

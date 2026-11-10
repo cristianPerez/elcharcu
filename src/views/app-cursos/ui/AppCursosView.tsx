@@ -7,12 +7,12 @@ import {
   ContinueCourseCard,
   MasterCoursesStrip,
   TechniqueGrid,
-  UpcomingCourses,
 } from '@/widgets/course-home';
 
 import { CourseSearchField, courseSearchHref } from '@/features/course-search';
 
 import {
+  byReleaseDate,
   COURSE_CATEGORIES,
   type ContinueCourse,
   type Course,
@@ -32,7 +32,6 @@ interface AppCursosViewProps {
   readonly continueLessonNumber: number | null;
   /** Los cursos con alguna actividad (de `lesson_progress`). */
   readonly touchedIds: ReadonlySet<string>;
-  readonly isSubscribed: boolean;
 }
 
 /**
@@ -51,7 +50,6 @@ export function AppCursosView({
   continueWith,
   continueLessonNumber,
   touchedIds,
-  isSubscribed,
 }: AppCursosViewProps): ReactNode {
   return (
     <div className="reveal flex flex-col gap-9 md:gap-12">
@@ -123,10 +121,12 @@ export function AppCursosView({
           <TechniqueGrid />
         </div>
         <div className="lg:order-1 lg:col-span-2">
-          <MasterCoursesStrip courses={masters} progress={progress} />
-        </div>
-        <div className="lg:order-3">
-          <UpcomingCourses courses={upcoming} isSubscribed={isSubscribed} />
+          {/* Una sola lista (Cristian, 2026-11-10): los publicados primero y
+              detrás los que se estrenan, con la misma tarjeta y su fecha. */}
+          <MasterCoursesStrip
+            courses={[...masters, ...[...upcoming].sort(byReleaseDate)]}
+            progress={progress}
+          />
         </div>
       </div>
 
