@@ -593,6 +593,13 @@ export const findCourse = cache(
 
     const modules = row.modules;
 
+    // En "Próximamente" la ficha tiene el botón del aviso: tiene que saber si
+    // quien mira ya se apuntó, o le volvería a ofrecer "Avísame" (2026-11-10).
+    const waitlist =
+      row.status === 'lista-de-espera'
+        ? ((await waitlistInfo(supabase, [row.id])).get(row.id) ?? undefined)
+        : undefined;
+
     /*
       Sin módulos por RLS = curso cerrado para esta persona. Se enseña el índice
       igual, que es lo que da ganas de pagar: un candado sin nada detrás no
@@ -600,7 +607,7 @@ export const findCourse = cache(
     */
     if (modules.length === 0) {
       return {
-        ...toCourse(row, true),
+        ...toCourse(row, true, waitlist),
         modules: await courseOutline(supabase, slug),
       };
     }
@@ -618,7 +625,7 @@ export const findCourse = cache(
         .filter((lesson): lesson is Lesson => lesson !== null),
     }));
 
-    return { ...toCourse(row), modules: withLessons };
+    return { ...toCourse(row, false, waitlist), modules: withLessons };
   },
 );
 
