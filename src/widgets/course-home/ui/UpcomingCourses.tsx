@@ -2,7 +2,12 @@ import { type ReactNode } from 'react';
 
 import { WaitlistButton } from '@/features/join-waitlist';
 
-import { categoryLabel, type Course } from '@/entities/course';
+import {
+  byReleaseDate,
+  categoryLabel,
+  type Course,
+  releaseDateShort,
+} from '@/entities/course';
 
 import { CoverPanel, SectionHeader, coverToneFor } from '@/shared/ui';
 
@@ -12,7 +17,7 @@ interface UpcomingCoursesProps {
   readonly isSubscribed: boolean;
 }
 
-/** "Próximamente": los cursos en lista de espera, con su "Avísame". */
+/** "Próximamente": los cursos en lista de espera, del que sale antes al último, con su "Avísame". */
 export function UpcomingCourses({
   courses,
   isSubscribed,
@@ -25,7 +30,7 @@ export function UpcomingCourses({
     <section aria-labelledby="upcoming-title">
       <SectionHeader id="upcoming-title" title="Próximamente" />
       <ul className="mt-4 divide-y divide-cocoa/10 overflow-hidden rounded-card border border-cocoa/10 bg-cream-white">
-        {courses.map((course) => (
+        {[...courses].sort(byReleaseDate).map((course) => (
           <li key={course.id} className="flex items-center gap-3 px-4 py-3">
             <CoverPanel
               title={course.title}
@@ -40,7 +45,10 @@ export function UpcomingCourses({
               </p>
               {course.category === null ? null : (
                 <p className="text-[13px] text-cocoa-soft">
-                  {categoryLabel(course.category)} · En preparación
+                  {categoryLabel(course.category)} ·{' '}
+                  {course.releasesOn === null
+                    ? 'En preparación'
+                    : `Sale el ${releaseDateShort(course.releasesOn)}`}
                 </p>
               )}
             </div>

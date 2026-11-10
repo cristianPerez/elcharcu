@@ -108,6 +108,11 @@ export interface Course {
   readonly status: CourseStatus;
   /** Cuánta gente hace falta para que se grabe. `null` si no aplica. */
   readonly waitlistGoal: number | null;
+  /**
+   * El día que se estrena (`AAAA-MM-DD`), si ya tiene fecha. Es la promesa que
+   * se le hace a quien paga: "sale el miércoles 18". `null` = sin fecha.
+   */
+  readonly releasesOn: string | null;
   /** Cuánta gente lo espera ya. Es un número público; la lista, nunca. */
   readonly waitlistCount: number;
   /** Si QUIEN MIRA ya se apuntó, para que el botón no le invite otra vez. */

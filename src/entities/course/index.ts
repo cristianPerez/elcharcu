@@ -34,6 +34,7 @@ export {
   pickContinueCourse,
 } from './lib/courseState';
 export type { CapsuleStep, ContinueCourse, CourseCardVariant } from './lib/courseState';
+export { byReleaseDate, releaseDateLong, releaseDateShort } from './lib/releaseDate';
 export { CourseCard } from './ui/CourseCard';
 export { CapsuleCard } from './ui/CapsuleCard';
 export type { CapsuleState } from './ui/CapsuleCard';

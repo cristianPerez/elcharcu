@@ -140,7 +140,7 @@ export function CourseCard({
             }
             className={cn('mb-1 self-start', styles.bodyBadge)}
           >
-            {variant === 'proximo' ? 'En preparación' : (badgeLabel ?? badge.label)}
+            {badgeLabel ?? (variant === 'proximo' ? 'En preparación' : badge.label)}
           </Badge>
         )}
         {eyebrow === undefined ? null : (

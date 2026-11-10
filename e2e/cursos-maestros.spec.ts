@@ -86,8 +86,8 @@ test.describe('Cursos maestros — cuenta pro', () => {
     await page.reload();
     await expect(leave).toBeVisible();
 
-    // En Mis cursos el mismo curso sale como "✓ Te aviso".
-    await page.goto('/cursos');
+    // Dentro del curso, el mismo botón sale como "✓ Te aviso".
+    await page.goto('/cursos/chorizo-de-ajo');
     await expect(
       page.getByRole('button', { name: 'Dejar de esperar Chorizo de Ajo Parrillero' }),
     ).toContainText('Te aviso');

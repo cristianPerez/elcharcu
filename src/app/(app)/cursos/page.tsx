@@ -13,7 +13,6 @@ import {
   recentCourseIds,
 } from '@/entities/course/server';
 import { checkoutLinks } from '@/entities/plan/server';
-import { hasActiveSubscription } from '@/entities/subscription/server';
 
 import { currentUser } from '@/shared/api/supabase/server';
 import { safeDestination } from '@/shared/lib/access';
@@ -58,10 +57,9 @@ export default async function CursosPage({
 
   // Todo a la vez: son independientes y encadenarlas solo suma espera en un
   // celular con mala señal.
-  const [courses, progress, isSubscribed, recent] = await Promise.all([
+  const [courses, progress, recent] = await Promise.all([
     listCourses(),
     userId === null ? new Map<string, CourseProgress>() : progressByCourse(userId),
-    userId === null ? false : hasActiveSubscription(userId),
     userId === null ? [] : recentCourseIds(userId),
   ]);
 
@@ -85,7 +83,6 @@ export default async function CursosPage({
       continueWith={continueWith}
       continueLessonNumber={nextNumber}
       touchedIds={new Set(recent)}
-      isSubscribed={isSubscribed}
     />
   );
 }

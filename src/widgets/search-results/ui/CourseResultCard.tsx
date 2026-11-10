@@ -3,11 +3,12 @@ import { type ReactNode } from 'react';
 import { WaitlistButton } from '@/features/join-waitlist';
 
 import {
+  type Course,
   CourseCard,
   courseCardVariant,
-  lessonCountLabel,
-  type Course,
   type CourseProgress,
+  lessonCountLabel,
+  releaseDateShort,
 } from '@/entities/course';
 
 import { Highlight } from '@/shared/ui';
@@ -36,6 +37,11 @@ export function CourseResultCard({
       plainTitle={course.title}
       coverUrl={course.coverUrl}
       variant={variant}
+      badgeLabel={
+        isWaiting && course.releasesOn !== null
+          ? `Sale el ${releaseDateShort(course.releasesOn)}`
+          : undefined
+      }
       layout="responsive"
       className="h-full"
       progress={
