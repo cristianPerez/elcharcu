@@ -64,3 +64,12 @@ design-refs/
 
 # graphify
 /graphify-out
+# reportes de análisis (tienen datos personales)
+reportes/
+
+# python
+__pycache__/
+*.pyc
+
+# runner de lanzamientos: importa scripts/lanzamientos/* (datos de clientes), que no van al repo
+/scripts/enviar-lanzamientos.ts
