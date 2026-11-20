@@ -70,3 +70,6 @@ reportes/
 # python
 __pycache__/
 *.pyc
+
+# runner de lanzamientos: importa scripts/lanzamientos/* (datos de clientes), que no van al repo
+/scripts/enviar-lanzamientos.ts
